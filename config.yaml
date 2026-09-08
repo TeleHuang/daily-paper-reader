@@ -25,3 +25,65 @@ subscriptions:
     stage: A
     diff_threshold_pct: 15
   keyword_recall_mode: or
+  intent_profiles:
+    - tag: embodied-ai
+      description: 具身智能方向新论文跟踪：关注新范式引入、迁移学习/PEFT在具身智能上的应用，以及数据与推理瓶颈的新解法。
+      enabled: true
+      paper_sources:
+        - arxiv
+      keywords:
+        - keyword: embodied artificial intelligence
+          keyword_cn: 具身人工智能
+          query: embodied artificial intelligence with robot agents in real-world environments
+        - keyword: joint embedding predictive architecture
+          keyword_cn: 联合嵌入预测架构
+          query: joint embedding predictive architecture for self-supervised world models
+        - keyword: world model
+          keyword_cn: 世界模型
+          query: world model for planning and control in embodied agents
+        - keyword: robot transfer learning
+          keyword_cn: 机器人迁移学习
+          query: transfer learning for robot policy learning across domains and embodiments
+        - keyword: cross embodiment transfer
+          keyword_cn: 跨本体迁移
+          query: cross embodiment skill transfer in robot learning
+        - keyword: real-time robot inference
+          keyword_cn: 机器人实时推理
+          query: fast inference and model acceleration for real-time robot control
+      intent_queries:
+        - query: new learning paradigm for embodied agents based on world models and latent space prediction
+          query_cn: 基于世界模型和潜在空间预测的具身智能新学习范式
+          enabled: true
+          source: manual
+          note: ''
+        - query: transfer learning and parameter efficient adaptation of large pretrained models to robot control
+          query_cn: 大规模预训练模型到机器人控制的迁移学习与参数高效适配
+          enabled: true
+          source: manual
+          note: ''
+        - query: data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning
+          query_cn: 利用数据高效技术和数据生成方法克服具身机器人学习中的数据稀缺
+          enabled: true
+          source: manual
+          note: ''
+        - query: inference acceleration of large multimodal models for real time robot policy deployment
+          query_cn: 面向实时机器人策略部署的大型多模态模型推理加速
+          enabled: true
+          source: manual
+          note: ''
+      updated_at: '2026-09-08T05:03:44.031Z'
+source_backends:
+  arxiv:
+    papers_table: arxiv_papers
+    use_vector_rpc: true
+    vector_rpc: match_arxiv_papers
+    vector_rpc_exact: match_arxiv_papers_exact
+    use_bm25_rpc: true
+    bm25_rpc: match_arxiv_papers_bm25
+    sync_table: arxiv_sync_status
+    sync_success_value: success
+    schema: public
+    kind: supabase
+    enabled: true
+    url: https://lyucdwgefyfbmaiopjbk.supabase.co
+    anon_key: sb_publishable_lX-oi64Uxyd7SIVv3_w2Uw_MTOojeKq
