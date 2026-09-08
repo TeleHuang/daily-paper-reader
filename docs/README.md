@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-10 ~ 2026-09-08</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-08</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 65 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>65</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-08 05:59:21 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-08 22:57:52 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日速读65篇机器人学习论文，JEPA联合嵌入世界模型成最高分主线。最值得精读两篇满分工作：StageWAM基于阶段预测统一世界-动作建模，另一篇强调物理可接地JEPA世界模型支撑目标条件规划；9分JEFA-WAM则将视觉-语言-动作策略接入同一框架。建议下周优先精读这三篇JEPA系列，顺手补齐其引用与对比基线即可成专题综述。</p>
+<p>今日精读6篇、速读11篇，聚焦具身智能与实体世界Agent前沿。</p>
+<p>最值得关注的是9.0分两篇：基础模型驱动的长时程导航，以及人形机器人统一动作重定向。</p>
+<p>建议优先精读这两篇高分工作，并留意世界模型与VLA协同训练的新方向。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -78,12 +80,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">0 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Scaffolding Foundation Models into Physical-World Agents Pushes the Frontier of Long-Horizon Navigation">Scaffolding Foundation Models into Physical-World Agents Pushes the Frontier of Long-Horizon Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Unified Motion Retargeting for Humanoids with Learned Point Cloud Correspondence">Unified Motion Retargeting for Humanoids with Learned Point Cloud Correspondence</span></li><li><span class="dpr-home-dashboard-paper-title" title="World-Coherent Decoding: Self-Verifying Test-Time Planning for World Action Models">World-Coherent Decoding: Self-Verifying Test-Time Planning for World Action Models</span></li></ul>
   </div>
-
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -91,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">65 篇</strong>
+    <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="StageWAM: Joint-Embedding Stage Prediction for World-Action Models in Robot Manipulation">StageWAM: Joint-Embedding Stage Prediction for World-Action Models in Robot Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Toward Physically Grounded JEPA World Models for Goal-Conditioned Robotic Planning">Toward Physically Grounded JEPA World Models for Goal-Conditioned Robotic Planning</span></li><li><span class="dpr-home-dashboard-paper-title" title="JEPA-WAM: Learning Vision-Language-Action Policies with Joint-Embedding World Modeling">JEPA-WAM: Learning Vision-Language-Action Policies with Joint-Embedding World Modeling</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CometVLA: Co-Training on an Embodied Data Pyramid towards Physical Understanding">CometVLA: Co-Training on an Embodied Data Pyramid towards Physical Understanding</span></li><li><span class="dpr-home-dashboard-paper-title" title="CAER: Causal Action Effect Reweighting for World Model Training">CAER: Causal Action Effect Reweighting for World Model Training</span></li><li><span class="dpr-home-dashboard-paper-title" title="Autonomously Acquiring Robot Manipulation Skills with Language-Driven Quality-Diversity">Autonomously Acquiring Robot Manipulation Skills with Language-Driven Quality-Diversity</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>65</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
 </div>
 

@@ -1,12 +1,487 @@
 {
-  "generated_at": "2026-09-08T05:20:56.010366+00:00",
-  "updated_date": "20260810-20260908",
+  "generated_at": "2026-09-08T22:46:24.355164+00:00",
+  "updated_date": "20260908",
   "carryover_days": 9,
   "tag_states": {
     "embodied-ai": {
-      "updated_date": "20260810-20260908",
+      "updated_date": "20260908",
       "carryover_days": 9,
-      "items": []
+      "items": [
+        {
+          "id": "2609.05260v1",
+          "source": "arxiv",
+          "title": "One Word, Different Action: A Real-Robot Benchmark for Language-Conditioned Embodied Reasoning",
+          "abstract": "Natural-language instruction changes can directly alter robot behavior. A reliable embodied system should preserve its action when the task is unchanged and update it correctly when the task itself changes. We introduce One Word, Different Action, a real-robot benchmark built on physical decision states and executable actions, using task-preserving and task-changing instruction pairs to jointly evaluate Decision Invariance and Decision Sensitivity, with further evaluation under multi-constraint reasoning and real-RGB grounding. Experiments show that modern models are near saturation on single-constraint instruction changes, yet several models degrade noticeably when multiple task constraints must be integrated into one executable decision. These results suggest that the more salient remaining challenge is no longer recognizing an isolated instruction change, but reliably composing multiple task requirements into a correct robot action decision.",
+          "authors": [
+            "Yiwei Liu",
+            "Luwei Yang",
+            "Shunbo Lei"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-04T15:21:58+00:00",
+          "link": "https://arxiv.org/pdf/2609.05260v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "real-robot benchmark for language-conditioned embodied reasoning",
+          "llm_evidence_cn": "面向语言条件具身推理的真实机器人基准",
+          "llm_evidence": "面向语言条件具身推理的真实机器人基准",
+          "canonical_evidence": "面向语言条件具身推理的真实机器人基准",
+          "llm_tldr_en": "A real-robot benchmark with physical decision states uses task-preserving and task-changing instruction pairs to evaluate decision invariance and sensitivity; modern models are near saturation on single-constraint changes but degrade in multi-constraint embodied reasoning.",
+          "llm_tldr_cn": "语言条件的具身系统需要区分任务不变与任务改变，但缺少统一的真机评测。作者提出真实机器人基准，在物理决策状态和可执行动作上构造任务保持/改变指令对，并用决策不变性与敏感性以及多约束推理和真实RGB定位进行联合评测。实验显示模型在单约束指令变化上接近饱和，而在整合多重任务约束时性能明显下降，为真机语言具身推理建立了更有区分度的评测方法。",
+          "llm_tldr": "语言条件的具身系统需要区分任务不变与任务改变，但缺少统一的真机评测。作者提出真实机器人基准，在物理决策状态和可执行动作上构造任务保持/改变指令对，并用决策不变性与敏感性以及多约束推理和真实RGB定位进行联合评测。实验显示模型在单约束指令变化上接近饱和，而在整合多重任务约束时性能明显下降，为真机语言具身推理建立了更有区分度的评测方法。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.05260v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.02653v1",
+          "source": "arxiv",
+          "title": "HINT: Human-Intent Inception for Long-Horizon Robot Manipulation",
+          "abstract": "Humans can perform complex manipulations given a simple intent through an overall instruction, while continuously adapting to evolving visual observations. However, current vision-language action (VLA) models and other action policies struggle to realize this high-level intelligent behavior under dense, evolving visual inputs and sparse language guidance. Visual correlations can then dominate semantic intent, leading actions to follow visual shortcuts rather than human goals. We present HINT (Human-INTent INcepTion), an agentic framework inspired by the human manipulation principles: semantic intent changes sparsely at manipulation-pattern transitions, whereas continuous control primarily depends on the evolving object-hand relationship. HINT invokes semantic reasoning only at pattern transitions to resolve the current subtask and target, then maintains this commitment through multi-view grounding and visual tracking. We explore two visual interfaces-image-space semantic highlighting and attention-prior injection-to communicate the tracked intent to the action policy without introducing additional trainable parameters into the foundation action model. Experiments across three long-horizon tasks and out-of-distribution variants show that HINT substantially improves intent understanding, task progress, and end-to-end success across two foundation policies while preserving low-latency control.",
+          "authors": [
+            "Mingyu Mei",
+            "Haojie Xu",
+            "Shihao Jin",
+            "Zibo Dai",
+            "Qihao Cheng",
+            "Zhengrui Lv",
+            "Hongjie Fang",
+            "Shirun Tang",
+            "Guang Chen",
+            "Xinyue Zhao",
+            "Huiliang Shen",
+            "Zaixing He"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-02T14:26:30+00:00",
+          "link": "https://arxiv.org/pdf/2609.02653v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Robot manipulation embodied agent framework for long-horizon VLA policies under dense visual observations and sparse human semantic intent, directly on embodied real-world agents.",
+          "llm_evidence_cn": "面向机器人操作为目标的具身智能体长程VLA策略，在稀疏语义与密集视觉观察下保持意图驱动。",
+          "llm_evidence": "面向机器人操作为目标的具身智能体长程VLA策略，在稀疏语义与密集视觉观察下保持意图驱动。",
+          "canonical_evidence": "面向机器人操作为目标的具身智能体长程VLA策略，在稀疏语义与密集视觉观察下保持意图驱动。",
+          "llm_tldr_en": "Human manipulation follows sparse semantic intent while continuous control tracks the changing object-hand relation; HINT builds an agentic framework for VLA models to invoke human-intent semantics at pattern transitions, reducing reliance on visual shortcuts in long-horizon tasks.",
+          "llm_tldr_cn": "现有VLA在密集视觉输入和稀疏语言指导下容易被视觉相关性主导，动作偏离人类意图而非完成长程任务。HINT受人类操控原则启发，提出语义智能体框架：语义意图只在操作模式切换处稀疏变化，连续控制应主要依赖演化的手物关系，从而把高层人类意图注入低层动作。该框架以运行时语义判断重构VLA决策，减少视觉捷径导致的目标漂移，为长时程机器人操纵提供更接近人的意图-视觉联合建模方式。",
+          "llm_tldr": "现有VLA在密集视觉输入和稀疏语言指导下容易被视觉相关性主导，动作偏离人类意图而非完成长程任务。HINT受人类操控原则启发，提出语义智能体框架：语义意图只在操作模式切换处稀疏变化，连续控制应主要依赖演化的手物关系，从而把高层人类意图注入低层动作。该框架以运行时语义判断重构VLA决策，减少视觉捷径导致的目标漂移，为长时程机器人操纵提供更接近人的意图-视觉联合建模方式。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.02653v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.03715v1",
+          "source": "arxiv",
+          "title": "MINERVA: How Small Can a Manipulation Policy Be and Still Solve LIBERO?",
+          "abstract": "Vision-language-action (VLA) models with billions of parameters now dominate the LIBERO manipulation benchmark, but the model capacity actually required by the benchmark remains unclear. We introduce MINERVA (MINimal Efficient Robotic Vision-Action policy), a family of deliberately compact visuomotor policies designed to measure this task-specific capacity floor. A 0.54M-parameter policy achieves 95.1% average success over 2,000 rollouts on the four standard LIBERO suites, only 2.4 points below the reported LeRobot $π_{0.5}$ result despite using 7,700$\\times$ fewer parameters. Performance saturates near 1M parameters and collapses below 0.25M. Across broad architectural, training, and inference sweeps, only action-chunk length and vision capacity consistently exceed a $\\pm$1-point training-seed band. Flow matching provides no detectable advantage over direct L1 regression across three seeds, while regression is up to 3.8$\\times$ faster on GPU. A task-ID permutation probe shows that standard LIBERO instruction conditioning primarily selects among memorized tasks: changing only the task-ID mapping reduces success to near chance. The same recipe achieves 94.6% success across 89 LIBERO-90 tasks, while LIBERO-Plus perturbations reduce performance to 46--56%, with near-zero robustness to photometric shifts. The 0.54M policy replans every control step in 5--9 ms per chunk on a laptop CPU, 113$\\times$ faster than SmolVLA and 1,400$\\times$ faster than $π_{0.5}$, without a GPU. These results establish a first empirical estimate of LIBERO's task-specific capacity floor and motivate capacity-aware design and distillation for deployment-efficient robot policies.",
+          "authors": [
+            "Kohei Sendai",
+            "Tatsuya Matsushima",
+            "Yusuke Iwasawa"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-03T11:51:10+00:00",
+          "link": "https://arxiv.org/pdf/2609.03715v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Finds extremely compact 0.54M-parameter manipulation policies can match billion-parameter VLAs on LIBERO; capacity and inference sweeps give direct evidence and recipes for fast, low-cost robot control.",
+          "llm_evidence_cn": "构造极紧凑策略并以7700倍参数差逼近大VLA在LIBERO上的成绩，为实时机器人控制提供轻量推理依据。",
+          "llm_evidence": "构造极紧凑策略并以7700倍参数差逼近大VLA在LIBERO上的成绩，为实时机器人控制提供轻量推理依据。",
+          "canonical_evidence": "构造极紧凑策略并以7700倍参数差逼近大VLA在LIBERO上的成绩，为实时机器人控制提供轻量推理依据。",
+          "llm_tldr_en": "MINERVA measures the capacity floor of LIBERO with deliberately compact visuomotor policies: a 0.54M-parameter model gets 95.1% average success over 2,000 rollouts, only 2.4 points behind a 7,700x larger VLA, so task-appropriate tiny policies can slash inference overhead.",
+          "llm_tldr_cn": "LIBERO正被数十亿参数的VLA模型统治，但任务本身需要多少模型容量并不清楚。MINERVA提出极简视觉动作策略族测量任务容量下限，其中仅0.54M参数的策略在四个LIBERO套件的2000次交互回合中平均成功率95.1%，比LeRobot pi0.5仅低2.4个点却少约7700倍参数。性能在约1M参数饱和并在0.25M以下崩坏，扫描发现动作块长度和视觉容量最重要。该结果说明许多基准并不需要超大VLA，为低算力实时机器人控制创造条件。",
+          "llm_tldr": "LIBERO正被数十亿参数的VLA模型统治，但任务本身需要多少模型容量并不清楚。MINERVA提出极简视觉动作策略族测量任务容量下限，其中仅0.54M参数的策略在四个LIBERO套件的2000次交互回合中平均成功率95.1%，比LeRobot pi0.5仅低2.4个点却少约7700倍参数。性能在约1M参数饱和并在0.25M以下崩坏，扫描发现动作块长度和视觉容量最重要。该结果说明许多基准并不需要超大VLA，为低算力实时机器人控制创造条件。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "fast inference and model acceleration for real-time robot control",
+          "matched_requirement_id": "req-6",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.03715v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.04193v1",
+          "source": "arxiv",
+          "title": "GIFT: Guided Intermediate Feature Training via Action-Oriented Structural Supervision for Robotic Manipulation",
+          "abstract": "Vision-language pre-training and predictive world modeling provide robot policies with rich semantic and dynamic visual features, but their native action and visual-prediction objectives may omit critical physical and task structure while retaining control-irrelevant visual redundancy. We call this mismatch between visual richness and control utility the action-sufficiency gap. We investigate whether this gap can be bridged by guiding intermediate features to preserve three control-relevant structure in robotic manipulation: geometry governing motion feasibility, affordance encoding instruction-relevant entities, and goals grounding instructions in task-relevant regions. To this end, we present GIFT (Guided Intermediate Feature Training), an architecture-flexible framework for learning intermediate features that translates these structures into training-time constraints through geometry alignment, affordance prediction, and goal-region reconstruction. We instantiate GIFT in a Vision-Language-Action (VLA) policy, a direct-action World-Action Model (WAM), and an inverse-dynamics WAM while retaining each model's action formulation. Under zero-shot transfer to LIBERO-Plus, GIFT-VLA, GIFT-WAM-Fast, and GIFT-WAM-IDM outperform StarVLA-OFT, Fast-WAM, and Fast-WAM-IDM by 4.6, 12.6, and 5.2 points, reaching 79.6%, 72.6%, and 87.8%, respectively. On RoboCasa, the three GIFT variants reach 61.4%, 83.6%, and 82.3%, outperforming their counterparts by 12.6, 9.0, and 8.4 points, respectively. Together, these results establish learning functionally structured intermediate features as a reusable principle across model-specific action formulations, with especially large gains on articulated-object tasks and high-precision real-world manipulation under unseen visual and spatial perturbations. Project page: https://openphoenix-team.github.io/GIFT-pages.",
+          "authors": [
+            "Yupeng Zheng",
+            "Xiang Li",
+            "Songen Gu",
+            "Yuhang Zheng",
+            "Shuai Tian",
+            "Weize Li",
+            "Linbo Wang",
+            "Chaoyue Li",
+            "Qichao Zhang",
+            "Haoran Li",
+            "Zhongpu Xia",
+            "Ya-Qin Zhang",
+            "Shuicheng Yan",
+            "Dongbin Zhao"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-03T17:59:03+00:00",
+          "link": "https://arxiv.org/pdf/2609.04193v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Robot manipulation policy uses action-oriented structural supervision on intermediate features from predictive world-model/vision-language representations",
+          "llm_evidence_cn": "面向世界模型或视觉语言预测特征的机器人操作策略，用几何、可供性和目标结构监督中间特征",
+          "llm_evidence": "面向世界模型或视觉语言预测特征的机器人操作策略，用几何、可供性和目标结构监督中间特征",
+          "canonical_evidence": "面向世界模型或视觉语言预测特征的机器人操作策略，用几何、可供性和目标结构监督中间特征",
+          "llm_tldr_en": "Identifies an action-sufficiency gap in world-model/vision-language features for robot manipulation and proposes GIFT, action-oriented structural supervision on intermediate features to preserve geometry, affordance and goal information.",
+          "llm_tldr_cn": "机器人操作策略常受益于视觉语言预训练与预测世界模型提供的丰富视觉特征，但其预测目标可能遗漏物理与任务结构，并保留无关冗余。论文提出动作充分性差距概念，并给出GIFT方法：在中间特征上施加几何、可供性与目标区域的动作导向监督，让控制相关结构被策略保留。这样可在不改变动作目标的情况下缩小视觉丰富性与控制实用性的错配，为世界模型特征用于具身操作提供了新的中间层训练范式。",
+          "llm_tldr": "机器人操作策略常受益于视觉语言预训练与预测世界模型提供的丰富视觉特征，但其预测目标可能遗漏物理与任务结构，并保留无关冗余。论文提出动作充分性差距概念，并给出GIFT方法：在中间特征上施加几何、可供性与目标区域的动作导向监督，让控制相关结构被策略保留。这样可在不改变动作目标的情况下缩小视觉丰富性与控制实用性的错配，为世界模型特征用于具身操作提供了新的中间层训练范式。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "new learning paradigm for embodied agents based on world models and latent space prediction",
+          "matched_requirement_id": "req-7",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.04193v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.03591v1",
+          "source": "arxiv",
+          "title": "Scaling Bimanual Household Manipulation from 1,500 hours of Demonstrations to On-Policy Corrections",
+          "abstract": "Learning generalist policies for robust bimanual manipulation is bottlenecked by the scarcity of high quality large scale human demonstration data. In this work, we release 1,500 hours of diverse bimanual manipulation demonstrations covering everyday household tasks, and use this comprehensive corpus to train XR-2, a powerful vision-language-action (VLA) model. Enabled by a purpose built high throughput data pipeline and a carefully designed multi stage training paradigm, XR-2 attains strong manipulation performance in our systematic experiments while retaining favorable training efficiency and high data utilization. We further study two critical scaling axes: varying the amount of expert demonstration data, and post training on DAgger correction data from real time human interventions. In both settings, task success rate improves steadily over the data ranges we probe, exhibiting a clear consistent scaling trend at our current data scale. These results validate both the learning capacity of XR-2 and the promising scaling properties of the released dataset, which we open source to support reproducible research on bimanual robot manipulation learning.",
+          "authors": [
+            "Jiafeng Xu",
+            "Qi Li",
+            "Yan Shen",
+            "Yiyu Ren",
+            "Travis Davies",
+            "Shaowen He",
+            "Ze Wang",
+            "Yifan Yang",
+            "Ran Cheng",
+            "Hao Dong"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-03T09:37:09+00:00",
+          "link": "https://arxiv.org/pdf/2609.03591v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Releases 1,500 hours of bimanual household demonstrations and trains VLA model with high-throughput data pipeline to overcome demonstration scarcity",
+          "llm_evidence_cn": "发布1500小时双臂家务演示数据并结合高吞吐数据流水线训练视觉语言动作模型，缓解示范数据稀缺",
+          "llm_evidence": "发布1500小时双臂家务演示数据并结合高吞吐数据流水线训练视觉语言动作模型，缓解示范数据稀缺",
+          "canonical_evidence": "发布1500小时双臂家务演示数据并结合高吞吐数据流水线训练视觉语言动作模型，缓解示范数据稀缺",
+          "llm_tldr_en": "Releases 1,500 hours of diverse bimanual household demonstrations and trains XR-2 VLA model via high-throughput data pipeline and multi-stage training, achieving strong manipulation performance with efficient data use.",
+          "llm_tldr_cn": "针对通用双臂操作策略受大规模高质量人工示范数据稀缺瓶颈限制的问题，公开1500小时多样化日常家务双臂操作演示数据。基于高吞吐数据流水线和多阶段训练范式训练XR-2视觉-语言-动作模型，在保持较高训练效率与数据利用率的同时达成强大操作性能。文章进一步在实验中研究专家示范数量与后期在策略纠正两个扩展维度的影响。该大规模数据集与训练方案为打破具身操作数据瓶颈提供了重要支撑。",
+          "llm_tldr": "针对通用双臂操作策略受大规模高质量人工示范数据稀缺瓶颈限制的问题，公开1500小时多样化日常家务双臂操作演示数据。基于高吞吐数据流水线和多阶段训练范式训练XR-2视觉-语言-动作模型，在保持较高训练效率与数据利用率的同时达成强大操作性能。文章进一步在实验中研究专家示范数量与后期在策略纠正两个扩展维度的影响。该大规模数据集与训练方案为打破具身操作数据瓶颈提供了重要支撑。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+          "matched_requirement_id": "req-9",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.03591v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.01938v2",
+          "source": "arxiv",
+          "title": "One Demonstration, Many Objects: Generalizing Manipulation via Local Contact Geometry",
+          "abstract": "Dexterous manipulation with multi-fingered robot hands promises human-level dexterity, but collecting large-scale dexterous robot hand data remains difficult. Learning from human demonstrations has emerged as a scalable alternative to robot teleoperation, providing strong priors on object interaction and contact strategies. Recent sim-to-real RL methods incorporate such priors, but often (i) omit rewards that explicitly incentivize precise contact, yielding weak real-world performance, and/or (ii) generalize poorly to unseen object instances. We propose DemoMimic (Dexterous Motion Mimic), a policy that manipulates objects by focusing on their geometry local to the contact points. Its contact-centric rewards encourage precise contact and improve sim-to-real consistency, yielding a single real-world policy that transfers across objects of varying shape, scale, mass, and friction wherever local contact structure is preserved. Real-world ablations show that DemoMimic achieves 71% success across 16 objects, four tasks, and two robot-hand embodiments, with the smallest sim-to-real drop compared to baselines.",
+          "authors": [
+            "Satvik Sharma",
+            "Samrat Sahoo",
+            "Huang Huang",
+            "Fei-Fei Li",
+            "Jiajun Wu",
+            "Dorsa Sadigh",
+            "Jeannette Bohg"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-01T23:04:35+00:00",
+          "link": "https://arxiv.org/pdf/2609.01938v2",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "data-efficient dexterous manipulation from one demo via contact-centric geometry generalization",
+          "llm_evidence_cn": "以接触几何为核心的单次演示灵巧操作，缓解数据稀缺",
+          "llm_evidence": "以接触几何为核心的单次演示灵巧操作，缓解数据稀缺",
+          "canonical_evidence": "以接触几何为核心的单次演示灵巧操作，缓解数据稀缺",
+          "llm_tldr_en": "DemoMimic learns dexterous policies from a single human demonstration by focusing on local contact geometry and contact-centric rewards, reducing manipulation data needs and improving sim-to-real generalization to unseen objects.",
+          "llm_tldr_cn": "多指灵巧操作受制于大规模灵巧手数据难以采集，近年采用人类演示作为先验进行sim-to-real强化学习，但常缺少精确接触奖励且难以泛化到新物体。作者提出DemoMimic，策略关注接触点附近的局部物体几何，并设计接触中心奖励以鼓励精确接触，使人类演示先验能够迁移到不同物体实例。实验表明该方法在少量演示条件下仍能取得更优的真实场景泛化，为具身灵巧操作的数据稀缺问题提供了有效解法。",
+          "llm_tldr": "多指灵巧操作受制于大规模灵巧手数据难以采集，近年采用人类演示作为先验进行sim-to-real强化学习，但常缺少精确接触奖励且难以泛化到新物体。作者提出DemoMimic，策略关注接触点附近的局部物体几何，并设计接触中心奖励以鼓励精确接触，使人类演示先验能够迁移到不同物体实例。实验表明该方法在少量演示条件下仍能取得更优的真实场景泛化，为具身灵巧操作的数据稀缺问题提供了有效解法。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+          "matched_requirement_id": "req-9",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.01938v2",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.03774v1",
+          "source": "arxiv",
+          "title": "Rethinking World Models for Safety-Critical Embodied Systems",
+          "abstract": "World models have progressed from compact latent dynamics to generative, controllable, and interactive simulators of embodied environments. However, high predictive likelihood and visual fidelity do not necessarily ensure that a model preserves the evidence required for safe decision-making. This perspective identifies three structural mismatches in current world modeling: likelihood versus risk, prediction versus intervention, and finite-horizon prediction versus accumulated consequences. We propose the Risk-Informed World Model (RIWM) as a decision-centric research direction for safety-critical embodied systems. RIWM organizes world modeling around consequences, intervention, epistemic uncertainty, and recoverability, and integrates four interdependent capabilities: decision-relevant representation, counterfactual reasoning, safety-critical episodic memory, and runtime safety assurance. It distinguishes physical, social, and operational consequences while using epistemic uncertainty to qualify the evidence supporting action. We further discuss open challenges in identifying consequential futures, validating counterfactual reasoning, maintaining revisable safety memories, translating learned consequences into executable constraints, and determining when evidence is sufficient to act. This perspective argues that future world models should move beyond predicting likely futures toward identifying which futures matter, revising judgments through experience, and recognizing when to act, revise, sense, defer, or abstain.",
+          "authors": [
+            "Kailang Ma",
+            "Heye Huang",
+            "Inhi Kim",
+            "Kitae Jang"
+          ],
+          "primary_category": "cs.AI",
+          "categories": [
+            "cs.AI",
+            "cs.RO"
+          ],
+          "published": "2026-09-03T12:44:44+00:00",
+          "link": "https://arxiv.org/pdf/2609.03774v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "decision-centric Risk-Informed World Model for safety-critical embodied planning and control",
+          "llm_evidence_cn": "面向安全关键具身系统规划与控制的风险知情世界模型研究蓝图",
+          "llm_evidence": "面向安全关键具身系统规划与控制的风险知情世界模型研究蓝图",
+          "canonical_evidence": "面向安全关键具身系统规划与控制的风险知情世界模型研究蓝图",
+          "llm_tldr_en": "Argues embodied world models optimizing likelihood and fidelity can miss evidence needed for safe decision-making, and proposes a Risk-Informed World Model organized around consequences, intervention, epistemic uncertainty and recoverability.",
+          "llm_tldr_cn": "当前具身世界模型以预测似然和视觉保真度为主要目标，但高精度预测并不保证安全决策所需的风险证据。文章指出似然对风险、预测对干预、有限时域对长期累积后果三方面结构性错位，并提出面向决策的风险知情世界模型RIWM。RIWM围绕后果、干预、认知不确定性与可恢复性组织建模能力，为安全关键具身系统的规划与控制提供了新的研究蓝图。",
+          "llm_tldr": "当前具身世界模型以预测似然和视觉保真度为主要目标，但高精度预测并不保证安全决策所需的风险证据。文章指出似然对风险、预测对干预、有限时域对长期累积后果三方面结构性错位，并提出面向决策的风险知情世界模型RIWM。RIWM围绕后果、干预、认知不确定性与可恢复性组织建模能力，为安全关键具身系统的规划与控制提供了新的研究蓝图。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "world model for planning and control in embodied agents",
+          "matched_requirement_id": "req-3",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.03774v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.01596v1",
+          "source": "arxiv",
+          "title": "Facet-0: A Robotic Foundation Model for Contact-Rich Precise Manipulation",
+          "abstract": "Real-world robotic assembly at sub-millimeter tolerances demands spatial precision, compliant interaction, and robustness to contact failures. We present Facet-0, a robotic foundation model that predicts and values the contact consequences of its actions. Facet-0 unifies multimodal representation learning and reinforcement learning (RL) post-training around a joint action-wrench proposal: a causal wrench history is aligned with vision-language semantics and kinematic state, and flow matching generates each action chunk together with the future wrist-wrench profile it is expected to induce. Deployment rollouts train a distributional Action-Wrench Critic to distinguish motions with similar task progress but different contact outcomes, while phase-aware rewards and contact-selective credit concentrate policy improvement on decisive interactions. To accommodate part-specific dynamics, a lightweight bounded actor reuses the frozen representation for on-robot adaptation; RL remains defined over executable Cartesian actions, while an auxiliary wrench head preserves predictive, non-commanded action-contact coupling. Trained on ManuFacet-1K, a 1,000-hour force-synchronized corpus spanning three embodiments and multiple manufacturing cells, the bounded task-adapted system reaches 82% mean success on five sub-millimeter computer-assembly tasks, compared with 15% for the strongest baseline, with 0.5 mm placement accuracy and 50 ms command latency.",
+          "authors": [
+            "Haoyuan Deng",
+            "Haichao Liu",
+            "Wenkai Guo",
+            "Yuan Ling",
+            "Zaijia Yang",
+            "Yuanjiang Xue",
+            "Haosheng Sun",
+            "Liangzi Wang",
+            "Ziwei Wang"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.LG"
+          ],
+          "published": "2026-09-01T17:58:07+00:00",
+          "link": "https://arxiv.org/pdf/2609.01596v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "predicts action consequences via wrench profiles and critic for real-world contact-rich robotic control",
+          "llm_evidence_cn": "通过预测动作导致的腕部力/力矩后果并训练评判器，支持真实接触密集机器人装配控制",
+          "llm_evidence": "通过预测动作导致的腕部力/力矩后果并训练评判器，支持真实接触密集机器人装配控制",
+          "canonical_evidence": "通过预测动作导致的腕部力/力矩后果并训练评判器，支持真实接触密集机器人装配控制",
+          "llm_tldr_en": "Facet-0 is a robotic foundation model that predicts action consequences via future wrist-wrench profiles, aligns wrench history with vision-language and kinematic state, and trains a distributional critic to pick contact-safe motions for precise assembly.",
+          "llm_tldr_cn": "真实世界机器人装配需要实现亚毫米公差下的空间精度与接触鲁棒性，已有策略难以可靠预测接触后果。Facet-0提出一种预测并评估动作接触后果的机器人基础模型：用流匹配在生成动作块的同时预测未来腕部力/力矩曲线，并将因果力历史与视觉语言和运动学状态对齐。部署过程中训练的分布式动作-力评判器可区分任务进展相近但接触结果不同的动作。该模型为接触丰富的精密操作提供了一种新的世界模型式决策基础。",
+          "llm_tldr": "真实世界机器人装配需要实现亚毫米公差下的空间精度与接触鲁棒性，已有策略难以可靠预测接触后果。Facet-0提出一种预测并评估动作接触后果的机器人基础模型：用流匹配在生成动作块的同时预测未来腕部力/力矩曲线，并将因果力历史与视觉语言和运动学状态对齐。部署过程中训练的分布式动作-力评判器可区分任务进展相近但接触结果不同的动作。该模型为接触丰富的精密操作提供了一种新的世界模型式决策基础。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "world model for planning and control in embodied agents",
+          "matched_requirement_id": "req-3",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.01596v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.05266v1",
+          "source": "arxiv",
+          "title": "TacPAC: Tactile Prediction and Real-Time Action Correction in World-Action Models for Contact-Rich Manipulation",
+          "abstract": "World-action models guide action generation with predicted future observations, but vision-centric predictions miss the local contact cues that decide contact-rich manipulation. However, naively predicting future tactile observations as additional views recovers only a third of the achievable gain in our experiments. This gap reflects a timing mismatch: predictions precede execution, while tactile feedback arrives during it. We introduce TacPAC, which turns tactile prediction into real-time action correction. Once the base model has planned an action chunk, TacPAC caches the predicted contact that plan was conditioned on together with the plan's own representation, and a tactile expert reads each newly observed tactile image against that cache to correct the actions not yet executed. Feedback is thus interpreted against what the plan anticipated rather than in isolation, and one correction is a single pass over that cache, $20.7\\times$ cheaper than regenerating the chunk. On five real-robot tasks spanning precision insertion, fragile-object handling, object reorientation, and long-horizon manipulation, TacPAC leads every task and raises the average from 22% for its vision-only base model to 64%. Code is available at https://github.com/LogosRoboticsGroup/TacPAC.",
+          "authors": [
+            "Zipei Ma",
+            "Xiaofei Wei",
+            "Junzhe Jiang",
+            "Shunlin Lu",
+            "Li Zhang"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-04T15:24:58+00:00",
+          "link": "https://arxiv.org/pdf/2609.05266v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "world-action models for contact-rich manipulation; tactile prediction as real-time action correction after planning",
+          "llm_evidence_cn": "面向接触丰富操作的世界行动模型；将触觉预测与规划缓存结合进行实时动作修正",
+          "llm_evidence": "面向接触丰富操作的世界行动模型；将触觉预测与规划缓存结合进行实时动作修正",
+          "canonical_evidence": "面向接触丰富操作的世界行动模型；将触觉预测与规划缓存结合进行实时动作修正",
+          "llm_tldr_en": "World-action models for contact-rich manipulation miss contact cues; naive tactile prediction gains only a third of attainable value. TacPAC caches predicted contact and applies real-time action correction using a tactile expert, closing the timing mismatch and improving manipulation performance.",
+          "llm_tldr_cn": "现有世界行动模型以预测未来视觉观察来指导动作，却缺失决定接触丰富操作成败的局部触觉线索；朴素地把未来触觉作为附加视图进行预测只能恢复约三分之一的可获收益。TacPAC把触觉预测转化为实时动作校正：在规划动作块后缓存规划所依赖的预测接触及其表征，由触觉专家读取每个新观测进行在线修正。实验表明这种时序匹配的触觉反馈机制显著优于朴素的触觉预测方法，说明接触丰富操作需要将世界模型预测与执行期触觉信号紧密耦合。",
+          "llm_tldr": "现有世界行动模型以预测未来视觉观察来指导动作，却缺失决定接触丰富操作成败的局部触觉线索；朴素地把未来触觉作为附加视图进行预测只能恢复约三分之一的可获收益。TacPAC把触觉预测转化为实时动作校正：在规划动作块后缓存规划所依赖的预测接触及其表征，由触觉专家读取每个新观测进行在线修正。实验表明这种时序匹配的触觉反馈机制显著优于朴素的触觉预测方法，说明接触丰富操作需要将世界模型预测与执行期触觉信号紧密耦合。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "world model for planning and control in embodied agents",
+          "matched_requirement_id": "req-3",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.05266v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.01215v1",
+          "source": "arxiv",
+          "title": "REFACTOR-VLA: Unsupervised Library Learning of Typed Motor Programs",
+          "abstract": "Most vision-language-action (VLA) models -- OpenVLA, $π_0$, RT-2, RDT-1B -- are monolithic: they emit raw motor commands or short action chunks without organizing behavior into reusable abstractions, so they degrade on long-horizon tasks and resist interpretation. Existing skill-discovery methods sidestep the core question of when two action sequences are behaviorally equivalent, either clustering contrastive embeddings or delegating the judgment to a language model uncalibrated to the robot's dynamics. We introduce REFACTOR-VLA, a wake/sleep system for learning reusable skills. Its sleep phase clusters motor-program fragments under a Behavioral-Equivalence Kernel (BEK) computed from rollouts of a learned latent world model $M_φ$; its wake phase emits typed lambda terms over a Hindley--Milner-inspired vocabulary, consumed by a library-conditioned rectified-flow action decoder. Abstractions are admitted only if they pass Minimum Description Length and return-preservation gates. On LIBERO we report two findings. First, enlarging the world model from 188M to 430M parameters worsened performance on 4 of 4 suites, so capacity alone does not help. Second, the training objective matters far more: adding an auxiliary supervised contrastive (InfoNCE) loss during world-model warmup substantially improves sleep-phase clustering, giving Normalized Mutual Information at $n=3$ seeds of $0.462 \\pm 0.021$ (object), $0.867 \\pm 0.025$ (spatial), $0.915 \\pm 0.013$ (goal) and $0.754 \\pm 0.010$ (LIBERO-10), and beating the strongest published baseline on all 4 suites by a mean $Δ= +0.184$. Across providers ($n=12$) the 95% bootstrap confidence interval for mean pairwise NMI is $[0.683, 0.729]$ (mean $0.705$). The sleep phase also yields the first real-LIBERO task-language library: the decoder uses 2 of 3 admitted abstractions and rewrites all 256 sampled demonstrations.",
+          "authors": [
+            "Riyaaz Shaik",
+            "Chandru Venkataraman"
+          ],
+          "primary_category": "cs.LG",
+          "categories": [
+            "cs.LG",
+            "cs.AI",
+            "cs.RO"
+          ],
+          "published": "2026-09-01T13:19:05+00:00",
+          "link": "https://arxiv.org/pdf/2609.01215v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "wake/sleep paradigm for VLA skills that clusters reusable motor programs under a Behavioral-Equivalence Kernel computed by a learned latent world model, enabling library-based skill reuse",
+          "llm_evidence_cn": "提出基于潜在世界模型的醒/睡机制，用行为等价核聚类可复用运动程序，构成技能库，属于以世界模型为核心的具身智能新学习范式",
+          "llm_evidence": "提出基于潜在世界模型的醒/睡机制，用行为等价核聚类可复用运动程序，构成技能库，属于以世界模型为核心的具身智能新学习范式",
+          "canonical_evidence": "提出基于潜在世界模型的醒/睡机制，用行为等价核聚类可复用运动程序，构成技能库，属于以世界模型为核心的具身智能新学习范式",
+          "llm_tldr_en": "REFACTOR-VLA introduces a wake/sleep system that learns reusable typed motor-program libraries for VLA models. In sleep phase, motor-program fragments are clustered under a Behavioral-Equivalence Kernel computed from rollouts of a learned latent world model, allowing reusable skill abstraction rather than monolithic raw action prediction for long-horizon tasks.",
+          "llm_tldr_cn": "现有VLA模型往往以整体方式直接输出原始运动指令或短动作块，没有建立可复用行为抽象，处理长程任务时退化解体。REFACTOR-VLA提出醒/睡两阶段系统学习可重用技能库：睡眠阶段用行为等价核(BEK)聚类运动程序片段，BEK由学习到的潜在世界模型M_phi的滚动仿真计算，不由对比嵌入或大语言模型随意判断；清醒阶段则输出带类型的运动程序，即更高级的行为抽象。这样的方式让VLA能够把经验重组为可复用、可解释的技能，有助于提高长程任务表现，同时减少对大量监督和人工技能定义的依赖。它为基于世界模型的具身技能学习提供了一种新范式。",
+          "llm_tldr": "现有VLA模型往往以整体方式直接输出原始运动指令或短动作块，没有建立可复用行为抽象，处理长程任务时退化解体。REFACTOR-VLA提出醒/睡两阶段系统学习可重用技能库：睡眠阶段用行为等价核(BEK)聚类运动程序片段，BEK由学习到的潜在世界模型M_phi的滚动仿真计算，不由对比嵌入或大语言模型随意判断；清醒阶段则输出带类型的运动程序，即更高级的行为抽象。这样的方式让VLA能够把经验重组为可复用、可解释的技能，有助于提高长程任务表现，同时减少对大量监督和人工技能定义的依赖。它为基于世界模型的具身技能学习提供了一种新范式。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "new learning paradigm for embodied agents based on world models and latent space prediction",
+          "matched_requirement_id": "req-7",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.01215v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.04096v1",
+          "source": "arxiv",
+          "title": "Adaptive Vision-Language Grasping via Composable Foundation Priors and Generalizable Grasp Synthesis",
+          "abstract": "This paper proposes AdaRoboVLG, a task-adaptive Vision-Language-Grasp (VLG) framework that supports generalizable grasp synthesis across different robotic hands. Unlike existing VLG methods that tightly couple foundation models with end-to-end grasp policies, AdaRoboVLG learns an efficient generalizable base policy that generates and evaluates physically feasible grasp candidates through explicit kinematic mapping and force-closure-based stability estimation, while offloading task-dependent understanding to specialized foundation-model modules. These modules provide composable priors that are integrated into the grasp synthesis process, enabling contextually adaptive grasp synthesis without retraining the underlying grasp policy. Through extensive simulation and real-world experiments, we demonstrate that (i) the base policy exhibits efficient learning and strong cross-hand generalization, (ii) the framework effectively incorporates spatial, cognitive, and temporal priors to address three representative grasping challenges without compromising grasp synthesis performance compared to state-of-the-art methods, and (iii) these priors can operate jointly to enable functional grasping in cluttered and dynamic environments. These results indicate that decoupling physical grasp synthesis from task-dependent understanding provides a scalable paradigm for robotic grasping, allowing future advances in foundation models to be directly translated into improved grasp capabilities without redesigning or retraining the underlying grasp policy. Supplementary videos are available at https://adarobovlg.github.io/",
+          "authors": [
+            "Sixu Yan",
+            "Shikang Wang",
+            "Binhua Huang",
+            "Xuanlai Tang",
+            "Guohua Fan",
+            "Fan Huang",
+            "Haoxuan Li",
+            "Yongkang Li",
+            "Yuhan Li",
+            "Bencheng Liao",
+            "Zeyu Zhang",
+            "Wenyu Liu",
+            "Hangxin Liu",
+            "Xinggang Wang"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.AI",
+            "cs.CV"
+          ],
+          "published": "2026-09-03T17:03:11+00:00",
+          "link": "https://arxiv.org/pdf/2609.04096v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "generalizable grasp synthesis across different robotic hands; composable foundation priors without retraining base policy",
+          "llm_evidence_cn": "在不同机器人手型上泛化抓取合成；通过可组合基础先验避免重训底层策略",
+          "llm_evidence": "在不同机器人手型上泛化抓取合成；通过可组合基础先验避免重训底层策略",
+          "canonical_evidence": "在不同机器人手型上泛化抓取合成；通过可组合基础先验避免重训底层策略",
+          "llm_tldr_en": "AdaRoboVLG learns an embodiment-agnostic base grasp policy and combines it with composable foundation-model priors, enabling adaptive vision-language grasping across different robotic hands without retraining.",
+          "llm_tldr_cn": "现有视觉-语言-抓取方法将基础模型与端到端策略紧耦合，难以在不同机器人手之间泛化。AdaRoboVLG将基础模型的任务理解与轻量通用抓取策略解耦，利用显式运动学映射与力闭合稳定性估计生成候选抓取，并通过可组合基础模型先验进行情境自适应合成。该方法无需重新训练底层策略即可适配多种手型，实验表明其在不同手型上实现高效且物理可行的抓取泛化。",
+          "llm_tldr": "现有视觉-语言-抓取方法将基础模型与端到端策略紧耦合，难以在不同机器人手之间泛化。AdaRoboVLG将基础模型的任务理解与轻量通用抓取策略解耦，利用显式运动学映射与力闭合稳定性估计生成候选抓取，并通过可组合基础模型先验进行情境自适应合成。该方法无需重新训练底层策略即可适配多种手型，实验表明其在不同手型上实现高效且物理可行的抓取泛化。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "cross embodiment skill transfer in robot learning",
+          "matched_requirement_id": "req-5",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.04096v1",
+          "carry_days": 1
+        }
+      ]
     }
   }
 }
