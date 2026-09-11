@@ -1,0 +1,281 @@
+{
+  "date": "20260911",
+  "date_label": "",
+  "generated_at": "2026-09-11 21:49:44 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.09630v1",
+      "route": "202609/11/2609.09630v1-jepa-policy-diffusion-free-imitation-learning-via-paired-action-and-future-representation-prediction",
+      "title": "JEPA Policy: Diffusion-Free Imitation Learning via Paired Action and Future Representation Prediction",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "JEPA式配对动作与未来表征预测的模仿学习新范式",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.10915v1",
+      "route": "202609/11/2609.10915v1-imle-vla-fast-single-step-action-generation-for-vision-language-action-policies",
+      "title": "IMLE-VLA: Fast Single-Step Action Generation for Vision-Language-Action Policies",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "单步动作生成加速VLA推理以支持实时控制",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.11445v1",
+      "route": "202609/11/2609.11445v1-farm-reading-failure-signals-from-the-internal-predictive-states-of-a-frozen-robotic-world-model",
+      "title": "FARM: Reading Failure Signals from the Internal Predictive States of a Frozen Robotic World Model",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于冻结VLA-JEPA世界模型预测状态的读出",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.11753v1",
+      "route": "202609/11/2609.11753v1-seed-umi-sharing-the-exoskeleton-between-human-and-robot-for-one-to-one-dexterous-demonstration",
+      "title": "SEED-UMI: Sharing the Exoskeleton between human and robot for onE-to-one Dexterous demonstration",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "共享外骨骼将重定向变为成对跨具身监督",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.03927v1",
+      "route": "202609/11/2609.03927v1-toward-unified-robot-learning-bridging-representation-vision-language-action-and-world-models",
+      "title": "Toward Unified Robot Learning: Bridging Representation, Vision-Language-Action, and World Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "统一表示学习、VLA与世界模型的机器人学习与规划综述",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.06251v1",
+      "route": "202609/11/2609.06251v1-mobilevla-r1-20-rl-enhanced-reasoning-for-mobile-robot-control",
+      "title": "MobileVLA-R1 2.0: RL-Enhanced Reasoning for Mobile Robot Control",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "耦合具身推理与移动机器人控制的强化学习增强VLA框架",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.07498v1",
+      "route": "202609/11/2609.07498v1-cosmoh2g-a-hand-to-gripper-transfer-dataset-and-baseline-method-for-object-manipulation-with-complex-spatial-movements",
+      "title": "CosmoH2G: A Hand-to-Gripper Transfer Dataset and Baseline Method for Object Manipulation with Complex Spatial Movements",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "将人类手部演示跨本体迁移到机器人夹爪",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.09155v1",
+      "route": "202609/11/2609.09155v1-syncworld-visual-calibration-enables-world-models-as-zero-shot-simulators",
+      "title": "SyncWorld: Visual Calibration Enables World Models as Zero-Shot Simulators",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "动作条件世界模型作为跨本体零样本模拟器",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.09210v1",
+      "route": "202609/11/2609.09210v1-identifying-habit-physics-and-nuisance-in-robot-world-models",
+      "title": "Identifying Habit, Physics, and Nuisance in Robot World Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过因果干预解耦机器人世界模型中的习惯、物理与干扰",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.10021v1",
+      "route": "202609/11/2609.10021v1-robodrop-curating-vla-post-training-data-via-local-gradient-compatibility",
+      "title": "RoboDrop: Curating VLA Post-Training Data via Local Gradient Compatibility",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "数据筛选提升VLA后训练数据质量",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.06852v1",
+      "route": "202609/11/2609.06852v1-contextflow-in-context-flow-matching-for-robot-manipulation",
+      "title": "ContextFlow: In-Context Flow Matching for Robot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "机器人操作的情境模仿学习与数据效率",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.07002v1",
+      "route": "202609/11/2609.07002v1-wm-craftnet-world-synesthesia-model-for-generalizable-and-robust-dexterous-in-hand-manipulation",
+      "title": "WM-Craftnet: World Synesthesia Model for Generalizable and Robust Dexterous In-Hand Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "世界模型条件下的潜在动力学用于可泛化灵巧手内操作",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.07096v1",
+      "route": "202609/11/2609.07096v1-robodreamer-anticipatory-humanoid-locomotion-with-predictive-state-space-models",
+      "title": "RoboDreamer: Anticipatory Humanoid Locomotion with Predictive State-Space Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "预测性状态空间模型用于人形机器人稳定行走控制",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.07470v1",
+      "route": "202609/11/2609.07470v1-measuring-language-transfer-in-robot-policies-adding-greek-to-a-cosmos3-vision-language-action-policy",
+      "title": "Measuring Language Transfer in Robot Policies: Adding Greek to a Cosmos3 Vision-Language-Action Policy",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "在不改架构下测量视觉语言动作机器人策略的语言迁移",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.04894v1",
+      "route": "202609/11/2609.04894v1-from-language-models-to-world-acting-systems-progress-and-limits-of-agentic-ai-across-digital-social-virtual-and-physical-environments",
+      "title": "From Language Models to World-Acting Systems: Progress and Limits of Agentic AI across Digital, Social, Virtual, and Physical Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "综述智能体AI在物理环境与机器人中的控制",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.06888v1",
+      "route": "202609/11/2609.06888v1-predictive-coding-based-autonomous-regulation-of-internally-generated-and-externally-coupled-processing-in-human-robot-interaction",
+      "title": "Predictive-Coding-Based Autonomous Regulation of Internally Generated and Externally Coupled Processing in Human-Robot Interaction",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "预测编码变分循环网络在具身人机交互中调节潜在预测",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    },
+    {
+      "paper_id": "2609.07211v1",
+      "route": "202609/11/2609.07211v1-phase-and-first-arrival-vlm-feedback-for-sparse-reward-reinforcement-learning-in-surgical-manipulation",
+      "title": "Phase-and-First-Arrival VLM Feedback for Sparse-Reward Reinforcement Learning in Surgical Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用VLM阶段反馈在稀疏奖励操作学习中复用部分行为",
+      "first_seen_at": "2026-09-11 21:49:44 UTC",
+      "updated_at": "2026-09-11 21:49:44 UTC"
+    }
+  ]
+}

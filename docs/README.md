@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-10</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-11</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 17 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-10 21:42:20 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-11 21:49:44 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-10 日报：共筛出17篇机器人学习论文，精读6篇、速读11篇。最值得关注的是世界模型与具身推理方向，《Learning Counterfactual World Models for Embodied Reasoning under Partial Observability》和《OpenWAM》均获9.0分。普通读者可先看这两篇精读，再按兴趣速览VLA与世界模型融合的速读论文。</p>
+<p>2026-09-11 日报精选 17 篇，精读 6 篇，聚焦机器人模仿学习与世界模型两大方向。最值得看的是两篇 9.0 分精读：JEPA Policy 用配对动作与未来表征预测实现无扩散模仿学习，IMLE-VLA 实现视觉-语言-动作策略的单步快速动作生成。普通读者可优先从这两篇入手，理解机器人如何更快、更省算力地学会动作。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,7 +81,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Learning Counterfactual World Models for Embodied Reasoning under Partial Observability">Learning Counterfactual World Models for Embodied Reasoning under Partial Observability</span></li><li><span class="dpr-home-dashboard-paper-title" title="OpenWAM: An Open, Modular Exploration Towards Systematic World-Action Model Pretraining">OpenWAM: An Open, Modular Exploration Towards Systematic World-Action Model Pretraining</span></li><li><span class="dpr-home-dashboard-paper-title" title="ViBe: Visual Behavior Adaptation for Perceptive Humanoid Whole-Body Control">ViBe: Visual Behavior Adaptation for Perceptive Humanoid Whole-Body Control</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="JEPA Policy: Diffusion-Free Imitation Learning via Paired Action and Future Representation Prediction">JEPA Policy: Diffusion-Free Imitation Learning via Paired Action and Future Representation Prediction</span></li><li><span class="dpr-home-dashboard-paper-title" title="IMLE-VLA: Fast Single-Step Action Generation for Vision-Language-Action Policies">IMLE-VLA: Fast Single-Step Action Generation for Vision-Language-Action Policies</span></li><li><span class="dpr-home-dashboard-paper-title" title="FARM: Reading Failure Signals from the Internal Predictive States of a Frozen Robotic World Model">FARM: Reading Failure Signals from the Internal Predictive States of a Frozen Robotic World Model</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -94,7 +94,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Toward Unified Robot Learning: Bridging Representation, Vision-Language-Action, and World Models">Toward Unified Robot Learning: Bridging Representation, Vision-Language-Action, and World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="GIFT: Guided Intermediate Feature Training via Action-Oriented Structural Supervision for Robotic Manipulation">GIFT: Guided Intermediate Feature Training via Action-Oriented Structural Supervision for Robotic Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="CR-VLA-Force: Learning Control-aware Compliance VLA Model for Robust Contact-rich Robotic Manipulation">CR-VLA-Force: Learning Control-aware Compliance VLA Model for Robust Contact-rich Robotic Manipulation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CosmoH2G: A Hand-to-Gripper Transfer Dataset and Baseline Method for Object Manipulation with Complex Spatial Movements">CosmoH2G: A Hand-to-Gripper Transfer Dataset and Baseline Method for Object Manipulation with Complex Spatial Movements</span></li><li><span class="dpr-home-dashboard-paper-title" title="SyncWorld: Visual Calibration Enables World Models as Zero-Shot Simulators">SyncWorld: Visual Calibration Enables World Models as Zero-Shot Simulators</span></li><li><span class="dpr-home-dashboard-paper-title" title="Identifying Habit, Physics, and Nuisance in Robot World Models">Identifying Habit, Physics, and Nuisance in Robot World Models</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>

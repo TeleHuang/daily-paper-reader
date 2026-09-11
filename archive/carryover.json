@@ -1,128 +1,43 @@
 {
-  "generated_at": "2026-09-10T21:34:39.005140+00:00",
-  "updated_date": "20260910",
+  "generated_at": "2026-09-11T21:41:44.501133+00:00",
+  "updated_date": "20260911",
   "carryover_days": 9,
   "tag_states": {
     "embodied-ai": {
-      "updated_date": "20260910",
+      "updated_date": "20260911",
       "carryover_days": 9,
       "items": [
         {
-          "id": "2609.08444v1",
+          "id": "2609.11875v1",
           "source": "arxiv",
-          "title": "Safe Task Planning with Long-Term Graph Memory for Embodied Agents",
-          "abstract": "Large language models (LLMs) and vision-language models (VLMs) have significantly advanced zero-shot task planning for embodied agents. However, most LLM- and VLM-driven methods struggle to generate safe high-level actions due to a lack of physical risk awareness, particularly under partial observability, where hazards lie outside the immediate field of view. To address this challenge, we propose a novel safe task-planning framework, SafeMem, which constructs and maintains a long-term semantic graph memory of the open and dynamic environment. Based on egocentric observations, the proposed framework incrementally accumulates knowledge about surrounding objects and their relationships with a graph. Then, an LLM-based risk predictor evaluates candidate actions using the graph memory, triggering a conservatism-modulated replanning loop with explanations for detected hazards. Extensive experiments on the IS-Bench benchmark and a real-world robot platform demonstrate that the SafeMem framework substantially improves safe success rates compared to state-of-the-art VLM-driven task planners. Video results are available on our webpage: https://sites.google.com/view/safemem.",
+          "title": "UniMPA: A Unified Memory-Prediction-Action Model via Action-Grounded Transition Modeling",
+          "abstract": "Recent advances in Vision-Language-Action (VLA) models have improved robotic manipulation, yet observation-to-action learning remains limited by a fundamental transition realizability gap, manifested in three tightly coupled problems: (i) Transition ambiguity. Visually similar current observations may correspond to different manipulation phases and imply different subsequent transitions. (ii) Prediction--execution mismatch. A visually plausible predicted future observation does not necessarily correspond to a physically realizable transition. (iii) Experience--realization mismatch. A historically executable action pattern may not necessarily realize the intended transition in the current scene and therefore requires context-aware adaptation. Accordingly, we propose UniMPA, a Unified Memory-Prediction-Action model that addresses these problems through a shared action-grounded transition interface. (i) UniMPA introduces Persistent-Selective Future Prediction to resolve transition ambiguity by modeling the intended future state evolution. A persistent latent stream continuously tracks task-level progress, while a transition-critical pixel stream selectively resolves fine-grained interaction changes through memory-grounded prediction. (ii) To assess the physical executability of the anticipated transition, the predicted transition queries a temporal Visual-Action Memory Bank. The bank retrieves historically realized visual-action experience, grounding future prediction in executable evidence. (iii) To adapt executable experience to the current scene, an Action-Visual Memory Bank retrieves visually grounded action prototypes from historical action evolution. Prototype-Biased Flow then shifts the flow source toward a historically supported action manifold for context-aware refinement.",
           "authors": [
-            "Siyuan Li",
-            "Taiyan Lang",
-            "Aoqi Yan",
-            "Jia Yu",
-            "Feifan Liu",
-            "Yihan Du",
-            "Yu Zheng",
-            "Xun Wang",
-            "Peng Liu"
+            "Wei Li",
+            "Rui Shao",
+            "Jie He",
+            "Lingsen Zhang",
+            "Ziwei Liu",
+            "Liqiang Nie"
           ],
           "primary_category": "cs.RO",
           "categories": [
             "cs.RO"
           ],
-          "published": "2026-09-08T08:49:50+00:00",
-          "link": "https://arxiv.org/pdf/2609.08444v1",
+          "published": "2026-09-10T17:45:03+00:00",
+          "link": "https://arxiv.org/pdf/2609.11875v1",
           "tags": [
             "keyword:embodied-ai",
             "query:embodied-ai"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "safe task planning with graph memory for embodied agents",
-          "llm_evidence_cn": "面向具身智能体的图记忆安全任务规划",
-          "llm_evidence": "面向具身智能体的图记忆安全任务规划",
-          "canonical_evidence": "面向具身智能体的图记忆安全任务规划",
-          "llm_tldr_en": "SafeMem is a safe task-planning framework for embodied agents that builds a long-term semantic graph memory of dynamic environments and uses an LLM risk predictor for safe actions.",
-          "llm_tldr_cn": "现有LLM与VLM驱动的具身任务规划方法缺乏物理风险意识，在部分可观测场景下难以生成安全的高层动作。本文提出SafeMem安全任务规划框架，基于自我中心观测增量构建并维护开放动态环境的长期语义图记忆，再用LLM风险预测器评估候选动作。方法能够利用图记忆中的物体及其关系知识进行安全规划。该工作为具身智能体在开放动态环境中的安全任务规划提供了记忆增强方案。",
-          "llm_tldr": "现有LLM与VLM驱动的具身任务规划方法缺乏物理风险意识，在部分可观测场景下难以生成安全的高层动作。本文提出SafeMem安全任务规划框架，基于自我中心观测增量构建并维护开放动态环境的长期语义图记忆，再用LLM风险预测器评估候选动作。方法能够利用图记忆中的物体及其关系知识进行安全规划。该工作为具身智能体在开放动态环境中的安全任务规划提供了记忆增强方案。",
-          "llm_tags": [
-            "query:embodied-ai"
-          ],
-          "matched_query_tag": "query:embodied-ai",
-          "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2609.08444v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2609.08292v1",
-          "source": "arxiv",
-          "title": "EvoNav-Bench: Benchmarking Lifelong Navigation in Evolving Environments",
-          "abstract": "Lifelong navigation (LN) requires an embodied agent to solve a sequence of navigation subtasks in the same environment. Since solving each subtask from scratch incurs redundant exploration, an LN agent must consolidate experience from earlier stages and reuse it in later stages, often through persistent scene representations such as scene graphs or visual snapshots. However, existing approaches typically assume a stationary environment, whereas in real-world LN settings, human activities can cause the environment to evolve. With the stationary assumption violated, existing methods may fuse outdated prior observations with new observations, yet current benchmarks cannot reveal this failure mode. In this paper, we present EvoNav-Bench, which extends the GOAT-Bench style LN formulation in the context of evolving environments. Built on the ProcTHOR framework, EvoNav-Bench introduces environment modifications between navigation tasks, making prior experience useful but not fully reliable. This design enables controlled evaluation of how environment evolution affects LN agents that reuse prior scene observations. Using EvoNav-Bench, we benchmark three recent methods that build and reuse scene representations for navigation. We also compare three simple heuristic strategies for handling environment evolution: Frontier-Update, Fail-then-Update, and Stage-Reset. Our results show that existing methods are brittle under environment evolution, while the heuristic strategies enable a controlled analysis of how agents can adapt to scene changes and mitigate their impact.",
-          "authors": [
-            "Xilin Wang",
-            "Guoxi Zhang",
-            "Hongming Xu",
-            "Zhuofan Zhang",
-            "Tianxu Wang",
-            "Lifeng Fan"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-09-08T06:05:05+00:00",
-          "link": "https://arxiv.org/pdf/2609.08292v1",
-          "tags": [
-            "keyword:embodied-ai",
-            "query:embodied-ai"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "Embodied lifelong navigation benchmark for real-world evolving environments",
-          "llm_evidence_cn": "真实演化环境中的具身终身导航基准",
-          "llm_evidence": "真实演化环境中的具身终身导航基准",
-          "canonical_evidence": "真实演化环境中的具身终身导航基准",
-          "llm_tldr_en": "EvoNav-Bench evaluates lifelong navigation in evolving real-world environments, exposing failure when agents fuse outdated prior observations and motivating robust persistent scene representations.",
-          "llm_tldr_cn": "现有终身导航基准大多假定环境静止，但真实场景会因人类活动而持续演化，使智能体容易把已经过时的旧观测与当前观测融合，进而产生导航错误。为此，EvoNav-Bench在基准中引入环境演化维度，系统评测智能体在非平稳场景中的终身导航能力，专门暴露上述失效模式。它要求模型不能固守静态场景表征，而应随着环境变化更新记忆，为真实机器人长期导航研究提供了更具挑战性的测试平台。",
-          "llm_tldr": "现有终身导航基准大多假定环境静止，但真实场景会因人类活动而持续演化，使智能体容易把已经过时的旧观测与当前观测融合，进而产生导航错误。为此，EvoNav-Bench在基准中引入环境演化维度，系统评测智能体在非平稳场景中的终身导航能力，专门暴露上述失效模式。它要求模型不能固守静态场景表征，而应随着环境变化更新记忆，为真实机器人长期导航研究提供了更具挑战性的测试平台。",
-          "llm_tags": [
-            "query:embodied-ai"
-          ],
-          "matched_query_tag": "query:embodied-ai",
-          "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
-          "matched_requirement_id": "req-1",
-          "selection_source": "carryover_cache",
-          "paper_id": "2609.08292v1",
-          "carry_days": 2
-        },
-        {
-          "id": "2609.07002v1",
-          "source": "arxiv",
-          "title": "WM-Craftnet: World Synesthesia Model for Generalizable and Robust Dexterous In-Hand Manipulation",
-          "abstract": "Generalizable and robust dexterous in-hand manipulation requires a policy to infer object pose, geometry, contact, and potential slip from partial and noisy observations. Although recent tactile and visuotactile RL methods achieve strong in-hand rotation in controlled settings, their robustness often degrades under pose shifts, force disturbances, and object variation. We propose WM-Craftnet, a world-model-conditioned framework that learns compact action-conditioned latent dynamics from proprioception, depth, tactile sensing, and actions, supervised by multimodal reconstruction and reward prediction. Rather than using the world model for latent imagination or policy optimization, WM-Craftnet uses the learned World Synesthesia Model (WSM) as recurrent task context for an asymmetric actor--critic policy. Importantly, WSM is trained to reconstruct clean depth targets from noisy depth inputs, providing a denoised geometric state for real-robot deployment. Ablations over recurrent baselines, auxiliary heads, tactile masking, and WSM modality heads show that predictive world modeling, clean-depth supervision, and tactile contact cues all shape the learned state. A WSM pretrained on nine \\(z\\)-axis objects serves as a reusable prior for \\(49\\)-object downstream policy learning. This context improves multi-object rotation, with quantitative and qualitative evidence for unseen-object, perturbation-recovery, and sim-to-real transfer.",
-          "authors": [
-            "Jie Yin",
-            "Zeyuan Zhao",
-            "Xiaojing Tan",
-            "Yang Liu",
-            "Chiyu Wang",
-            "Xinyang Gu"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO"
-          ],
-          "published": "2026-09-07T03:48:06+00:00",
-          "link": "https://arxiv.org/pdf/2609.07002v1",
-          "tags": [
-            "keyword:embodied-ai",
-            "query:embodied-ai"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "world-model-conditioned policy learns action-conditioned latent dynamics for manipulation control",
-          "llm_evidence_cn": "世界模型条件策略学习动作条件隐动态用于操作控制",
-          "llm_evidence": "世界模型条件策略学习动作条件隐动态用于操作控制",
-          "canonical_evidence": "世界模型条件策略学习动作条件隐动态用于操作控制",
-          "llm_tldr_en": "To improve robustness of dexterous in-hand manipulation, this paper proposes WM-Craftnet, a world-model-conditioned framework learning compact action-conditioned latent dynamics from multimodal sensing for control.",
-          "llm_tldr_cn": "灵巧手内操作需从部分含噪观测中推断物体位姿、几何、接触与滑动，现有触觉强化学习方法在姿态偏移、力扰动和物体变化下鲁棒性下降。本文提出WM-Craftnet，一种世界模型条件框架，从本体感知、深度、触觉与动作中学习紧凑的动作条件隐动态，并以多模态重建与奖励预测进行监督。该世界模型不用于隐想象或策略优化，而是作为世界通感用于提升策略的泛化与鲁棒控制。其意义在于将世界模型引入接触丰富的灵巧操作控制。",
-          "llm_tldr": "灵巧手内操作需从部分含噪观测中推断物体位姿、几何、接触与滑动，现有触觉强化学习方法在姿态偏移、力扰动和物体变化下鲁棒性下降。本文提出WM-Craftnet，一种世界模型条件框架，从本体感知、深度、触觉与动作中学习紧凑的动作条件隐动态，并以多模态重建与奖励预测进行监督。该世界模型不用于隐想象或策略优化，而是作为世界通感用于提升策略的泛化与鲁棒控制。其意义在于将世界模型引入接触丰富的灵巧操作控制。",
+          "llm_evidence_en": "action-grounded transition modeling for prediction and control in manipulation",
+          "llm_evidence_cn": "动作锚定转移建模用于操作的预测与控制",
+          "llm_evidence": "动作锚定转移建模用于操作的预测与控制",
+          "canonical_evidence": "动作锚定转移建模用于操作的预测与控制",
+          "llm_tldr_en": "UniMPA addresses the transition realizability gap in vision-language-action manipulation by unifying memory, prediction and action via action-grounded transition modeling for physically realizable transitions.",
+          "llm_tldr_cn": "现有视觉-语言-动作模型在从观测到动作的学习中面临转移可实现性鸿沟，表现为视觉相似观测对应不同操作阶段、预测未来观测未必物理可实现、历史可执行动作在当前场景未必奏效等问题。为此提出UniMPA统一记忆-预测-动作模型，通过动作锚定的转移建模将记忆、预测与动作耦合，缓解转移歧义与预测-执行不匹配。该工作为具身智能体提供了更可靠的转移预测范式，有望提升机器人操作策略的物理可执行性。",
+          "llm_tldr": "现有视觉-语言-动作模型在从观测到动作的学习中面临转移可实现性鸿沟，表现为视觉相似观测对应不同操作阶段、预测未来观测未必物理可实现、历史可执行动作在当前场景未必奏效等问题。为此提出UniMPA统一记忆-预测-动作模型，通过动作锚定的转移建模将记忆、预测与动作耦合，缓解转移歧义与预测-执行不匹配。该工作为具身智能体提供了更可靠的转移预测范式，有望提升机器人操作策略的物理可执行性。",
           "llm_tags": [
             "query:embodied-ai"
           ],
@@ -130,127 +45,128 @@
           "matched_query_text": "world model for planning and control in embodied agents",
           "matched_requirement_id": "req-3",
           "selection_source": "carryover_cache",
-          "paper_id": "2609.07002v1",
+          "paper_id": "2609.11875v1",
           "carry_days": 1
         },
         {
-          "id": "2609.07498v1",
+          "id": "2609.11561v1",
           "source": "arxiv",
-          "title": "CosmoH2G: A Hand-to-Gripper Transfer Dataset and Baseline Method for Object Manipulation with Complex Spatial Movements",
-          "abstract": "Transferring human hand demonstrations to robotic grippers has recently emerged as a cost-effective solution for robot learning. However, existing methods are largely confined to simple, planar tasks and fail to handle complex spatial movements (e.g., intricate trajectories involving rotations or flips) that are essential for robot manipulation. Motivated by this gap, we adopt an implicit, data-driven approach guided by fine-grained hand-pose motions. To this end, we introduce a scalable acquisition pipeline to collect hand-gripper paired demonstrations, governed by a rigorous protocol that prioritizes motion complexity and leverages a handheld gripper for seamless action mimicry. This yields a large-scale paired dataset comprising 6,189 episodes across 1,254 unique objects, exhibiting significantly higher spatial complexity than existing benchmarks. However, learning such complex mappings remains challenging. We observe that naive end-to-end generation of full gripper pose sequences is insufficient, as minor trajectory deviations compound rapidly under intricate dynamics. To address this, we propose a two-stage framework: Stage I predicts sparse gripper keyframes (initial and terminal) to simplify the mapping objective, while Stage II generates the full continuous action sequence conditioned on these keyframes. Furthermore, to mitigate cumulative drift, we keep the gripper's orientation being learned while post-optimizing its translation based on the grasping heuristic and kinematic consistency. In both simulation and real-robot experiments, our framework enables stable and precise hand-to-gripper transfer of complex spatial manipulations, significantly outperforming traditional baselines. Project page: https://cosmoh2g.github.io.",
+          "title": "Memory as Plans: World-Action Modeling with Memory-Grounded Planning",
+          "abstract": "Mainstream robotic policies often adopt a Markovian formulation, but many complex real-world manipulation tasks are inherently non-Markovian, requiring long-horizon memory beyond the current observation. Existing memory mechanisms often rely on language summaries, growing visual windows, or their combinations, and may therefore lose fine-grained visual evidence or face a trade-off between history coverage and execution efficiency. We introduce MaP-WAM, a Memory-as-Plans framework that decomposes memory-dependent world-action modeling into memory-grounded planning and plan-conditioned execution, and uses long-term multimodal episodic context as planning-time evidence rather than repeatedly conditioning the executor on the full history. MaP-WAM represents memory as completed segment records containing language instructions and sparse visual context, and converts this episodic memory into compact plans comprising the next segment-level language plan and corresponding visual guidance. A World-Action-Progress (WAP) model executes each plan over an unknown duration by jointly predicting action chunks and corresponding execution progress at inference time, calibrating predicted progress through plan-observation alignment for adaptive segment transitions and closed-loop context updates. MaP-WAM keeps the executor context length fixed, while structured attention further enables key-value caching in both planning and execution. MaP-WAM achieves state-of-the-art performance on RMBench with an 83.3% success rate and attains 78.0% success on real-robot tasks, while maintaining approximately constant executor inference latency as task history grows.",
           "authors": [
-            "Hongxiang Zhao",
-            "Mutian Xu",
-            "Zeyu Jin",
-            "Yiming Hao",
-            "Shuguang Cui",
-            "Xiaoguang Han"
+            "Sizhe Zhao",
+            "Haozhe Xie",
+            "Weiyu Zhao",
+            "Chenchu Zhang",
+            "Huan Wang",
+            "Chenyang Wang",
+            "Qinglin Liu",
+            "Shengping Zhang"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-10T13:52:51+00:00",
+          "link": "https://arxiv.org/pdf/2609.11561v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "world-action modeling with memory-grounded planning for manipulation control",
+          "llm_evidence_cn": "基于记忆锚定规划的世界-动作建模用于操作控制",
+          "llm_evidence": "基于记忆锚定规划的世界-动作建模用于操作控制",
+          "canonical_evidence": "基于记忆锚定规划的世界-动作建模用于操作控制",
+          "llm_tldr_en": "MaP-WAM decomposes memory-dependent world-action modeling into memory-grounded planning and plan-conditioned execution, using long-term multimodal episodic context as planning-time evidence for non-Markovian long-horizon manipulation.",
+          "llm_tldr_cn": "主流机器人策略多采用马尔可夫式建模，但许多复杂真实操作任务本质上是非马尔可夫的，需要超越当前观测的长时程记忆。现有记忆机制常依赖语言摘要或不断增长的视觉窗口，易丢失细粒度视觉证据，或难以兼顾历史覆盖与执行效率。本文提出MaP-WAM记忆即规划框架，将依赖记忆的世界-动作建模分解为记忆锚定规划与规划条件执行，用长时程多模态情景上下文作为规划时证据。该分解在保持执行效率的同时提升长时程操作表现。",
+          "llm_tldr": "主流机器人策略多采用马尔可夫式建模，但许多复杂真实操作任务本质上是非马尔可夫的，需要超越当前观测的长时程记忆。现有记忆机制常依赖语言摘要或不断增长的视觉窗口，易丢失细粒度视觉证据，或难以兼顾历史覆盖与执行效率。本文提出MaP-WAM记忆即规划框架，将依赖记忆的世界-动作建模分解为记忆锚定规划与规划条件执行，用长时程多模态情景上下文作为规划时证据。该分解在保持执行效率的同时提升长时程操作表现。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "world model for planning and control in embodied agents",
+          "matched_requirement_id": "req-3",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.11561v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.10522v1",
+          "source": "arxiv",
+          "title": "Show-Harness: Just a VLM Agent Can Play Robots",
+          "abstract": "Foundation vision-language models (VLMs) exhibit broad intelligence about the world, yet translating this intelligence into robot control remains challenging. We present Show-Harness, an Embodied Harness that enables VLMs to \"play\" robots through a compact semantic interface linking intent to action. Show-Harness exposes discrete semantic action units that VLMs can naturally reason over, while embodiment-specific interpreters deterministically ground them into local robot actions, keeping the VLM directly responsible for fine-grained physical decisions. Through the same interface, Show-Harness demonstrates the feasibility of (1) directly unlocking closed-source frontier VLMs for zero-shot robot control, and (2) adapting small-scale open-source VLMs for low-cost deployment with just a few GPU-hours of fine-tuning. We further develop GUMI (GUI Manipulation Interface), which extends the same semantic action space to GUI-based demonstration collection, allowing humans and agents to \"play\" robots across embodiments without specialized teleoperation hardware. Extensive experiments show that Show-Harness-equipped VLM agents generalize robustly across tasks, embodiments, and environments, outperforming representative agentic and VLA paradigms. These results suggest that the right interface can unlock substantial embodied capability from foundation VLMs, without requiring additional model capacity or costly embodiment-specific pretraining.",
+          "authors": [
+            "Yanzhe Chen",
+            "Zechen Bai",
+            "Zhijun Cao",
+            "Wenzheng Zeng",
+            "Kevin Qinghong Lin",
+            "Yiqi Lin",
+            "Guoqiang Liang",
+            "Kevin Yuchen Ma",
+            "Qiming Huang",
+            "Mike Zheng Shou"
           ],
           "primary_category": "cs.RO",
           "categories": [
             "cs.RO",
-            "cs.CV"
+            "cs.AI",
+            "cs.CV",
+            "cs.MM"
           ],
-          "published": "2026-09-07T13:47:22+00:00",
-          "link": "https://arxiv.org/pdf/2609.07498v1",
+          "published": "2026-09-09T17:53:38+00:00",
+          "link": "https://arxiv.org/pdf/2609.10522v1",
           "tags": [
             "keyword:embodied-ai",
             "query:embodied-ai"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "Hand-to-gripper transfer dataset for cross-embodiment manipulation learning",
-          "llm_evidence_cn": "手到夹爪的跨本体迁移数据集与基线",
-          "llm_evidence": "手到夹爪的跨本体迁移数据集与基线",
-          "canonical_evidence": "手到夹爪的跨本体迁移数据集与基线",
-          "llm_tldr_en": "Existing hand-to-gripper transfer methods are limited to simple planar tasks, so the authors build a scalable pipeline collecting paired hand-gripper demonstrations with complex spatial motions and provide a baseline method for manipulation.",
-          "llm_tldr_cn": "将人类手部演示迁移到机器人夹爪是低成本机器人学习途径，但现有方法多局限于简单平面任务，难以处理含旋转翻转的复杂空间运动。本文设计可扩展采集流程，借助手持夹爪采集成对的手-夹爪演示，并优先保证运动复杂度。由此构建大规模数据集并提出基线方法。该工作为跨本体技能迁移与数据稀缺问题提供了数据与算法支撑。",
-          "llm_tldr": "将人类手部演示迁移到机器人夹爪是低成本机器人学习途径，但现有方法多局限于简单平面任务，难以处理含旋转翻转的复杂空间运动。本文设计可扩展采集流程，借助手持夹爪采集成对的手-夹爪演示，并优先保证运动复杂度。由此构建大规模数据集并提出基线方法。该工作为跨本体技能迁移与数据稀缺问题提供了数据与算法支撑。",
+          "llm_evidence_en": "VLM agent controlling real robots via semantic action interface",
+          "llm_evidence_cn": "VLM智能体通过语义接口控制真实机器人",
+          "llm_evidence": "VLM智能体通过语义接口控制真实机器人",
+          "canonical_evidence": "VLM智能体通过语义接口控制真实机器人",
+          "llm_tldr_en": "Foundation vision-language models know much about the world, yet turning that knowledge into robot control remains hard. Show-Harness exposes discrete semantic action units that VLMs reason over, letting frontier VLMs achieve zero-shot robot control and small open VLMs be adapted for low-cost deployment.",
+          "llm_tldr_cn": "基础视觉语言模型虽具备广泛世界知识，但将其转化为机器人控制仍很困难。本文提出具身框架Show-Harness，通过离散语义动作单元连接意图与动作，并由本体相关解释器确定性地落地为机器人动作，使VLM直接负责细粒度物理决策。实验证明该接口既能解锁闭源前沿VLM实现零样本机器人控制，也能适配小型开源VLM以低成本部署。这为打通VLM与机器人控制提供了通用可扩展的语义接口范式。",
+          "llm_tldr": "基础视觉语言模型虽具备广泛世界知识，但将其转化为机器人控制仍很困难。本文提出具身框架Show-Harness，通过离散语义动作单元连接意图与动作，并由本体相关解释器确定性地落地为机器人动作，使VLM直接负责细粒度物理决策。实验证明该接口既能解锁闭源前沿VLM实现零样本机器人控制，也能适配小型开源VLM以低成本部署。这为打通VLM与机器人控制提供了通用可扩展的语义接口范式。",
           "llm_tags": [
             "query:embodied-ai"
           ],
           "matched_query_tag": "query:embodied-ai",
-          "matched_query_text": "cross embodiment skill transfer in robot learning",
-          "matched_requirement_id": "req-5",
+          "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+          "matched_requirement_id": "req-1",
           "selection_source": "carryover_cache",
-          "paper_id": "2609.07498v1",
+          "paper_id": "2609.10522v1",
           "carry_days": 1
         },
         {
-          "id": "2609.09155v1",
+          "id": "2609.11270v1",
           "source": "arxiv",
-          "title": "SyncWorld: Visual Calibration Enables World Models as Zero-Shot Simulators",
-          "abstract": "World models are increasingly used as policy-in-the-loop imagination environments, where reliable rollouts require fine-grained controllability with respect to low-level robot actions. A key obstacle to scaling such models in robotics is that actions are not a universal language in pixel space: changes in visual environment, camera view, robot placement, or embodiment alter how the same numerical action manifests visually, leading to conflicting supervision under mixed training and brittle generalization at deployment. We introduce SyncWorld, an action-conditioned world model that serves as a zero-shot simulator across unseen environments without any additional training. SyncWorld leverages a visual calibration episode---paired frames and actions that showcase all the controllable degrees of freedom---to specify the setup-specific Action--Visual Mapping in context. Training with visual calibration contexts teaches the model to interpret actions through visual evidence and to leverage interaction history when explicit calibration is unavailable. Experiments show that SyncWorld can accurately simulate action outcomes in previously unseen settings, and that its capability of simulating rollouts enables test-time policy improvement without training.",
+          "title": "Beyond Noise Steering: Dual-Latent Space Reinforcement Learning for Generative Robot Policy",
+          "abstract": "Pretrained generative robot policies learn expressive action priors from demonstrations. However, existing reinforcement learning methods only steer the noisy space but fail to modulate intermediate action representations during the generation process, resulting in performance degradation and inefficiency. To address this limitation, we propose a novel Dual-Latent Space Reinforcement Learning (DLSRL) framework, which complements initial-noise steering with representation-level control inside the frozen generator. Specifically, our actor network predicts two distinct latent variables: an initial-noise latent variable that steers behavior generation, and an action-representation latent variable for intermediate feature modulation. Moreover, this representation latent variable is mapped to adapter features and ingeniously injected into the hidden states of intermediate action tokens via residual connections. Our dual-control design enables direct adjustment of action representations without updating the base policy. Experiments across generative policy architectures and robotic manipulation tasks show that DLSRL effectively accelerates online robot policy adaptation and achieves competitive performance. Our code is available at \\href{https://github.com/xianchaoxiu/DLSRL}{https://github.com/xianchaoxiu/DLSRL}.",
           "authors": [
-            "Yuncong Yang",
-            "Zhengtao Han",
-            "Furkan Ozyurt",
-            "Zeyuan Yang",
-            "Han Yang",
-            "Junyi Cao",
-            "Haoyu Zhen",
-            "Yilun Du",
-            "Chuang Gan"
-          ],
-          "primary_category": "cs.CV",
-          "categories": [
-            "cs.CV"
-          ],
-          "published": "2026-09-08T17:59:47+00:00",
-          "link": "https://arxiv.org/pdf/2609.09155v1",
-          "tags": [
-            "keyword:embodied-ai",
-            "query:embodied-ai"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "action-conditioned world model as zero-shot simulator across environments and embodiments",
-          "llm_evidence_cn": "动作条件世界模型作为跨环境与具身的零样本模拟器",
-          "llm_evidence": "动作条件世界模型作为跨环境与具身的零样本模拟器",
-          "canonical_evidence": "动作条件世界模型作为跨环境与具身的零样本模拟器",
-          "llm_tldr_en": "SyncWorld introduces a visual calibration episode to make action-conditioned world models zero-shot simulators across unseen environments, robot placements, and embodiments.",
-          "llm_tldr_cn": "世界模型正被用作策略在环的想象环境，但动作在像素空间中并非通用语言，视觉环境、相机视角、机器人位置或具身变化会使同一数值动作产生不同视觉表现，导致混合训练监督冲突与泛化脆弱。本文提出SyncWorld，一种动作条件世界模型，通过视觉校准片段（成对帧与动作）实现跨未见环境的零样本模拟，无需额外训练。该方法缓解了跨环境与跨具身的动作对齐难题，提升了世界模型作为模拟器的可迁移性与可靠性，对具身策略学习具重要意义。",
-          "llm_tldr": "世界模型正被用作策略在环的想象环境，但动作在像素空间中并非通用语言，视觉环境、相机视角、机器人位置或具身变化会使同一数值动作产生不同视觉表现，导致混合训练监督冲突与泛化脆弱。本文提出SyncWorld，一种动作条件世界模型，通过视觉校准片段（成对帧与动作）实现跨未见环境的零样本模拟，无需额外训练。该方法缓解了跨环境与跨具身的动作对齐难题，提升了世界模型作为模拟器的可迁移性与可靠性，对具身策略学习具重要意义。",
-          "llm_tags": [
-            "query:embodied-ai"
-          ],
-          "matched_query_tag": "query:embodied-ai",
-          "matched_query_text": "world model for planning and control in embodied agents",
-          "matched_requirement_id": "req-3",
-          "selection_source": "carryover_cache",
-          "paper_id": "2609.09155v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2609.07096v1",
-          "source": "arxiv",
-          "title": "RoboDreamer: Anticipatory Humanoid Locomotion with Predictive State-Space Models",
-          "abstract": "Humanoid locomotion requires control policies that remain stable under imperfect sensing while exploiting temporal context for consistent motion. We present RoboDreamer, a two-stage teacher--student framework that combines next-observation consistency with randomized continuous temporal masking. A teacher is first trained on clean observations, and a student is then distilled under masked recent observations, encouraging the policy to infer missing current information from history. At inference, the same masking interface is reused for implicit closed-loop action refinement and optional multi-step action chunking. Mamba is used as the temporal backbone, while matched ablations show that masking/distillation provides a substantial part of the gain and Mamba contributes additional tracking improvements with real-time latency. Experiments in IsaacLab, MuJoCo, and on a Unitree G1 demonstrate robust motion tracking under observation masking and successful real-world deployment.",
-          "authors": [
-            "Zhe Li",
-            "Yangyang Wei",
-            "Xichen Yuan",
-            "Zhenzhe Zhang",
-            "Weihao Yuan",
-            "Shanghang Zhang",
-            "Jianfei Yang"
+            "Pengfei Zhang",
+            "Teng Sun",
+            "Xianchao Xiu"
           ],
           "primary_category": "cs.RO",
           "categories": [
             "cs.RO"
           ],
-          "published": "2026-09-07T06:35:35+00:00",
-          "link": "https://arxiv.org/pdf/2609.07096v1",
+          "published": "2026-09-10T09:04:04+00:00",
+          "link": "https://arxiv.org/pdf/2609.11270v1",
           "tags": [
             "keyword:embodied-ai",
             "query:embodied-ai"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "predictive state-space model anticipating future observations for locomotion control",
-          "llm_evidence_cn": "预测性状态空间世界模型",
-          "llm_evidence": "预测性状态空间世界模型",
-          "canonical_evidence": "预测性状态空间世界模型",
-          "llm_tldr_en": "Humanoid locomotion needs stable control under imperfect sensing while exploiting temporal context. RoboDreamer is a teacher-student framework using next-observation consistency and temporal masking with a Mamba backbone, enabling anticipatory policies and implicit closed-loop refinement.",
-          "llm_tldr_cn": "人形机器人运动要求控制策略在不完美感知下保持稳定，同时利用时序上下文实现连贯运动。论文提出RoboDreamer两阶段师生框架，结合下一观测一致性与随机连续时序掩码，先用干净观测训练教师，再在掩码近期观测下蒸馏学生，促使策略从历史推断缺失信息。推理时复用同一掩码接口实现隐式闭环动作细化与多步动作分块，消融显示掩码与蒸馏贡献显著。该工作表明预测性状态空间建模可提升人形机器人在感知退化下的运动稳定性与预判能力。",
-          "llm_tldr": "人形机器人运动要求控制策略在不完美感知下保持稳定，同时利用时序上下文实现连贯运动。论文提出RoboDreamer两阶段师生框架，结合下一观测一致性与随机连续时序掩码，先用干净观测训练教师，再在掩码近期观测下蒸馏学生，促使策略从历史推断缺失信息。推理时复用同一掩码接口实现隐式闭环动作细化与多步动作分块，消融显示掩码与蒸馏贡献显著。该工作表明预测性状态空间建模可提升人形机器人在感知退化下的运动稳定性与预判能力。",
+          "llm_evidence_en": "dual-latent space reinforcement learning modulating generative robot policy",
+          "llm_evidence_cn": "双潜空间强化学习调制生成式机器人策略",
+          "llm_evidence": "双潜空间强化学习调制生成式机器人策略",
+          "canonical_evidence": "双潜空间强化学习调制生成式机器人策略",
+          "llm_tldr_en": "Pretrained generative robot policies learn expressive action priors, but existing RL only steers the initial noise space and cannot modulate intermediate representations. DLSRL predicts both an initial-noise latent and an action-representation latent for representation-level control inside a frozen generator.",
+          "llm_tldr_cn": "预训练的生成式机器人策略能从演示中学习表达性动作先验，但现有强化学习方法只调控生成初始的噪声空间，无法调制生成过程中的中间动作表示，造成性能退化与效率低下。本文提出双潜空间强化学习框架DLSRL，在冻结的生成器内部同时预测初始噪声潜变量与动作表示潜变量，前者引导行为生成，后者进行中间特征调制。该方法在噪声引导之外实现了表示级控制，提升了生成策略的强化学习性能与效率，为生成式机器人策略的潜空间学习提供了新范式。",
+          "llm_tldr": "预训练的生成式机器人策略能从演示中学习表达性动作先验，但现有强化学习方法只调控生成初始的噪声空间，无法调制生成过程中的中间动作表示，造成性能退化与效率低下。本文提出双潜空间强化学习框架DLSRL，在冻结的生成器内部同时预测初始噪声潜变量与动作表示潜变量，前者引导行为生成，后者进行中间特征调制。该方法在噪声引导之外实现了表示级控制，提升了生成策略的强化学习性能与效率，为生成式机器人策略的潜空间学习提供了新范式。",
           "llm_tags": [
             "query:embodied-ai"
           ],
@@ -258,45 +174,7 @@
           "matched_query_text": "new learning paradigm for embodied agents based on world models and latent space prediction",
           "matched_requirement_id": "req-7",
           "selection_source": "carryover_cache",
-          "paper_id": "2609.07096v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2609.09210v1",
-          "source": "arxiv",
-          "title": "Identifying Habit, Physics, and Nuisance in Robot World Models",
-          "abstract": "Teleoperated demonstrations are often multimodal even when the underlying dynamics are nearly deterministic given the executed action. We argue that this multimodality typically mixes three factors--operator habit in action selection, shared physics, and observation nuisance--and that entangled next-observation predictors absorb all three. We formalize the split with a structural causal model a=g(h,z,u), z'=f(z,a), o=r(z,c), and test it with complementary interventions: replacing or shuffling actions at fixed state sharply increases next-state error, whereas appearance and camera changes should not; habit-aware reverse scoring improves ranking of feasible pasts without rewriting the dynamics. The associated adaptation rule is to freeze a shared physics readout and update only a thin interface. On StackCube, DROID, and RH20T this rule improves low-shot transfer relative to training from scratch, retains cleaner dynamics under corrupted adaptation data, and extends from proprioception to pixel observations with multi-view and multi-step checks. We do not equate latent actions with operator habit, and we do not target large-scale video generation benchmarks.",
-          "authors": [
-            "Jinting Hang",
-            "Zhenhui Cai"
-          ],
-          "primary_category": "cs.RO",
-          "categories": [
-            "cs.RO",
-            "cs.CV"
-          ],
-          "published": "2026-09-06T00:20:22+00:00",
-          "link": "https://arxiv.org/pdf/2609.09210v1",
-          "tags": [
-            "keyword:embodied-ai",
-            "query:embodied-ai"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "structural causal decomposition of robot world models into habit, physics and nuisance",
-          "llm_evidence_cn": "将机器人世界模型分解为习惯、物理与干扰因素",
-          "llm_evidence": "将机器人世界模型分解为习惯、物理与干扰因素",
-          "canonical_evidence": "将机器人世界模型分解为习惯、物理与干扰因素",
-          "llm_tldr_en": "Teleoperated demonstrations are multimodal even under near-deterministic dynamics. The paper uses a structural causal model to separate operator habit, shared physics and observation nuisance, validating the split via interventions and showing a freeze-physics adaptation rule.",
-          "llm_tldr_cn": "遥操作演示数据常呈现多模态，即使给定动作后动力学近乎确定，纠缠的下一观测预测器仍会吸收操作习惯、观测干扰等无关因素。论文用结构因果模型将数据分解为操作者习惯、共享物理与观测干扰三部分，并通过替换或打乱动作、改变外观与相机等互补干预加以验证。结果显示动作扰动显著增大下一状态误差，而外观变化影响有限，习惯感知的反向评分还改善了可行历史排序，为构建更干净可迁移的机器人世界模型提供方法。",
-          "llm_tldr": "遥操作演示数据常呈现多模态，即使给定动作后动力学近乎确定，纠缠的下一观测预测器仍会吸收操作习惯、观测干扰等无关因素。论文用结构因果模型将数据分解为操作者习惯、共享物理与观测干扰三部分，并通过替换或打乱动作、改变外观与相机等互补干预加以验证。结果显示动作扰动显著增大下一状态误差，而外观变化影响有限，习惯感知的反向评分还改善了可行历史排序，为构建更干净可迁移的机器人世界模型提供方法。",
-          "llm_tags": [
-            "query:embodied-ai"
-          ],
-          "matched_query_tag": "query:embodied-ai",
-          "matched_query_text": "world model for planning and control in embodied agents",
-          "matched_requirement_id": "req-3",
-          "selection_source": "carryover_cache",
-          "paper_id": "2609.09210v1",
+          "paper_id": "2609.11270v1",
           "carry_days": 1
         }
       ]
