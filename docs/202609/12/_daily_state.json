@@ -1,0 +1,249 @@
+{
+  "date": "20260912",
+  "date_label": "",
+  "generated_at": "2026-09-12 21:31:01 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.06578v1",
+      "route": "202609/12/2609.06578v1-learning-to-use-imagination-progress-conditioned-future-utilization-for-world-action-models",
+      "title": "Learning to Use Imagination: Progress-Conditioned Future Utilization for World Action Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用想象未来生成动作的进度条件世界动作模型",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.09597v2",
+      "route": "202609/12/2609.09597v2-compact-visuotactile-world-models-for-lifting-prediction-reward-alignment-and-force-constraints",
+      "title": "Compact Visuotactile World Models for Lifting: Prediction, Reward Alignment, and Force Constraints",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向基于模型控制的紧凑视触觉世界模型",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.11561v1",
+      "route": "202609/12/2609.11561v1-memory-as-plans-world-action-modeling-with-memory-grounded-planning",
+      "title": "Memory as Plans: World-Action Modeling with Memory-Grounded Planning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "记忆引导规划的世界-动作建模",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.11875v1",
+      "route": "202609/12/2609.11875v1-unimpa-a-unified-memory-prediction-action-model-via-action-grounded-transition-modeling",
+      "title": "UniMPA: A Unified Memory-Prediction-Action Model via Action-Grounded Transition Modeling",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "以动作锚定转移建模统一记忆-预测-动作",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.05178v1",
+      "route": "202609/12/2609.05178v1-libero-recover-beyond-task-success-towards-failure-recovery-in-robotic-manipulation-models",
+      "title": "LIBERO-RECOVER: Beyond Task Success Towards Failure Recovery in Robotic Manipulation Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向真实世界机器人操作模型的故障恢复基准",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.06476v1",
+      "route": "202609/12/2609.06476v1-one-mllm-one-call-efficient-zero-shot-vision-and-language-navigation-via-spatial-aware-waypoints",
+      "title": "One MLLM, One Call: Efficient Zero-Shot Vision-and-Language Navigation via Spatial-Aware Waypoints",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "每步仅调用一次大模型以降低具身导航推理延迟",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.07299v1",
+      "route": "202609/12/2609.07299v1-world-models-under-asynchronous-sensor-observations",
+      "title": "World Models Under Asynchronous Sensor Observations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "处理异步传感器观测的Transformer世界模型",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.08209v1",
+      "route": "202609/12/2609.08209v1-monkey-see-can-monkey-do-a-benchmark-for-evaluating-robot-skill-learning-by-observation",
+      "title": "Monkey See, Can Monkey Do? A Benchmark for Evaluating Robot Skill Learning by Observation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向数据扩展的机器人观察学习技能基准",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.08444v1",
+      "route": "202609/12/2609.08444v1-safe-task-planning-with-long-term-graph-memory-for-embodied-agents",
+      "title": "Safe Task Planning with Long-Term Graph Memory for Embodied Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向具身智能体的安全任务规划",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.08638v1",
+      "route": "202609/12/2609.08638v1-casd-chunk-aligned-semantic-distillation-for-multi-stagerobot-manipulation",
+      "title": "CASD: Chunk-Aligned Semantic Distillation for Multi-StageRobot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "蒸馏语义分支每次查询仅运行一次，无需在线VLM调用",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.06930v1",
+      "route": "202609/12/2609.06930v1-distributed-dexterous-manipulation-with-spatially-conditioned-multi-agent-transformers",
+      "title": "Distributed Dexterous Manipulation with Spatially Conditioned Multi-Agent Transformers",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向分布式灵巧操作机器人的多智能体Transformer控制策略",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.07049v1",
+      "route": "202609/12/2609.07049v1-large-discrete-policy-advancing-explicit-behavior-modeling-with-stochastic-iterative-scoring",
+      "title": "Large Discrete Policy: Advancing Explicit Behavior Modeling with Stochastic Iterative Scoring",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向机器人操作与规划的离散行为策略",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.07165v1",
+      "route": "202609/12/2609.07165v1-state-of-the-art-in-learning-by-demonstration-with-passive-observation-for-industrial-assembly-automation",
+      "title": "State-of-the-Art in Learning-by-Demonstration with Passive Observation for Industrial Assembly Automation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "一次示范学习并以极少数据迁移技能原语",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.07440v1",
+      "route": "202609/12/2609.07440v1-open-set-ego-noise-separation-for-legged-robot-audition-via-annotation-free-adaptation-and-pretrained-model-transfer",
+      "title": "Open-Set Ego-Noise Separation for Legged-Robot Audition via Annotation-Free Adaptation and Pretrained-Model Transfer",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向腿式机器人听觉的无标注自适应与预训练模型迁移",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    },
+    {
+      "paper_id": "2609.08292v1",
+      "route": "202609/12/2609.08292v1-evonav-bench-benchmarking-lifelong-navigation-in-evolving-environments",
+      "title": "EvoNav-Bench: Benchmarking Lifelong Navigation in Evolving Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "具身智能体在真实演化环境中进行终身导航",
+      "first_seen_at": "2026-09-12 21:31:01 UTC",
+      "updated_at": "2026-09-12 21:31:01 UTC"
+    }
+  ]
+}

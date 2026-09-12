@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-11</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-12</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 15 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-11 21:49:44 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-12 21:31:01 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-11 日报精选 17 篇，精读 6 篇，聚焦机器人模仿学习与世界模型两大方向。最值得看的是两篇 9.0 分精读：JEPA Policy 用配对动作与未来表征预测实现无扩散模仿学习，IMLE-VLA 实现视觉-语言-动作策略的单步快速动作生成。普通读者可优先从这两篇入手，理解机器人如何更快、更省算力地学会动作。</p>
+<p>2026-09-12 日报精选 15 篇机器人世界模型研究，精读 4 篇、速读 11 篇。最值得关注的是世界动作模型学会&quot;按进度调用想象力&quot;（8.0分）和紧凑视觉触觉世界模型用于举升（8.0分），另有失败恢复、异步传感器观测等速读方向。普通读者可优先从这两篇精读入手，感受机器人如何预测未来并纠错。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -78,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="JEPA Policy: Diffusion-Free Imitation Learning via Paired Action and Future Representation Prediction">JEPA Policy: Diffusion-Free Imitation Learning via Paired Action and Future Representation Prediction</span></li><li><span class="dpr-home-dashboard-paper-title" title="IMLE-VLA: Fast Single-Step Action Generation for Vision-Language-Action Policies">IMLE-VLA: Fast Single-Step Action Generation for Vision-Language-Action Policies</span></li><li><span class="dpr-home-dashboard-paper-title" title="FARM: Reading Failure Signals from the Internal Predictive States of a Frozen Robotic World Model">FARM: Reading Failure Signals from the Internal Predictive States of a Frozen Robotic World Model</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Learning to Use Imagination: Progress-Conditioned Future Utilization for World Action Models">Learning to Use Imagination: Progress-Conditioned Future Utilization for World Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Compact Visuotactile World Models for Lifting: Prediction, Reward Alignment, and Force Constraints">Compact Visuotactile World Models for Lifting: Prediction, Reward Alignment, and Force Constraints</span></li><li><span class="dpr-home-dashboard-paper-title" title="Memory as Plans: World-Action Modeling with Memory-Grounded Planning">Memory as Plans: World-Action Modeling with Memory-Grounded Planning</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>4</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -94,7 +94,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="CosmoH2G: A Hand-to-Gripper Transfer Dataset and Baseline Method for Object Manipulation with Complex Spatial Movements">CosmoH2G: A Hand-to-Gripper Transfer Dataset and Baseline Method for Object Manipulation with Complex Spatial Movements</span></li><li><span class="dpr-home-dashboard-paper-title" title="SyncWorld: Visual Calibration Enables World Models as Zero-Shot Simulators">SyncWorld: Visual Calibration Enables World Models as Zero-Shot Simulators</span></li><li><span class="dpr-home-dashboard-paper-title" title="Identifying Habit, Physics, and Nuisance in Robot World Models">Identifying Habit, Physics, and Nuisance in Robot World Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="LIBERO-RECOVER: Beyond Task Success Towards Failure Recovery in Robotic Manipulation Models">LIBERO-RECOVER: Beyond Task Success Towards Failure Recovery in Robotic Manipulation Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="One MLLM, One Call: Efficient Zero-Shot Vision-and-Language Navigation via Spatial-Aware Waypoints">One MLLM, One Call: Efficient Zero-Shot Vision-and-Language Navigation via Spatial-Aware Waypoints</span></li><li><span class="dpr-home-dashboard-paper-title" title="World Models Under Asynchronous Sensor Observations">World Models Under Asynchronous Sensor Observations</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
