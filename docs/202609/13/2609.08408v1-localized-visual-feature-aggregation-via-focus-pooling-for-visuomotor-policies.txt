@@ -1,0 +1,568 @@
+Title: Localized Visual Feature Aggregation via Focus Pooling for Visuomotor Policies
+
+URL Source: https://arxiv.org/pdf/2609.08408v1
+
+Published Time: Wed, 09 Sep 2026 03:30:52 GMT
+
+Number of Pages: 20
+
+Markdown Content:
+# Localized Visual Feature Aggregation via Focus Pooling for Visuomotor Policies 
+
+Ruiyu Wang ∗ Zheyu Zhuang Danica Kragic Florian T. Pokorny 
+
+KTH Royal Institute of Technology, Sweden 
+
+> ∗
+
+ruiyuw@kth.se 
+
+Abstract: Focusing on spatially localized, control-relevant visual cues has been shown to improve data efficiency in visuomotor policies by reducing the need to model task-irrelevant visual variation. Existing methods often impose this focus through input preprocessing, such as cropping control- or object-centric regions in RGB images or point-clouds. However, it remains underexplored whether such lo-calized features can be exposed directly from commonly used convolutional neural network (CNN) encoded features. In this paper, we show that intermediate CNN features preserve localized visual context for control, but existing pooling meth-ods fail to aggregate it effectively. We introduce FocusPool, an attention pooling module that selectively aggregates intermediate visual features according to their relevance to the robot’s current proprioceptive context. The resulting pooled repre-sentation captures task-progressive, control-relevant local information and is used directly for policy learning. Across simulation and real-world experiments, Focus-Pool improves policy success rates over pooling and explicit local focus methods by 36.2% and 41.2%, with training only 5.8% of encoder parameters. § GitHub 
+
+Keywords: Imitation Learning, Attention Pooling, Robotic Manipulation 
+
+## 1 Introduction 
+
+Convolutional neural networks (CNNs) are commonly used as visual encoders in visuomotor poli-cies, transforming high-dimensional image observations into spatial feature maps that are subse-quently aggregated into compact representations for control [1, 2]. This spatial compression poses a challenge in manipulation: small object- or contact-level cues may determine the next action, yet can be washed out when pooled with background, distractors, or objects irrelevant to the current subtask. Prior work addresses such dilution through coarse-to-fine designs that preprocess the input by cropping control-relevant regions from RGB images [3, 4] or point clouds [5, 6, 7], improving data efficiency. However, such two-stage designs require additional training stages and can suffer from error accumulation. This motivates us to study end-to-end trainable pooling that extracts local spatial information directly from standard CNN feature maps. A key challenge for end-to-end pooling, compared with explicit cropping, is the non-locality of CNN features. Concretely, deeper layers aggregate broader context and richer semantics but become less spatially localized [8]. This limits deep features for spatially precise prediction, motivating the use of intermediate, high-resolution features [9, 10, 11]. For visuomotor policies, applying existing pooling methods to intermediate features does not directly improve data efficiency, as demonstrated by our experiments in Fig. 4a. Although features are more localized, average pooling is not spatially selective [12], while spatial softmax can introduce noisy keypoints [13], see Fig. 1. Cross-attention provides a natural mechanism for selective aggregation. However, existing methods such as RcP [14] and AFA [15] do not produce localized task-progressive pooling masks. To fill this gap, we introduce FocusPool, a trainable attention-pooling module that aggregates local-ized, task-relevant regions from intermediate CNN features into compact representations. FocusPool 
+
+10th Conference on Robot Learning (CoRL 2026), Austin TX, USA. arXiv:2609.08408v1 [cs.RO] 8 Sep 2026 Uniform Weights (x, y) coord       
+
+> CNN Feature Maps FocusPool (ours) Average Pooling Spatial Softmax
+> Locality Semantics L1 L2 L2 L3 L4 L4 L4
+> ResNet-18
+> Input Selective Mask
+
+Figure 1: Feature locality and pooling. As convolution and downsampling accumulate, CNN feature maps become coarser and less spatially localized. FocusPool selectively aggregates localized intermediate features, producing a progressive mask over localized task-focused regions. constructs a learnable robot-state-conditioned query and iteratively refines it through cross-attention with spatial visual patches. The resulting attention weights form a selective pooling mask over pro-gressive, control-relevant regions (Fig. 1). By preserving control-relevant information while sup-pressing irrelevant spatial content, the compact representation improves policy data efficiency. Fo-cusPool requires no input preprocessing, integrates with CNN encoders and different policy heads, and substantially reduces the number of trainable encoder parameters by pooling directly from an intermediate feature map, using only 5.8% parameters of ResNet-18 [16] in our main setting. We evaluate FocusPool on MimicGen [17] and a real UFactory xArm7 robot. Our results show that: (1) spatially localized intermediate CNN features can yield data-efficient policy representations, but existing pooling methods fail to exploit them effectively; (2) the state-conditioned, iteratively refined cross-attention module implicitly extracts control-relevant local information when trained end-to-end; and (3) FocusPool improves policy success by 36.2% in simulation and 41.2% in the real world over pooling and explicit local-focus baselines under the same data budget, matches baseline performance with half the data, and trains only 5.8% of the encoder parameters. 
+
+## 2 Related Work 
+
+Local focus for visuomotor policies. Prior works commonly enforce local visual focus through coarse-to-fine designs, where a control-relevant region is first predicted and then used to restrict the visual input. Q-attention methods use CNN-based Q-functions to select and zoom into task-relevant locations for RGB or point-cloud observations [3, 5]. RVT-2 predicts key-frame poses identified by robot state changes from multi-view representations and then applies a downstream policy to point clouds cropped around the predicted keypoints [6]. Hu et al. [7] use language alignment to predict subtask keypoints, facilitating keypoint-centered cropping for long-horizon manipulation. PALM aligns third-person RGB observations around the end-effector through fixed-size crops to train local policies with better generalization [4]. In contrast, our method does not preprocess the input; it ex-poses localized information already present in intermediate CNN features through trainable pooling. 
+
+Attentive feature aggregation in robotics. Attention mechanisms are widely used to assign non-uniform weights to visual features for feature aggregation or pooling. Vision Transformers aggregate information across image patches through self-attention [18], or use learned queries to select task-relevant visual information [19, 20]. In robotics, SoftMP [21] learns a spatial attention map to pool over repeatable local feature locations for place recognition. Recent methods also use attention to perform multimodal sensor fusion. Sparsh-X applies attentive pooling to tactile embeddings from multiple signals, including images, audio, motion, and pressure [22]. While Jangir et al. [23] adopt Transformer-based cross-view attention to fuse egocentric and third-person visual feature maps. Robot-centric Pooling uses proprioceptive states and contrastive learning to guide image feature 2aggregation for self-other distinction and distractor robustness [14]. AFA pools the frozen pretrained visual representation with a learnable pooling module that attends to task-relevant visual cues for out-of-domain robustness [15]. While these methods demonstrate the value of selective feature aggregation, FocusPool focuses on localized aggregation of intermediate CNN features. 
+
+## 3 Methodology 
+
+FocusPool is an attention-pooling module that produces compact, data-efficient control representa-tions through localized feature aggregation, summarized in Fig. 2. Below, we motivate intermediate layers as localized feature sources ( where ), describe state-conditioned attention pooling for task-focused feature aggregation ( how ), and introduce early attention regularization for training stability. We consider end-to-end policy learning from demonstrations. At each timestep t, the policy receives multi-view image observations It = {Imt }Mm=1 and the robot proprioceptive state pt, and predicts an action chunk ˆat. Image observations are mapped to a compact visual representation zt = fϕ(It)
+
+by the visual encoder fϕ and used by the policy to predict actions as ˆat = πθ (zt, p t).
+
+3.1 Where to Aggregate : Intermediate Visual Features for Locality Stage Resolution Receptive Field Level 1 19 × 19 43 × 43                   
+
+> Level 2 10 ×10 99 ×99
+> Level 3 5×5211 ×211
+> Level 4 3×3435 ×435
+
+Table 1: ResNet-18 statistics. Feature-map resolution and theoretical receptive field size [8] at different residual stages of ResNet-18 for 76 × 76 inputs. A CNN-based visual encoder, e.g. ResNet [16], produces a hierarchy of feature maps F l ∈ RCl×Hl×Wl at fea-ture levels l ∈ 1, . . . , L , where each level differs in spa-tial resolution and visual abstraction. As residual blocks and downsampling stages accumulate, the output features have increasingly lower resolution and larger receptive fields, as shown in Tab. 1. Consequently, deeper feature maps aggregate increasingly non-local, scene-level infor-mation, which weakens their ability to expose localized features relevant to the immediate control signal. We propose using intermediate features as the source for localized aggregation, as they retain more spatial structure while providing sufficient visual abstraction. This design choice is further supported by experiments in Fig. 4a, where the gain of FocusPool diminishes at deeper feature levels. 
+
+3.2 How to Aggregate : FocusPool 
+
+FocusPool performs attention probing over spatial image patches using a learnable query modulated by robot state and iteratively injected visual context. State conditioning and iterative refinement provide the query with contextual information to assign higher weights to task-progressive, control-relevant patches, achieving implicit visual cropping via selective feature readout. Specifically, a learnable latent token z0 is randomly initialized and modulated by the robot state 
+
+p = [ oeef , o grip ] via FiLM transformation [24], forming a robot-state-conditioned query q0:
+
+q0 := FiLM( p, z 0) = (1 + γ(p)) ⊙ z0 + β(p),
+
+where γ(·) and β(·) are linear projection networks. Intermediate feature map F l are flattened into visual features {f ln}N =HlWl 
+
+> n=1
+
+each concatenated with a Fourier positional encoding en [25] to preserve spatial information. The resulting image token is: 
+
+xn = [ f ln; en], en := [sin( ωbrn), cos( ωbrn)] B−1 
+
+> b=0
+
+,
+
+where rn ∈ [−1, 1] 2 is the normalized 2D coordinate of location n, and ωb is the frequency at band 
+
+b. Stacking all tokens gives X = [ x1, . . . , x N ]⊤.A state-conditioned query q0 can be ambiguous, as similar robot states may occur across different visual contexts or task stages, yielding diffuse focus when used for attention probing. FocusPool progressively aligns the query with task progression by iteratively injecting visual context over S
+
+3(b) FocusPool (a) Policy Learning (c) Attn Regularization Iterative Refine Heuristic Keypoint Visual Encoder ...    
+
+> Cross-Entropy Loss L2 Loss Policy FiLM FiLM Multi-Head Cross-Attention Values
+> iters
+> Query Inference Flow Training-only Context Network / Loss Visual Feature
+> Flatten
+> + Pos. Enc
+> ...
+> L1 L4
+> Keys
+> Decay
+
+Figure 2: FocusPool overview. (a) Intermediate visual features are leveraged for localized feature aggregation. (b) FocusPool computes cross-attention between image-token keys/values and a robot-state-conditioned learnable query. The query is iteratively refined using the pooled context, and the final context is used as the policy input. (c) During early training, a weak regularizer biases the cross-attention weights toward heuristic control-relevant keypoints and quickly decays to zero. refinement steps. At each step s, the query qs and spatial image tokens X are projected into queries, keys, and values, yielding head-wise attention and context: 
+
+Ah = Softmax 
+
+
+
+d−1/2QhK⊤
+
+> h
+
+
+
+, Ch = AhVh.
+
+The query is then updated as: 
+
+qs+1 = FiLM(LayerNorm( cs), q s) , s < S − 1,
+
+where cs = Mean h(Ch) is the head-averaged context at step s. After S refinement steps, the final context cS serves directly as the visual representation for policy input. 
+
+3.3 Early Attention Regularization 
+
+Early in training, a randomly initialized query may attend to arbitrary spatial tokens. Since interme-diate CNN features retain broad receptive fields (Tab. 1), these spurious locations can still provide predictive scene context and reinforce incorrect attention patterns. Visual-focus convergence can therefore become sensitive to initialization, especially in tasks with limited spatial variation where policies may shortcut through robot state. We thus apply a weak attention prior during early training to stabilize mask convergence, whose contribution to the efficiency gains is analyzed in Tab. 3. Following RVT-2 [6], we use the next future keyframe end-effector position as a proxy control point and project it into each camera view. For each valid view m ∈ V , we construct a normalized Gaussian target heatmap Gm on the pooling grid, centered at the projected target um, grid :
+
+Gm(i, j ) ∝ exp 
+
+
+
+− ∥(i, j ) − um, grid ∥22
+
+2σ2
+
+
+
+, X
+
+> i,j
+
+Gm(i, j ) = 1 .
+
+Given the head-averaged attention map ¯Am, the attention prior loss is: 
+
+Lprior = − 1
+
+|V| 
+
+X
+
+> m∈V
+
+X
+
+> i,j
+
+Gm(i, j ) log   ¯Am(i, j ) + ϵ .
+
+We linearly decay λ(k) from λ0 to 0, so the heuristic target has no further impact after k warm-up steps and does not act as a persistent hand-designed prior. The final training objective is: 
+
+L = Lpolicy + λ(k)Lprior .
+
+4Method Thread. D2 Square D2 M. Cleanup D1 Stack Three D1 3-Piece D2 Pick Place D0 † Average Explicit Local-focus Baseline                                                  
+
+> RVT-2 [6] 12.7 26.0 46.0 71.3 26.7 49.3 38.7
+> Pooling Baselines
+> AvgPool [12] 20.7 22.0 46.7 52.7 14.0 29.0 30.9 SSM [13] 24.0 26.7 49.3 66.7 17.3 30.0 35.7 RcP [14] 11.3 13.3 36.0 38.7 2.0 5.3 17.8 AFA [15] 25.3 28.7 50.0 64.7 16.7 30.7 36.0 FocusPool 40.7 33.3 59.3 81.3 47.3 54.0 52.7
+> Gain (rel, %) 60 .5↑16 .3↑18 .7↑14 .1↑77 .3↑9.5↑36 .2↑
+
+Table 2: Data efficiency on MimicGen. Success rate (%) and relative gain of FocusPool-L2 over the best baseline (underlined). Per-slot values are averaged best success rates across 3 training seeds. 
+
+> †
+
+Pick Place uses full-task completion success instead of the default accumulated subtask success. 
+
+## 4 Experiment 
+
+Baselines. We compare FocusPool against four feature-pooling baselines: (1) average pooling (Avg-Pool) [12], which globally averages spatial features; (2) spatial softmax (SSM) [13], which maps convolutional activations to expected keypoint locations to preserve spatial information; (3) robot-centric pooling (RcP) [14] uses proprioception as a cross-attention query over image features and contrastive learning to pool the spatial region most aligned with the robot state; and (4) attentive fea-ture aggregation (AFA) [15], the most conceptually similar baseline, which pools frozen pretrained visual features via cross-attention with a learnable token. All pooling baselines aggregate visual features from the latest CNN layer in their original design. We also include RVT-2 [6] as a reference for explicit local focus through input preprocessing. RVT-2 follows a coarse-to-fine design in which a first-stage multi-view transformer predicts an area of interest, after which zoomed-in views around this region are used for precise pose prediction. We adapt this localization-and-cropping strategy to multi-view RGB observations, forming an RVT-2-style RGB baseline. Details are in App. B. 
+
+4.1 Simulation Evaluation Experimental setup. We evaluate on six MimicGen tasks [17] involving long-horizon manipula-tion or high spatial variation, see Fig. A.1. All methods use a CNN-based Diffusion Policy [2] with an ImageNet-pretrained ResNet-18 encoder [26], differing only in the pooling module or input pre-processing. Unless otherwise specified, FocusPool pools L2 features, while pooling baselines use L4 features following their standard configurations. All policies are trained on 100 demonstrations, except in Fig. 3. AFA’s encoder is finetuned, since freezing it as in the original recipe resulted in 
+
+near-zero success on this benchmark. We report the maximum rollout success rate over 500 training epochs, evaluating every 10 epochs across 50 environments. Regularization loss weight for Focus-Pool starts at 2 × 10 −4 and decays linearly to 0 over the 5000 training steps. Details are in App. B. 25 50 100  
+
+> Number of Demonstrations
+> 010 20 30 40 50 60
+> Success Rate (%)
+> 14.3 33.3 54.3 4.3 12.0 37.8
+> FocusPool RVT-2
+
+Figure 3: Data efficiency curve. 
+
+Six-task average success rate of Fo-cusPool and RVT-2 using seed 0. 
+
+Data efficiency. We benchmark FocusPool on challenging MimicGen tasks with a 100-demo budget. As shown in Tab. 2, FocusPool achieves a 36.2% average relative gain over the per-task best baseline. Fig. 3 further confirms the data-efficiency trend, with FocusPool reaching comparable base-line performance with half the data. Both RVT-2 and Fo-cusPool outperform the four pooling baselines, indicating the benefit of localized visual focus. Although FocusPool uses RVT-2-style keypoints as a weak early prior, these proxies can be imperfect; e.g., in Threading , the interaction region is off-set from the end-effector, where RVT-2 achieves only 12.7% success compared with 40.7% for FocusPool. This suggests that FocusPool can adaptively refine its focus beyond the heuristic prior, whereas explicit two-stage cropping can fall short. Overall, feature-level localized aggregation improves data efficiency. 5Method Thread. Square M. Cleanup Stack Three 3-Piece Pick Place Average 
+
+FocusPool with Reg. 40.7 / 46 33.3 / 36 59.3 / 64 81.3 / 82 47.3 / 50 54.0 / 60 52.7 / 56.3 
+
+FocusPool no Reg. 29.3 / 34 37.3 / 38 46.7 / 52 80.0 / 84 43.3 / 48 40.7 / 60 46.2 / 52.7 FocusPool noisy Reg. 37.3 / 42 42.0 / 48 49.3 / 52 80.0 / 84 46.0 / 52 50.0 / 58 50.8 / 52.7 AFA with Reg. 28.0 / 30 26.7 / 32 39.3 / 42 61.3 / 64 12.0 / 12 32.6 / 40 33.3 / 36.7 AFA no Reg. 25.3 / 26 28.7 / 30 50.0 / 56 64.7 / 68 16.7 / 20 30.7 / 32 36.0 / 38.7 Table 3: The effect of early attention regularization. Per-task averaged / best success rates (%) over 3 seeds for the full FocusPool, FocusPool without early attention regularization, FocusPool with 
+
+±5 cm noise added to each keyframe coordinate used for regularization ( 16 .7% of the workspace), and AFA with and without FocusPool’s early attention regularization. Success Rate (%) 020 40 60 Pooling Stage L1 L2 L3 L4    
+
+> Average Pooling Spatial Softmax Attentive Feature Aggregation FocusPool
+
+(a) Policy success rate across pooling stages and pooling methods. Average Pooling Spatial Softmax   
+
+> Attentive Feature Aggregation FocusPool
+
+(b) Feature activation at L2. 
+
+Figure 4: Pooling intermediate features. (a) Policy success rates for four pooling methods when read out after different ResNet-18 residual stages, averaged over six tasks with seed 0; ⋆ marks the best-performing stage for each method. Per-task result see Tab. A.VIII. (b) Pooling mask-weighted activations or spatial-softmax keypoints overlaid on the original input when read out from L2. 
+
+Are intermediate CNN features sufficient for localized pooling? To isolate the effect of using intermediate representations, we evaluate pooling baselines when read out from each CNN stage, as summarized in Fig. 4a. All baselines perform best at later stages, whereas FocusPool peaks at L1– L2. Fig. 4b provides qualitative insight into why only FocusPool benefits from intermediate features. At L2, FocusPool concentrates on localized, control-relevant regions that shift with task progression, while the baselines produce diffuse attention or noisy keypoints and degrade when applied to less aggregated early-stage features. This effect is more pronounced at L1, where FocusPool achieves 52.0% average success while training only 1.5% of the encoder parameters, whereas the baselines drop substantially. These results show that intermediate features alone are insufficient, and gains depend on selectively aggregating the localized information they preserve. 0Success Rate Drop (%) -5 -10 -15 5-6 -8 -11 No Pre-train No Refine No State 
+
+(a) Success-rate degradation. FocusPool No State No Refinement AFA (b) FocusPool-L2 attention masks under ablated settings. 
+
+Figure 5: Ablation study. (a) Relative success-rate degradation when removing iterative refine-ment, robot-state conditioning, or pretrained encoder initialization from FocusPool. (b) Qualitative changes in the learned FocusPool-L2 attention masks under the corresponding ablations. 
+
+How does FocusPool work? The task-focused aggregation of FocusPool is enabled by two core designs, state conditioning and iterative refinement. Together, they inject low-dimensional and vi-sual context into the query to disambiguate task stages and learn task-progressive visual focus. As shown in Fig. 5, removing either component makes the attention mask less selective and reduces success by 6 or 8 percentage points. AFA at L2 can be viewed as a variant without either compo-nent, resulting in more diffuse attention and a larger 17-point performance gap. Further discussion is provided in App. C.1. Early attention regularization introduces a spatial prior, which itself does 6Method Stage Coffee Transport Table Cleanup Giraffe Build Average 
+
+RVT-2 L4 90.0 60.0 20.0 56.7 Spatial Softmax L4 85.0 35.0 35.0 51.7 AFA (finetuned) L4 90.0 30.0 30.0 50.0 FocusPool L1 95.0 70.0 70.0 78.3 FocusPool L2 100.0 75.0 65.0 80.0 
+
+Gain (rel, %) – 11 .1↑ 25 .0↑ 100 .0↑ 41 .2↑
+
+Table 4: Real-world results. Success rates (%) and relative gains of FocusPool over the best base-line (underlined). Each is evaluated over 20 real rollouts using the latest checkpoint (500 epochs). not explain the gain. Tab. 3 shows that applying it to AFA reduces average success from 36.0% to 33.3%. For FocusPool, regularization mainly improves training stability, increasing mean success by 6.5 points but best success by only 3.6 points. The benefit is larger on tasks with limited spatial variation, such as Threading , where policies may shortcut through robot state and make visual-focus convergence more initialization-sensitive. Adding substantial noise to the prior yields similar performance, 50.8% versus 52.7%, indicating that coarse spatial guidance is sufficient. Removing pretrained encoder weights also reduces performance in Fig. 5a, which we discuss further in Sec. 6. 
+
+4.2 Real Evaluation Table Cleanup Giraffe Build Coffee Transport Start End    
+
+> (a) Task overview. (b) FocusPool-L2 attention masks. Spatial Softmax RVT-2 (c) Baseline failures.
+
+Figure 6: Real-world setup and evaluation. (a) Example initial and completed states for three real-world tasks. (b) Learned FocusPool attention-pooling masks when read out from L2. (c) Failure cases of spatial softmax and RVT-2, visualized with their predicted keypoints and zoomed-in areas. 
+
+Experimental setup. We evaluate FocusPool and three baselines in a multi-view RGB setup with a UFactory xArm 7, a fixed third-person camera, and an eye-in-hand camera. As shown in Fig. 6a, the designed tasks probe different aspects of localized visual feature aggregation. Coffee Transport 
+
+tests continuous manipulation under offset target poses used for early attention regularization. Table Cleanup evaluates long-horizon manipulation in visually complex scenes. Giraffe Build stress-tests the proposed method on the high-precision small-object assembly task, where control-relevant visual cues are sparse and localized. All models follow the same simulation training recipe. We collect 100 demonstrations for Table Cleanup and 50 for the other tasks. Detailed descriptions are in App. E. 
+
+Real-world results. Tab. 4 shows that both FocusPool-L1 and L2 outperform all baselines, achiev-ing a 41.2% average relative gain over the per-task best baseline, consistent with simulation. Fig. 6b further shows that the learned attention masks remain task-progressive and control-relevant in the real world. In Coffee Transport , although the regularization target is offset from the control-relevant spoon tip, FocusPool corrects its focus during end-to-end training. A similar advantage appears in Table Cleanup , where visual complexity leads to noisy keypoint predictions for spatial softmax while FocusPool maintains selective attention masks, as shown in Fig. 6b and 6c. The benefit is strongest on Giraffe Build , where FocusPool improves performance by 100% and control-relevant cues occupy small image regions. Moreover, L1 outperforms L2 only on this task, suggesting that finer spatial resolution and localised aggregation become particularly important when relevant vi-sual signals are sparse. In contrast, RVT-2 underperforms spatial softmax on Giraffe Build , where keyframe-position errors can misplace the zoom-in region and cause the two-stage pipeline to fail. 7Model Method Thread. Square M. Cleanup Stack Three 3-Piece Pick Place Average                                           
+
+> ViT-S DINOv3 [CLS] 18 26 30 46 14 46 30.0 AFA 12 18 36 46 14 50 29.3 FocusPool 20 30 38 78 26 56 41.3 Flow Matching AvgPool 28 26 46 64 14 26 34.0 AFA 24 22 42 52 12 30 30.7 FocusPool 34 32 46 82 38 40 45.3
+
+Table 5: Generality across encoder and policy head. Success rates (%) of AvgPool, AFA, and FocusPool when applied to the output patch tokens of a DINOv3-pretrained ViT-S encoder, or when paired with a flow-matching policy head, using seed 0. For the ViT setting, FocusPool is trained without attention regularization, and the [CLS] token serves as the standard ViT baseline. 
+
+## 5 Discussion 
+
+Beyond ResNet-18 encoder. Our analysis is anchored on ResNet-18, a widely used CNN encoder for visuomotor policies. Other CNN backbones, including deeper ResNets and architectures such as EfficientNet [27], may exhibit different trade-offs between feature depth and spatial locality. Our main comparison focuses on early and intermediate stages. Since these stages preserve local spatial structure through similar convolution and pooling operations, the locality–semantic trade-off should broadly apply, at least for ResNet-based encoders. Thus, our conclusion may extend to a broader class of CNN backbones: standard pooling tends to struggle with early or intermediate features, while localized task-relevant aggregation can better exploit them for efficient policy learning. 
+
+General effectiveness of FocusPool. The proposed cross-attention feature aggregation extends naturally to ViTs [18] by attending the learned query over output patch tokens. In Tab. 5, we evaluate a simple adaptation on the final-block patch tokens, where FocusPool outperforms both the standard [CLS] representation and AFA. The optimal readout stage, pretraining choice, and whether policies consume compact pooled features or full token sets may vary across architectures and are left for future study. We further pair the pooled representation with a multimodal flow-matching policy head [28], where similar gains persist. Thus, the effectiveness of the proposed method extends across a broader range of encoders and policy heads. 
+
+## 6 Limitation 
+
+ImageNet pretraining clearly benefits FocusPool, as shown in Fig. 5a. Since it operates on inter-mediate features, pretrained weights provide useful low-level priors for early convolutional kernels, such as edge detectors learned from large-scale data, as also observed in prior works [29, 30]. Even without pretraining, FocusPool achieves 41 .7% success and outperforms the best baseline. Pretrain-ing also improves existing pooling methods, with a 40 .5% relative gain for diffusion policy with spatial softmax compared with 27 .0% for FocusPool. This indicates that FocusPool is less depen-dent on, while still benefiting from pretrained local visual structure, detailed in App. C.2. How different pretrained weights affect FocusPool is left for future investigation. 
+
+## 7 Conclusion 
+
+We present FocusPool, an end-to-end attention pooling module that extracts task-progressive, control-relevant local information from intermediate CNN feature maps. Our analysis shows that such localized visual focus improves data efficiency and can emerge naturally through end-to-end training, without explicit input cropping induced by human-designed spatial priors. Intermediate CNN features preserve useful spatial locality, but require selective readout to avoid diluting the less-aggregated spatial cues. By integrating robot state and task progression through iteratively refined cross-attention probing, FocusPool converts these early spatial features into more efficient control representations than deeper convolutional features aggregated without explicit control conditioning. 8Acknowledgements 
+
+This work was partially supported by the Wallenberg AI, Autonomous Systems and Software Pro-gram (WASP), funded by the Knut and Alice Wallenberg Foundation. 
+
+## References 
+
+[1] A. Mandlekar, D. Xu, J. Wong, S. Nasiriany, C. Wang, R. Kulkarni, L. Fei-Fei, S. Savarese, Y. Zhu, and R. Mart´ ın-Mart´ ın. What matters in learning from offline human demonstrations for robot manipulation. In Conference on Robot Learning (CoRL) , 2021. [2] C. Chi, S. Feng, Y. Du, Z. Xu, E. Cousineau, B. Burchfiel, and S. Song. Diffusion policy: Visuomotor policy learning via action diffusion. In Robotics: Science and Systems (RSS) ,2023. [3] S. James and A. J. Davison. Q-attention: Enabling efficient learning for vision-based robotic manipulation. IEEE Robotics and Automation Letters (R-AL) , 2022. [4] R. Wang, Z. Zhuang, D. Kragic, and F. T. Pokorny. PALM: enhanced generalizability for local visuomotor policies via perception alignment. IEEE Robotics and Automation Letters (R-AL) ,2026. [5] S. James, K. Wada, T. Laidlow, and A. J. Davison. Coarse-to-fine q-attention: Efficient learning for visual robotic manipulation via discretisation. In IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2022. [6] A. Goyal, V. Blukis, J. Xu, Y. Guo, Y.-W. Chao, and D. Fox. Rvt2: Learning precise manipu-lation from few demonstrations. Robotics: Science and Systems (RSS) , 2024. [7] J. Hu, L. Wang, S. Li, Y. Jiang, X. Li, P. Weng, and Y. Ban. Generalizable coarse-to-fine robot manipulation via language-aligned 3d keypoints. 2025. [8] A. Araujo, W. Norris, and J. Sim. Computing receptive fields of convolutional neural networks. 
+
+Distill , 2019. [9] B. Hariharan, P. Arbel´ aez, R. Girshick, and J. Malik. Hypercolumns for object segmentation and fine-grained localization. In IEEE Conference on Computer Vision and Pattern Recogni-tion (CVPR) , pages 447–456, 2015. [10] T.-Y. Lin, P. Doll´ ar, R. Girshick, K. He, B. Hariharan, and S. Belongie. Feature pyramid networks for object detection. In Conference on Computer Vision and Pattern Recognition (CVPR) , 2017. [11] J. Wang, K. Sun, T. Cheng, B. Jiang, C. Deng, Y. Zhao, D. Liu, Y. Mu, M. Tan, X. Wang, et al. Deep high-resolution representation learning for visual recognition. IEEE Transactions on Pattern Analysis and Machine Intelligence , 2020. [12] M. Lin, Q. Chen, and S. Yan. Network in network. arXiv preprint arXiv:1312.4400 , 2013. [13] C. Finn, X. Y. Tan, Y. Duan, T. Darrell, S. Levine, and P. Abbeel. Deep spatial autoencoders for visuomotor learning. In International Conference on Robotics and Automation (ICRA) , 2016. [14] Z. Zhuang, V. Kyrki, and D. Kragic. Raising body ownership in end-to-end visuomotor policy learning via robot-centric pooling. In IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2024. [15] N. Tsagkas, A. Sochopoulos, D. Danier, S. Vijayakumar, A. Kouris, O. Mac Aodha, and C. X. Lu. Attentive feature aggregation or: How policies learn to stop worrying about robustness and attend to task-relevant visual cues. arXiv preprint arXiv:2511.10762 , 2025. 9[16] K. He, X. Zhang, S. Ren, and J. Sun. Deep residual learning for image recognition. In Confer-ence on Computer Vision and Pattern Recognition (CVPR) , 2016. [17] A. Mandlekar, S. Nasiriany, B. Wen, I. Akinola, Y. Narang, L. Fan, Y. Zhu, and D. Fox. Mimicgen: A data generation system for scalable robot learning using human demonstrations. 
+
+arXiv:2310.17596 , 2023. [18] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai, T. Unterthiner, M. De-hghani, M. Minderer, G. Heigold, S. Gelly, et al. An image is worth 16x16 words: Transform-ers for image recognition at scale. arXiv preprint arXiv:2010.11929 , 2020. [19] N. Carion, F. Massa, G. Synnaeve, N. Usunier, A. Kirillov, and S. Zagoruyko. End-to-end object detection with transformers. In European Conference on Computer Vision (ECCV) ,2020. [20] A. Jaegle, F. Gimeno, A. Brock, O. Vinyals, A. Zisserman, and J. Carreira. Perceiver: General perception with iterative attention. In International Conference on Machine Learning (ICML) ,2021. [21] F. Yuan, P. Neubert, S. Schubert, and P. Protzel. Softmp: Attentive feature pooling for joint local feature detection and description for place recognition in changing environments. In 
+
+IEEE International Conference on Robotics and Automation (ICRA) , 2021. [22] C. Higuera, A. Sharma, T. Fan, C. K. Bodduluri, B. Boots, M. Kaess, M. Lambeta, T. Wu, Z. Liu, F. R. Hogan, et al. Tactile beyond pixels: Multisensory touch representations for robot manipulation. In Conference on Robot Learning (CoRL) , 2025. [23] R. Jangir, N. Hansen, S. Ghosal, M. Jain, and X. Wang. Look closer: Bridging egocentric and third-person views with transformers for robotic manipulation. IEEE Robotics and Automation Letters (R-AL) , 2022. [24] E. Perez, F. Strub, H. De Vries, V. Dumoulin, and A. Courville. Film: Visual reasoning with a general conditioning layer. In Proceedings of the AAAI Conference on Artificial Intelligence ,2018. [25] M. Tancik, P. Srinivasan, B. Mildenhall, S. Fridovich-Keil, N. Raghavan, U. Singhal, R. Ra-mamoorthi, J. Barron, and R. Ng. Fourier features let networks learn high frequency func-tions in low dimensional domains. In Advances in Neural Information Processing Systems (NeurIPS) , 2020. [26] J. Deng, W. Dong, R. Socher, L.-J. Li, K. Li, and L. Fei-Fei. Imagenet: A large-scale hierar-chical image database. In Conference on Computer Vision and Pattern Recognition (CVPR) ,2009. [27] M. Tan and Q. Le. Efficientnet: Rethinking model scaling for convolutional neural networks. In International Conference on Machine Learning (ICML) , 2019. [28] Y. Lipman, R. T. Chen, H. Ben-Hamu, M. Nickel, and M. Le. Flow matching for generative modeling. arXiv preprint arXiv:2210.02747 , 2022. [29] D. Wang, S. Hart, D. Surovik, T. Kelestemur, H. Huang, H. Zhao, M. Yeatman, J. Wang, R. Walters, and R. Platt. Equivariant diffusion policy. In Conference on Robot Learning (CoRL) , 2024. [30] D. Klee, B. Hu, A. Cole, H. Tian, D. Wang, R. Platt, and R. Walters. Raven: End-to-end equivariant robot learning with rgb cameras. In International Conference on Learning Repre-sentations (ICRL) , 2026. [31] P. Mazzaglia and et al. Redundancy-aware action spaces for robot learning. IEEE Robotics and Automation Letters (R-AL) , 2024. 10 [32] O. Sim´ eoni, H. V. Vo, M. Seitzer, F. Baldassarre, M. Oquab, C. Jose, V. Khalidov, M. Szafraniec, S. Yi, M. Ramamonjisoa, et al. Dinov3. arXiv preprint arXiv:2508.10104 ,2025. 11 Appendix 
+
+## A Pseudocode 
+
+Algorithm 1 summarizes the core FocusPool pooling module. It replaces the original pooling layer after residual stage l and outputs the policy representation cS and averaged attention map A, which is used by the early attention regularization in Algorithm 2. 
+
+Algorithm 1 FocusPool Pooling 
+
+Require: CNN feature map F l, proprioception p, steps S, query tokens z0
+
+Ensure: Visual representation cS , attention map A
+
+1: X ← { [f ln; en]}HlWl
+
+> n=1
+
+2: (γ0, β 0) ← MLP state (p); q1 ← (1 + γ0) ⊙ z0 + β0
+
+3: K ← LN( X)W K ; V ← XW V
+
+4: for s = 1 , . . . , S do 
+
+5: Qs ← W QLN( qs)
+
+6: for each head h and query token r do 
+
+7: As,h,r ← Softmax  Qs,h,r K⊤ 
+
+> h
+
+/√dh
+
+
+
+8: Cs,h,r ← As,h,r Vh
+
+9: end for 
+
+10: cs ← Mean h,r (Cs,h,r )
+
+11: if s < S then 
+
+12: (γs, β s) ← MLP refine (LN( cs)) 
+
+13: qs+1 ← (1 + γs) ⊙ qs + βs
+
+14: end if 
+
+15: end for 
+
+16: A ← Mean h,r (AS,h,r )
+
+17: return cS , A 
+
+Algorithm 2 Early Attention Regularization 
+
+Require: Attention map A ∈ RB×Hl×Wl , target points u ∈ RB×2, image size D, Gaussian width σ
+
+Ensure: Prior loss Lprior 
+
+1: g ←
+
+ ux 
+
+> D−1
+
+(Wl − 1) , uy 
+
+> D−1
+
+(Hl − 1) 
+
+
+
+2: G ← Norm i,j 
+
+h
+
+exp 
+
+
+
+− (j−gx)2+( i−gy )2
+
+> 2σ2
+
+i 
+
+3: P ← Norm i,j [A]
+
+4: Lprior ← − 1
+
+> B
+
+PBb=1 
+
+P 
+
+> i,j
+
+Gb(i, j ) log( Pb(i, j ) + ϵ)
+
+5: return Lprior 
+
+## B Implementation 
+
+B.1 Simulated Tasks 
+
+The simulation benchmark consists of six MimicGen tasks [17] with high spatial variation, as shown in Fig. A.1. Please refer to the original paper for detailed task descriptions. Threading D2 Square D2 Mug Cleanup D1 Stack Three D1 3-Piece Assembly D2 Pick Place D0 
+
+Figure A.1: Overview of evaluated MimicGen tasks. 12 (a) Coffee Transport 
+
+> (b) Table Cleanup
+> (c) Giraffe Build
+
+Figure A.2: Real-world task demonstrations. The policies are trained on 50 demos for Coffee Transport and Giraffe Build and 100 demos for Table Cleanup .
+
+B.2 Real-world Setup 
+
+We evaluate on three real-world tasks that involve different action modes and visual challenges. A selected full demonstration of each task is shown in Fig. A.2. • Coffee Transport : A continuous-motion task that requires scooping coffee beans from a bowl and pouring them into a small cup. • Table Cleanup : A long-horizon and visually complex task that requires picking and placing / inserting two toy vegetables into a bin and closing its lid. • Giraffe Build : A high-precision and small visual focus task that requires assembling three small blocks into a giraffe shape in four steps. The tasks are executed on a UFactory xArm 7 under a multi-view RGB setup, with a fixed Intel RealSense D435i third-person camera and a RealSense D405 eye-in-hand camera. 
+
+B.3 Training Detail 
+
+We use an ImageNet-pretrained ResNet-18 [16] as the visual encoder and Diffusion Policy [2] as the policy head for the main evaluation. Training follows the standard CNN-based diffusion policy setup, with the main policy training hyperparameters summarized in Tab. A.I. 
+
+Hyperparameter Value 
+
+Training epoch 500 
+
+Batch size 128 
+
+Action representation Absolute Observation steps 2
+
+Action steps 8
+
+Horizon 16 
+
+Table A.I: General hyperparameters for policy training. For both simulation and real-world experiments, the proprioceptive state consists of the end-effector 3D position, 6D rotation, and 1D gripper opening. Actions are represented by the absolute end-effector position, 6D rotation, and gripper command in the workspace frame. We do not evaluate joint-space actions, as prior work shows that end-effector action spaces provide better data efficiency and spatial generalization than joint-space control [31]. 13 Category Hyperparameter Value 
+
+Heatmap Model DINO image size 224 
+
+Patch size 16 
+
+Hidden dimension 256 
+
+Transformer depth 4
+
+Transformer heads 8
+
+Transformer dropout 0.1
+
+Heuristic Keyframe Target Gaussian width 12 
+
+Simulation joint-velocity threshold 0.1
+
+Real-world joint-velocity threshold 0.025 
+
+Table A.II: RVT-2 hyperparameters. All methods use the same pooling strategy for both agent-view and eye-in-hand inputs. For AvgPool, spatial softmax, RcP, AFA, and FocusPool, simulated images are resized to 84 × 84 and randomly cropped to 76 × 76 . For real-world experiments, images are center-cropped to a square and resized to 128 × 128 . For RVT-2, simulation and real-world images are resized to 224 × 224 , cropped with a 4× zoom around the predicted keypoint with random center jitter, and then resized to the final policy input resolution after random cropping. 
+
+B.4 Model Implementation Spatial softmax. We implement spatial softmax following Robomimic [1] with 32 keypoints. 
+
+Robot-centric pooling. We reimplement RcP [14] following its original image–proprioception alignment design. The final ResNet-18 feature map is flattened into spatial tokens, while the pro-prioceptive state is encoded into a query that attends over these features. RcP is trained with a MoCo-style contrastive objective to align image regions with robot state, using a momentum en-coder and negative queue. For policy pooling, the highest-scoring spatial location is selected as a one-hot mask and used to read out the corresponding visual feature, which is then concatenated with proprioception for downstream control. 
+
+Attentive feature aggregation. AFA is an attention-pooling module proposed for out-of-domain generalization, where learned tokens cross-attend to the final feature map of frozen pretrained CNN or ViT encoders. We adopt the official implementation of AFA [15]. We trained the AFA encoder end-to-end, since freezing the visual representation leads to near-zero performance on MimicGen. 
+
+RVT-2. RVT-2 uses trajectory-derived keyframes and local crops in its 3D manipulation pipeline [6]. We adapt this heuristic local-focus interface to RGB inputs, yielding an RVT-2-style cropping base-line rather than a direct reimplementation of RVT-2. The baseline trains a separate keypoint heatmap predictor before policy learning. Given a 224 × 224 agent-view image and robot state, frozen DI-NOv3 patch features [32] and robot-state tokens are fed to a Transformer that predicts a 14 × 14 
+
+local-focus heatmap. The maximum-probability patch is then used as the fixed-size crop center for policy training and evaluation. Following RVT-2, we use a zoom-in ratio of 4, where the crop covers one quarter of the image width and height before being resized to the policy input resolution. A keyframe is selected when the gripper state changes, when the robot joint velocity falls below a fixed threshold, or at the final frame. We project the end-effector position at the selected future keyframe into the current agent-view image using the camera matrix. The projected pixel location is mapped to the 14 × 14 heatmap grid and converted into a Gaussian-smoothed target. The Trans-former is trained with soft cross-entropy to predict this future end-effector heatmap. We also use the same projected future-keyframe target as the heuristic keypoint for early attention regularization in FocusPool. The hyperparameters for the RVT-2-style cropping baseline are listed in Tab. A.II. 
+
+FocusPool. FocusPool is a state-conditioned attention pooling module applied to intermediate ResNet feature maps. Its pooling query is conditioned on the 3D end-effector position and 1D grip-per state. At each forward pass, FocusPool performs multi-head cross-attention between the query tokens and spatial image tokens, and averages the attended context over attention heads and query 14 Category Hyperparameter Value 
+
+FocusPool Refinement steps 3
+
+Attention heads 4
+
+Head dimension 128 
+
+Attention Regularization Policy loss weight 1.0
+
+Initial regularization loss weight 2.0 × 10 −4
+
+Loss decay steps 5000 
+
+Gaussian width 1.3
+
+Table A.III: FocusPool hyperparameters. tokens to produce the policy representation. The query is iteratively refined for 3 steps using FiLM modulation from the pooled context. The hyperparameters for FocusPool are listed in Tab. A.III. The early attention regularization uses the same projected future-keyframe target as RVT-2. We project the end-effector position at the next heuristic keyframe into the current camera views and map the projected point to the pooling grid. A Gaussian target heatmap is constructed around the projected point, and a cross-entropy loss is applied between this target heatmap and the head-averaged attention map produced by FocusPool. The regularization loss is added to the policy loss with a small initial weight, which linearly decays to zero over 5000 trainging steps. 
+
+## C Further Discussion on Attention Pooling 
+
+C.1 Constructing Attention Pooling Masks 
+
+Attentive Feature Aggregation (AFA) is the closest pooling baseline to FocusPool in design, since it also uses cross-attention to aggregate image features. However, AFA does not directly adaptively update the query with robot state and visual task-progression information. When made trainable at an intermediate ResNet stage, AFA can be viewed as a simplified variant of FocusPool without robot-state conditioning and query iterative refinement. We further analyze how these two components affect the localization of aggregated visual features and, consequently, policy performance. Fig. A.3 visualizes the attention pooling masks for the resulting variants of FocusPool. FocusPool No State No Refinement AFA 
+
+Figure A.3: Pooling mask visualization. Attention pooling weights for FocusPool variants on Stack Three when read out after residual stage 2: no iterative refinement, no robot-state conditioning, baseline attentive feature aggregation, and the full FocusPool. Compared with the full FocusPool, Fig. A.3 shows that removing iterative refinement yields a less progression-aware focus. For example, in the highlighted green region, attention shifts partly to the lower block before the current insertion is completed. This suggests that robot state alone can be ambiguous for identifying task progress in long-horizon manipulation. With refinement, the pooled visual context is fed back into the query, allowing scene information to disambiguate the current stage. Performance is comparable with 2 and 3 refinement steps in our sweep, so we use 3 steps to retain additional capacity for more demanding tasks at negligible cost. 15 Method Mug Cleanup D1 Square D2 Threading D2 Three Piece D2 Stack Three D1 Pick Place D0 No Iter. 52 (-4) 38 (+2) 34 (-12) 42 (-4) 74 (-8) 50 (-10) No State 52 (-4) 36 (+0) 28 (-18) 40 (-6) 66 (-16) 54 (-6) AFA 56 (+0) 28 (-8) 26 (-20) 16 (-30) 68 (-14) 30 (-30) FocusPool 56 36 46 46 82 60 
+
+Table A.IV: Per-task ablation results corresponding to Fig. 5a. Success rates (%) for FocusPool variants: no iterative refinement (no Iter.), no robot-state query conditioning (no State), baseline attentive feature aggregation (AFA), and the full FocusPool on six MimicGen tasks using seed 0. The comparison with the no-state variant and AFA shows that iterative refinement can still im-prove the learned query without initial state conditioning. However, removing state conditioning eliminates an important source of task-progress information, making attention more diffuse around subtask transitions. In the highlighted region, the focus shifts to the next block before the gripper has closed. This also causes a larger performance drop when task progress is difficult to infer from vision alone. For example, on Stack Three , the no-state variant drops by 16% , compared with 8% 
+
+for the no-iteration variant in Tab. A.IV. The three blocks are visually similar but differ in height, making robot state a more explicit cue for the current task stage. Removing both components makes AFA’s learned attention less localized and less task-progressive, leading to the largest drop in policy success. The visualization also helps explain why AFA degrades when trained on intermediate features, supporting the view that the data-efficiency gain comes from localized feature readout. Such task-progressive, control-relevant selection requires grounding from both robot state and visual context, which FocusPool provides through state conditioning and itera-tive refinement. 
+
+C.2 Effect of Visual Pre-training                               
+
+> Method Thread. Square M. Cleanup Stack Three 3-Piece Pick Place SSM no pretarin 17 843 38 420 SSM with pretrain 24 27 49 67 17 30 FocusPool no pretrain 26 38 54 76 18 48 FocusPool with pretrain 46 36 56 82 46 60
+
+Table A.V: Pretraining effect. Success rates (%) for spatial softmax (SSM) and FocusPool with and without encoder ImageNet pretraining weights on six MimicGen tasks using seed 0. FocusPool and all baselines are trained with pretrained encoders throughout the experiments. Pre-training can improve data efficiency by providing useful low-level visual priors for early convo-lutional layers, such as edge detectors learned from large-scale data, as also observed in prior work [29, 30]. We further analyze how pretraining affects the data efficiency of the spatial soft-max baseline and FocusPool, with results summarized in Tab. A.V. Comparing each method with and without pretraining shows that pretraining improves performance for both spatial softmax and FocusPool. The gains are most pronounced on tasks with harder ac-tion modes for FocusPool, such as Threading and Three-Piece Assembly . spatial softmax, in con-trast, shows consistent gains from pretraining across tasks. On Square and Stack Three , FocusPool performs similarly with and without pretraining, while pretraining improves spatial softmax perfor-mance by 19% and 29% , respectively. This suggests that FocusPool is less dependent on pretrained features and can more efficiently aggregate task-relevant visual information from demonstrations. 
+
+## D Full Simulation Result 
+
+D.1 Data Efficiency 
+
+Tab. A.VI reports the results corresponding to Tab. 2, including standard deviations over three seeds. Tab. A.VII reports the per-task results for RVT-2 and FocusPool trained on 25 and 50 demonstra-tions, corresponding to Fig. 3. 16 Method Thread. D2 Square D2 M. Cleanup D1 Stack Three D1 3P Assem. D2 Pick Place D0 
+
+Local-Focus Baseline 
+
+RVT2 12.7 ±1.2 26.0 ±2.0 46.0 ±1.7 71.3 ±1.2 26.7 ±1.2 49.3 ±3.1
+
+Pooling Baselines 
+
+AvgPool 20.7 ±2.1 22.0 ±3.5 46.7 ±5.0 52.7 ±5.4 14.0 ±9.2 29.0 ±5.3
+
+SSM 24.0 ±3.5 26.7 ±5.0 49.3 ±1.2 66.7 ±5.0 17.3 ±1.2 30.0 ±2.0
+
+AFA 25.3 ±1.2 28.7 ±1.2 50.0 ±5.3 64.7 ±4.2 16.7 ±3.1 30.7 ±1.2
+
+FocusPool 40.7 ±3.2 33.3 ±1.8 59.3 ±4.8 81.3 ±2.2 47.3 ±6.7 54.0 ±2.2
+
+Table A.VI: Data efficiency on MimicGen. Success rates (%) of FocusPool and baselines, reported as mean and standard deviation over three seeds using the best training-evaluation checkpoint. 
+
+Model # Demos Thread. Square M. Cleanup Stack Three 3P Assem. Pick Place RVT-2 25 8 2 8 6 0 250 8 6 26 14 6 12 FocusPool 25 8 4 24 28 6 16 50 20 28 36 62 24 30 
+
+Table A.VII: Data efficiency curve. Per-task success rate (%) for RVT-2 and FocusPool trained on 25 and 50 demons using seed 0. 
+
+D.2 Pooling Stage 
+
+Tab. A.VIII reports the pre-task results corresponding to Fig. 4a. 
+
+Task L1 L2 L3 L4 
+
+Mug Cleanup D1 32 44 50 46 Square D2 4 22 32 22 Threading D2 8 22 28 20 Stack Three D1 2 32 48 54 
+
+Three Piece D2 0 2 18 14 Pick Place D0 2 16 22 30 
+
+Average 8 23 33 31 
+
+(a) Average pooling 
+
+Task L1 L2 L3 L4 
+
+Mug Cleanup D1 44 52 52 50 Square D2 22 24 32 32 
+
+Threading D2 20 30 28 22 Stack Three D1 36 56 62 72 
+
+Three Piece D2 4 10 24 18 Pick Place D0 4 30 28 30 
+
+Average 22 34 38 37 
+
+(b) Spatial softmax 
+
+Task L1 L2 L3 L4 
+
+Mug Cleanup D1 30 48 54 56 
+
+Square D2 10 26 24 28 
+
+Threading D2 16 24 28 26 Stack Three D1 10 46 62 68 
+
+Three Piece D2 0 16 26 16 Pick Place D0 6 26 26 30 
+
+Average 12 31 37 37 
+
+(c) Attentive feature aggregation 
+
+Task L1 L2 L3 L4 
+
+Mug Cleanup D1 48 56 54 52 Square D2 40 36 34 24 Threading D2 38 46 28 24 Stack Three D1 84 82 78 64 Three Piece D2 50 46 34 22 Pick Place D0 58 60 30 30 
+
+Average 53 54 43 36 
+
+(d) FocusPool 
+
+Table A.VIII: Pooling intermediate features. Policy success rates (%) for four pooling methods when read out after different ResNet-18 residual stages, across six MimicGen tasks using seed 0. 
+
+## E Real-world Visualization 
+
+We visualize the learned spatial softmax keypoints, RVT-2 crop regions, and L2 FocusPool attention-pooling weights during real-world policy rollouts on 3 tasks in Figs. A.4, A.5, and A.6. 17 (a) Spatial Softmax 
+
+> (b) RVT-2
+> (c) FocusPool
+
+Figure A.4: Visual Focus on Coffee Transport. Visualization of Spatial Softmax keypoints, RVT-2 predicted crop regions, and FocusPool attention-pooling weights overlaid on the input images. 
+
+> (a) Spatial Softmax
+> (b) RVT-2
+> (c) FocusPool
+
+Figure A.5: Visual Focus on Table Cleanup. Visualization of Spatial Softmax keypoints, RVT-2 predicted crop regions, and FocusPool attention-pooling weights overlaid on the input images. 
+
+> (a) Spatial Softmax
+> (b) RVT-2
+> (c) FocusPool
+
+Figure A.6: Visual Focus on Giraffe Build. Visualization of Spatial Softmax keypoints, RVT-2 predicted crop regions, and FocusPool attention-pooling weights overlaid on the input images. 18 F Simulation Visualization 
+
+We provide further visualizations of FocusPool attention-pooling weights and feature activations on six Mimicgen tasks during policy rollouts. 
+
+Figure A.7: FocusPool Visualization on Threading D2. Attention-pooling weights and feature activations at residual stage 2 overlaid on input images from one rollout. 
+
+Figure A.8: FocusPool Visualization on Square D2. Attention-pooling weights and feature activa-tions at residual stage 2 overlaid on input images from one rollout. 
+
+Figure A.9: FocusPool Visualization on Stack Three D1. Attention-pooling weights and feature activations at residual stage 2 overlaid on input images from one rollout. 19 Figure A.10: FocusPool Visualization on Mug Cleanup D1. Attention-pooling weights and feature activations at residual stage 2 overlaid on input images from one rollout. 
+
+Figure A.11: FocusPool Visualization on Three Piece Assembly D2. Attention-pooling weights and feature activations at residual stage 2 overlaid on input images from one rollout. 
+
+Figure A.12: FocusPool Visualization on Pick and Place D0. Attention-pooling weights and feature activations at residual stage 2 overlaid on input images from one rollout. 20

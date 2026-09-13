@@ -1,0 +1,233 @@
+{
+  "date": "20260913",
+  "date_label": "",
+  "generated_at": "2026-09-13 22:04:55 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.11014v1",
+      "route": "202609/13/2609.11014v1-topological-necessities-mechanism-invariant-strategic-subgoals-for-cross-embodiment-goal-conditioned-control",
+      "title": "Topological Necessities: Mechanism-Invariant Strategic Subgoals for Cross-Embodiment Goal-Conditioned Control",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向跨具身目标条件控制的机制无关策略子目标",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.08339v1",
+      "route": "202609/13/2609.08339v1-robocousin-build-your-own-simulation-playground-for-robust-bimanual-robotic-manipulation",
+      "title": "RoboCousin: Build Your Own Simulation Playground for Robust Bimanual Robotic Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "仿真数据生成平台将观测转化为资产、场景与专家轨迹",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.10706v1",
+      "route": "202609/13/2609.10706v1-huro-robotizing-human-videos-for-scalable-vla-pretraining",
+      "title": "HuRo: Robotizing Human Videos for Scalable VLA Pretraining",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "将人类视频机器化以弥合人到机器人具身差距并预训练VLA",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.06508v1",
+      "route": "202609/13/2609.06508v1-vla-corrector-stage-aware-observable-state-understanding-for-prompt-based-closed-loop-recovery-of-vision-language-action-policies",
+      "title": "VLA-Corrector: Stage-Aware Observable State Understanding for Prompt-Based Closed-Loop Recovery of Vision-Language-Action Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "对固定视觉-语言-动作策略进行长程机器人操作的闭环纠正",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.06820v2",
+      "route": "202609/13/2609.06820v2-diagnosing-and-dynamically-filtering-occupancy-world-models-for-active-mapping",
+      "title": "Diagnosing and Dynamically Filtering Occupancy World Models for Active Mapping",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "诊断与过滤用于主动建图规划的占据世界模型",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.08853v1",
+      "route": "202609/13/2609.08853v1-cast-alternating-state-value-targets-and-expanded-policy-gradients-for-model-based-reinforcement-learning",
+      "title": "CAST: Alternating State-Value Targets and Expanded Policy Gradients for Model-Based Reinforcement Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于模型的强化学习结合学习环境模型与在线规划实现样本高效机器人控制",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.09158v1",
+      "route": "202609/13/2609.09158v1-tango-humanoid-navigation-in-cluttered-environments-with-a-whole-body-vision-language-action-model",
+      "title": "TANGO: Humanoid Navigation in Cluttered Environments with a Whole-Body Vision-Language-Action Model",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向真实三维环境人形导航的全身视觉-语言-动作模型",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.09418v1",
+      "route": "202609/13/2609.09418v1-valerant-an-automatic-navigable-game-map-generator-via-action-conditioned-world-model-exploration",
+      "title": "Valerant: An Automatic Navigable Game Map Generator via Action-Conditioned World Model Exploration",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "动作条件世界模型探索，用于三维游戏中的智能体行为",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.10243v1",
+      "route": "202609/13/2609.10243v1-foldex-a-physical-world-benchmark-for-long-horizon-robotic-manipulation-of-deformable-objects",
+      "title": "FolDeX: A Physical-World Benchmark for Long-Horizon Robotic Manipulation of Deformable Objects",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向长程可变形物体操作的真实机器人具身智能基准",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.06718v1",
+      "route": "202609/13/2609.06718v1-skillx-unified-multi-skill-policy-learning-for-humanoid-soccer",
+      "title": "SkillX: Unified Multi-Skill Policy Learning for Humanoid Soccer",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向真实人形机器人的统一多技能全身控制策略学习",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.08408v1",
+      "route": "202609/13/2609.08408v1-localized-visual-feature-aggregation-via-focus-pooling-for-visuomotor-policies",
+      "title": "Localized Visual Feature Aggregation via Focus Pooling for Visuomotor Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "注意力池化提取局部控制相关特征以提升视觉运动策略数据效率",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.08602v1",
+      "route": "202609/13/2609.08602v1-clamp-constrained-decoding-for-vision-language-embodied-planning",
+      "title": "CLAMP: Constrained Decoding for Vision-Language Embodied Planning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向视觉-语言具身规划的可执行约束解码",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.10339v1",
+      "route": "202609/13/2609.10339v1-a-confidence-aware-multimodal-fusion-framework-for-industrial-human-robot-collaboration",
+      "title": "A Confidence-Aware Multimodal Fusion Framework for Industrial Human-Robot Collaboration",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向工业人机协作的多模态融合与真实UR3机器人平台",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    },
+    {
+      "paper_id": "2609.10895v1",
+      "route": "202609/13/2609.10895v1-reacthuman-a-physics-grounded-benchmark-for-human-like-reactive-decision-making-in-embodied-multimodal-llms",
+      "title": "ReactHuman: A Physics-Grounded Benchmark for Human-Like Reactive Decision-Making in Embodied Multimodal LLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向具身多模态大模型作为人形机器人决策核心的基准",
+      "first_seen_at": "2026-09-13 22:04:55 UTC",
+      "updated_at": "2026-09-13 22:04:55 UTC"
+    }
+  ]
+}

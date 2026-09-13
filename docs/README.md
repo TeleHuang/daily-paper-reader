@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-12</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-13</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 15 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 14 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>4</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>3</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-12 21:31:01 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-13 22:04:55 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-12 日报精选 15 篇机器人世界模型研究，精读 4 篇、速读 11 篇。最值得关注的是世界动作模型学会&quot;按进度调用想象力&quot;（8.0分）和紧凑视觉触觉世界模型用于举升（8.0分），另有失败恢复、异步传感器观测等速读方向。普通读者可优先从这两篇精读入手，感受机器人如何预测未来并纠错。</p>
+<p>今日从14篇中精读3、速读11，精读区由《Topological Necessities》（9.0）和《RoboCousin》（8.0）领跑。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -78,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">4 篇</strong>
+    <strong class="dpr-home-dashboard-count">3 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Learning to Use Imagination: Progress-Conditioned Future Utilization for World Action Models">Learning to Use Imagination: Progress-Conditioned Future Utilization for World Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Compact Visuotactile World Models for Lifting: Prediction, Reward Alignment, and Force Constraints">Compact Visuotactile World Models for Lifting: Prediction, Reward Alignment, and Force Constraints</span></li><li><span class="dpr-home-dashboard-paper-title" title="Memory as Plans: World-Action Modeling with Memory-Grounded Planning">Memory as Plans: World-Action Modeling with Memory-Grounded Planning</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Topological Necessities: Mechanism-Invariant Strategic Subgoals for Cross-Embodiment Goal-Conditioned Control">Topological Necessities: Mechanism-Invariant Strategic Subgoals for Cross-Embodiment Goal-Conditioned Control</span></li><li><span class="dpr-home-dashboard-paper-title" title="RoboCousin: Build Your Own Simulation Playground for Robust Bimanual Robotic Manipulation">RoboCousin: Build Your Own Simulation Playground for Robust Bimanual Robotic Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="HuRo: Robotizing Human Videos for Scalable VLA Pretraining">HuRo: Robotizing Human Videos for Scalable VLA Pretraining</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>4</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>3</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -94,7 +94,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="LIBERO-RECOVER: Beyond Task Success Towards Failure Recovery in Robotic Manipulation Models">LIBERO-RECOVER: Beyond Task Success Towards Failure Recovery in Robotic Manipulation Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="One MLLM, One Call: Efficient Zero-Shot Vision-and-Language Navigation via Spatial-Aware Waypoints">One MLLM, One Call: Efficient Zero-Shot Vision-and-Language Navigation via Spatial-Aware Waypoints</span></li><li><span class="dpr-home-dashboard-paper-title" title="World Models Under Asynchronous Sensor Observations">World Models Under Asynchronous Sensor Observations</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="VLA-Corrector: Stage-Aware Observable State Understanding for Prompt-Based Closed-Loop Recovery of Vision-Language-Action Policies">VLA-Corrector: Stage-Aware Observable State Understanding for Prompt-Based Closed-Loop Recovery of Vision-Language-Action Policies</span></li><li><span class="dpr-home-dashboard-paper-title" title="Diagnosing and Dynamically Filtering Occupancy World Models for Active Mapping">Diagnosing and Dynamically Filtering Occupancy World Models for Active Mapping</span></li><li><span class="dpr-home-dashboard-paper-title" title="CAST: Alternating State-Value Targets and Expanded Policy Gradients for Model-Based Reinforcement Learning">CAST: Alternating State-Value Targets and Expanded Policy Gradients for Model-Based Reinforcement Learning</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
