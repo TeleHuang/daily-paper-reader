@@ -1,0 +1,289 @@
+Title: Masked Latent Prediction of CSI for Indoor Localization in Integrated Sensing and Communication Systems
+
+URL Source: https://arxiv.org/pdf/2609.08509v1
+
+Published Time: Wed, 09 Sep 2026 02:52:28 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# Masked Latent Prediction of CSI for Indoor Localization in Integrated Sensing and Communication Systems 
+
+Ibtissam Labriji ∗‡ , Mahdi Maleki †‡ , and Pavan Koteshwar Srinath ∗∗ Nokia Bell Labs, France Email: {ibtissam.labriji, pavan.koteshwar srinath }@nokia-bell-labs.com 
+
+† Politecnico di Milano, Italy Email: mahdi.maleki@polimi.it 
+
+‡These authors contributed equally to this work. 
+
+Abstract —Channel State Information (CSI)-based fingerprint-ing can enable accurate indoor localization but suffers from domain shift, limited labeled data, and degraded performance in multipath-rich environments. To address these challenges, we propose a self-supervised localization framework built on a Joint Embedding Predictive Architecture (JEPA). Each CSI time snapshot is treated as a token, and the encoder is pre-trained by predicting the latent embeddings of masked snapshots from the visible ones, learning robust channel representations without any labels. The encoder is then frozen, and only a lightweight regression head is trained on a small set of labeled positions to estimate the user location. We evaluate the framework on the measured DICHASUS-005 x dataset—a single-antenna transmit-ter received by a 32 -antenna array in a multipath-rich indoor environment. With a 50% masking ratio, the proposed method reduces the mean localization error from 0.90 m to 0.42 m (a 
+
+53% reduction, or 0.48 m) relative to a supervised Convolutional Neural Network (CNN) baseline trained on raw CSI. Owing to its label-efficient, frozen-encoder design, the framework aligns with integrated sensing and communication (ISAC) objectives, enabling reliable sensing with minimal labeling and compute overhead. 
+
+Index Terms —Integrated sensing and communication, CSI-based localization, self-supervised learning, JEPA, masked latent prediction, indoor positioning. 
+
+I. I NTRODUCTION 
+
+Fingerprinting exploits location-specific characteristics of radio signals—Received Signal Strength (RSS), Channel State Information (CSI), and hardware-induced impairments—to localize a device without dedicated infrastructure or transmitter cooperation [1]. Among these, CSI-based fingerprinting is especially attractive indoors due to its fine-grained view of the propagation environment, and deep models (Convolu-tional Neural Networks (CNNs), Recurrent Neural Networks (RNNs), and Transformers) learn discriminative features from high-dimensional CSI in dense settings where Global Posi-tioning System (GPS) is unreliable [2], [3]. Such localiza-tion is also central to integrated sensing and communication (ISAC), where communication signals are reused to estimate 
+
+This work has been submitted to the IEEE for possible publication. Copyright may be transferred without notice, after which this version may no longer be accessible. 
+
+spatial parameters such as position, angle, and velocity without sensing-dedicated hardware—a key direction for future 6G networks [4]. Fingerprints, however, are highly sensitive to domain shift: environmental changes, mobility, and varying signal conditions degrade accuracy relative to the training-time radio map [5]. A further obstacle is the reliance on large, accurately labeled radio maps, whose collection and periodic refreshing is costly in both semi-supervised [5], [6] and fully-supervised [1] settings, and is compounded by severe multipath, blockage, and frequent Non-Line-of-Sight (NLOS) conditions [7]. While supervised models can capture complex CSI correlations and improve robustness under NLOS, their accuracy still drops sharply under environmental change [8]. To reduce this label dependence, Self-Supervised Learning (SSL) learns transferable representations directly from un-labeled signals [2], via masked modeling, contrastive, or predictive objectives [9]. Yet contrastive methods require hand-crafted, physics-preserving augmentations that are difficult to design for Radio Frequency (RF) signals, while reconstruction-based methods expend capacity on low-level detail largely irrelevant to position. The Joint Embedding Predictive Archi-tecture (JEPA) avoids both by predicting abstract latent rep-resentations rather than reconstructing raw observations [10], concentrating capacity on semantically meaningful, geometry-linked structure. Recent WiFi-sensing work shows that channel information can indeed be predicted in latent space through cross-modal semantic inpainting [11]. Combined with the label scarcity and the difficulty of designing physics-preserving RF augmentations noted above, this makes JEPA’s augmentation-free latent prediction a natural fit for CSI-based localization; yet such prediction within the intrinsic structure of CSI— and the tokenization and masking design that yields label-efficient, environment-invariant representations robust to mul-tipath, NLOS, and missing measurements—remains largely unexplored [12]. 
+
+A. Motivation and Contributions 
+
+Motivated by these challenges, this paper investigates indoor localization using JEPA-based representation learning. We arXiv:2609.08509v1 [eess.SP] 8 Sep 2026 consider an indoor region of interest in which a single-antenna user transmits to a multi-antenna Base Station (BS), and localization is performed from CSI fingerprints extracted from the received signal. The key idea is to learn, through masked temporal prediction in latent space, an embedding in which observations from nearby positions become more structurally informative and easier to localize, before any labels are used. The main contributions of this paper are:  
+
+> •
+
+We propose a JEPA-based self-supervised framework for CSI localization that treats each time snapshot as a token and predicts the latent representations of masked snap-shots from the visible ones, avoiding both augmentation design and raw-CSI reconstruction.  
+
+> •
+
+We adopt a two-stage design in which the encoder is pre-trained once and frozen , and only a lightweight regression head is trained on a small set of labeled positions, enabling label-efficient and low-latency deployment at the network edge.  
+
+> •
+
+We validate the approach on the measured DICHASUS dataset (a single-antenna transmitter and a 32 -antenna receiver) and show that it lowers the mean localization error by a factor of about 2.1× (from 0.90 m to 0.42 m) relative to a supervised CNN trained on raw CSI, with a consistently left-shifted error CDF. The remainder of this paper is organized as follows. Section II reviews related work on indoor localization, fin-gerprinting, and self-supervised representation learning. Sec-tion III presents the system model and fingerprint construction. Section IV introduces the proposed JEPA-based framework. Section V reports the experimental results, and Section VI concludes the paper. II. S TATE OF THE ART 
+
+CSI fingerprinting with CNN, RNN, and Transformer ar-chitectures has achieved high accuracy in dense indoor de-ployments by learning discriminative features over subcarriers and antennas [1], [2]. These methods, however, are typically trained per environment and degrade under domain shift in-duced by temporal variation, furniture rearrangement, changes in access-point configuration, and human presence. Supervised pipelines further require large, precisely labeled radio maps, whose collection and periodic refreshing is costly in complex indoor spaces. Semi-supervised and domain-adaptation vari-ants reduce the labeling burden but still struggle to maintain stability across sites and over time. A central difficulty is that multipath propagation and NLOS conditions [5] lead these models to learn entangled representations that cannot separate the permanent room geometry from transient changes such as moving people, so even attention-augmented ResNets and Vi-sion Transformers (ViTs) lose accuracy when the environment changes slightly [2]. Self-supervised learning has been explored to reduce label dependence, but the dominant paradigms transfer poorly to RF data. Contrastive methods rely on hand-crafted augmentations, and determining which transformations preserve the under-lying channel physics while remaining informative requires substantial expert tuning [9]. Reconstruction-based approaches such as masked autoencoder (MAE) instead expend model ca-pacity on regenerating low-level CSI detail that is largely irrel-evant to localization. In contrast, predictive latent objectives— exemplified by JEPA—learn by predicting masked context in representation space, avoiding both augmentation design and pixel-level reconstruction, and thereby concentrating capacity on stable, geometry-linked factors of variation [7], [10]. Beyond CSI fingerprinting, several ranging-based technolo-gies provide indoor positioning under specific hardware and protocol assumptions. Wi-Fi Round-Trip Time (802.11mc/az) estimates distance from signal time-of-flight and typically achieves 1–2 m accuracy when access points support Fine Timing Measurement (FTM), degrading to 3–4 m for one-sided RTT with legacy hardware [11]. Bluetooth low en-ergy (BLE) 5.1 Angle-of-Arrival/Departure (AoA/AoD) can reach sub-meter accuracy with multi-antenna anchors—an empirical study reports an average error of about 0.7 m— but remains sensitive to multipath, antenna-array calibration, and anchor placement [13]. Ultra-Wideband (UWB) offers the highest ranging precision at 10 –30 cm under clear Line-of-Sight (LOS), at the cost of dedicated hardware and tight timing synchronization [14]. These technologies deliver strong accuracy only under favorable conditions and typically depend on specialized hardware, calibration, or protocol support, in contrast to CSI-based approaches that reuse existing Wi-Fi/cellular infrastructure. In summary, prior art either (i) attains high accuracy but is fragile under domain shift and label-hungry, (ii) applies self-supervision in forms poorly matched to RF physics, or (iii) requires dedicated ranging hardware. This motivates a label-efficient, augmentation-free representation that is robust to multipath and NLOS and deployable on existing infrastructure, which we pursue through masked temporal latent prediction over CSI. III. S YSTEM MODEL 
+
+We consider an indoor wireless localization system that exploits CSI measurements collected from a radio infrastruc-ture such as a BS or Access Point (AP). The objective is to estimate the spatial position of a User Equipment (UE) from high-dimensional CSI observations under realistic propagation conditions, including multipath, NLOS, and irregular temporal sampling. The proposed framework follows a masked temporal latent prediction pipeline, illustrated in Fig. 1. 
+
+A. Overview 
+
+In practice, a BS or AP continuously logs CSI as users move through the area, yielding large amounts of unlabeled measure-ments but very few position-annotated ones. We exploit this asymmetry with two stages that share a single encoder (Fig. 1). Offline, the encoder is pre-trained on the unlabeled logs alone: each window is split into visible and masked snapshots, and the encoder learns to predict the masked snapshots in latent space, supervised only by an EMA copy of itself (Fig. 2). This stage needs no labels and can run on historical data. Fig. 1. Proposed localization pipeline. A CSI window Hfull is split into visible ( Hvis ) and masked ( Hmask ) snapshots. During pre-training, E(·) produces            
+
+> Zvand P(·)predicts ˆZm; for localization, the frozen encoder’s latents are aggregated into Zwin , which the LWLM G(·)maps to ˆp, supervised by the ground-truth label p= ( x, y ).
+
+The encoder is then frozen and, using a small set of surveyed reference points, only a lightweight head is trained to map its embeddings to coordinates—a step cheap enough to repeat when a site changes. At run time, localizing a user reduces to one frozen-encoder pass over the visible snapshots followed by the small head, averaged over a few masking patterns for stability, so inference stays fast and edge-friendly. 
+
+B. CSI Signal Representation 
+
+Let the CSI measurement at time index t be denoted as 
+
+Xt ∈ CNf ×Na , (1) where Nf is the number of frequency bins and Na is the number of receive antenna elements. A temporal window of CSI measurements is 
+
+Hfull = {X1, X2, . . . , XT }. (2) Due to practical system constraints, the CSI observations within a window may be irregularly sampled or partially missing. 
+
+C. Temporal Tokenization 
+
+Each CSI snapshot Xt is treated as a single time-aligned token 
+
+T = {τ1, τ 2, . . . , τ T }, τt = Xt, (3) where each token spans the full frequency–antenna structure. This formulation preserves the temporal evolution of the propagation environment and avoids splitting the CSI along the frequency or antenna dimensions. IV. P ROPOSED METHOD 
+
+We present the proposed masked temporal latent prediction framework for CSI-based localization. The underlying self-supervised principle is summarized in Fig. 2, and its instanti-ation in the full localization pipeline is shown in Fig. 1. 
+
+A. Masked Temporal Learning 
+
+The token set of a window is partitioned into a visible subset 
+
+Hvis and a masked subset Hmask , indexed respectively by the time-index sets V and M:
+
+Hfull = Hvis ∪ Hmask , V ∩ M = ∅, V ∪ M = {1, . . . , T }.
+
+(4) Masking is applied to entire CSI snapshots rather than partial features, so each masked unit is a complete measurement occasion. During pre-training the partition is drawn at random with a fixed masking ratio; for evaluation it is generated from deterministic, coverage-balanced patterns (Section V). Because each masked unit is a complete snapshot, the encoder must infer it from temporal context alone, which by con-struction makes it tolerant to missing or irregularly sampled measurements and pushes it toward geometry-aware structure. 
+
+B. Encoder–Predictor Architecture 
+
+A context (online) encoder E(·) maps the visible tokens to latent embeddings, 
+
+Zv = E(Xv ), v ∈ V , (5) and a predictor P (·) estimates the latent representation of each masked token from the visible embeddings and the masked position index, 
+
+ˆZm = P ({Zv }v∈V , m ) , m ∈ M . (6) The prediction targets are produced by a target encoder ¯E(·),an exponential moving average (EMA) of the online encoder that is not updated by gradient descent, 
+
+Zm = sg  ¯E(Xm), ¯E ← ρ ¯E + (1 − ρ) E, (7) where sg[ ·] is the stop-gradient operator and ρ ∈ [0 , 1) is the EMA momentum (increased from 0.96 to 0.99 during training). The EMA target together with the stop-gradient prevent representation collapse. This is what lets the objective remain augmentation-free: with slowly-moving, stop-gradient Fig. 2. Self-supervised JEPA principle. The context encoder E(·) encodes the visible snapshots Hvis into latents Zv , and the predictor P (·) estimates the latents          
+
+> ˆZmof the masked snapshots Hmask . Targets Zmcome from the EMA target encoder ¯E(·)under stop-gradient; training minimizes ℓSL1 (LN( ˆZm),LN( Zm)) .After pre-training, the frozen encoder feeds the LWLM G(·).
+
+targets the predictor cannot collapse the representation, so no negatives or hand-crafted RF augmentations are required. 
+
+C. Latent Prediction Objective 
+
+Training minimizes a latent-space prediction loss between the predicted and target embeddings of the masked tokens, 
+
+L = X
+
+> m∈M
+
+ℓSL1 
+
+
+
+LN( ˆZm), LN( Zm)
+
+
+
+, (8) where LN( ·) denotes layer normalization applied over the embedding dimension, 
+
+LN( Z) = Z − μ
+
+√σ2 + ϵ , μ = 1
+
+D
+
+> D
+
+X
+
+> d=1
+
+Zd, σ2 = 1
+
+D
+
+> D
+
+X
+
+> d=1
+
+(Zd−μ)2,
+
+(9) with D the encoder embedding dimension and ϵ a small con-stant for numerical stability. Layer normalization standardizes each D-dimensional latent to zero mean and unit variance, so the comparison is invariant to scale and offset and the targets remain stable during training. The term ℓSL1 is the smooth-L1
+
+(Huber) loss with threshold β,
+
+ℓSL1 (r) = 
+
+
+
+r2
+
+2β , |r| < β, 
+
+|r| − β 
+
+> 2
+
+, |r| ≥ β, 
+
+(10) applied element-wise and averaged over the embedding di-mension, with β = 1. It behaves quadratically for small residuals, ensuring smooth gradients, and linearly for large residuals, limiting the influence of outlier dimensions caused by multipath and NLOS fluctuations. Operating purely in latent space, this objective avoids modeling low-level CSI detail and instead captures temporally consistent channel structure. 
+
+D. Lightweight Localization Module 
+
+At localization time the predictor P (·) is discarded, and the window representation is built solely from the frozen encoder’s embeddings of the visible tokens, concatenated in temporal order, 
+
+Zwin = [ Z1 ∥ Z2 ∥ · · · ∥ ZK ], K = |V| , (11) where ∥ denotes concatenation. With a fixed masking ratio, 
+
+K is constant, so Zwin has a fixed dimension. A LWLM G(·)
+
+then maps this representation to a position estimate, 
+
+ˆp = G(Zwin ), ˆp ∈ R2 or R3. (12) The LWLM is a small multi-layer perceptron and is the only component trained with labeled data; the encoder E(·)
+
+remains frozen. At inference, the estimate is averaged over 
+
+L deterministic balanced masks {V (j)}Lj=1 to obtain a mask-invariant position, 
+
+ˆp = (¯ x, ¯y) = 1
+
+L
+
+> L
+
+X
+
+> j=1
+
+G Z(j)
+
+> win
+
+, (13) which is compared against the ground-truth position p =(x, y ).
+
+E. Training Strategy 
+
+The framework follows a two-stage procedure:  
+
+> •
+
+Representation learning (offline, unlabeled): the online encoder E and predictor P are trained by masked tempo-ral latent prediction, with the target encoder ¯E updated by EMA.  
+
+> •
+
+Localization (labeled): the encoder is frozen, and only the LWLM G is trained on labeled positions. Decoupling representation learning from localization reduces labeling requirements and online latency by design, and is expected to ease cross-site adaptation, since only the small module G must be retrained for a new environment. V. P ERFORMANCE EVALUATION 
+
+We evaluate on the DICHASUS-005x measured channel dataset [15], [16], in which a single-antenna transmitter mounted on a mobile robot is received by a 32 -antenna array (element spacing 0.118 m) at a 1.272 GHz carrier with 
+
+50 MHz bandwidth and 1024 OFDM subcarriers; ground-truth positions are obtained by lidar. After per-antenna phase cali-bration, the 1024 subcarriers are averaged into 64 frequency bins (PRBs) by complex averaging over groups of 16 . Each snapshot is power-normalized and represented by three real planes (log |H|, cos ∠H, sin ∠H). We then group T = 8 
+
+consecutive (time-ordered) snapshots into a window and assign it the median of the corresponding ground-truth positions, yielding samples of shape 3 × 8 × 64 × 32 (channels × time 
+
+× frequency × antenna). Each time snapshot is treated as a token spanning the full frequency–antenna structure, so that masking and prediction operate along the temporal axis. This produces 3200 windows from 25 ,600 snapshots. The encoder is a Vision Transformer ( D = 256 , 8 layers, 
+
+16 heads), pre-trained with masked temporal latent prediction (batch 50 , EMA momentum 0.96 → 0.99 ) and kept frozen 
+
+for all downstream experiments. Localization uses a small MLP head with GELU activations, mapping the concatenated visible embeddings Zwin to (x, y ); it is the only component trained with labels (AdamW, lr 10 −4, batch 40 , 500 epochs). We use a reproducible 70 /15 /15 split with a fixed seed ( 480 
+
+test windows) and normalize target positions using training-split statistics. A 50% masking ratio is used throughout; at test time we average the head predictions over L=6 determinis-tic, coverage-balanced masks (three seeds, each contributing two complementary masks) for a mask-invariant estimate. The supervised CNN baseline (three convolutional stages of 
+
+32 /64 /128 channels with GELU and pooling, followed by a 128 →256 →2 MLP) is trained end-to-end on the kept raw-CSI snapshots under the identical split, masking, and ensemble averaging. 
+
+A. Performance Metrics 
+
+Let ˆpi and pi denote the predicted and true 2-D positions in meters for test sample i. We report the per-sample Euclidean localization error 
+
+ei = ∥ˆpi − pi∥2, (14) and summarize it through the mean localization error (MLE) 
+
+e = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+ei. (15) We track e on the validation set across training epochs to monitor convergence, and report its final value on the held-out test set. We further characterize the full error distribution via the empirical cumulative distribution function (ECDF) 
+
+ˆF (d) = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+1[ei ≤ d] , (16) where 1[·] is the indicator function, equal to 1 when its argument is true and 0 otherwise; hence ˆF (d) is the fraction of test samples localized within d meters. Because the absolute localization error in meters depends on the physical extent and sampling of the deployment, we            
+
+> TABLE I MEAN LOCALIZATION ERROR ON THE DICHASUS TEST SET .Method MLE (m) ↓
+> Supervised CNN (raw CSI) 0.90
+> Proposed (frozen encoder + MLP head) 0.42 0.0 0.5 1.0 1.5 2.0 2.5 Localization error (m) 0.0 0.2 0.4 0.6 0.8 1.0 Empirical CDF CNN baseline Proposed
+> Fig. 3. Empirical CDF of the localization error on the test set (CNN baseline vs. proposed).
+
+additionally report the relative gain 
+
+G = ebase 
+
+eprop 
+
+, (17) which compares two methods evaluated on the same scenario and thereby isolates the contribution of the learned represen-tation from scenario-specific scale. 
+
+B. Results 
+
+We compare the proposed frozen-encoder localizer against a supervised convolutional neural network (CNN) trained directly on raw CSI. On the held-out test set, the proposed method attains an MLE of 0.42 m, whereas the CNN baseline reaches 0.90 m, corresponding to a relative gain of G ≈ 2.1×
+
+(equivalently, a 53% reduction in mean error; Table I). Fig. 3 shows the ECDF of the localization error. The curve of the proposed system is consistently left-shifted relative to the baseline: it localizes 70% of test windows within 0.5 mversus only 23% for the CNN, and its 90 th-percentile error is 
+
+0.77 m compared to 1.51 m. This indicates both a lower typical error and substantially fewer large-error outliers. Fig. 4 reports the validation localization error in meters over training epochs: the error decreases rapidly and converges to a low, stable floor. The initial error of approximately 2 m corresponds to the “predict-the-mean” prior: at initialization the head outputs the normalized origin, which de-normalizes to the mean training position ¯p, giving Err 0 ≈ 1
+
+> N
+
+P
+
+> i
+
+∥pi − ¯p∥2, where ¯p is the mean training position. This value reflects the spatial extent and non-uniform coverage of the DICHASUS measurement area rather than the model itself, and is rapidly reduced as the geometry-aware latent representation is exploited. 0 100 200 300 400 500 Epoch 0.50 0.75 1.00 1.25 1.50 1.75 2.00 Mean localization error (m) CNN baseline Proposed Fig. 4. Validation mean localization error (m) per epoch (CNN baseline vs. proposed). 
+
+Finally, these results use a single-antenna transmitter, so the spatial signature comes solely from the 32 -element receive array; with Nt > 1 transmit antennas each snapshot becomes an Nt × Nr MIMO response with more spatial degrees of freedom, which our snapshot-level tokenization absorbs with no architectural change, so accuracy is expected to improve further. VI. C ONCLUSION 
+
+In this paper, we proposed a Joint Embedding Predictive Ar-chitecture (JEPA)-based self-supervised framework for indoor localization from Channel State Information (CSI) fingerprints. Each CSI time snapshot is treated as a token, and a Vision Transformer encoder is pre-trained by predicting the latent representations of masked snapshots from the visible ones, learning compact, geometry-aware representations without la-beled data. The encoder is then frozen and a Lightweight Localization Module (LWLM) is trained on a small set of labeled positions to estimate the user location, yielding a label-efficient and computationally lightweight pipeline. Experiments on the measured DICHASUS-005x dataset show that the proposed method reduces the mean localiza-tion error from 0.90 m to 0.42 m relative to a supervised Convolutional Neural Network (CNN) trained on raw CSI—a 
+
+2.1× improvement—and yields a consistently left-shifted error distribution. Because pre-training masks entire snapshots, the encoder operates on partial windows by construction, which makes the pipeline naturally suited to irregular or missing CSI measurements. These results indicate that masked temporal latent prediction is an effective, augmentation-free route to ro-bust CSI representations, well aligned with integrated sensing and communication (ISAC) objectives. Future work includes quantifying label efficiency across labeling budgets, evaluating cross-site and cross-device generalization, and reusing the frozen encoder for related sensing tasks such as tracking and beam selection. REFERENCES [1] X. Wang, L. Gao, S. Mao, and S. Pandey, “Csi-based fingerprinting for indoor localization: A deep learning approach,” IEEE transactions on vehicular technology , vol. 66, no. 1, pp. 763–776, 2016. [2] X. Liu, F. Zhang, Z. Hou, L. Mian, Z. Wang, J. Zhang, and J. Tang, “Self-supervised learning: Generative or contrastive,” IEEE transactions on knowledge and data engineering , vol. 35, no. 1, pp. 857–876, 2021. [3] M. Stahlke, G. Yammine, T. Feigl, B. M. Eskofier, and C. Mutschler, “Indoor localization with robust global channel charting: A time-distance-based approach,” IEEE Transactions on Machine Learning in Communications and Networking , 2023. [4] F. Liu, Y. Cui, C. Masouros, J. Xu, T. X. Han, Y. C. Eldar, and S. Buzzi, “Integrated sensing and communications: Toward dual-functional wire-less networks for 6g and beyond,” IEEE journal on selected areas in communications , vol. 40, no. 6, pp. 1728–1767, 2022. [5] L. Cazzella, F. Linsalata, M. Maleki, D. Badiniy, M. Matteucci, and U. Spagnolini, “Chartwin: a case study on channel charting-aided localization in dynamic digital network twins,” pp. 1–5, 2025. [6] M. Maleki, R. A. Ayoubi, M. Mizmizi, and U. Spagnolini, “Towards channel charting enhancement with non-reconfigurable intelligent sur-faces,” arXiv preprint arXiv:2511.00919 , 2025. [7] C. B. Chaaya, A. M. Girgis, and M. Bennis, “Learning latent wireless dynamics from channel state information,” IEEE Wireless Communica-tions Letters , 2024. [8] K. Sun, J. Zhang, C.-K. Wen, and S. Jin, “Channel charting for uav navigation in ris-assisted isac systems,” IEEE Journal of Selected Topics in Electromagnetics, Antennas and Propagation , pp. 1–15, 2025. [9] A. M. Girgis, A. Valcarce, and M. Bennis, “Time-series jepa for pre-dictive remote control under capacity-limited networks,” arXiv preprint arXiv:2406.04853 , 2024. [10] M. Monemi, M. Chinipardaz, M. Rasti, M. Bennis, and M. Latva-Aho, “Tutorial on joint embedding predictive architectures (jepa): Founda-tions, applications, and future directions,” Authorea Preprints , 2025. [11] T. Nishio, C. Chen, and M. Bennis, “A semantic inpainting framework for distributed cross-modal integrated sensing and communication,” in 
+
+2025 IEEE International Conference on Machine Learning for Commu-nication and Networking (ICMLCN) . IEEE, 2025, pp. 1–6. [12] M. Maleki, R. A. Ayoubi, M. Mizmizi, and U. Spagnolini, “Channel charting in smart radio environments,” arXiv preprint arXiv:2508.07305 ,2025. [13] G. Pau, F. Arena, Y. E. Gebremariam, and I. You, “Bluetooth 5.1: An analysis of direction finding capability for high-precision location services,” Sensors , vol. 21, no. 11, p. 3589, 2021. [14] A. Schjørring, A. L. Cretu-Sircu, I. Rodriguez, P. Cederholm, G. Berar-dinelli, and P. Mogensen, “Performance evaluation of a uwb positioning system applied to static and mobile use cases in industrial scenarios,” 
+
+Electronics , vol. 11, no. 20, p. 3294, 2022. [15] F. Euchner, M. Gauger, S. D¨ orner, and S. ten Brink, “A distributed massive MIMO channel sounder for real-time channel state information acquisition,” in 25th International ITG Workshop on Smart Antennas (WSA) , 2021. [16] F. Euchner and S. ten Brink, “DICHASUS: A distributed chan-nel sounder dataset,” https://dichasus.inue.uni-stuttgart.de/, accessed: September 9, 2026.

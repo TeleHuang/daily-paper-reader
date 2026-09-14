@@ -1,0 +1,281 @@
+{
+  "date": "20260914",
+  "date_label": "",
+  "generated_at": "2026-09-14 22:45:59 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.12036v1",
+      "route": "202609/14/2609.12036v1-pelican-sim-10-a-general-world-model-simulator-for-embodied-intelligence",
+      "title": "Pelican-Sim 1.0: A General World Model Simulator for Embodied Intelligence",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向具身智能、跨具身预测未来观测的通用世界模型模拟器",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.12075v1",
+      "route": "202609/14/2609.12075v1-efficient-vision-language-action-management-and-serving-for-robot-factories",
+      "title": "Efficient Vision-Language-Action Management and Serving for Robot Factories",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向实时机器人控制的低延迟VLA推理管理与服务",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.12278v1",
+      "route": "202609/14/2609.12278v1-amortized-low-rank-adaptation-for-model-based-reinforcement-learning",
+      "title": "Amortized Low-Rank Adaptation for Model-Based Reinforcement Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向基于模型强化学习规划的世界模型测试时LoRA适配",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.10522v1",
+      "route": "202609/14/2609.10522v1-show-harness-just-a-vlm-agent-can-play-robots",
+      "title": "Show-Harness: Just a VLM Agent Can Play Robots",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过语义动作接口将VLM适配到机器人控制",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.10540v1",
+      "route": "202609/14/2609.10540v1-programmable-world-model",
+      "title": "Programmable World Model",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "维护持久世界状态与规则的可编程世界模型",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.12347v1",
+      "route": "202609/14/2609.12347v1-dwmp-leveraging-dual-world-models-for-humanoid-obstacle-traversal",
+      "title": "DWMP: Leveraging Dual World Models for Humanoid Obstacle Traversal",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向人形机器人障碍穿越的双世界模型策略",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.12721v1",
+      "route": "202609/14/2609.12721v1-improving-imitation-learning-efficiency-for-manipulation-through-geometric-prior-pretraining",
+      "title": "Improving Imitation Learning Efficiency for Manipulation through Geometric Prior Pretraining",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "几何先验预训练提升操作模仿学习的样本效率",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.13053v1",
+      "route": "202609/14/2609.13053v1-dynin-robotics-omnimodal-unified-diffusion-vision-language-action-model",
+      "title": "Dynin-Robotics: Omnimodal Unified Diffusion Vision-Language-Action Model",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "统一扩散VLA结合目标与动作依赖动态预测用于控制",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.11270v1",
+      "route": "202609/14/2609.11270v1-beyond-noise-steering-dual-latent-space-reinforcement-learning-for-generative-robot-policy",
+      "title": "Beyond Noise Steering: Dual-Latent Space Reinforcement Learning for Generative Robot Policy",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "双潜在空间强化学习调控冻结生成式机器人策略的中间潜表征",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.11308v1",
+      "route": "202609/14/2609.11308v1-2am-grounding-agent-side-memory-as-guidance-for-steerable-action-models-in-long-horizon-manipulation",
+      "title": "2AM: Grounding Agent-Side Memory as Guidance for Steerable Action Models in Long-Horizon Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "以智能体侧记忆引导单一RGB动作模型完成长程机器人操作",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.12285v1",
+      "route": "202609/14/2609.12285v1-anchorvln-geometry-anchored-vision-language-grounding-reasoning-for-open-vocabulary-navigation",
+      "title": "AnchorVLN: Geometry-Anchored Vision-Language Grounding Reasoning for Open-Vocabulary Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向真实机器人、无需预建地图的开放词汇视觉语言导航",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.12641v1",
+      "route": "202609/14/2609.12641v1-breaking-the-vision-action-shortcut-latent-interface-training-for-generalizable-robotics-foundation-models",
+      "title": "Breaking the Vision-Action Shortcut: Latent Interface Training for Generalizable Robotics Foundation Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "提升机器人基础模型在视觉分布偏移下泛化能力的通用训练框架",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.08509v1",
+      "route": "202609/14/2609.08509v1-masked-latent-prediction-of-csi-for-indoor-localization-in-integrated-sensing-and-communication-systems",
+      "title": "Masked Latent Prediction of CSI for Indoor Localization in Integrated Sensing and Communication Systems",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于掩码潜在预测的JEPA自监督编码器",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.10918v1",
+      "route": "202609/14/2609.10918v1-obstadiff-generalizable-diffusion-policy-learning-via-obstacle-aware-representations",
+      "title": "ObstaDiff: Generalizable Diffusion Policy Learning via Obstacle-aware Representations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向杂乱真实机器人操作场景的泛化扩散策略",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.11043v1",
+      "route": "202609/14/2609.11043v1-ltldiff-finite-linear-temporal-logic-guided-data-generation-and-diffusion-policies-for-multi-agent-robotic-manipulation",
+      "title": "LTLDiff: Finite Linear Temporal Logic-Guided Data Generation and Diffusion Policies for Multi-agent Robotic Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "逻辑引导的示教数据生成与多智能体操作扩散策略",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.12245v1",
+      "route": "202609/14/2609.12245v1-dia-denoising-intermediate-advantage-for-diffusion-policy-optimization",
+      "title": "DIA: Denoising Intermediate Advantage for Diffusion Policy Optimization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "突破演示数据覆盖限制的扩散机器人策略微调",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    },
+    {
+      "paper_id": "2609.12549v1",
+      "route": "202609/14/2609.12549v1-star-sparse-tactile-representation-learning-in-vision-tactile-language-action-models-for-dexterous-manipulation",
+      "title": "STAR: Sparse Tactile Representation Learning in Vision-Tactile-Language-Action Models for Dexterous Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "大规模触觉数据集与训练方案缓解数据稀缺",
+      "first_seen_at": "2026-09-14 22:45:59 UTC",
+      "updated_at": "2026-09-14 22:45:59 UTC"
+    }
+  ]
+}
