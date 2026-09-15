@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-14</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-15</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 17 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-14 22:45:59 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-15 22:54:01 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 17 篇推荐（精读 6 篇，速读 11 篇）</p>
-<p>精读：《Pelican-Sim 1.0: A General World Model Simulator for Embodied Intelligence》（9.0/10）, 《Efficient Vision-Language-Action Management and Serving for Robot Factories》（9.0/10）</p>
-<p>速读：《Improving Imitation Learning Efficiency for Manipulation through Geometric Prior Pretraining》（8.0/10）, 《Dynin-Robotics: Omnimodal Unified Diffusion Vision-Language-Action Model》（8.0/10）, 《Beyond Noise Steering: Dual-Latent Space Reinforcement Learning for Generative Robot Policy》（7.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>2026-09-15日报：共筛17篇，精读6篇速读11篇，世界模型与VLA训练成为主线。最值得看的是LePlanner（9.0）的迭代摊销控制器与GLAM（9.0）的全局时空潜世界模型，速读中VLA训练复盘与3D场景动作统一同样高分。普通读者可先读两篇9.0精读建立世界模型直觉，再沿VLA方向跟进。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -84,7 +81,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Pelican-Sim 1.0: A General World Model Simulator for Embodied Intelligence">Pelican-Sim 1.0: A General World Model Simulator for Embodied Intelligence</span></li><li><span class="dpr-home-dashboard-paper-title" title="Efficient Vision-Language-Action Management and Serving for Robot Factories">Efficient Vision-Language-Action Management and Serving for Robot Factories</span></li><li><span class="dpr-home-dashboard-paper-title" title="Amortized Low-Rank Adaptation for Model-Based Reinforcement Learning">Amortized Low-Rank Adaptation for Model-Based Reinforcement Learning</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="LePlanner: An Iterative Amortized Controller For World Models">LePlanner: An Iterative Amortized Controller For World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="GLAM: Training a latent world model over global spatiotemporal memory for active exploration and navigation">GLAM: Training a latent world model over global spatiotemporal memory for active exploration and navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="X-WBC: A Cross-Embodiment Foundation Model for Humanoid Whole-Body Control">X-WBC: A Cross-Embodiment Foundation Model for Humanoid Whole-Body Control</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -97,7 +94,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Improving Imitation Learning Efficiency for Manipulation through Geometric Prior Pretraining">Improving Imitation Learning Efficiency for Manipulation through Geometric Prior Pretraining</span></li><li><span class="dpr-home-dashboard-paper-title" title="Dynin-Robotics: Omnimodal Unified Diffusion Vision-Language-Action Model">Dynin-Robotics: Omnimodal Unified Diffusion Vision-Language-Action Model</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Noise Steering: Dual-Latent Space Reinforcement Learning for Generative Robot Policy">Beyond Noise Steering: Dual-Latent Space Reinforcement Learning for Generative Robot Policy</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="How to Better Train VLAs: Lessons Learned From the REAL-I Challenge at ICRA 2026">How to Better Train VLAs: Lessons Learned From the REAL-I Challenge at ICRA 2026</span></li><li><span class="dpr-home-dashboard-paper-title" title="GeomVLA: Unifying Scene, Motion, and Action in 3D">GeomVLA: Unifying Scene, Motion, and Action in 3D</span></li><li><span class="dpr-home-dashboard-paper-title" title="ReWeight: Leveraging Human Data for VLA Post-Training via Demonstration Retrieval and Sample Weighting">ReWeight: Leveraging Human Data for VLA Post-Training via Demonstration Retrieval and Sample Weighting</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>

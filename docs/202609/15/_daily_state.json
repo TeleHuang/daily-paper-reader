@@ -1,0 +1,281 @@
+{
+  "date": "20260915",
+  "date_label": "",
+  "generated_at": "2026-09-15 22:54:01 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.13845v1",
+      "route": "202609/15/2609.13845v1-leplanner-an-iterative-amortized-controller-for-world-models",
+      "title": "LePlanner: An Iterative Amortized Controller For World Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向世界模型潜空间规划的摊销式迭代控制器",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.14561v1",
+      "route": "202609/15/2609.14561v1-glam-training-a-latent-world-model-over-global-spatiotemporal-memory-for-active-exploration-and-navigation",
+      "title": "GLAM: Training a latent world model over global spatiotemporal memory for active exploration and navigation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "遵循JEPA式潜在预测范式的目标条件潜在世界模型",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.15213v1",
+      "route": "202609/15/2609.15213v1-x-wbc-a-cross-embodiment-foundation-model-for-humanoid-whole-body-control",
+      "title": "X-WBC: A Cross-Embodiment Foundation Model for Humanoid Whole-Body Control",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "跨具身基础模型，在多种机器人本体间共享运动经验",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.15570v1",
+      "route": "202609/15/2609.15570v1-dido-distilling-interaction-centric-dynamics-into-one-step-denoising-for-world-action-models",
+      "title": "DIDO: Distilling Interaction-Centric Dynamics into One-Step Denoising for World Action Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "将多步世界动作模型蒸馏为单步去噪以降低控制延迟",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.15770v1",
+      "route": "202609/15/2609.15770v1-jeplo-joint-embedding-predictive-learning-for-lidar-based-legged-locomotion",
+      "title": "JEPLO: Joint-Embedding Predictive Learning for LiDAR-Based Legged Locomotion",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向足式运动的联合嵌入预测JEPA世界模型",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.15870v1",
+      "route": "202609/15/2609.15870v1-wla3-world-latent-action-modeling-for-semantics-dynamics-and-kinematics",
+      "title": "WLA$^3$: World Latent Action Modeling for Semantics, Dynamics, and Kinematics",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "世界潜动作建模，面向通用策略的潜空间预测新范式",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.13679v1",
+      "route": "202609/15/2609.13679v1-how-to-better-train-vlas-lessons-learned-from-the-real-i-challenge-at-icra-2026",
+      "title": "How to Better Train VLAs: Lessons Learned From the REAL-I Challenge at ICRA 2026",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "固定示教预算下的数据筛选与分阶段适应",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.13812v1",
+      "route": "202609/15/2609.13812v1-geomvla-unifying-scene-motion-and-action-in-3d",
+      "title": "GeomVLA: Unifying Scene, Motion, and Action in 3D",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "预测潜空间三维场景运动以条件化动作生成的VLA模型",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.13851v1",
+      "route": "202609/15/2609.13851v1-reweight-leveraging-human-data-for-vla-post-training-via-demonstration-retrieval-and-sample-weighting",
+      "title": "ReWeight: Leveraging Human Data for VLA Post-Training via Demonstration Retrieval and Sample Weighting",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "跨具身视觉运动表示，连接人类与机器人示范",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.14310v1",
+      "route": "202609/15/2609.14310v1-vlbiman-expanding-the-generalization-boundary-of-vision-language-anchored-one-shot-bimanual-manipulation",
+      "title": "VLBiMan++: Expanding the Generalization Boundary of Vision-Language Anchored One-Shot Bimanual Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "单演示双臂技能跨本体与场景迁移",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.14633v1",
+      "route": "202609/15/2609.14633v1-revolve-an-automated-closed-loop-framework-for-evolving-robot-manipulation-with-minimal-human-intervention",
+      "title": "REVOLVE: An Automated Closed-Loop Framework for Evolving Robot Manipulation with Minimal Human Intervention",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向真实环境机器人操作的自动化闭环框架，最小化人工干预",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.14878v1",
+      "route": "202609/15/2609.14878v1-real-world-reinforcement-learning-with-mpc-scaffolding-for-dexterous-manipulation",
+      "title": "Real-World Reinforcement Learning with MPC Scaffolding for Dexterous Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "以MPC脚手架提升真实世界灵巧操作强化学习的数据效率",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.14073v1",
+      "route": "202609/15/2609.14073v1-lpa-cwm-a-learned-physical-adjudicator-for-motion-reasoning-with-counterfactual-world-models",
+      "title": "LPA-CWM: A Learned Physical Adjudicator for Motion Reasoning with Counterfactual World Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "反事实世界模型与运动推理的可靠性加权",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.15976v1",
+      "route": "202609/15/2609.15976v1-messymem-learning-from-doing-memory-for-mobile-manipulation",
+      "title": "MessyMem: Learning-from-Doing Memory for Mobile Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "为移动操作机器人构建可从经验学习并复用知识的持久记忆",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.11775v1",
+      "route": "202609/15/2609.11775v1-rapid-learning-of-dexterous-in-hand-pen-writing-through-real-time-jacobian-estimation",
+      "title": "Rapid Learning of Dexterous In-Hand Pen Writing through Real-Time Jacobian Estimation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "实时雅可比控制实现CPU上的快速灵巧手内操作",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.12634v1",
+      "route": "202609/15/2609.12634v1-online-material-estimation-for-conditioned-diffusion-policy-in-shaping-deformable-linear-objects",
+      "title": "Online Material Estimation for Conditioned Diffusion Policy in Shaping Deformable Linear Objects",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "在线材料估计条件化扩散策略用于真实机器人可变形物体成形",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    },
+    {
+      "paper_id": "2609.13295v1",
+      "route": "202609/15/2609.13295v1-ergodic-control-and-controlled-diffusion-for-robot-learning-review-and-tutorial",
+      "title": "Ergodic Control and Controlled Diffusion for Robot Learning: Review and Tutorial",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向机器人学习与控制的扩散与遍历控制综述",
+      "first_seen_at": "2026-09-15 22:54:01 UTC",
+      "updated_at": "2026-09-15 22:54:01 UTC"
+    }
+  ]
+}
