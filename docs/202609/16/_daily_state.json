@@ -1,0 +1,185 @@
+{
+  "date": "20260916",
+  "date_label": "",
+  "generated_at": "2026-09-16 22:19:37 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.14973v1",
+      "route": "202609/16/2609.14973v1-physbrain-15-from-vision-language-models-to-physical-foundation-models",
+      "title": "PhysBrain 1.5: From Vision-Language Models to Physical Foundation Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "统一模型预测未来状态并生成动作，服务物理具身闭环",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.13335v1",
+      "route": "202609/16/2609.13335v1-bridging-thought-and-action-taming-long-horizon-instability-in-open-source-llm-agents-with-a-metatool-enhanced-ros-framework",
+      "title": "Bridging Thought and Action: Taming Long-Horizon Instability in Open-Source LLM Agents with a MetaTool-Enhanced ROS Framework",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "LLM智能体部署于ROS机器人框架执行真实世界任务",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.15014v1",
+      "route": "202609/16/2609.15014v1-steering-generative-robot-policies-with-lexicographic-preferences",
+      "title": "Steering Generative Robot Policies with Lexicographic Preferences",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "在推理时引导冻结生成式机器人策略并满足本体约束",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.15195v1",
+      "route": "202609/16/2609.15195v1-harnessvln-unifying-training-free-embodied-navigation-through-an-agent-harness",
+      "title": "HarnessVLN: Unifying Training-Free Embodied Navigation through an Agent Harness",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于MLLM智能体框架的零样本免训练具身导航",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.11737v1",
+      "route": "202609/16/2609.11737v1-orch-organizational-principles-enable-collective-intelligence-in-embodied-ai",
+      "title": "ORCH: Organizational Principles Enable Collective Intelligence in Embodied AI",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "具身智能体异构集群的组织原则与协作",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.12749v1",
+      "route": "202609/16/2609.12749v1-scq-stabilizing-conservative-q-learning-with-sigmoid-bounded-entropy",
+      "title": "SCQ: Stabilizing Conservative Q-Learning with Sigmoid-Bounded Entropy",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "稳定离线到在线强化学习以降低真实机器人交互成本",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.13771v1",
+      "route": "202609/16/2609.13771v1-homeostatic-continual-learning",
+      "title": "Homeostatic Continual Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向持续学习智能体，并提出基于特征与概念的世界模型构想",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.14261v1",
+      "route": "202609/16/2609.14261v1-vgfm-expressive-robot-policies-via-dense-value-guidance-in-flow-matching",
+      "title": "VGFM: Expressive Robot Policies via Dense Value Guidance in Flow Matching",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "价值引导流匹配的机器人策略学习",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.14297v1",
+      "route": "202609/16/2609.14297v1-multi-task-visual-perception-network-with-llm-conditioning-for-autonomous-navigation",
+      "title": "Multi-Task Visual Perception Network with LLM Conditioning for Autonomous Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向真实环境服务机器人的LLM条件化视觉导航框架",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.14833v1",
+      "route": "202609/16/2609.14833v1-one-model-two-physical-stories-auditing-misalignment-in-multi-modal-world-modeling",
+      "title": "One Model, Two Physical Stories: Auditing Misalignment in Multi-Modal World Modeling",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "审计多模态世界模型在物理预测中的跨模态不一致",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    },
+    {
+      "paper_id": "2609.15840v1",
+      "route": "202609/16/2609.15840v1-uncertainty-guided-sparse-refinement-for-action-chunking-transformer-policies",
+      "title": "Uncertainty-Guided Sparse Refinement for Action Chunking Transformer Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "不确定性引导稀疏精修，降低分块视觉运动策略的计算量",
+      "first_seen_at": "2026-09-16 22:19:37 UTC",
+      "updated_at": "2026-09-16 22:19:37 UTC"
+    }
+  ]
+}
