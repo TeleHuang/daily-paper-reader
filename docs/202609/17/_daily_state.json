@@ -1,0 +1,281 @@
+{
+  "date": "20260917",
+  "date_label": "",
+  "generated_at": "2026-09-17 22:15:11 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.16074v1",
+      "route": "202609/17/2609.16074v1-world-action-models-for-robot-learning-and-control-a-survey",
+      "title": "World-Action Models for Robot Learning and Control: A Survey",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "耦合世界预测与动作生成的世界-动作模型综述",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.16697v1",
+      "route": "202609/17/2609.16697v1-world-models-for-embodied-intelligence-from-plausible-to-controllable-to-actionable",
+      "title": "World Models for Embodied Intelligence: From Plausible to Controllable to Actionable",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向具身智能的世界模型综述",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.17372v1",
+      "route": "202609/17/2609.17372v1-xpace-joint-world-and-action-modeling-from-heterogeneous-experience",
+      "title": "XPACE: Joint World and Action Modeling from Heterogeneous Experience",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "联合预测动作与未来视频的统一具身世界模型",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.18111v1",
+      "route": "202609/17/2609.18111v1-a-comprehensive-review-of-generative-physical-artificial-intelligence",
+      "title": "A Comprehensive Review of Generative Physical Artificial Intelligence",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "生成式物理AI综述，涵盖机器人基础模型与跨平台技能迁移",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.18293v1",
+      "route": "202609/17/2609.18293v1-function-preserving-data-generation-for-zero-shot-real-to-sim-to-real-manipulation",
+      "title": "Function-Preserving Data Generation for Zero-Shot Real-to-Sim-to-Real Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向机器人学习的数据生成方法",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.19104v1",
+      "route": "202609/17/2609.19104v1-rmuscle-robotic-muscle-memory-for-efficient-vision-language-action-model-inference",
+      "title": "rMuscle: Robotic Muscle Memory for Efficient Vision-Language-Action Model Inference",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向具身智能实时机器人响应的VLA模型高效推理",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.16641v1",
+      "route": "202609/17/2609.16641v1-savla-symmetry-aware-vision-language-action-models-for-robotic-manipulation",
+      "title": "SAVLA: Symmetry-Aware Vision-Language-Action Models for Robotic Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "冻结预训练VLM骨干并训练动作头，数据高效策略",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.16737v2",
+      "route": "202609/17/2609.16737v2-visual-cue-guided-video-planning-for-generalizable-robot-navigation",
+      "title": "Visual Cue Guided Video Planning for Generalizable Robot Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "以视频世界模型作为长时程机器人导航规划骨干",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.16815v1",
+      "route": "202609/17/2609.16815v1-rethinking-visual-embodiment-dependence-in-visuomotor-policies",
+      "title": "Rethinking Visual Embodiment Dependence in Visuomotor Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过具身规范化实现跨具身视觉运动策略泛化",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.18197v1",
+      "route": "202609/17/2609.18197v1-wholebodywam-learning-whole-body-world-action-models-with-scalable-motion-priors",
+      "title": "WholeBodyWAM: Learning Whole-Body World Action Models with Scalable Motion Priors",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "将人类与人形运动先验迁移至人形世界-动作模型，实现跨本体全身操作",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.16637v1",
+      "route": "202609/17/2609.16637v1-can-knowledge-transfer-parameters-be-learned-lepoket-for-efficient-robotic-vision",
+      "title": "Can Knowledge Transfer Parameters Be Learned? LePoKet for Efficient Robotic Vision",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向高效机器人视觉网络的可学习知识迁移",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.16705v1",
+      "route": "202609/17/2609.16705v1-the-robot-data-factory",
+      "title": "The Robot Data Factory",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "持续生成与复用机器人经验数据的基础设施",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.18685v1",
+      "route": "202609/17/2609.18685v1-weaverl-weaving-reconstruction-into-scene-aware-fabrics-for-perceptive-reinforcement-learning",
+      "title": "WeaveRL: Weaving Reconstruction into Scene-Aware Fabrics for Perceptive Reinforcement Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "结合在线三维感知的机器人强化学习",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.18869v1",
+      "route": "202609/17/2609.18869v1-kino-a-keyframe-interface-for-vlm-planning-and-whole-body-control-in-humanoid-loco-manipulation",
+      "title": "KINO: A Keyframe Interface for VLM Planning and Whole-Body Control in Humanoid Loco-Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向人形移动操作的VLM规划与全身强化学习控制",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.11433v1",
+      "route": "202609/17/2609.11433v1-safety-aware-skill-adaptation-for-reinforcement-learning-in-dynamic-environments",
+      "title": "Safety-aware Skill Adaptation for Reinforcement Learning in Dynamic Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向真实动态环境的机器人安全技能自适应强化学习",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.11697v2",
+      "route": "202609/17/2609.11697v2-actsafeguard-differentiable-and-training-aligned-constraint-enforcement-for-flow-matching-policies",
+      "title": "ActSafeGuard: Differentiable and Training-Aligned Constraint Enforcement for Flow-Matching Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向VLA与世界-动作模型策略的硬约束执行",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    },
+    {
+      "paper_id": "2609.14567v1",
+      "route": "202609/17/2609.14567v1-learning-multi-agent-task-assignment-and-navigation-in-the-factory-from-simulation-to-real-robots",
+      "title": "Learning Multi-Agent Task Assignment and Navigation in the Factory: from Simulation to Real Robots",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "多智能体强化学习部署于真实工业机器人环境",
+      "first_seen_at": "2026-09-17 22:15:11 UTC",
+      "updated_at": "2026-09-17 22:15:11 UTC"
+    }
+  ]
+}

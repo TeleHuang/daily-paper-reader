@@ -1,12 +1,243 @@
 {
-  "generated_at": "2026-09-16T22:10:14.166395+00:00",
-  "updated_date": "20260916",
+  "generated_at": "2026-09-17T22:02:39.676805+00:00",
+  "updated_date": "20260917",
   "carryover_days": 9,
   "tag_states": {
     "embodied-ai": {
-      "updated_date": "20260916",
+      "updated_date": "20260917",
       "carryover_days": 9,
-      "items": []
+      "items": [
+        {
+          "id": "2609.18207v1",
+          "source": "arxiv",
+          "title": "Reinforcement Learning for Real-Time Vision-Language-Action Policies",
+          "abstract": "Reinforcement learning fine-tuning on top of large, pretrained Vision-Language-Action (VLA) models offers promise for highly reliable robot deployment. However, because of their scale, modern VLA models suffer from high inference latency, so the observation used to select an action is often stale by execution time, creating a distribution shift that can substantially degrade reliability and performance. Prior work has explored asynchronous policy execution to reduce the effect of latency, but these methods are mostly built on imitation learning and offer no mechanism for moving beyond the training distribution toward higher reliability. We close this gap by enabling RL fine-tuning that meets the real-time control requirements of dynamic real-world manipulation. Our approach builds on EXPO-FT, a framework for sample-efficient, reliable VLA fine-tuning with reinforcement learning, and decouples slow, expressive action generation from fast, reactive action edits: a large pretrained VLA proposes action chunks using its strong behavior prior, while a lightweight edit policy performs fast, reactive decision-making by editing actions in response to changes in state, conditioned on the latest observation. We instantiate this as Real-Time EXPO-FT, an RL framework for finetuning real-time VLA policies. On the Kinetix benchmark, Real-Time EXPO-FT enables a delayed policy to achieve the best performance among delayed and non-delayed methods in 10 out of 10 environments. On four dynamic real-world tasks, robot object passing, ball balancing, table soccer kicking, and dynamic object picking, with online robot data capped at 10 minutes, Real-Time EXPO-FT improves average policy performance from 42% to 97%, all without human intervention, demonstrating rapid, sample-efficient adaptation to challenging real-world dynamics. Website: https://pd-perry.github.io/real-time-expo-ft",
+          "authors": [
+            "Perry Dong",
+            "Kuo-Han Hung",
+            "Dorsa Sadigh",
+            "Chelsea Finn"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO",
+            "cs.LG"
+          ],
+          "published": "2026-09-16T06:38:36+00:00",
+          "link": "https://arxiv.org/pdf/2609.18207v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "RL fine-tuning of VLA policies to meet real-time control under high inference latency",
+          "llm_evidence_cn": "面向高推理延迟下实时控制的VLA策略强化学习微调",
+          "llm_evidence": "面向高推理延迟下实时控制的VLA策略强化学习微调",
+          "canonical_evidence": "面向高推理延迟下实时控制的VLA策略强化学习微调",
+          "llm_tldr_en": "The work enables RL fine-tuning of large VLA models so policies meet real-time control requirements despite high inference latency, reducing observation staleness and moving beyond imitation distributions for reliable manipulation.",
+          "llm_tldr_cn": "在大型预训练视觉-语言-动作（VLA）模型上进行强化学习微调有望提升机器人可靠性，但其推理延迟高，导致执行时观测过期并产生分布偏移。本文提出面向实时控制的RL微调方法，在满足动态真实操作实时性要求的同时，使策略能够超越模仿学习分布。实验表明该方法在真实动态操作任务中兼顾了实时性与可靠性，为VLA策略的实时部署提供了新路径。",
+          "llm_tldr": "在大型预训练视觉-语言-动作（VLA）模型上进行强化学习微调有望提升机器人可靠性，但其推理延迟高，导致执行时观测过期并产生分布偏移。本文提出面向实时控制的RL微调方法，在满足动态真实操作实时性要求的同时，使策略能够超越模仿学习分布。实验表明该方法在真实动态操作任务中兼顾了实时性与可靠性，为VLA策略的实时部署提供了新路径。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "fast inference and model acceleration for real-time robot control",
+          "matched_requirement_id": "req-6",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.18207v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.18430v1",
+          "source": "arxiv",
+          "title": "StrucPhysVideo: Learning Physical Dynamics from Structured Captions and Robot Actions",
+          "abstract": "Modeling physical dynamics, including how objects move, interact, and change state, is central to video world models for embodied AI. We present StrucPhysVideo, a family of video world models that bridges physics-focused data curation with language- and action-conditioned prediction of scene evolution. Our data pipeline combines motion-aware video segmentation, quality and content filtering, and physical relevance verification with structured annotations of objects, materials, and temporally localized interactions. By disentangling camera motion from object behavior and explicitly describing contact, deformation, and state transitions, the pipeline provides supervision grounded in observable physical events. Building on these data, we introduce StrucPhysVideo-TI2V, a sparse Mixture-of-Experts (MoE) text-image-to-video model trained with a curriculum that progressively emphasizes physical dynamics while retaining general-domain video data. StrucPhysVideo-TI2V achieves state-of-the-art performance on Physics-IQ Verified, scoring 45.5% and outperforming Cosmos3-Super-Image2Video by 2.8 percentage points. Caption ablations across backbones further demonstrate the effectiveness of physics-focused supervision. We further extend StrucPhysVideo-TI2V to StrucPhysVideo-IA2V, an interactive image-action-to-video world model that predicts visual outcomes from robot end-effector commands. Action conditioning, causal autoregressive generation, and few-step distillation enable incremental robot rollouts with only four denoising steps. Together, StrucPhysVideo advances physical dynamics modeling from image- and language-conditioned video prediction toward action-driven interaction.",
+          "authors": [
+            "Awomo-WM Team",
+            ":",
+            "Enhui Ma",
+            "Kaiwen Guo",
+            "Tingrui Zhang",
+            "Wei Song",
+            "Yingshui Tan",
+            "Jianhua Xu",
+            "Tong Zhang",
+            "Kaicheng Yu"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV"
+          ],
+          "published": "2026-09-16T10:23:00+00:00",
+          "link": "https://arxiv.org/pdf/2609.18430v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "video world models for physical dynamics in embodied AI",
+          "llm_evidence_cn": "面向具身AI物理动力学的视频世界模型",
+          "llm_evidence": "面向具身AI物理动力学的视频世界模型",
+          "canonical_evidence": "面向具身AI物理动力学的视频世界模型",
+          "llm_tldr_en": "StrucPhysVideo combines physics-focused data curation with language- and action-conditioned video world models to predict object motion, interaction and state transitions for embodied AI.",
+          "llm_tldr_cn": "针对具身AI视频世界模型缺乏物理聚焦监督的问题，本文提出StrucPhysVideo系列视频世界模型，将物理导向的数据整理与语言、动作条件化的场景演化预测相结合。其数据管线整合运动感知分割、质量过滤与物理相关性校验，并用物体、材料与时序交互的结构化标注提供监督。通过解耦相机运动与物体行为并显式描述接触、形变与状态转移，模型获得扎根于可观测物理事件的监督，推动具身AI物理动力学建模。",
+          "llm_tldr": "针对具身AI视频世界模型缺乏物理聚焦监督的问题，本文提出StrucPhysVideo系列视频世界模型，将物理导向的数据整理与语言、动作条件化的场景演化预测相结合。其数据管线整合运动感知分割、质量过滤与物理相关性校验，并用物体、材料与时序交互的结构化标注提供监督。通过解耦相机运动与物体行为并显式描述接触、形变与状态转移，模型获得扎根于可观测物理事件的监督，推动具身AI物理动力学建模。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "world model for planning and control in embodied agents",
+          "matched_requirement_id": "req-3",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.18430v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.18232v1",
+          "source": "arxiv",
+          "title": "UMI-Bridge: Action-Anchored Latent Alignment across Human and Robot Manipulation Data",
+          "abstract": "Real-robot demonstrations are limited, motivating the use of human manipulation data collected without robots, including egocentric videos and handheld Universal Manipulation Interface (UMI) demonstrations. However, differences in viewpoint, embodiment, and available action supervision make it difficult to align representations across these sources according to manipulation motion rather than visual appearance. We introduce UMI-Bridge, which uses UMI as an intermediate domain to align representations according to action equivalence rather than pixel similarity. UMI action supervision anchors the latent representation to end-effector motion and gripper behavior, while synchronized head-wrist observations and paired ego-UMI clips support alignment across views and domains. We train a dual-view latent action model (LAM) on human manipulation data without robot demonstrations, then freeze its wrist teacher and dynamics model to regularize vision-language-action (VLA) post-training on UMI and robot data. The shared wrist interface enables this training-time supervision across both domains while preserving the policy's standard inference architecture. Across three real-robot tasks, UMI-Bridge achieves 91.7% mean success versus 73.3% for Naive Co-training with matched UMI and robot data. On two data-efficiency tasks, it surpasses a full-data Robot-only baseline using 25% of the robot demonstrations together with UMI data. It also achieves 85% and 90% success on two additional tasks learned from UMI demonstrations without task-specific robot demonstrations. These results support action-anchored latent alignment for data-efficient robot learning and UMI-to-robot task transfer.",
+          "authors": [
+            "Haiyi Liu",
+            "Jingming Ma",
+            "Ke Rui",
+            "Yuteng Wei",
+            "Yuan Ma",
+            "Yushen Zuo",
+            "Honglong Tian",
+            "Haoran Jia",
+            "Weitao Zhou",
+            "Jiawei Wang",
+            "Minglei Li",
+            "Shiyi Chen",
+            "Haiyan Mao",
+            "Jiaqi Zhang",
+            "Chun Zhang"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-16T07:03:09+00:00",
+          "link": "https://arxiv.org/pdf/2609.18232v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "cross-embodiment alignment across human and robot manipulation data",
+          "llm_evidence_cn": "跨人类与机器人操作数据的跨本体对齐",
+          "llm_evidence": "跨人类与机器人操作数据的跨本体对齐",
+          "canonical_evidence": "跨人类与机器人操作数据的跨本体对齐",
+          "llm_tldr_en": "UMI-Bridge uses UMI as an intermediate domain to align human and robot manipulation representations by action equivalence, anchoring latents to end-effector motion and gripper behavior across embodiments.",
+          "llm_tldr_cn": "真实机器人示范数据有限，促使研究者利用无机器人采集的人类操作数据，但视角、本体与动作监督差异使跨源表示难以按操作运动而非视觉外观对齐。本文提出UMI-Bridge，以通用操作接口UMI作为中间域，依据动作等价性而非像素相似性对齐表示，用UMI动作监督将潜在表示锚定到末端执行器运动与夹爪行为，并借助同步的头腕观测与成对片段进行对齐。该方法缓解了跨本体数据稀缺下的表示对齐难题，为利用人类数据训练机器人策略提供途径。",
+          "llm_tldr": "真实机器人示范数据有限，促使研究者利用无机器人采集的人类操作数据，但视角、本体与动作监督差异使跨源表示难以按操作运动而非视觉外观对齐。本文提出UMI-Bridge，以通用操作接口UMI作为中间域，依据动作等价性而非像素相似性对齐表示，用UMI动作监督将潜在表示锚定到末端执行器运动与夹爪行为，并借助同步的头腕观测与成对片段进行对齐。该方法缓解了跨本体数据稀缺下的表示对齐难题，为利用人类数据训练机器人策略提供途径。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "cross embodiment skill transfer in robot learning",
+          "matched_requirement_id": "req-5",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.18232v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.18650v1",
+          "source": "arxiv",
+          "title": "From Gameplay to Policy: Towards Scalable Robot Data Collection via Gamified Robot-Free Interaction",
+          "abstract": "Learning generalizable robot manipulation policies requires large-scale and diverse interaction data, yet collecting real-world demonstrations remains costly and difficult to scale. Existing approaches to data collection are either dependent on specific robot hardware that limits crowdsourcing and transferability, or suffer from incomplete annotation and limited behavioral diversity. Inspired by how games sustain long-term human engagement, we explore an alternative paradigm that turns data collection into an engaging gameplay experience and transfers the resulting human manipulation experience to real robots. We present Project Kitchen, a VR-based gamified egocentric data collection platform that elicits diverse, goal-directed manipulation while remaining independent of specific robot embodiments and hardware, making it applicable to broader and potentially large-scale deployment. To bridge the game-to-real gap, we further introduce Game2Policy, which extracts embodiment-invariant affordance cues, including contact points and sub-goal states, from gameplay trajectories. An affordance model is pre-trained on game-collected data and then jointly fine-tuned with downstream policies using only a handful of real-robot demonstrations. Experiments show that Game2Policy improves average success rates by 10.0 points in simulation and 18.3 points on real robots in the few-shot setting. User studies and quantitative analyses further show that Project Kitchen promotes diverse manipulation behaviors and provides an engaging data collection experience. These results demonstrate the potential of gamified virtual environments as a scalable source of manipulation knowledge. The platform and code will be released upon acceptance.",
+          "authors": [
+            "Zheng Li",
+            "Liang Zhu",
+            "Junzhe Wang",
+            "Huayuan Chen",
+            "Ziyun Liu",
+            "Jiahang Cao",
+            "Xinyu Sheng",
+            "Pei Qu",
+            "Yufei Jia",
+            "Ximeng Zhang",
+            "Jiarui Xie",
+            "Zizhao Yuan",
+            "Haoang Li",
+            "Yi Cai",
+            "Jinni Zhou",
+            "Jun Ma"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-09-16T13:33:06+00:00",
+          "link": "https://arxiv.org/pdf/2609.18650v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Gamified robot-free VR data collection to overcome robot data scarcity",
+          "llm_evidence_cn": "游戏化无机器人VR数据采集以缓解机器人数据稀缺",
+          "llm_evidence": "游戏化无机器人VR数据采集以缓解机器人数据稀缺",
+          "canonical_evidence": "游戏化无机器人VR数据采集以缓解机器人数据稀缺",
+          "llm_tldr_en": "Collecting real-world robot demonstrations is costly and hard to scale. Project Kitchen turns data collection into VR gameplay, eliciting diverse goal-directed human manipulation that transfers to real robots.",
+          "llm_tldr_cn": "训练通用机器人操作策略需要大规模多样交互数据，但真实示教采集成本高、难以规模化，现有方案或依赖特定硬件、或标注不完整、行为多样性不足。本文受游戏长期吸引玩家的机制启发，提出Project Kitchen——一个基于VR的类游戏化第一视角数据采集平台，把数据采集转化为有趣的游戏体验，并将其中获得的人类操作经验迁移到真实机器人。该工作表明游戏化、无机器人的交互方式能够激发多样且目标导向的数据，为缓解具身机器人数据稀缺、实现可扩展数据采集提供了新范式。",
+          "llm_tldr": "训练通用机器人操作策略需要大规模多样交互数据，但真实示教采集成本高、难以规模化，现有方案或依赖特定硬件、或标注不完整、行为多样性不足。本文受游戏长期吸引玩家的机制启发，提出Project Kitchen——一个基于VR的类游戏化第一视角数据采集平台，把数据采集转化为有趣的游戏体验，并将其中获得的人类操作经验迁移到真实机器人。该工作表明游戏化、无机器人的交互方式能够激发多样且目标导向的数据，为缓解具身机器人数据稀缺、实现可扩展数据采集提供了新范式。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+          "matched_requirement_id": "req-9",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.18650v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2609.19142v1",
+          "source": "arxiv",
+          "title": "PointZero: 3D Point Track Completion for Learning Transferable 3D Dynamics",
+          "abstract": "World models endow perceptual systems with the ability to predict how scenes evolve under interaction. They are most beneficial when trained on diverse volumes of data, to instill a rich prior into downstream applications. Existing methods typically require robot action labels to learn action-conditioned 3D dynamics, which excludes web video data from the training pool. We study 3D point track completion as a pre-training objective for learning transferable 3D dynamics without robot data. Given a single RGB-D observation and sparse partial 3D trajectories (tracks), we predict future 3D tracks of all observed points. We show this objective produces a rich 3D dynamics prior, without requiring robot action labels. We contribute a diverse dataset of 2.9 million synthetic frames spanning deformable, articulated, and rigid objects, and use it to train PointZero. We show that a flexible and expressive transformer, PointZero, outperforms prior methods on the same data. We demonstrate the utility of our pre-training objective by post-training PointZero for two downstream applications: (1) action-conditioned 3D dynamics prediction and (2) imitation learning. When fine-tuned to condition on end-effector pose, PointZero outperforms the baselines on the recent PGND 3D dynamics benchmark. When fine-tuned to predict robot actions and 3D tracks, PointZero outperforms or matches the baselines on 6/7 simulated and real-world robot manipulation tasks. We furthermore evaluate training PointZero from scratch to isolate the benefits of our proposed architecture from those of our proposed pre-training objective and dataset. We release the dataset, checkpoints, and full training recipe.",
+          "authors": [
+            "Bardienus P. Duisterhof",
+            "Kaifeng Zhang",
+            "Adam Hung",
+            "Bowen Wen",
+            "Stan Birchfield",
+            "Yunzhu Li",
+            "Deva Ramanan",
+            "Jeffrey Ichnowski"
+          ],
+          "primary_category": "cs.CV",
+          "categories": [
+            "cs.CV",
+            "cs.RO"
+          ],
+          "published": "2026-09-16T17:59:30+00:00",
+          "link": "https://arxiv.org/pdf/2609.19142v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "3D point track completion as a world-model pretraining objective for transferable 3D dynamics without robot labels",
+          "llm_evidence_cn": "以3D点轨迹补全作为世界模型预训练目标，无需机器人标签学习可迁移3D动力学",
+          "llm_evidence": "以3D点轨迹补全作为世界模型预训练目标，无需机器人标签学习可迁移3D动力学",
+          "canonical_evidence": "以3D点轨迹补全作为世界模型预训练目标，无需机器人标签学习可迁移3D动力学",
+          "llm_tldr_en": "Action-conditioned 3D dynamics usually need robot action labels, excluding web video. PointZero pretrains on 3D point track completion, learning transferable 3D dynamics priors without any robot data.",
+          "llm_tldr_cn": "世界模型能让感知系统预测场景在交互下的演化，但其训练通常需要机器人动作标签来学习动作条件3D动力学，从而把大量网络视频排除在训练数据之外。本文研究以3D点轨迹补全作为预训练目标，在给定单张RGB-D观测和稀疏部分3D轨迹的情况下预测所有观测点的未来3D轨迹，从而在无需机器人动作标签的条件下学到丰富的3D动力学先验。作者还构建了多样数据集，表明该预训练可为下游具身任务提供可迁移的3D动力学世界模型先验，拓展了可用数据来源。",
+          "llm_tldr": "世界模型能让感知系统预测场景在交互下的演化，但其训练通常需要机器人动作标签来学习动作条件3D动力学，从而把大量网络视频排除在训练数据之外。本文研究以3D点轨迹补全作为预训练目标，在给定单张RGB-D观测和稀疏部分3D轨迹的情况下预测所有观测点的未来3D轨迹，从而在无需机器人动作标签的条件下学到丰富的3D动力学先验。作者还构建了多样数据集，表明该预训练可为下游具身任务提供可迁移的3D动力学世界模型先验，拓展了可用数据来源。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "new learning paradigm for embodied agents based on world models and latent space prediction",
+          "matched_requirement_id": "req-7",
+          "selection_source": "carryover_cache",
+          "paper_id": "2609.19142v1",
+          "carry_days": 1
+        }
+      ]
     }
   }
 }

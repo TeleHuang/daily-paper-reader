@@ -1,0 +1,329 @@
+Title: Can Knowledge Transfer Parameters Be Learned? LePoKet for Efficient Robotic Vision
+
+URL Source: https://arxiv.org/pdf/2609.16637v1
+
+Published Time: Wed, 16 Sep 2026 00:40:16 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Can Knowledge Transfer Parameters Be Learned? LePoKet for Efficient Robotic Vision 
+
+Yanick C. Tchenko 1, Felix Mohr 2, Hicham H. Abdelkader 1, and Hedi Tabia 1
+
+Abstract — Efficient perception is central to robotic systems operating under constrained computation, memory, and latency budgets. Knowledge transfer from larger pretrained models offers a practical route to stronger compact perception net-works, but existing approaches commonly rely on fixed distil-lation objectives or manually designed interaction mechanisms. Building on Hereditary Knowledge Transfer (HKT), we propose LePoKet (Learnable Parameter Optimization for Knowledge Transfer), a structural transfer framework that embeds knowl-edge inheritance directly into the forward computation. LeP-oKet introduces a block-wise Extract–Transform–Mix interface whose interaction parameters are optimized jointly with the child network through a Learnable Genetic Attention (LGA) operator, without auxiliary distillation losses or temperature scaling. We first characterize the mechanism on CIFAR-10 and CIFAR-100 with ResNet parent–child pairs, obtaining relative error reductions of 24.57% and 25.1% over standard child training. We then evaluate LePoKet in dense motion estimation by integrating it into a compact RAFT-based optical-flow model trained only on FlyingChairs and FlyingThings3D. LePoKet improves the compact RAFT baseline from 2.21 to 1.92 EPE on Sintel Clean, from 3.35 to 3.01 on Sintel Final, and from 7.51 to 6.39 on KITTI. A direct comparison with HKT further shows that LePoKet improves CIFAR-10 accuracy from 92.40% to 93.40% and, on C+T optical flow, trades a negligible Sintel-Clean difference (1.90/1.91 versus 1.92) for lower Sintel-Final and KITTI error. These results indicate that learnable struc-tural transfer is applicable to both recognition and motion per-ception and motivates its use for efficient robotic vision. Code: 
+
+https://github.com/christian-tchenko/LePoKet 
+
+I. I NTRODUCTION 
+
+Modern robotic systems increasingly rely on deep per-ception models for motion estimation, scene understanding, navigation, and interaction with dynamic environments. At the same time, deployment on mobile robots, autonomous platforms, and embedded devices imposes stringent con-straints on computation, memory, and latency. This motivates methods that can exploit knowledge acquired by large pre-trained models while producing compact networks suitable for resource-constrained perception. Knowledge Distillation (KD) [1] is a widely used frame-work for transferring information from a large teacher to a compact student. Classical KD transfers softened output distributions through an auxiliary objective, while subsequent methods extend distillation to intermediate representations, including FitNets [2], Attention Transfer (AT) [3], Similarity-Preserving (SP) transfer [4], and Contrastive Representation Distillation (CRD) [5]. More recent approaches refine the transfer objective through decoupled supervision [6], review-based strategies [7], or feature-based alignment [8]. Despite 
+
+> 1Universit´ e Paris-Saclay, IBISC Laboratory, France.
+> 2Universidad de La Sabana, Colombia.
+
+their effectiveness, these approaches remain predominantly objective-driven: knowledge transfer is induced by addi-tional terms that encourage the student to reproduce selected teacher outputs, features, or relations. Hereditary Knowledge Transfer (HKT) [20] introduced a different perspective in which knowledge inheritance is incorporated structurally into the interaction between a par-ent and a child network. HKT organizes this interaction through an Extract–Transform–Mix (ETM) mechanism and uses Genetic Attention to selectively combine inherited and child representations. This structural view demonstrated that knowledge transfer need not be formulated solely as teacher– student imitation and provides the direct methodological foundation for the present work. Building on this principle, we investigate a more specific question: can the parameters governing the transfer opera-tion themselves be learned jointly with the child network? 
+
+We introduce LePoKet (Learnable Parameter Optimization for Knowledge Transfer ), which retains the structural ETM formulation while replacing the prescribed interaction with a differentiable, parameterized transfer operator. Its Learn-able Genetic Attention (LGA) mechanism learns projections, compatibility scores, gating parameters, and transfer intensity directly from the task objective. The pretrained parent re-mains frozen, whereas the child network and the parameters of the transfer interface are jointly optimized. This distinction is important. LePoKet does not introduce another teacher–student discrepancy objective. Instead, par-ent information enters the child’s forward computation, and the usefulness of that information is determined indirectly by its contribution to the task loss. Consequently, the optimiza-tion can learn not only the child representation but also how 
+
+inherited information should modify that representation. We evaluate this formulation in two complementary set-tings. First, CIFAR-10 and CIFAR-100 classification provide controlled recognition benchmarks in which the effect of learnable transfer can be isolated using ResNet parent–child pairs. Second, we integrate LePoKet into a compressed RAFT optical-flow estimator [9]. Optical flow provides a dense motion-perception setting relevant to robotic and au-tonomous systems and allows us to examine whether the same transfer principle extends from image-level recognition to structured pixel-level prediction. The main contributions of this work are:  
+
+> •
+
+We extend hereditary structural transfer by formulating the parameters of the parent–child interaction as jointly learnable components of the network.  
+
+> •
+
+We introduce Learnable Genetic Attention (LGA), arXiv:2609.16637v1 [cs.CV] 15 Sep 2026 which combines projected parent and child represen-tations through learned similarity, nonlinear gating, and residual transfer intensity.  
+
+> •
+
+We experimentally separate the benefit of structural inheritance from that of learning the transfer interface through direct HKT–LePoKet comparisons on image classification and dense optical flow. Across the reported experiments, LePoKet consistently improves the compact student baseline. The comparison with HKT further shows that learning the transfer interface changes the behavior of structural inheritance across tasks and evaluation conditions, motivating parameterized hered-itary transfer as a flexible extension of the original HKT formulation. II. R ELATED WORK 
+
+A. Knowledge Distillation 
+
+Knowledge Distillation (KD) [1] transfers softened teacher predictions to a student through temperature-scaled super-vision. FitNets [2] extend this principle to intermediate representations, while Attention Transfer (AT) [3] aligns attention maps. Similarity-Preserving (SP) distillation [4] and Contrastive Representation Distillation (CRD) [5] fur-ther transfer relational information in feature space. More recent approaches include Decoupled Knowledge Distillation (DKD) [6], review-based feature transfer [7], and feature-oriented alignment strategies [8]. Although these methods differ in the information trans-ferred, they primarily express teacher–student interaction through additional training objectives. LePoKet instead places the transfer mechanism inside the forward compu-tation and optimizes its parameters through the task loss. 
+
+B. Knowledge Transfer for Dense Motion Perception 
+
+Knowledge transfer has also been investigated for dense prediction. DRAFT [10], for example, applies distillation to RAFT-based optical-flow estimation using teacher super-vision to improve compact flow models. Optical flow is particularly relevant to robotic and autonomous perception because it provides dense information about image motion and scene dynamics. Our RAFT experiment uses this setting to test a different transfer mechanism. Rather than introducing an additional distillation objective, LePoKet injects aligned parent infor-mation through its learnable transfer interface while preserv-ing the standard task supervision. 
+
+C. Hereditary Knowledge Transfer 
+
+HKT [20] introduced hereditary knowledge transfer as a modular mechanism for transferring representations be-tween neural networks. Its Extract–Transform–Mix formula-tion separates three operations: selecting transferable parent information, adapting it to the child representation, and selectively integrating it into the child network. Genetic Attention regulates this inheritance process. This structural formulation is the direct precursor of LePoKet. We retain the ETM principle but parameterize the interaction so that the transfer operation can itself be optimized jointly with the child. In particular, LePoKet introduces learnable projections, a nonlinear compatibility gate, and a learnable transfer coefficient within LGA. The resulting formulation therefore preserves hereditary transfer while shifting part of the design choice from a prescribed mechanism to task-driven parameter learning. This relationship also motivates our experimental compar-ison. Rather than treating HKT as an unrelated baseline, we use it to distinguish two effects: the gain obtained by introducing a structural inheritance path and the additional effect obtained when the parameters governing that path are learned. 
+
+D. Attention-Based Transfer 
+
+Attention mechanisms [11] provide a general means of weighting interactions between representations and have also been used for knowledge distillation [3]. In many such methods, attention defines the representation or relation that an auxiliary loss attempts to align. LePoKet uses attention differently. LGA is part of the parent–child forward interaction itself. It combines a pro-jected similarity term with a learnable nonlinear compati-bility function and uses the resulting coefficient to regulate a residual update of the child representation. The attention mechanism therefore determines the transfer operation rather than defining an additional imitation target. 
+
+E. Positioning of LePoKet 
+
+Table I summarizes the distinction between conventional distillation, hereditary structural transfer, and LePoKet. The central difference is not whether teacher information is adap-tive, but where the transfer mechanism is represented and optimized . Conventional distillation primarily encodes trans-fer in the objective; HKT introduces an explicit structural inheritance path; LePoKet extends that path with parameters that are jointly optimized with the child through the task objective. III. L EPOKET METHOD 
+
+A. Problem Formulation 
+
+We consider a frozen pretrained parent network P and a compact child network C. Both are decomposed into L
+
+functional stages, 
+
+P = {pℓ}Lℓ=1 , C = {cℓ}Lℓ=1 , (1) with intermediate representations zPℓ and zCℓ . The parent is used only as a source of representations during training; its parameters θP remain fixed. The child parameters θC are optimized for the downstream task. Conventional distillation typically introduces an auxiliary discrepancy between parent and child outputs or features. LePoKet instead asks the transfer interface to learn how parent information should enter the child computation. The task objective therefore remains the only supervision used to optimize the child and the transfer parameters. TABLE I: Positioning of LePoKet relative to representative knowledge-transfer paradigms. The distinction concerns how teacher/parent information enters training and whether the parameters of the structural transfer operator are jointly learned with the child.                         
+
+> Method family Transfer source Forward inheritance Transfer-specific supervision Learnable transfer operator Logit KD [1] Outputs No Yes –Feature/attention KD [2], [3] Features No Yes –Relational KD [4], [5] Relations No Yes –HKT [20] Representations Yes Yes Prescribed/structured
+> LePoKet (ours) Representations Yes No Yes Shape
+> Child Network
+> Learnable
+> knowledge
+> Heritage
+> Parent Network
+> Shape
+
+Fig. 1: Conceptual overview of LePoKet. A frozen parent transfers intermediate representations to a child through a block-wise learnable Extract–Transform–Mix (ETM) interface. Extraction selects a parent representation, transformation provides structural alignment when required, and mixing is performed by Learnable Genetic Attention (LGA). Only the child and transfer parameters are optimized by the task loss. 
+
+B. From Structural Inheritance to Learnable Transfer 
+
+The starting point is HKT [20], which injects parent in-formation through an Extract–Transform–Mix interface and uses Genetic Attention to select inherited information. HKT establishes that a structural inheritance path can improve a compact child, but its ETM interaction is not jointly parameterized and optimized as the task-driven interface proposed here; its original training also aggregates core and inheritance supervision. LePoKet retains the ETM abstrac-tion while replacing the prescribed interaction with learnable projections, a learnable gate, and a learnable transfer inten-sity, all optimized through the standard task objective. This HKT →LePoKet transition isolates the benefit of learning the transfer path itself. LePoKet generalizes this mechanism by parameterizing the transfer operation. At stage ℓ,
+
+˜zCℓ = Mℓ
+
+ zCℓ , Tℓ(Eℓ(zPℓ )); ϕℓ
+
+ , (2) where Eℓ extracts a parent representation, Tℓ aligns it to the child representation, Mℓ performs the mixing, and ϕℓ
+
+contains learnable transfer parameters. In the ResNet exper-iment, extraction is the identity, 
+
+Eℓ(zPℓ ) = zPℓ , (3) and the pooled representations already share the required dimensionality. For heterogeneous stages, Tℓ can perform channel or spatial alignment before mixing. This formulation separates three questions that are other-wise entangled in a distillation loss: what parent representa-tion is used, how it is made compatible with the child, and 
+
+how much of it is inherited for a particular input. LePoKet focuses learnability on the last two operations while keeping the parent fixed. 
+
+C. Learnable Genetic Attention 
+
+LePoKet instantiates Mℓ with Learnable Genetic At-tention (LGA). Let q, k, v ∈ Rd denote the child query and parent-derived key/value representations after alignment. Learnable projections are 
+
+Q = Wq q, K = Wkk, V = Wv v, (4) where Wq , W k, W v are trainable linear mappings. LGA combines a global similarity term 
+
+a1 = σ
+
+ ⟨Q, K⟩√d
+
+
+
+(5) with a nonlinear compatibility gate 
+
+a2 = σ(MLP( Q ⊙ K)) , (6) where ⊙ is element-wise multiplication and σ is the sigmoid function. The inheritance coefficient is 
+
+a = 12 (a1 + a2). (7) Algorithm 1 LePoKet Training  
+
+> 1:
+
+Initialize θC , ϕ ; freeze θP 
+
+> 2:
+
+for each minibatch (x, y ) do  
+
+> 3:
+
+{zPℓ }Lℓ=1 ← P (x) 
+
+> 4:
+
+compute child representations {zCℓ }Lℓ=1  
+
+> 5:
+
+for ℓ = 1 to L do  
+
+> 6:
+
+τ ℓ ← T ℓ(Eℓ(zPℓ ))  
+
+> 7:
+
+aℓ ← g(zCℓ , τ ℓ; ϕℓ) 
+
+> 8:
+
+zCℓ ← zCℓ + λℓaℓ(Vℓ − zCℓ ) 
+
+> 9:
+
+end for  
+
+> 10:
+
+ˆy ← Chead (zCL ) 
+
+> 11:
+
+L ← L task (ˆ y, y ) 
+
+> 12:
+
+update θC , ϕ using ∇L  
+
+> 13:
+
+end for 
+
+The first term captures global alignment through a scaled dot product, whereas the second can model nonlinear feature-wise compatibility. Their average provides a bounded, data-dependent coefficient without introducing a separate atten-tion supervision signal. The child representation is updated through a residual interpolation toward the transformed parent value: 
+
+˜zCℓ = q + λℓa (V − q), (8) where λℓ is learnable. Equation (8) makes the role of the transfer explicit. The vector (V − q) gives a parent-directed correction, while λℓa determines its magnitude. Small com-patibility leaves the child close to its own representation; larger compatibility allows stronger inheritance. 
+
+D. Optimization and Gradient Flow 
+
+Let ϕ = {Wq , W k, W v , λ, MLP weights } denote all LeP-oKet parameters. For a sample (x, y ), the parent forward pass produces frozen source features and the child forward pass receives the fused representations. Training solves 
+
+min   
+
+> θC,ϕ
+
+E(x,y )∼D [Ltask (CLePoKet (x; θC , ϕ ), y )] . (9) Gradients from Ltask propagate through Eq. (8), the LGA projections and gate, and the child network, but not into 
+
+θP . Consequently, no temperature, teacher-logit loss, feature-matching loss, or auxiliary loss weight is introduced. The transfer interface is selected indirectly according to whether its inherited representation improves the downstream task objective. 
+
+E. Architecture-Agnostic Instantiation 
+
+The ETM decomposition is intended to decouple the transfer rule from a particular backbone. If parent and child features have equal dimensions, Tℓ may be the identity. If channel dimensions differ, a projection can map the parent representation to the child space; if spatial resolutions differ, resizing can be included before projection. The same LGA mixing rule can then operate on the aligned representations. In the ResNet setting used below, transfer is applied to pooled representations and the dimensions already match. In the RAFT setting, parent and compact child representations require explicit alignment before the LGA interaction. These two cases test the same formulation under both homogeneous and heterogeneous parent–child architectures. 
+
+F. Design Properties for Robotic Perception 
+
+Three properties motivate the use of LePoKet for compact perception. First, the parent is frozen, so the source model does not need to be co-adapted with the child. Second, trans-fer is data-dependent: the inheritance coefficient is computed from the current parent–child representations rather than fixed globally. Third, the optimization remains task-driven. This is useful when the downstream objective already has a well-established form, as in classification cross-entropy or optical-flow endpoint error, because the transfer mechanism can be introduced without redesigning that objective. These properties do not by themselves establish deploy-ment efficiency. The present study evaluates predictive be-havior of the compact models; latency, memory, energy, and hardware-specific measurements are outside the current ex-periments and are identified explicitly as future deployment evaluation. 
+
+G. Scope and Expected Failure Modes 
+
+LePoKet assumes that a useful correspondence can be established between at least one parent representation and a child representation. If the selected stages encode in-compatible information, an alignment transform can make their tensor shapes compatible but cannot guarantee semantic compatibility. The learned gate can reduce inheritance when representations disagree, yet it cannot create useful parent information that is absent from the selected feature. Stage selection therefore remains an architectural design choice. A second consideration is the quality of the parent. Be-cause the parent is frozen, systematic errors in its represen-tation are not corrected through parent updates. The residual form in Eq. (8) is intended to preserve a direct child path, so the child is not forced to replace its representation with the parent value. Nevertheless, evaluating robustness to weak or mismatched parents is outside the present experiments. Finally, LePoKet adds parameters and parent-side com-putation during transfer training. The current contribution concerns whether these transfer parameters can be opti-mized effectively, not a claim of zero-cost training. For deployment-oriented robotics, the relevant follow-up is to separate training-time transfer cost from the cost of the compact model used at inference and to measure both on target hardware. 
+
+H. Interpretation of the Transfer Dynamics 
+
+Equation (8) also clarifies how LePoKet differs from simply copying a parent feature. Define αℓ = λℓaℓ. The update can be rewritten as 
+
+˜zCℓ = (1 − αℓ)q + αℓV. (10) Thus, when αℓ lies between zero and one, the fused repre-sentation is an interpolation between the child’s current state and the projected parent state. When the learned interaction approaches zero, Eq. (10) reduces to the ordinary child path. This gives the model a mechanism for suppressing transfer on inputs for which the parent and child representations are judged incompatible. Conversely, a larger interaction in-creases the contribution of the parent-derived representation. The distinction between aℓ and λℓ is useful. The attention term is input-dependent because it is computed from Q
+
+and K, whereas λℓ is a learned transfer-intensity parameter associated with the interface. The product therefore com-bines a learned stage-level tendency to inherit with sample-dependent compatibility. In this sense, LePoKet does not assume that a fixed amount of parent information is equally useful for every example. The residual form also preserves a direct optimization path for the child. The task loss can improve the child representation itself, the parent projection, or the gate that determines their interaction. This differs from a feature-matching objective that explicitly penalizes distance to a teacher representation: LePoKet is not optimized to make q
+
+equal to V. Parent information is useful only insofar as the resulting fused representation reduces the downstream task loss. This interpretation motivates the ablation in Sec. IV-G. Comparing the task-only child with fixed structural HKT tests whether an inheritance path is useful at all; compar-ing HKT with LePoKet then tests whether allowing the interaction to adapt provides additional benefit. The two comparisons answer different questions and should not be conflated. The magnitude of the HKT-to-LePoKet difference then indicates how much additional benefit is obtained by optimizing the transfer interface beyond introducing the structural inheritance path itself. IV. E XPERIMENTS 
+
+We evaluate LePoKet on image classification and dense optical-flow estimation. Classification provides a controlled setting for isolating the effect of learnable inheritance, while optical flow tests the same mechanism on pixel-level motion perception relevant to robotic and autonomous systems. In all experiments the parent is frozen and no auxiliary distillation loss or temperature scaling is used. 
+
+A. Evaluation Questions 
+
+The experiments address three questions. Q1: Does a learnable transfer interface improve a compact child over standard task-only training? Q2: Does the mechanism ex-tend from classification to dense motion estimation without changing its basic formulation? Q3: How much of the ob-served gain is attributable to structural inheritance itself, and how much to making the interaction parameters learnable? Q3 is examined by comparing the baseline child, structural HKT, and LePoKet. 
+
+B. Experimental Setup 
+
+Image classification. We use CIFAR-10 and CIFAR-100 [12], each containing 50,000 training and 10,000 test TABLE II: CIFAR-10: ResNet110 → ResNet20.                            
+
+> Method Top-1 (%) Error (%) RER (%) Parent (R-110) 93.6 6.4 –Baseline (R-20) 91.25 8.75 –HALOC [16] 91.32 8.68 0.80 SparseKD [17] 91.5 8.5 2.86 Low-Rank [18] 91.0 9.0 -2.86 RegPrune [19] 91.2 8.8 -0.57 HKT [20] 92.40 7.60 13.14
+> LePoKet (Ours) 93.40 6.60 24.57
+
+images of size 32 × 32 . ResNet110 [13] is the frozen parent and ResNet20 the child. The parent reaches 93.6% Top-1 accuracy on CIFAR-10. The child is trained with SGD, momentum 0.9, weight decay 10 −4, initial learning rate 0.01 with scheduled decay, and batch size 128. Augmentation uses random cropping with padding and horizontal flipping. As illustrated in Fig. 2, transfer is applied at the fi-nal pooled representation. The projection dimension is 64, matching the feature dimension. The learnable set ϕ =
+
+{Wq , W k, W v , λ, MLP } is optimized jointly with the child. 
+
+Optical flow. We integrate LePoKet into a compressed RAFT architecture. Training uses FlyingChairs [14] and FlyingThings3D [15] (C+T) only, with no Sintel or KITTI fine-tuning. Evaluation is reported on Sintel Clean (S-C), Sintel Final (S-F), and KITTI endpoint error (K-E). This setting tests whether the transfer mechanism carries from global recognition features to dense motion representations. 
+
+C. Metrics and Comparison Protocol 
+
+For classification we report Top-1 accuracy and error E =100 − Top-1. Relative error reduction (RER) with respect to the child baseline is 
+
+RER = Ebaseline − Emodel 
+
+Ebaseline 
+
+× 100% . (11) For optical flow, lower endpoint error is better. Literature methods in the classification tables are included as contextual reference points; because their reported train-ing protocols can differ, they are not treated as controlled reproductions. For HALOC [16], the original work reports a 
+
+0.07 percentage-point accuracy improvement over an uncom-pressed ResNet20 on CIFAR-10. For consistent presentation in Table II, we therefore express this reported improvement relative to our 91.25% ResNet20 reference, yielding 91.32%. The corresponding error and RER values are recomputed using the definition above. The controlled evidence in this paper is the comparison with the corresponding compact baseline and the published HKT predecessor [20]. For HKT, RER values in our tables are likewise recomputed from the reported accuracies using the definition above so that the comparison is internally consistent. 
+
+D. CIFAR-10 Results 
+
+Table II shows that the ResNet20 baseline obtains 91.25% accuracy. LePoKet reaches 93.40%, an absolute gain of 2.15 x16  x166 
+
+> Stem
+> 7x7, 64
+> 1x1, 64
+> 1x1, 64
+> 3x3, 128
+> 1x1  64
+> 3x3  128
+
+ResNet-20 (Child)    
+
+> x3 Basic Block
+> x2 Basic Block
+> x3 Basic Block
+> Stem
+> 7x7, 64
+> 3x3, 64
+> 1x1, 64
+> Res. Block
+> 3x3, 128
+> 1x1, 128
+> Res. Block
+> Avg Pooling
+> FC
+> x36
+> 3x3, 128
+> 1x1, 226
+> Res. Block
+
+ResNet-110 (Parent) 
+
+> Ground truth
+> FC
+> Avg Pooling
+> Ground truth
+
+Fig. 2: LePoKet in the ResNet experiment. ResNet110 is the frozen parent and ResNet20 is the child. Transfer is applied to the pooled representation through the learnable ETM/LGA interface. TABLE III: CIFAR-100: ResNet110 → ResNet20.                            
+
+> Method Top-1 (%) Error (%) RER (%) Baseline (R-20) 65.3 34.7 –KD [1] 66.0 34.0 2.0 AT [3] 66.2 33.8 2.6 SP [4] 66.3 33.7 2.9 NORM [8] 66.6 33.4 3.7 CRD [5] 67.0 33.0 4.9 DKD [6] 67.4 32.6 6.1
+> LePoKet (Ours) 74.01 25.99 25.1
+
+percentage points and a relative error reduction of 24.57%. The result answers Q1 positively in the controlled CIFAR-10 setting: learning the transfer interface improves the same compact child while retaining the standard task objective. Relative to the published HKT result (92.40%), LePoKet adds 1.00 percentage point, indicating a substantial additional benefit from optimizing the transfer interface on this dataset. The contextual methods in Table II span compression, sparsity, and knowledge-transfer approaches. We report their values to situate the operating range rather than to claim a strictly identical training protocol. This distinction is im-portant because LePoKet’s central comparison is with the task-only child and the structural HKT variant in Sec. IV-G. 
+
+E. CIFAR-100 Results 
+
+On CIFAR-100, Table III reports a larger separation from the compact baseline. ResNet20 obtains 65.3%, whereas LePoKet reaches 74.01%. The corresponding error decreases from 34.7% to 25.99%, giving a 25.1% RER. This result indicates that the same transfer formulation remains effective when the recognition problem contains more classes and the child baseline has substantially larger error. TABLE IV: Optical-flow results with FlyingChairs + Fly-ingThings3D (C+T) training only. Lower is better.                         
+
+> Method S-C ↓S-F ↓K-E ↓
+> RAFT ( P) [9] 1.43 2.71 5.04 RAFT ( C) Baseline 2.21 3.35 7.51 DRAFT [10] 1.99 3.17 6.94 2HKT-RAFT [20] 1.91 3.03 7.37 3HKT-RAFT [20] 1.90 3.08 6.45
+> LePoKet (Ours) 1.92 3.01 6.39
+
+As in the CIFAR-10 table, the published distillation values are contextual rather than a claim of identical reproduction. The main observation is therefore not that LePoKet univer-sally dominates every distillation implementation, but that task-driven optimization of the transfer interface yields a substantial improvement over the compact child under the reported setting. 
+
+F. Dense Motion Perception with RAFT 
+
+The optical-flow experiment addresses Q2. LePoKet is in-serted at the feature interaction stage of a compressed RAFT model. Parent representations are extracted and aligned to the compact feature space before LGA mixing. The recur-rent GRU-based refinement and cost-volume construction of RAFT are otherwise preserved. Transfer parameters and child parameters are optimized using the standard endpoint-error objective. Table IV shows consistent improvement over the compact RAFT baseline: 2.21 →1.92 on Sintel Clean, 3.35 →3.01 on Sintel Final, and 7.51 →6.39 on KITTI. The model is trained only on C+T, so these results do not rely on benchmark-specific fine-tuning. Relative to DRAFT under the reported protocol, LePoKet also gives lower error on all three metrics. Baseline ResNet20 HKT-ResNet20 (Structural) LePoKet-ResNet20 (Ours) 90.5 91.0 91.5 92.0 92.5 93.0 93.5 94.0 
+
+> Top-1 Accuracy (%)
+> 91.25% 92.40% 93.40%
+> CIFAR-10: Structural vs Learnable Transfer
+
+(a) CIFAR-10 classification RAFT-C (Baseline) HKT-RAFT (Structural) LePoKet-RAFT (Ours) 1.7 1.8 1.9 2.0 2.1 2.2 2.3 2.4   
+
+> EPE (↓)
+> 2.21 1.91 1.92
+> Optical Flow (C+T): RAFT vs HKT-RAFT vs LePoKet
+
+(b) Optical flow (C+T) 
+
+Fig. 3: Structural vs. learnable knowledge transfer. (a) CIFAR-10 accuracy for ResNet110 →ResNet20. (b) Sintel Clean EPE under C+T training. Higher accuracy and lower EPE are better. The HKT comparison is more informative: LePoKet is slightly worse on Sintel Clean (1.92 versus 1.91/1.90), but improves Sintel Final (3.01 versus 3.03/3.08) and KITTI EPE (6.39 versus 7.37/6.45) relative to the reported 2HKT/3HKT variants. Thus, learning the interface changes the trade-off across dense-motion benchmarks rather than uniformly improving every metric. The experiment demonstrates that the same learnable structural-transfer principle can be applied beyond classification to dense motion estimation. 
+
+G. Structural vs. Learnable Transfer 
+
+To address Q3, we distinguish three configurations. Base-line is the compact model trained with its task loss. HKT 
+
+is the published structural hereditary-transfer predecessor [20], based on ETM and Genetic Attention with aggregated inheritance supervision. LePoKet retains the structural ETM principle but explicitly parameterizes the transfer operator and jointly optimizes its parameters through LGA using the task objective alone. On CIFAR-10, Fig. 3(a) shows that HKT improves the baseline from 91.25% to 92.40%, corresponding to 13.14% RER. LePoKet reaches 93.40% and 24.57% RER. Relative to HKT, learning the interaction yields an additional 1.00 percentage-point improvement in this experiment, showing a substantial benefit beyond the structural inheritance path alone. The optical-flow ablation in Fig. 3(b) is deliberately reported without overstating the effect of learnability. The published HKT results provide two C+T references: 2HKT-RAFT obtains 1.91/3.03/7.37 and 3HKT-RAFT ob-tains 1.90/3.08/6.45 on S-C/S-F/K-E. LePoKet obtains 1.92/3.01/6.39. Hence HKT retains a marginal advantage on Sintel Clean, whereas LePoKet is better on Sintel Final and KITTI EPE. Table IV also establishes that all structural-transfer variants improve the compact baseline on the prin-cipal reported EPE metrics. The evidence therefore supports structural transfer strongly, while the incremental value of learning the interaction is metric-dependent. 
+
+H. Direct HKT–LePoKet Extension Analysis 
+
+The HKT comparison is more than an additional baseline: it identifies what changes when structural inheritance be-comes task-learnable. HKT established the ETM abstraction and reports 92.40% on CIFAR-10 for HKT-ResNet20 while retaining the 0.27M-parameter child and approximately 0.10 ms inference time on its TITAN RTX setup [20]. Under the same ResNet110 →ResNet20 setting, LePoKet reaches 93.40%. The 1.00-point improvement over HKT indicates that explicitly learning the transfer interface provides asubstantial additional benefit in this classification setting. Dense motion gives a complementary result. Under C+T training, 2HKT-RAFT reports 1.91/3.03/7.37 and 3HKT-RAFT 1.90/3.08/6.45 on S-C/S-F/K-E [20]; LePoKet obtains 1.92/3.01/6.39. Thus, HKT remains marginally better on Sintel Clean, whereas LePoKet is better on Sintel Final and KITTI EPE. Learnability therefore changes the cross-benchmark trade-off rather than uniformly improving every metric. LePoKet also changes the optimization mechanism: HKT aggregates task and inheritance supervision, whereas LeP-oKet learns its transfer parameters through Ltask without an explicit teacher–student discrepancy. The present study does not yet isolate these two changes factorially, nor does it report LePoKet hardware latency. Consequently, HKT’s published efficiency numbers are not reused as LePoKet measurements. A future ablation should independently vary fixed/learnable mixing and task-only/inheritance-augmented supervision, together with embedded-hardware profiling. 
+
+I. Implications for Robotic Vision 
+
+Optical flow is a dense representation of scene motion and is relevant to perception pipelines that reason about dynamic environments. The RAFT experiment is therefore the robotics-facing component of this study: it evaluates whether LePoKet can strengthen a compact dense predictor without adding a new teacher-imitation objective or fine-tuning on the evaluation benchmarks. The result is encour-aging for resource-constrained perception, but it should not be interpreted as an end-to-end robot-system evaluation. The present paper does not report on-device latency, energy consumption, memory use, or closed-loop naviga-tion/control performance. Nor does it claim that the transfer interface is cost-free during training. These measurements are important for establishing deployment efficiency and consti-tute the main limitation of the current evaluation. A natural next step is to train with LePoKet and then characterize the compact child on embedded robotic hardware, as well as to evaluate transfer in downstream tasks such as navigation or scene understanding. 
+
+J. Summary of Findings 
+
+Across the reported experiments, Q1 is supported by improvements over both compact baselines; Q2 is supported by the transfer from ResNet classification to RAFT optical flow; and Q3 shows that structural inheritance provides a strong gain and that learning the transfer interface adds a further 1.00 percentage point on CIFAR-10, while the benefit remains metric-dependent in optical flow. This distinction is central to the interpretation of LePoKet: its contribution is not an assertion that learned interaction must win on every benchmark value, but a general mechanism that makes the parameters governing structural knowledge transfer explicitly optimizable by the downstream task. V. C ONCLUSION 
+
+We presented LePoKet, a learnable extension of the struc-tural HKT paradigm [20] and a framework for transferring knowledge from a frozen parent network to a compact child model through the forward computation. Rather than introducing an auxiliary teacher–student imitation objective, LePoKet parameterizes an Extract–Transform–Mix interface and uses Learnable Genetic Attention to regulate residual feature inheritance jointly with child optimization. Con-trolled ResNet experiments on CIFAR-10 and CIFAR-100 show improvements over standard child training, while the RAFT-based study demonstrates that the same mechanism extends to dense motion estimation. Under C+T training without Sintel or KITTI fine-tuning, LePoKet improves the compact RAFT baseline on all three reported optical-flow metrics. The direct HKT comparison shows a further 1.00 percentage-point CIFAR-10 gain from learning the transfer interface (92.40% for HKT versus 93.40% for LePoKet). In optical flow, LePoKet slightly trails 2HKT/3HKT on Sintel Clean but improves Sintel Final and KITTI EPE, underscor-ing that learnability changes the cross-benchmark trade-off rather than necessarily improving every individual metric. Overall, the results motivate learnable structural transfer as a promising direction for efficient robotic perception. Future work should evaluate the framework directly on embodied robotic tasks and characterize its latency, memory, and com-putational overhead on deployment hardware. REFERENCES [1] Geoffrey Hinton, Oriol Vinyals, and Jeff Dean, “Distilling the knowledge in a neural network,” arXiv preprint arXiv:1503.02531 ,2015. [2] Adriana Romero, Nicolas Ballas, Samira Ebrahimi Kahou, Antoine Chassang, Carlo Gatta, and Yoshua Bengio, “Fitnets: Hints for thin deep nets. arxiv 2014,” arXiv preprint arXiv:1412.6550 , 2014. [3] Sergey Zagoruyko and Nikos Komodakis, “Paying more attention to attention: Improving the performance of convolutional neural networks via attention transfer,” in ICLR , 2017. [4] Frederick Tung and Greg Mori, “Similarity-preserving knowledge distillation,” in ICCV , 2019. [5] Yonglong Tian, Dilip Krishnan, and Phillip Isola, “Contrastive representation distillation,” in ICLR , 2020. [6] Borui Zhao, Quan Cui, Renjie Song, Yiyu Qiu, and Jiajun Liang, “Decoupled knowledge distillation,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) ,2022. [7] Pengguang Chen, Shu Liu, Hengshuang Zhao, and Jiaya Jia, “Dis-tilling knowledge via knowledge review,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2021. [8] Jang Hyun Cho and Bharath Hariharan, “On the efficacy of knowledge distillation,” in Proceedings of the IEEE/CVF International Confer-ence on Computer Vision (ICCV) , 2019. [9] Zachary Teed and Jia Deng, “Raft: Recurrent all-pairs field transforms for optical flow,” arXiv preprint arXiv:2003.12039 , 2020. [10] Yanick Christian Tchenko, Hicham Hadj Abdelkader, and Hedi Tabia, “Draft-distilled recurrent all-pairs field transforms for optical flow,” in 2024 IEEE International Conference on Image Processing (ICIP) .IEEE, 2024, pp. 1547–1553. [11] Ashish Vaswani, Noam Shazeer, Niki Parmar, Jakob Uszkoreit, Llion Jones, Aidan N Gomez, Łukasz Kaiser, and Illia Polosukhin, “At-tention is all you need,” Advances in neural information processing systems , vol. 30, 2017. [12] Alex Krizhevsky, “Learning multiple layers of features from tiny images,” Tech. Rep., University of Toronto, 2009. [13] Kaiming He, Xiangyu Zhang, Shaoqing Ren, and Jian Sun, “Deep residual learning for image recognition,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) ,2016. [14] Alexey Dosovitskiy, Philipp Fischer, Eddy Ilg, Philip H¨ ausser, Caner Hazirbas, Vladimir Golkov, Patrick van der Smagt, Daniel Cremers, and Thomas Brox, “Flownet: Learning optical flow with convolutional networks,” in Proceedings of the IEEE International Conference on Computer Vision (ICCV) , 2015, pp. 2758–2766, FlyingChairs dataset. [15] Nicolas Mayer, Eddy Ilg, Philip H¨ ausser, Philipp Fischer, Daniel Cremers, Alexey Dosovitskiy, and Thomas Brox, “A large dataset to train convolutional networks for disparity, optical flow, and scene flow estimation,” in Proceedings of the IEEE Conference on Computer Vision and Pattern Recognition (CVPR) Workshops , 2016, pp. 4040– 4048, FlyingThings3D dataset. [16] Yifan Chen, Zhuang Liu, Hanrui Wang, and Song Han, “Haloc: Hardware-aware low-rank compression for efficient deep neural net-works,” in Proceedings of the AAAI Conference on Artificial Intelli-gence , 2023, vol. 37, pp. 296–304. [17] Aaron R. Flouro and Shawn P. Chadwick, “Sparse knowledge distil-lation: A mathematical framework for probability-domain temperature scaling and multi-stage compression,” 2026. [18] Y. Idelbayev and M. Carreira-Perpi˜ n´ an, “Low-rank compression of neural nets: Learning the rank of each,” in CVPR , 2020. [19] Tai Vu, Emily Wen, and Roy Nehoran, “How not to give a flop: Combining regularization and pruning for efficient inference,” 2020. [20] Yanick Christian Tchenko, Felix Mohr, Hicham Hadj-Abdelkader, and Hedi Tabia, “Hereditary knowledge transfer: Modular and selective learning across neural networks,” in 2026 IEEE World Congress on Computational Intelligence (WCCI) , Maastricht, The Netherlands, 2026.
