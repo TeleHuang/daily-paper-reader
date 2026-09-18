@@ -1,0 +1,748 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-18T21:15:41.874619+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 18,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 22,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2609.18207v1",
+      "source": "arxiv",
+      "title": "Reinforcement Learning for Real-Time Vision-Language-Action Policies",
+      "abstract": "Reinforcement learning fine-tuning on top of large, pretrained Vision-Language-Action (VLA) models offers promise for highly reliable robot deployment. However, because of their scale, modern VLA models suffer from high inference latency, so the observation used to select an action is often stale by execution time, creating a distribution shift that can substantially degrade reliability and performance. Prior work has explored asynchronous policy execution to reduce the effect of latency, but these methods are mostly built on imitation learning and offer no mechanism for moving beyond the training distribution toward higher reliability. We close this gap by enabling RL fine-tuning that meets the real-time control requirements of dynamic real-world manipulation. Our approach builds on EXPO-FT, a framework for sample-efficient, reliable VLA fine-tuning with reinforcement learning, and decouples slow, expressive action generation from fast, reactive action edits: a large pretrained VLA proposes action chunks using its strong behavior prior, while a lightweight edit policy performs fast, reactive decision-making by editing actions in response to changes in state, conditioned on the latest observation. We instantiate this as Real-Time EXPO-FT, an RL framework for finetuning real-time VLA policies. On the Kinetix benchmark, Real-Time EXPO-FT enables a delayed policy to achieve the best performance among delayed and non-delayed methods in 10 out of 10 environments. On four dynamic real-world tasks, robot object passing, ball balancing, table soccer kicking, and dynamic object picking, with online robot data capped at 10 minutes, Real-Time EXPO-FT improves average policy performance from 42% to 97%, all without human intervention, demonstrating rapid, sample-efficient adaptation to challenging real-world dynamics. Website: https://pd-perry.github.io/real-time-expo-ft",
+      "authors": [
+        "Perry Dong",
+        "Kuo-Han Hung",
+        "Dorsa Sadigh",
+        "Chelsea Finn"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-16T06:38:36+00:00",
+      "link": "https://arxiv.org/pdf/2609.18207v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "RL fine-tuning meeting real-time control despite VLA inference latency",
+      "llm_evidence_cn": "在VLA推理延迟下通过RL微调满足实时控制",
+      "llm_evidence": "在VLA推理延迟下通过RL微调满足实时控制",
+      "canonical_evidence": "在VLA推理延迟下通过RL微调满足实时控制",
+      "llm_tldr_en": "This work enables reinforcement learning fine-tuning of large VLA models that meets real-time control requirements, addressing the stale-observation distribution shift caused by high VLA inference latency in dynamic manipulation.",
+      "llm_tldr_cn": "大规模预训练VLA模型推理延迟高，导致执行时观测过时、产生分布偏移并降低可靠性。本文提出面向实时控制的强化学习微调方法，使策略在动态真实操作中满足实时要求，并具备超越训练分布、提升可靠性的能力。相比以往基于模仿学习的异步执行，该方法为实时机器人策略部署提供更强的可靠性提升途径。",
+      "llm_tldr": "大规模预训练VLA模型推理延迟高，导致执行时观测过时、产生分布偏移并降低可靠性。本文提出面向实时控制的强化学习微调方法，使策略在动态真实操作中满足实时要求，并具备超越训练分布、提升可靠性的能力。相比以往基于模仿学习的异步执行，该方法为实时机器人策略部署提供更强的可靠性提升途径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.19475v1",
+      "source": "arxiv",
+      "title": "FASA: Feedback-Aware Sampling Adaptation for Efficient Diffusion-Based VLA Models",
+      "abstract": "Diffusion-based Vision-Language-Action (VLA) models achieve strong performance in embodied tasks, but their iterative sampling imposes heavy computational and memory-access cost, blocking real-time deployment on edge platforms. Existing acceleration methods either require expensive training (e.g., distillation, flow matching) or degrade perception via statically scheduled pruning and caching, ignoring the dynamic workload variance of robotic interactions. This paper presents FASA (Feedback-Aware Sampling Adaptation), a training-free runtime framework that treats real-time multimodal feedback as a control signal for the denoising pipeline: an interaction-driven range adaptor modulates the global sampling-step budget based on visual and gripper-force feedback, and a proprioception-aware step adaptor pinpoints the optimized step within the adapted range. This co-designed framework allows the underlying hardware architecture to adaptively match the workload demands of different execution phases. Comparative evaluations across several benchmarks show that the inference speed can be increased by up to 1.45$\\times$ while maintaining competitive success rates, providing a novel dynamic runtime architecture paradigm for deploying heavy generative embodied AI workloads onto resource-constrained computing platforms.",
+      "authors": [
+        "Yuchen Han",
+        "Jianhan Wu",
+        "Xiaoyang Qu",
+        "Lingwei Kong",
+        "Shiyi Li",
+        "Jianzong Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T22:36:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.19475v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "training-free runtime acceleration of diffusion VLA models for real-time deployment",
+      "llm_evidence_cn": "免训练运行时加速扩散VLA模型以实现实时部署",
+      "llm_evidence": "免训练运行时加速扩散VLA模型以实现实时部署",
+      "canonical_evidence": "免训练运行时加速扩散VLA模型以实现实时部署",
+      "llm_tldr_en": "Presents FASA, a training-free runtime framework that uses real-time multimodal feedback as a control signal to adaptively modulate the denoising sampling-step budget of diffusion-based VLA models, enabling real-time edge deployment.",
+      "llm_tldr_cn": "扩散式视觉-语言-动作模型性能优异，但迭代采样带来高计算与访存开销，阻碍其在边缘平台实时部署。现有加速方法需昂贵训练或静态剪枝缓存，忽视机器人交互的动态负载差异。本文提出FASA，一个免训练的运行时框架，将实时多模态反馈作为去噪流程的控制信号，自适应调节采样步数预算。该方法在保持感知质量的同时显著降低推理开销，支持实时部署。",
+      "llm_tldr": "扩散式视觉-语言-动作模型性能优异，但迭代采样带来高计算与访存开销，阻碍其在边缘平台实时部署。现有加速方法需昂贵训练或静态剪枝缓存，忽视机器人交互的动态负载差异。本文提出FASA，一个免训练的运行时框架，将实时多模态反馈作为去噪流程的控制信号，自适应调节采样步数预算。该方法在保持感知质量的同时显著降低推理开销，支持实时部署。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "inference acceleration of large multimodal models for real time robot policy deployment",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.19600v1",
+      "source": "arxiv",
+      "title": "WorldContact: A Contact-Centric World Model for Scalable Robot Learning",
+      "abstract": "Adapting robots to new objects and tasks requires interaction experience that can be costly to obtain. We present WorldContact, a contact-centric world model for deformable-object manipulation, constructed from a limited set of high-quality trajectories to generate additional training data efficiently. It predicts object dynamics using larger time steps than the source numerical simulator, which requires small integration steps to resolve rapid motion and prevent interpenetration. We evaluate WorldContact across 16 shopping-bag manipulation tasks. State-rollout measurements on a single H100 GPU show a $10\\times$ speedup over the source simulator, excluding rendering and disk I/O. We use the generated data to fine-tune an existing vision-language-action policy and deploy it directly on a real robot. In bag lifting, the same policy achieves 65% single-attempt success when fine-tuned on source simulation data alone, compared with 95% when fine-tuned on the dataset expanded with WorldContact. These results support efficient data generation with WorldContact for robot policy adaptation.",
+      "authors": [
+        "Caoliwen Wang",
+        "Mengdi Wang",
+        "Heng Zhang",
+        "Shixun Huang",
+        "Siyuan Chen",
+        "Chao Liu",
+        "Anpei Chen",
+        "Zhendong Wang",
+        "Peter Yichen Chen",
+        "Huamin Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-17T02:27:32+00:00",
+      "link": "https://arxiv.org/pdf/2609.19600v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "contact-centric world model generates extra training data and achieves 10x speedup over simulator",
+      "llm_evidence_cn": "接触中心世界模型生成额外训练数据并较仿真器提速十倍",
+      "llm_evidence": "接触中心世界模型生成额外训练数据并较仿真器提速十倍",
+      "canonical_evidence": "接触中心世界模型生成额外训练数据并较仿真器提速十倍",
+      "llm_tldr_en": "WorldContact is a contact-centric world model built from few high-quality trajectories that generates additional training data for deformable-object manipulation, rolling out dynamics with larger time steps and achieving 10x speedup over the source simulator.",
+      "llm_tldr_cn": "机器人适应新物体与新任务需要大量交互经验，而真实数据获取成本高昂。WorldContact 以接触为中心构建世界模型，仅用少量高质量轨迹即可预测可变形物体动力学，并采用比数值仿真器更大的时间步长加速状态推演。在十六项购物袋操作任务上，其状态推演较源仿真器提速约十倍，生成数据可用于微调现有视觉-语言-动作策略，为缓解具身学习数据稀缺提供了可扩展方案。",
+      "llm_tldr": "机器人适应新物体与新任务需要大量交互经验，而真实数据获取成本高昂。WorldContact 以接触为中心构建世界模型，仅用少量高质量轨迹即可预测可变形物体动力学，并采用比数值仿真器更大的时间步长加速状态推演。在十六项购物袋操作任务上，其状态推演较源仿真器提速约十倍，生成数据可用于微调现有视觉-语言-动作策略，为缓解具身学习数据稀缺提供了可扩展方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.19846v1",
+      "source": "arxiv",
+      "title": "Improving Cross-embodiment Transfer in Latent Action Models with Action-Similarity Supervision",
+      "abstract": "As generalist robot policies gain vision and language from web-scale pretraining, demonstrations remain costly to collect and tied to the robot that recorded them. Latent action models (LAMs) address both by learning latent actions from action-free videos that can be shared across embodiments, however, in practice, LAMs are sensitive to background visual noise, and the same motion from two different robots may be encoded with different latents. One solution to the background visual noise is to add an auxiliary loss predicting the robot action from the latent action, further associating the latent action space to the embodiment specific robot action space. We study a different use of the same labels, through action-similarity supervision. The similarity between any two latent actions is trained to match the similarity of the two ground-truth robot action sequences. The ground-truth actions are never predicted by the LAM, so the latent action does not need to encode embodiment specifics. We evaluate cross-embodiment transfer on RoboTwin 2.0 in a controlled setup, two bimanual robots demonstrate disjoint task sets, a policy is trained on all the demonstrations, and each robot is evaluated closed-loop on the tasks only the other demonstrated. With the policy architecture and its hyperparameters, the dataset, and the evaluation protocol fixed, predicting latent actions instead of ground-truth actions more than doubles cross-embodiment success. Given the same ground-truth actions, similarity supervision transfers better than an auxiliary loss that predicts the ground-truth action during the LAM training. Computing the similarities on end-effector motion rather than joint-space motion, and letting the loss compare latent actions across the two robots, gives the best approach of the study.",
+      "authors": [
+        "Maxime Alvarez",
+        "Renzo Caballero",
+        "Tatsuya Matsushima",
+        "Yusuke Iwasawa",
+        "Yutaka Matsuo"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-17T07:55:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.19846v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "improving cross-embodiment transfer in latent action models",
+      "llm_evidence_cn": "通过动作相似性监督改进潜在动作模型的跨具身迁移",
+      "llm_evidence": "通过动作相似性监督改进潜在动作模型的跨具身迁移",
+      "canonical_evidence": "通过动作相似性监督改进潜在动作模型的跨具身迁移",
+      "llm_tldr_en": "Latent action models share actions across embodiments but are sensitive to visual noise and encode identical motions inconsistently. Action-similarity supervision aligns latent actions, improving cross-embodiment transfer for generalist robot policies.",
+      "llm_tldr_cn": "针对通用机器人策略依赖昂贵且绑定本体的演示数据、而潜在动作模型对背景视觉噪声敏感且同一运动在不同机器人上编码不一致的问题，本文提出利用动作相似性监督的辅助目标，将不同具身的相同运动对齐到一致的潜在动作空间。该监督在保持潜在动作可跨本体共享的同时增强本体一致性。实验表明方法缓解了背景噪声与跨本体潜在不一致，显著提升跨具身迁移性能，为动作无标注视频的跨本体利用提供新监督方式。",
+      "llm_tldr": "针对通用机器人策略依赖昂贵且绑定本体的演示数据、而潜在动作模型对背景视觉噪声敏感且同一运动在不同机器人上编码不一致的问题，本文提出利用动作相似性监督的辅助目标，将不同具身的相同运动对齐到一致的潜在动作空间。该监督在保持潜在动作可跨本体共享的同时增强本体一致性。实验表明方法缓解了背景噪声与跨本体潜在不一致，显著提升跨具身迁移性能，为动作无标注视频的跨本体利用提供新监督方式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "cross embodiment skill transfer in robot learning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.20648v1",
+      "source": "arxiv",
+      "title": "SkipVLA: Skipping VLA Steps with Classical Planning for Fast Robot Manipulation",
+      "abstract": "Vision-Language-Action (VLA) models are a class of generalist robot policies that map camera images and language instructions directly to robot actions. While promising, these models remain slow at test time, particularly for long-horizon tasks that require many queries to the policy. Recent efforts reduce VLA latency by distilling smaller models, overlapping asynchronous action chunks, or pairing the VLA with a fast low-level policy, but still run a learned policy for the entire task. In contrast to VLA, classical motion planners quickly find collision-free motions, but require an explicit goal and have no semantic understanding of the task. In this work, we present SkipVLA, a hybrid policy that combines a pretrained VLA with a classical motion planner, using the planner for free-space motion and querying the VLA only for contact-rich skills such as grasping and placing. SkipVLA reuses the frozen vision-language backbone of the VLA to predict a target pose for each planned motion, and learns this predictor without additional demonstrations introduced into the system by using what was already learnt by the large VLA. We evaluate SkipVLA with three VLAs on 13 LIBERO tasks in simulation and three pick-and-place tasks on a physical 6-DoF YAM arm, demonstrating up to 2.5x faster task completion and significantly lower energy consumption while achieving the same task success rate.",
+      "authors": [
+        "Kaivalya Agrawal",
+        "Md Ashiqur Rahman",
+        "Raymond A. Yeh",
+        "Zachary Kingston"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-17T16:28:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.20648v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "reduces VLA latency for fast robot manipulation via hybrid classical planning",
+      "llm_evidence_cn": "通过混合经典规划降低VLA延迟实现快速机器人操作",
+      "llm_evidence": "通过混合经典规划降低VLA延迟实现快速机器人操作",
+      "canonical_evidence": "通过混合经典规划降低VLA延迟实现快速机器人操作",
+      "llm_tldr_en": "SkipVLA speeds up slow test-time VLA policies by hybridizing a pretrained VLA with a classical motion planner, so the planner supplies fast collision-free motions and the VLA is queried far less over long-horizon tasks.",
+      "llm_tldr_cn": "VLA模型虽具通用操作能力，但测试时推理缓慢，长时程任务需大量策略查询。本文提出SkipVLA，将预训练VLA与经典运动规划器结合为混合策略：由VLA提供语义目标，经典规划器快速生成无碰撞运动，从而跳过大量VLA调用。该方案在保持任务语义理解的同时显著降低推理延迟，为实时机器人操作提供高效路径。",
+      "llm_tldr": "VLA模型虽具通用操作能力，但测试时推理缓慢，长时程任务需大量策略查询。本文提出SkipVLA，将预训练VLA与经典运动规划器结合为混合策略：由VLA提供语义目标，经典规划器快速生成无碰撞运动，从而跳过大量VLA调用。该方案在保持任务语义理解的同时显著降低推理延迟，为实时机器人操作提供高效路径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.20761v1",
+      "source": "arxiv",
+      "title": "Agile-WAM: An Agile Tactile World Action Model for Contact-Rich Robot Control",
+      "abstract": "World Action Models (WAMs) advance beyond conventional visuomotor policies by jointly predicting future world states and robot actions, enabling the policy to learn physical dynamics that support effective control. However, recent tactile WAMs often rely on large-scale pretrained generative backbones to capture contact-rich physical dynamics, which limit their inference efficiency and flexible deployment. In this paper, we present \\ABBR{}, an agile tactile World Action Model for contact-rich robot control. \\ABBR{} encodes visual and tactile observations into a shared latent that serves as the source of a direct vision-tactile-to-action flow-matching process, which can jointly generate latent representations of action chunks and future visual/tactile latents. A key observation is that vision and tactile signals evolve at inherently different timescales: adjacent visual frames are often highly similar, whereas tactile signals can change abruptly upon contact. We therefore introduce multi-horizon multimodal prediction in \\ABBR{}, which provides supervision for visual latent at a larger temporal offset while predicting the tactile latent in the next frame to capture fine-grained contact dynamics. Across nine simulated and five real-world contact-rich manipulation tasks, \\ABBR{} demonstrates strong and robust performance, outperforming the strongest baseline in success rate while maintaining low inference latency. In particular, in five real-world experiments, \\ABBR{} yields a relative gain of $\\textbf{29.4\\%}$ in overall success rates while achieving inference latency of $\\textbf{11.9 ms}$. These results demonstrate that multimodal WAM can be achieved with an agile architecture suitable for precise and high-frequency robot control. More details are available on our project page: https://hanchuzhou.github.io/TARO_project_page/.",
+      "authors": [
+        "Hanchu Zhou",
+        "Brendan Lynch",
+        "Raman Goyal",
+        "Dechen Gao",
+        "Begum Kasap",
+        "Boqi Zhao",
+        "Junshan Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-17T17:43:51+00:00",
+      "link": "https://arxiv.org/pdf/2609.20761v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Tactile world action model jointly predicts future states and actions for control",
+      "llm_evidence_cn": "触觉世界动作模型联合预测未来状态与动作",
+      "llm_evidence": "触觉世界动作模型联合预测未来状态与动作",
+      "canonical_evidence": "触觉世界动作模型联合预测未来状态与动作",
+      "llm_tldr_en": "Tactile world-action models need heavy generative backbones, hurting inference speed; Agile-WAM encodes vision and touch into a shared latent and uses direct flow matching to jointly generate action chunks and future states, enabling efficient contact-rich control.",
+      "llm_tldr_cn": "现有触觉世界动作模型依赖大规模预训练生成骨干，推理效率低且部署不灵活。本文提出Agile-WAM，将视觉与触觉观测编码到共享潜空间，并用直接视觉-触觉到动作的流匹配过程联合生成动作块与未来状态。该设计在接触密集的机器人控制任务中兼顾了物理动态建模与推理效率，为实时灵巧操作提供了轻量化世界动作模型方案。",
+      "llm_tldr": "现有触觉世界动作模型依赖大规模预训练生成骨干，推理效率低且部署不灵活。本文提出Agile-WAM，将视觉与触觉观测编码到共享潜空间，并用直接视觉-触觉到动作的流匹配过程联合生成动作块与未来状态。该设计在接触密集的机器人控制任务中兼顾了物理动态建模与推理效率，为实时灵巧操作提供了轻量化世界动作模型方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.18232v1",
+      "source": "arxiv",
+      "title": "UMI-Bridge: Action-Anchored Latent Alignment across Human and Robot Manipulation Data",
+      "abstract": "Real-robot demonstrations are limited, motivating the use of human manipulation data collected without robots, including egocentric videos and handheld Universal Manipulation Interface (UMI) demonstrations. However, differences in viewpoint, embodiment, and available action supervision make it difficult to align representations across these sources according to manipulation motion rather than visual appearance. We introduce UMI-Bridge, which uses UMI as an intermediate domain to align representations according to action equivalence rather than pixel similarity. UMI action supervision anchors the latent representation to end-effector motion and gripper behavior, while synchronized head-wrist observations and paired ego-UMI clips support alignment across views and domains. We train a dual-view latent action model (LAM) on human manipulation data without robot demonstrations, then freeze its wrist teacher and dynamics model to regularize vision-language-action (VLA) post-training on UMI and robot data. The shared wrist interface enables this training-time supervision across both domains while preserving the policy's standard inference architecture. Across three real-robot tasks, UMI-Bridge achieves 91.7% mean success versus 73.3% for Naive Co-training with matched UMI and robot data. On two data-efficiency tasks, it surpasses a full-data Robot-only baseline using 25% of the robot demonstrations together with UMI data. It also achieves 85% and 90% success on two additional tasks learned from UMI demonstrations without task-specific robot demonstrations. These results support action-anchored latent alignment for data-efficient robot learning and UMI-to-robot task transfer.",
+      "authors": [
+        "Haiyi Liu",
+        "Jingming Ma",
+        "Ke Rui",
+        "Yuteng Wei",
+        "Yuan Ma",
+        "Yushen Zuo",
+        "Honglong Tian",
+        "Haoran Jia",
+        "Weitao Zhou",
+        "Jiawei Wang",
+        "Minglei Li",
+        "Shiyi Chen",
+        "Haiyan Mao",
+        "Jiaqi Zhang",
+        "Chun Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T07:03:09+00:00",
+      "link": "https://arxiv.org/pdf/2609.18232v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "action-anchored latent alignment across human and robot manipulation data for transfer",
+      "llm_evidence_cn": "人类与机器人操作数据的动作锚定潜在对齐以促进迁移",
+      "llm_evidence": "人类与机器人操作数据的动作锚定潜在对齐以促进迁移",
+      "canonical_evidence": "人类与机器人操作数据的动作锚定潜在对齐以促进迁移",
+      "llm_tldr_en": "Real-robot demonstrations are limited, but human data differ in viewpoint and embodiment. UMI-Bridge uses UMI as an intermediate domain to align representations by action equivalence, enabling transfer from human to robot manipulation.",
+      "llm_tldr_cn": "针对真实机器人演示有限、而人类操作数据在视角、具身与动作监督上差异大导致难以按操作动作而非外观对齐表征的问题，本文提出UMI-Bridge，以通用操作接口UMI作为中间域，按动作等价而非像素相似对齐潜在表示。方法用UMI动作监督将潜在空间锚定到末端执行器运动与夹爪行为，并结合头腕同步观测与成对片段进行对齐。实验表明该方法能跨源对齐操作运动，为利用人类数据提升机器人学习与跨域迁移提供框架。",
+      "llm_tldr": "针对真实机器人演示有限、而人类操作数据在视角、具身与动作监督上差异大导致难以按操作动作而非外观对齐表征的问题，本文提出UMI-Bridge，以通用操作接口UMI作为中间域，按动作等价而非像素相似对齐潜在表示。方法用UMI动作监督将潜在空间锚定到末端执行器运动与夹爪行为，并结合头腕同步观测与成对片段进行对齐。实验表明该方法能跨源对齐操作运动，为利用人类数据提升机器人学习与跨域迁移提供框架。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning for robot policy learning across domains and embodiments",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.18514v1",
+      "source": "arxiv",
+      "title": "ActiveScale: Scaling Active Perception for Robots across Model, Data, and Hardware",
+      "abstract": "Active perception is essential for robotic manipulation when fixed viewpoints leave task-relevant information occluded or unobserved. However, enabling vision-language-action (VLA) models to reason across changing viewpoints and actively acquire informative observations remains challenging. We present ActiveScale, a framework that advances active perception through coordinated model, data, and hardware designs. Our model augments a VLA with historical video observations and explicit camera-pose supervision, using per-frame pose tokens and a lightweight prediction head to associate observations across viewpoints and support a coherent understanding of the scene. To learn from the camera motion naturally present in human activity, we introduce a scalable human--robot mid-training recipe using 1000 hours of egocentric and robotic data, adapting the model to temporal inputs and pose supervision. We further introduce Active-perception Mobile-manipulation Platform (AMP), a robotic platform that supports active perception and mobile manipulation through single-operator teleoperation, enabling scalable collection of demonstrations that coordinate viewpoint changes and manipulation. Experiments demonstrate improved success rates on active-perception tasks, while ablation studies validate the contributions of camera-pose-aware modeling and egocentric mid-training. Together, these components provide an integrated foundation for studying and developing active perception in robotic manipulation.",
+      "authors": [
+        "Shuai Zhou",
+        "Kaisheng Pang",
+        "Wenxuan Song",
+        "Wenjie Zhang",
+        "Xinhu Zheng",
+        "Haoang Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-16T11:46:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.18514v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "scaling active perception for real-world robot manipulation with vision-language-action models",
+      "llm_evidence_cn": "面向真实机器人操作的可扩展主动感知与VLA模型",
+      "llm_evidence": "面向真实机器人操作的可扩展主动感知与VLA模型",
+      "canonical_evidence": "面向真实机器人操作的可扩展主动感知与VLA模型",
+      "llm_tldr_en": "ActiveScale advances active perception for real-world robot manipulation by coordinating model, data and hardware designs, augmenting a VLA model with historical video and camera-pose supervision to reason across viewpoints.",
+      "llm_tldr_cn": "机器人操作中固定视角常使任务相关信息被遮挡，主动感知十分必要，但让视觉语言动作模型跨变化视角推理并主动获取信息仍具挑战。ActiveScale从模型、数据与硬件协同设计推进主动感知：模型在VLA基础上引入历史视频观测与显式相机位姿监督，用逐帧位姿词元和轻量预测头关联不同视角观测，形成连贯场景理解；数据上利用人类活动中的自然相机运动。该框架提升了真实环境下机器人主动感知与操作能力。",
+      "llm_tldr": "机器人操作中固定视角常使任务相关信息被遮挡，主动感知十分必要，但让视觉语言动作模型跨变化视角推理并主动获取信息仍具挑战。ActiveScale从模型、数据与硬件协同设计推进主动感知：模型在VLA基础上引入历史视频观测与显式相机位姿监督，用逐帧位姿词元和轻量预测头关联不同视角观测，形成连贯场景理解；数据上利用人类活动中的自然相机运动。该框架提升了真实环境下机器人主动感知与操作能力。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.16864v1",
+      "source": "arxiv",
+      "title": "TEMPO: Learning Temporal Context for Dynamic Robot Manipulation",
+      "abstract": "Vision-language-action (VLA) models have achieved impressive performance in quasi-static manipulation, but struggle in dynamic manipulation tasks because they operate on a single observation at inference time. We identify two representational failures that underlie this limitation. The first is motion ambiguity, where a single observation does not include scene dynamics and therefore cannot anticipate the future state of moving objects. The second is state aliasing, where visually similar observations from different points in a task require different actions. We argue that these failures persist regardless of model scale and inference latency, showing that the bottleneck is missing temporal context rather than model capacity. Based on this insight, we propose TEMPO, which augments a pretrained VLA with two temporal inputs: a motion summary extracted from a frozen video foundation model to resolve motion ambiguity and a compact proprioceptive history to resolve state aliasing. TEMPO requires no modification to the backbone and adds minimal compute overhead at training or deployment. Across four dynamic manipulation tasks, it improves Bottle Handover success from 44% to 74% and is the only method that solves state aliasing. Probing and ablation studies confirm that each temporal signal independently addresses its corresponding failure. We further release TEMPO-Bench, a benchmark of over 50k annotated frames for evaluating motion-aware robot perception in both regression and multiple-choice formats.   Project Website: https://tempo-robot.github.io/",
+      "authors": [
+        "Zhenyang Feng",
+        "Jimin Heo",
+        "Erik B. Sudderth",
+        "Unnat Jain"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-15T08:56:52+00:00",
+      "link": "https://arxiv.org/pdf/2609.16864v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "temporal context for dynamic robot manipulation with VLA models",
+      "llm_evidence_cn": "面向动态操作的时间上下文建模",
+      "llm_evidence": "面向动态操作的时间上下文建模",
+      "canonical_evidence": "面向动态操作的时间上下文建模",
+      "llm_tldr_en": "Identifies motion ambiguity and state aliasing as failures of single-observation VLA policies in dynamic manipulation, arguing temporal context rather than model scale is the bottleneck, and proposes TEMPO to learn temporal context.",
+      "llm_tldr_cn": "视觉-语言-动作模型在准静态操作中表现优异，但在动态操作中因仅依赖单帧观测而失效。作者指出运动模糊与状态混叠两类表示缺陷，论证瓶颈在于缺失时间上下文而非模型容量。为此提出TEMPO学习时间上下文，使策略能预测运动物体未来状态并区分视觉相似状态，从而提升动态操作性能。",
+      "llm_tldr": "视觉-语言-动作模型在准静态操作中表现优异，但在动态操作中因仅依赖单帧观测而失效。作者指出运动模糊与状态混叠两类表示缺陷，论证瓶颈在于缺失时间上下文而非模型容量。为此提出TEMPO学习时间上下文，使策略能预测运动物体未来状态并区分视觉相似状态，从而提升动态操作性能。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18374v2",
+      "source": "arxiv",
+      "title": "Decoupling Vision, Language, and Action for Efficient Multi-Task Robot Policies",
+      "abstract": "Vision-Language-Action (VLA) policies commonly run Vision-Language Model (VLM) backbones with billions of parameters at every policy inference, which costs latency and energy. We revisit a decoupled alternative for multi-task manipulation: separate vision and language encoders whose representations condition a compact action head. We run a standardized comparison that varies the vision encoder, the language encoder, and the action head while holding the demonstrations, the training-step budget, the tasks, the evaluation protocol, and the measurement platform fixed, against seven VLA baselines. The resulting Decoupled Embodiment Model (DEM) combines a fine-tuned DINOv3 vision encoder, a frozen NeoBERT language encoder, and a MeanFlow head that generates an action chunk in one forward pass. On 18 RoboCasa tasks evaluated with held-out instruction paraphrases and randomized scenes, DEM reaches 55.6\\% mean success against 56.9\\% for GR00T N1.7 and 54.6\\% for $π_{0.5}$, and on three real-robot tasks it reaches 66.0\\% against 68.0\\% for GR00T N1.7. On the same workstation, DEM needs 6.1\\,ms per policy forward pass, a maximum throughput of 162.7 policy calls per second, and draws an estimated 2.07\\,J of GPU energy per call, eight to seventeen times the throughput and six to fifteen times less energy than these VLM-backbone policies. Within this trained-task regime, DEM sits on the observed success--latency--energy frontier and provides a strong, efficient baseline for language-conditioned robot skills.",
+      "authors": [
+        "Xiatao Sun",
+        "Chen Liang",
+        "Ziyao Zeng",
+        "Qian Wang",
+        "Haoyang Zhang",
+        "Yue Sun",
+        "Qiucheng Li",
+        "Daniel Rakita"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T09:28:34+00:00",
+      "link": "https://arxiv.org/pdf/2609.18374v2",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "decoupled vision-language-action policy cuts inference latency of billion-parameter VLA models",
+      "llm_evidence_cn": "解耦视觉语言动作策略降低十亿参数VLA模型推理延迟",
+      "llm_evidence": "解耦视觉语言动作策略降低十亿参数VLA模型推理延迟",
+      "canonical_evidence": "解耦视觉语言动作策略降低十亿参数VLA模型推理延迟",
+      "llm_tldr_en": "VLA policies run billion-parameter VLM backbones at every inference, costing latency and energy. DEM decouples vision and language encoders conditioning a compact action head, beating seven VLA baselines under fixed evaluation.",
+      "llm_tldr_cn": "视觉-语言-动作策略通常在每次推理时运行数十亿参数的VLM主干，带来显著延迟与能耗。本文重新审视解耦方案，将视觉编码器、语言编码器与紧凑动作头分离，并固定演示数据、训练预算、任务与评测平台，与七个VLA基线进行标准化对比。得到的Decoupled Embodiment Model结合微调DINOv3视觉编码器、冻结NeoBERT语言编码器与MeanFlow动作头，在效率与性能上取得优势，为实时机器人策略部署提供轻量化路径。",
+      "llm_tldr": "视觉-语言-动作策略通常在每次推理时运行数十亿参数的VLM主干，带来显著延迟与能耗。本文重新审视解耦方案，将视觉编码器、语言编码器与紧凑动作头分离，并固定演示数据、训练预算、任务与评测平台，与七个VLA基线进行标准化对比。得到的Decoupled Embodiment Model结合微调DINOv3视觉编码器、冻结NeoBERT语言编码器与MeanFlow动作头，在效率与性能上取得优势，为实时机器人策略部署提供轻量化路径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "inference acceleration of large multimodal models for real time robot policy deployment",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.19340v1",
+      "source": "arxiv",
+      "title": "ViLoMan: Learning Visual-Proprioceptive Whole-Body Loco-Manipulation Skills for Humanoid Robots",
+      "abstract": "Humanoid loco-manipulation requires adaptive whole-body coordination to seamlessly integrate locomotion and physical interaction. Despite recent advances, learning autonomous loco-manipulation remains challenging due to the scarcity of diverse, physically executable robot-object interaction data and the difficulty of learning unified whole-body control directly from onboard observations. We present ViLoMan, a scalable framework for autonomous humanoid loco-manipulation. ViLoMan first transforms partial kinematic demonstrations of human-object interactions into complete, physically executable robot trajectories. It then leverages these trajectories within a teacher-student distillation framework to learn a unified policy that maps egocentric depth observations and proprioceptive measurements directly to joint-level whole-body actions. During deployment, the policy requires neither reference motions nor intermediate commands. We evaluate ViLoMan on door-closing tasks across diverse door configurations and robot initial conditions in both simulation and the real world. Experimental results demonstrate that a single policy enables a Unitree G1 humanoid to complete the full task using only onboard depth sensing and proprioception, while generalizing robustly across task variations and transferring effectively from simulation to reality. Project page: viloman-anonymous.pages.dev.",
+      "authors": [
+        "Zejie Tian",
+        "Ruibing Hou",
+        "Bingpeng Ma",
+        "Börje F. Karlsson",
+        "Shiguang Shan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T19:10:13+00:00",
+      "link": "https://arxiv.org/pdf/2609.19340v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "transforms human demonstrations into executable robot trajectories to overcome data scarcity",
+      "llm_evidence_cn": "将人类演示转化为可执行机器人轨迹以缓解数据稀缺",
+      "llm_evidence": "将人类演示转化为可执行机器人轨迹以缓解数据稀缺",
+      "canonical_evidence": "将人类演示转化为可执行机器人轨迹以缓解数据稀缺",
+      "llm_tldr_en": "Humanoid loco-manipulation suffers from scarce executable interaction data. ViLoMan converts partial human kinematic demonstrations into physically executable robot trajectories and distills a unified whole-body policy.",
+      "llm_tldr_cn": "人形机器人移动操作需要全身协调，但多样且物理可执行的机器人-物体交互数据稀缺，且难以仅从本体观测学习统一全身控制。本文提出ViLoMan框架，先将人类-物体交互的部分运动学演示转化为完整、物理可执行的机器人轨迹，再通过教师-学生蒸馏学习统一全身策略。该数据生成与蒸馏流程缓解了数据稀缺问题，提升了自主移动操作能力，为具身学习中的数据扩充提供可行方案。",
+      "llm_tldr": "人形机器人移动操作需要全身协调，但多样且物理可执行的机器人-物体交互数据稀缺，且难以仅从本体观测学习统一全身控制。本文提出ViLoMan框架，先将人类-物体交互的部分运动学演示转化为完整、物理可执行的机器人轨迹，再通过教师-学生蒸馏学习统一全身策略。该数据生成与蒸馏流程缓解了数据稀缺问题，提升了自主移动操作能力，为具身学习中的数据扩充提供可行方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.16880v1",
+      "source": "arxiv",
+      "title": "Artificial Intelligence-Enabled Space Robot Operations: Technologies, Challenges and Prospects",
+      "abstract": "Space robots are increasingly expected to perform long-duration, contact-rich, and multi-stage operations with limited human intervention. Recent advances in artificial intelligence (AI), robot learning, and embodied foundation models provide new opportunities to improve the autonomy and adaptability of such systems, but their transfer to space is constrained by scarce mission data, space-specific dynamics and sensing conditions, limited onboard resources, and stringent safety requirements. This article reviews artificial intelligence-enabled space robot operations (AI-SRO) from a capability-building perspective. We first summarize representative operational scenarios, autonomy trends, and space-specific constraints. We then establish a three-layer technical framework comprising capability foundations, capability formation, and capability deployment/evolution. Within this framework, we review simulation environments, datasets and benchmarks; task and environment understanding, state perception, decision-making and planning, and action execution; and onboard deployment, ground-to-space adaptation, continual learning, and capability transfer. Finally, we propose key research directions toward trustworthy simulation and data, open-world multimodal cognition, long-horizon safe decision-making, physically constrained policy learning, and space computing infrastructures.",
+      "authors": [
+        "Zeyuan Huang",
+        "Gang Chen",
+        "Zixuan Hao",
+        "Guoqin Tang",
+        "Junyi Zong",
+        "Guoyou Ban",
+        "Jiale Wang",
+        "Haoyang Lv",
+        "Chaoqian Ren",
+        "Sitong Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-15T09:12:12+00:00",
+      "link": "https://arxiv.org/pdf/2609.16880v1",
+      "tags": [
+        "keyword:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "review of embodied foundation models and robot learning for autonomous space robot operations",
+      "llm_evidence_cn": "综述具身基础模型与机器人学习在空间机器人自主操作中的应用",
+      "llm_evidence": "综述具身基础模型与机器人学习在空间机器人自主操作中的应用",
+      "canonical_evidence": "综述具身基础模型与机器人学习在空间机器人自主操作中的应用",
+      "llm_tldr_en": "This review surveys AI-enabled space robot operations from a capability-building perspective, covering autonomy trends, space-specific constraints such as scarce mission data and limited onboard resources, and prospects of embodied foundation models for contact-rich tasks.",
+      "llm_tldr_cn": "空间机器人需在有限人工干预下完成长时程、富接触与多阶段操作，但任务数据稀缺、动力学与感知条件特殊、星载资源受限且安全要求严苛。本文从能力构建视角综述人工智能驱动的空间机器人操作，梳理典型作业场景、自主化趋势与空间特定约束，并评估机器人学习与具身基础模型的可迁移性。该综述为具身智能在极端真实环境中的落地提供了技术路线与挑战清单。",
+      "llm_tldr": "空间机器人需在有限人工干预下完成长时程、富接触与多阶段操作，但任务数据稀缺、动力学与感知条件特殊、星载资源受限且安全要求严苛。本文从能力构建视角综述人工智能驱动的空间机器人操作，梳理典型作业场景、自主化趋势与空间特定约束，并评估机器人学习与具身基础模型的可迁移性。该综述为具身智能在极端真实环境中的落地提供了技术路线与挑战清单。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18430v1",
+      "source": "arxiv",
+      "title": "StrucPhysVideo: Learning Physical Dynamics from Structured Captions and Robot Actions",
+      "abstract": "Modeling physical dynamics, including how objects move, interact, and change state, is central to video world models for embodied AI. We present StrucPhysVideo, a family of video world models that bridges physics-focused data curation with language- and action-conditioned prediction of scene evolution. Our data pipeline combines motion-aware video segmentation, quality and content filtering, and physical relevance verification with structured annotations of objects, materials, and temporally localized interactions. By disentangling camera motion from object behavior and explicitly describing contact, deformation, and state transitions, the pipeline provides supervision grounded in observable physical events. Building on these data, we introduce StrucPhysVideo-TI2V, a sparse Mixture-of-Experts (MoE) text-image-to-video model trained with a curriculum that progressively emphasizes physical dynamics while retaining general-domain video data. StrucPhysVideo-TI2V achieves state-of-the-art performance on Physics-IQ Verified, scoring 45.5% and outperforming Cosmos3-Super-Image2Video by 2.8 percentage points. Caption ablations across backbones further demonstrate the effectiveness of physics-focused supervision. We further extend StrucPhysVideo-TI2V to StrucPhysVideo-IA2V, an interactive image-action-to-video world model that predicts visual outcomes from robot end-effector commands. Action conditioning, causal autoregressive generation, and few-step distillation enable incremental robot rollouts with only four denoising steps. Together, StrucPhysVideo advances physical dynamics modeling from image- and language-conditioned video prediction toward action-driven interaction.",
+      "authors": [
+        "Awomo-WM Team",
+        ":",
+        "Enhui Ma",
+        "Kaiwen Guo",
+        "Tingrui Zhang",
+        "Wei Song",
+        "Yingshui Tan",
+        "Jianhua Xu",
+        "Tong Zhang",
+        "Kaicheng Yu"
+      ],
+      "primary_category": "cs.CV",
+      "categories": [
+        "cs.CV"
+      ],
+      "published": "2026-09-16T10:23:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.18430v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "video world models for physical dynamics in embodied AI",
+      "llm_evidence_cn": "面向具身智能物理动态的视频世界模型",
+      "llm_evidence": "面向具身智能物理动态的视频世界模型",
+      "canonical_evidence": "面向具身智能物理动态的视频世界模型",
+      "llm_tldr_en": "StrucPhysVideo curates physics-focused structured video data and trains language- and action-conditioned video world models that predict scene evolution, improving physical dynamics modeling for embodied AI.",
+      "llm_tldr_cn": "建模物体运动、交互与状态变化是具身智能视频世界模型的核心难题，而现有数据缺乏物理监督。本文提出 StrucPhysVideo，结合运动感知分割、质量过滤与物理相关性验证，用结构化标注描述物体、材质与局部交互，并解耦相机运动与物体行为。基于该数据构建语言与动作条件的视频世界模型，预测场景演化，为具身智能提供了物理基础更扎实的世界模型与数据构建方法。",
+      "llm_tldr": "建模物体运动、交互与状态变化是具身智能视频世界模型的核心难题，而现有数据缺乏物理监督。本文提出 StrucPhysVideo，结合运动感知分割、质量过滤与物理相关性验证，用结构化标注描述物体、材质与局部交互，并解耦相机运动与物体行为。基于该数据构建语言与动作条件的视频世界模型，预测场景演化，为具身智能提供了物理基础更扎实的世界模型与数据构建方法。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "new learning paradigm for embodied agents based on world models and latent space prediction",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.20056v1",
+      "source": "arxiv",
+      "title": "MAGMA-GEN: Validated Recovery Supervision from Ambiguous Failures via Counterfactual Re-Execution",
+      "abstract": "Hierarchical robotic systems executing long-horizon manipulation tasks must make high-level semantic decisions that orchestrate stochastic low-level skills. In this setting, failed rollouts are ambiguous: a poor downstream state may reflect an invalid high-level decision, partial observation, or a valid decision whose physical execution failed. Traditional supervised learning lacks data for such recovery states, while reinforcement learning struggles with sparse rewards and non-local credit assignment. We propose MAGMA-GEN, an on-policy data-generation pipeline that converts ambiguous failed rollouts into validated recovery supervision. MAGMA-GEN first uses a privileged coach to hypothesize an early decision-level error and propose localized correction or recovery actions. Because this diagnosis is fallible, candidates are retained only if re-execution from the same state under matched conditions improves downstream progress. This produces supervised examples from the agent's own failure distribution without per-step human demonstrations. Evaluated on interactive long-horizon manipulation tasks, MAGMA-GEN improves task success and recovery capabilities, against distillation and trajectory-repair baselines under evolving task constraints in both simulation and real-robot execution.",
+      "authors": [
+        "Loan Bernat",
+        "Matthieu Grard",
+        "Ariane Herbulot",
+        "Florent Lamiraux"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-17T11:07:47+00:00",
+      "link": "https://arxiv.org/pdf/2609.20056v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "on-policy data-generation pipeline converting ambiguous failed rollouts into validated recovery supervision",
+      "llm_evidence_cn": "将模糊失败轨迹转化为有效恢复监督的在策略数据生成流程",
+      "llm_evidence": "将模糊失败轨迹转化为有效恢复监督的在策略数据生成流程",
+      "canonical_evidence": "将模糊失败轨迹转化为有效恢复监督的在策略数据生成流程",
+      "llm_tldr_en": "MAGMA-GEN addresses the lack of supervision for recovery states in hierarchical long-horizon manipulation by an on-policy data-generation pipeline that turns ambiguous failed rollouts into validated recovery training data via counterfactual re-execution.",
+      "llm_tldr_cn": "分层机器人系统执行长时程操作时，失败轨迹的成因模糊：下游状态差可能源于高层决策错误、部分观测或有效决策的执行失败，而传统监督学习缺乏此类恢复状态数据，强化学习又受稀疏奖励与信用分配困难制约。MAGMA-GEN提出在策略数据生成流程，先用特权教练假设早期决策层错误，再通过反事实重执行验证，将模糊失败转化为有效的恢复监督信号。该方法缓解了失败恢复数据稀缺问题，为长时程操作策略学习提供了数据生成新思路。",
+      "llm_tldr": "分层机器人系统执行长时程操作时，失败轨迹的成因模糊：下游状态差可能源于高层决策错误、部分观测或有效决策的执行失败，而传统监督学习缺乏此类恢复状态数据，强化学习又受稀疏奖励与信用分配困难制约。MAGMA-GEN提出在策略数据生成流程，先用特权教练假设早期决策层错误，再通过反事实重执行验证，将模糊失败转化为有效的恢复监督信号。该方法缓解了失败恢复数据稀缺问题，为长时程操作策略学习提供了数据生成新思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.17210v1",
+      "source": "arxiv",
+      "title": "FluxVLA Engine: A One-Stop VLA Engineering Platform for Embodied Intelligence",
+      "abstract": "Vision-language-action (VLA) models, world-action models (WAMs), and offline reinforcement learning methods are rapidly expanding the design space of embodied policies, yet turning these algorithms into reliable robot systems remains constrained by fragmented data formats, training stacks, evaluation protocols, inference runtimes, and embodiment-specific interfaces. We present $\\mathrm{FluxVLA}$ Engine, an open, configuration-driven platform that turns heterogeneous embodied-policy components into a reproducible data-to-deployment workflow. Rather than introducing another policy model, $\\mathrm{FluxVLA}$ standardizes interfaces for datasets, visual-language and world models, action heads, reward- or advantage-weighted learning, distributed training, simulation evaluation, optimized inference, and robot operators. The engine further integrates compositional dual-arm simulation, scalable automatic data generation, and model-decoupled human-in-the-loop rollout, takeover, correction collection, and reward annotation. For responsive physical execution, it combines Real-Time Chunking (RTC) with accelerated inference backends, lightweight remote GPU serving, and configurable trajectory post-processing. Together, these capabilities connect offline learning, simulation validation, online correction, and real-robot execution through shared and auditable contracts. $\\mathrm{FluxVLA}$ therefore targets the engineering bottlenecks separating promising embodied-learning algorithms from reproducible evaluation and dependable deployment. Code is available at https://github.com/FluxVLA/FluxVLA",
+      "authors": [
+        "Yinhao Li",
+        "Weixin Mao",
+        "Zihan Lan",
+        "Jikun Rong",
+        "Qirui Hu",
+        "Yiming Zhang",
+        "Weipeng Deng",
+        "Bowen Shen",
+        "Minzhao Zhu",
+        "Yiming Mao",
+        "Yan Yang",
+        "Chenguang Cui",
+        "Hongyuan Chen",
+        "Xu Huang",
+        "Zheyi Zhao",
+        "Pinxi Shen",
+        "Bozhen He",
+        "Zhen Fu",
+        "Yifan Wang",
+        "Zexin Zhang",
+        "Ang Gao",
+        "Haoyu Chen",
+        "Chengqi Shi",
+        "Hua Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-15T13:59:09+00:00",
+      "link": "https://arxiv.org/pdf/2609.17210v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "open platform for embodied VLA policies and deployment workflows",
+      "llm_evidence_cn": "面向具身VLA策略与部署流程的开源平台",
+      "llm_evidence": "面向具身VLA策略与部署流程的开源平台",
+      "canonical_evidence": "面向具身VLA策略与部署流程的开源平台",
+      "llm_tldr_en": "FluxVLA Engine is an open, configuration-driven platform that standardizes datasets, world models, action heads and inference runtimes to turn heterogeneous embodied-policy components into reproducible data-to-deployment robot workflows.",
+      "llm_tldr_cn": "针对具身策略从算法到可靠机器人系统受限于数据格式、训练栈与推理运行时碎片化的问题，本文提出FluxVLA引擎，一个配置驱动的开源平台。它统一了数据集、视觉语言与世界模型、动作头、奖励加权学习及分布式训练的接口，形成可复现的数据到部署工作流。该平台并不提出新策略模型，而是为具身智能研究提供标准化工程底座，降低复现与部署门槛。",
+      "llm_tldr": "针对具身策略从算法到可靠机器人系统受限于数据格式、训练栈与推理运行时碎片化的问题，本文提出FluxVLA引擎，一个配置驱动的开源平台。它统一了数据集、视觉语言与世界模型、动作头、奖励加权学习及分布式训练的接口，形成可复现的数据到部署工作流。该平台并不提出新策略模型，而是为具身智能研究提供标准化工程底座，降低复现与部署门槛。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.18650v1",
+      "source": "arxiv",
+      "title": "From Gameplay to Policy: Towards Scalable Robot Data Collection via Gamified Robot-Free Interaction",
+      "abstract": "Learning generalizable robot manipulation policies requires large-scale and diverse interaction data, yet collecting real-world demonstrations remains costly and difficult to scale. Existing approaches to data collection are either dependent on specific robot hardware that limits crowdsourcing and transferability, or suffer from incomplete annotation and limited behavioral diversity. Inspired by how games sustain long-term human engagement, we explore an alternative paradigm that turns data collection into an engaging gameplay experience and transfers the resulting human manipulation experience to real robots. We present Project Kitchen, a VR-based gamified egocentric data collection platform that elicits diverse, goal-directed manipulation while remaining independent of specific robot embodiments and hardware, making it applicable to broader and potentially large-scale deployment. To bridge the game-to-real gap, we further introduce Game2Policy, which extracts embodiment-invariant affordance cues, including contact points and sub-goal states, from gameplay trajectories. An affordance model is pre-trained on game-collected data and then jointly fine-tuned with downstream policies using only a handful of real-robot demonstrations. Experiments show that Game2Policy improves average success rates by 10.0 points in simulation and 18.3 points on real robots in the few-shot setting. User studies and quantitative analyses further show that Project Kitchen promotes diverse manipulation behaviors and provides an engaging data collection experience. These results demonstrate the potential of gamified virtual environments as a scalable source of manipulation knowledge. The platform and code will be released upon acceptance.",
+      "authors": [
+        "Zheng Li",
+        "Liang Zhu",
+        "Junzhe Wang",
+        "Huayuan Chen",
+        "Ziyun Liu",
+        "Jiahang Cao",
+        "Xinyu Sheng",
+        "Pei Qu",
+        "Yufei Jia",
+        "Ximeng Zhang",
+        "Jiarui Xie",
+        "Zizhao Yuan",
+        "Haoang Li",
+        "Yi Cai",
+        "Jinni Zhou",
+        "Jun Ma"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-16T13:33:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.18650v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Gamified robot-free VR data collection to overcome robot data scarcity",
+      "llm_evidence_cn": "游戏化无机器人VR数据采集以缓解机器人数据稀缺",
+      "llm_evidence": "游戏化无机器人VR数据采集以缓解机器人数据稀缺",
+      "canonical_evidence": "游戏化无机器人VR数据采集以缓解机器人数据稀缺",
+      "llm_tldr_en": "Collecting real-world robot demonstrations is costly and hard to scale. Project Kitchen turns data collection into VR gameplay, eliciting diverse goal-directed human manipulation that transfers to real robots.",
+      "llm_tldr_cn": "训练通用机器人操作策略需要大规模多样交互数据，但真实示教采集成本高、难以规模化，现有方案或依赖特定硬件、或标注不完整、行为多样性不足。本文受游戏长期吸引玩家的机制启发，提出Project Kitchen——一个基于VR的类游戏化第一视角数据采集平台，把数据采集转化为有趣的游戏体验，并将其中获得的人类操作经验迁移到真实机器人。该工作表明游戏化、无机器人的交互方式能够激发多样且目标导向的数据，为缓解具身机器人数据稀缺、实现可扩展数据采集提供了新范式。",
+      "llm_tldr": "训练通用机器人操作策略需要大规模多样交互数据，但真实示教采集成本高、难以规模化，现有方案或依赖特定硬件、或标注不完整、行为多样性不足。本文受游戏长期吸引玩家的机制启发，提出Project Kitchen——一个基于VR的类游戏化第一视角数据采集平台，把数据采集转化为有趣的游戏体验，并将其中获得的人类操作经验迁移到真实机器人。该工作表明游戏化、无机器人的交互方式能够激发多样且目标导向的数据，为缓解具身机器人数据稀缺、实现可扩展数据采集提供了新范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "carryover_cache",
+      "paper_id": "2609.18650v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.20659v1",
+      "source": "arxiv",
+      "title": "HIL-UMI: Bringing Human-in-the-Loop Post-Training of Vision-Language-Action Models to Universal Manipulation Interface",
+      "abstract": "Large-scale vision-language-action (VLA) models provide powerful priors for robot manipulation, yet adapting them to a specific deployment remains challenging. Supervised fine-tuning (SFT) on task-specific demonstrations provides a step toward deployment, but faces two persistent limitations: static data provide limited coverage of out-of-distribution states, and standard imitation objectives do not distinguish progressing behavior from less useful data. Interactive post-training can address these limitations, but typically requires repeated policy execution and human intervention on a physical robot. We introduce HIL-UMI, a policy-guided Universal Manipulation Interface (UMI) framework for robot-free human-in-the-loop VLA post-training. During handheld UMI demonstrations, HIL-UMI queries the current policy on the same observation stream without executing its predictions. The Energy Score compares the human action trajectory with policy inference and triggers collection when their discrepancy indicates an out-of-distribution region. In a separate feedback loop, low online advantage predictions identify essential segments for refining a progress-based advantage estimator. The updated estimator then guides advantage-conditioned behavioral cloning using a balanced mixture of base demonstrations and new policy data. This design preserves the iterative and policy-aware nature of human-in-the-loop learning while decoupling data collection from robot deployment. Experiments on four real-world tasks spanning long-horizon and precise manipulation show that HIL-UMI achieves consistent improvement over SFT and benefits from both targeted collection and advantage refinement. Moreover, HIL-UMI outperforms HG-DAgger on Clean Up Table with lower per-frame collection time, suggesting a scalable path for VLA post-training across operators and locations.",
+      "authors": [
+        "Zimu Han",
+        "Yiming Zeng",
+        "Jiyao Zhang",
+        "Zihao Zhao",
+        "Yuanfei Wang",
+        "Yixiang Jin",
+        "Shiqi Li",
+        "Shuangben Chen",
+        "Wei Huang",
+        "Ruodai Li",
+        "Hui Shen",
+        "Hao Dong"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-17T16:38:37+00:00",
+      "link": "https://arxiv.org/pdf/2609.20659v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "human-in-the-loop post-training reducing robot data needs for VLA adaptation",
+      "llm_evidence_cn": "人在环后训练降低VLA适配的机器人数据需求",
+      "llm_evidence": "人在环后训练降低VLA适配的机器人数据需求",
+      "canonical_evidence": "人在环后训练降低VLA适配的机器人数据需求",
+      "llm_tldr_en": "HIL-UMI enables robot-free human-in-the-loop post-training of VLA models on the Universal Manipulation Interface, addressing static-data coverage limits and improving deployment adaptation.",
+      "llm_tldr_cn": "大规模视觉-语言-动作模型为机器人操作提供强大先验，但适配到具体部署仍很困难：监督微调受限于静态数据覆盖不足，且标准模仿目标无法区分推进性行为。本文提出 HIL-UMI，在通用操作接口上实现策略引导、无需实体机器人的在环后训练框架。该方法支持交互式后训练以覆盖分布外状态，为低成本 VLA 部署适配提供了新方案。",
+      "llm_tldr": "大规模视觉-语言-动作模型为机器人操作提供强大先验，但适配到具体部署仍很困难：监督微调受限于静态数据覆盖不足，且标准模仿目标无法区分推进性行为。本文提出 HIL-UMI，在通用操作接口上实现策略引导、无需实体机器人的在环后训练框架。该方法支持交互式后训练以覆盖分布外状态，为低成本 VLA 部署适配提供了新方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

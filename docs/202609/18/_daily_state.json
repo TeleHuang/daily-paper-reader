@@ -1,0 +1,281 @@
+{
+  "date": "20260918",
+  "date_label": "",
+  "generated_at": "2026-09-18 21:25:00 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.18207v1",
+      "route": "202609/18/2609.18207v1-reinforcement-learning-for-real-time-vision-language-action-policies",
+      "title": "Reinforcement Learning for Real-Time Vision-Language-Action Policies",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "在VLA推理延迟下通过RL微调满足实时控制",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.19475v1",
+      "route": "202609/18/2609.19475v1-fasa-feedback-aware-sampling-adaptation-for-efficient-diffusion-based-vla-models",
+      "title": "FASA: Feedback-Aware Sampling Adaptation for Efficient Diffusion-Based VLA Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "免训练运行时加速扩散VLA模型以实现实时部署",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.19600v1",
+      "route": "202609/18/2609.19600v1-worldcontact-a-contact-centric-world-model-for-scalable-robot-learning",
+      "title": "WorldContact: A Contact-Centric World Model for Scalable Robot Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "接触中心世界模型生成额外训练数据并较仿真器提速十倍",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.19846v1",
+      "route": "202609/18/2609.19846v1-improving-cross-embodiment-transfer-in-latent-action-models-with-action-similarity-supervision",
+      "title": "Improving Cross-embodiment Transfer in Latent Action Models with Action-Similarity Supervision",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "通过动作相似性监督改进潜在动作模型的跨具身迁移",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.20648v1",
+      "route": "202609/18/2609.20648v1-skipvla-skipping-vla-steps-with-classical-planning-for-fast-robot-manipulation",
+      "title": "SkipVLA: Skipping VLA Steps with Classical Planning for Fast Robot Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "通过混合经典规划降低VLA延迟实现快速机器人操作",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.20761v1",
+      "route": "202609/18/2609.20761v1-agile-wam-an-agile-tactile-world-action-model-for-contact-rich-robot-control",
+      "title": "Agile-WAM: An Agile Tactile World Action Model for Contact-Rich Robot Control",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "触觉世界动作模型联合预测未来状态与动作",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.18232v1",
+      "route": "202609/18/2609.18232v1-umi-bridge-action-anchored-latent-alignment-across-human-and-robot-manipulation-data",
+      "title": "UMI-Bridge: Action-Anchored Latent Alignment across Human and Robot Manipulation Data",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "人类与机器人操作数据的动作锚定潜在对齐以促进迁移",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.18374v2",
+      "route": "202609/18/2609.18374v2-decoupling-vision-language-and-action-for-efficient-multi-task-robot-policies",
+      "title": "Decoupling Vision, Language, and Action for Efficient Multi-Task Robot Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "解耦视觉语言动作策略降低十亿参数VLA模型推理延迟",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.18430v1",
+      "route": "202609/18/2609.18430v1-strucphysvideo-learning-physical-dynamics-from-structured-captions-and-robot-actions",
+      "title": "StrucPhysVideo: Learning Physical Dynamics from Structured Captions and Robot Actions",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向具身智能物理动态的视频世界模型",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.18650v1",
+      "route": "202609/18/2609.18650v1-from-gameplay-to-policy-towards-scalable-robot-data-collection-via-gamified-robot-free-interaction",
+      "title": "From Gameplay to Policy: Towards Scalable Robot Data Collection via Gamified Robot-Free Interaction",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "游戏化无机器人VR数据采集以缓解机器人数据稀缺",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.18514v1",
+      "route": "202609/18/2609.18514v1-activescale-scaling-active-perception-for-robots-across-model-data-and-hardware",
+      "title": "ActiveScale: Scaling Active Perception for Robots across Model, Data, and Hardware",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向真实机器人操作的可扩展主动感知与VLA模型",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.19340v1",
+      "route": "202609/18/2609.19340v1-viloman-learning-visual-proprioceptive-whole-body-loco-manipulation-skills-for-humanoid-robots",
+      "title": "ViLoMan: Learning Visual-Proprioceptive Whole-Body Loco-Manipulation Skills for Humanoid Robots",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "将人类演示转化为可执行机器人轨迹以缓解数据稀缺",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.20056v1",
+      "route": "202609/18/2609.20056v1-magma-gen-validated-recovery-supervision-from-ambiguous-failures-via-counterfactual-re-execution",
+      "title": "MAGMA-GEN: Validated Recovery Supervision from Ambiguous Failures via Counterfactual Re-Execution",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "将模糊失败轨迹转化为有效恢复监督的在策略数据生成流程",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.20659v1",
+      "route": "202609/18/2609.20659v1-hil-umi-bringing-human-in-the-loop-post-training-of-vision-language-action-models-to-universal-manipulation-interface",
+      "title": "HIL-UMI: Bringing Human-in-the-Loop Post-Training of Vision-Language-Action Models to Universal Manipulation Interface",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "人在环后训练降低VLA适配的机器人数据需求",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.16864v1",
+      "route": "202609/18/2609.16864v1-tempo-learning-temporal-context-for-dynamic-robot-manipulation",
+      "title": "TEMPO: Learning Temporal Context for Dynamic Robot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向动态操作的时间上下文建模",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.16880v1",
+      "route": "202609/18/2609.16880v1-artificial-intelligence-enabled-space-robot-operations-technologies-challenges-and-prospects",
+      "title": "Artificial Intelligence-Enabled Space Robot Operations: Technologies, Challenges and Prospects",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "综述具身基础模型与机器人学习在空间机器人自主操作中的应用",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    },
+    {
+      "paper_id": "2609.17210v1",
+      "route": "202609/18/2609.17210v1-fluxvla-engine-a-one-stop-vla-engineering-platform-for-embodied-intelligence",
+      "title": "FluxVLA Engine: A One-Stop VLA Engineering Platform for Embodied Intelligence",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向具身VLA策略与部署流程的开源平台",
+      "first_seen_at": "2026-09-18 21:25:00 UTC",
+      "updated_at": "2026-09-18 21:25:00 UTC"
+    }
+  ]
+}

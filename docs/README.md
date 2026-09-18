@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-17</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-18</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 17 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-17 22:15:11 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-18 21:25:00 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,8 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-17日报共筛出17篇，精读6篇、速读11篇，重点覆盖机器人学习与具身智能。最值得看的是两个9.0分方向：World-Action Models综述，以及具身智能世界模型从可信、可控到可行动。普通读者可先读这两篇精读，再按兴趣看速读中的SAVLA、视觉线索导航与视觉具身依赖反思。</p>
+<p>2026-09-18日报精选17篇，精读6篇、速读11篇，两篇9.0分VLA论文领衔。</p>
+<p>最值得看的是实时视觉-</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,7 +82,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="World-Action Models for Robot Learning and Control: A Survey">World-Action Models for Robot Learning and Control: A Survey</span></li><li><span class="dpr-home-dashboard-paper-title" title="World Models for Embodied Intelligence: From Plausible to Controllable to Actionable">World Models for Embodied Intelligence: From Plausible to Controllable to Actionable</span></li><li><span class="dpr-home-dashboard-paper-title" title="XPACE: Joint World and Action Modeling from Heterogeneous Experience">XPACE: Joint World and Action Modeling from Heterogeneous Experience</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Reinforcement Learning for Real-Time Vision-Language-Action Policies">Reinforcement Learning for Real-Time Vision-Language-Action Policies</span></li><li><span class="dpr-home-dashboard-paper-title" title="FASA: Feedback-Aware Sampling Adaptation for Efficient Diffusion-Based VLA Models">FASA: Feedback-Aware Sampling Adaptation for Efficient Diffusion-Based VLA Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="WorldContact: A Contact-Centric World Model for Scalable Robot Learning">WorldContact: A Contact-Centric World Model for Scalable Robot Learning</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -94,7 +95,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="SAVLA: Symmetry-Aware Vision-Language-Action Models for Robotic Manipulation">SAVLA: Symmetry-Aware Vision-Language-Action Models for Robotic Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Visual Cue Guided Video Planning for Generalizable Robot Navigation">Visual Cue Guided Video Planning for Generalizable Robot Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Rethinking Visual Embodiment Dependence in Visuomotor Policies">Rethinking Visual Embodiment Dependence in Visuomotor Policies</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="UMI-Bridge: Action-Anchored Latent Alignment across Human and Robot Manipulation Data">UMI-Bridge: Action-Anchored Latent Alignment across Human and Robot Manipulation Data</span></li><li><span class="dpr-home-dashboard-paper-title" title="Decoupling Vision, Language, and Action for Efficient Multi-Task Robot Policies">Decoupling Vision, Language, and Action for Efficient Multi-Task Robot Policies</span></li><li><span class="dpr-home-dashboard-paper-title" title="StrucPhysVideo: Learning Physical Dynamics from Structured Captions and Robot Actions">StrucPhysVideo: Learning Physical Dynamics from Structured Captions and Robot Actions</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
