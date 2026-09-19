@@ -1,0 +1,281 @@
+{
+  "date": "20260919",
+  "date_label": "",
+  "generated_at": "2026-09-19 22:02:34 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.20709v1",
+      "route": "202609/19/2609.20709v1-mowam-explicit-future-motion-prediction-for-efficient-world-action-models",
+      "title": "MoWAM: Explicit Future Motion Prediction for Efficient World Action Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "以显式未来运动预测构建高效世界动作模型",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.19142v1",
+      "route": "202609/19/2609.19142v1-pointzero-3d-point-track-completion-for-learning-transferable-3d-dynamics",
+      "title": "PointZero: 3D Point Track Completion for Learning Transferable 3D Dynamics",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "无需机器人动作标签的三维点轨迹补全世界模型预训练",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.19315v1",
+      "route": "202609/19/2609.19315v1-gavel-graph-world-models-for-verified-and-efficient-long-horizon-llm-task-planning",
+      "title": "GAVEL: Graph World Models for Verified and Efficient Long-Horizon LLM Task Planning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "图世界模型用于验证与修复长时程机器人规划",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.19659v1",
+      "route": "202609/19/2609.19659v1-embodiedmind-adaptive-data-curation-and-prefix-tree-reinforcement-learning-for-efficient-embodied-intelligence",
+      "title": "EmbodiedMind: Adaptive Data Curation and Prefix-Tree Reinforcement Learning for Efficient Embodied Intelligence",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "自适应数据策展与分层强化学习缓解数据低效",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.19923v1",
+      "route": "202609/19/2609.19923v1-co-vla-consensus-based-federated-training-for-vision-language-action-models",
+      "title": "Co-VLA: Consensus-based Federated Training for Vision-Language-Action Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "支持参数高效微调的联邦 VLA 训练",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.20649v1",
+      "route": "202609/19/2609.20649v1-dextouch-wm-learning-action-conditioned-tactile-world-models-from-human-touch-for-dexterous-robot-manipulation",
+      "title": "DexTouch-WM: Learning Action-Conditioned Tactile World Models from Human Touch for Dexterous Robot Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过共享触觉布局将人类触觉的接触动力学迁移到灵巧机器人",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.18004v1",
+      "route": "202609/19/2609.18004v1-missing-bridges-composition-aware-active-imitation-learning",
+      "title": "Missing Bridges: Composition-Aware Active Imitation Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "主动模仿学习按可复用组合行为选择示教以提升数据效率",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.19138v1",
+      "route": "202609/19/2609.19138v1-in-context-robot-learning-with-vlm-agents",
+      "title": "In-Context Robot Learning with VLM Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "无需梯度更新的VLM智能体上下文内适配",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.19666v1",
+      "route": "202609/19/2609.19666v1-towards-high-dof-dexterous-manipulation-through-vla-post-training",
+      "title": "Towards High-DoF Dexterous Manipulation through VLA Post-Training",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向灵巧硬件的VLA基础模型后训练适配",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.20106v1",
+      "route": "202609/19/2609.20106v1-anyviewmeter-adapting-robotic-reward-models-with-camera-geometry-and-multi-view-attention",
+      "title": "AnyviewMeter: Adapting Robotic Reward Models with Camera Geometry and Multi-View Attention",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "低秩微调预训练奖励模型以适配本地任务",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.20582v1",
+      "route": "202609/19/2609.20582v1-v2-strep-vlm-grounded-structured-task-representations-for-reusable-robot-skills-acquired-from-generated-videos",
+      "title": "V2-STRep: VLM-Grounded Structured Task Representations for Reusable Robot Skills Acquired from Generated Videos",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "利用生成视频合成可复用机器人技能，缓解示范数据稀缺",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.20791v1",
+      "route": "202609/19/2609.20791v1-stageguard-learning-stage-transitions-for-long-horizon-robot-tasks-via-agentic-distillation",
+      "title": "StageGuard: Learning Stage Transitions for Long-Horizon Robot Tasks via Agentic Distillation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "智能体蒸馏实现机器人任务中高效低延迟的阶段转换决策",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.13458v1",
+      "route": "202609/19/2609.13458v1-stage-diagnosing-semantic-transfer-at-grounded-execution-in-embodied-agents",
+      "title": "STAGE: Diagnosing Semantic Transfer at Grounded Execution in Embodied Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "具身智能体将指令语义接地为连续动作",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.13545v1",
+      "route": "202609/19/2609.13545v1-runtime-incremental-transformer-for-reinforcement-learning-based-adaptive-control",
+      "title": "Runtime-Incremental Transformer for Reinforcement-Learning-Based Adaptive Control",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "运行时增减注意力头以实现高效的机器人自适应控制",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.16884v1",
+      "route": "202609/19/2609.16884v1-bridging-learned-visual-perception-and-symbolic-belief-space-planning",
+      "title": "Bridging Learned Visual Perception and Symbolic Belief-Space Planning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "部分可观测下具身智能体的信念空间规划",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.19801v1",
+      "route": "202609/19/2609.19801v1-deliverygym-an-rl-environment-for-long-horizon-embodied-agent-planning-with-adaptive-curriculum",
+      "title": "DeliveryGym: An RL Environment for Long-Horizon Embodied Agent Planning with Adaptive Curriculum",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向长时程具身智能体规划的强化学习环境",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    },
+    {
+      "paper_id": "2609.20575v1",
+      "route": "202609/19/2609.20575v1-accelerating-visual-policy-learning-with-sampling-based-model-predictive-control",
+      "title": "Accelerating Visual Policy Learning with Sampling-Based Model Predictive Control",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "采样式模型预测控制结合策略梯度以加速视觉策略学习",
+      "first_seen_at": "2026-09-19 22:02:34 UTC",
+      "updated_at": "2026-09-19 22:02:34 UTC"
+    }
+  ]
+}
