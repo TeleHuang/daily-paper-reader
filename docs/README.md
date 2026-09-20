@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-19</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-20</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 4 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>0</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>4</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-19 22:02:34 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-20 21:24:57 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-19 日报共筛出 17 篇机器人学习论文，精读 6 篇、速读 11 篇。最值得关注的是精读中 9.0 分的《MoWAM》用显式未来运动预测提升世界动作模型效率，以及 8.0 分的《PointZero》以 3D 点轨迹补全学习可迁移动态；速读中 VLA 后训练、VLM 智能体上下文学习和主动模仿学习也值得扫一眼。普通读者可先从 MoWAM 与 PointZero 入手，再按兴趣挑速读里的 VLA 或模仿学习方向。</p>
+<p>今天日报：精读</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -78,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">0 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="MoWAM: Explicit Future Motion Prediction for Efficient World Action Models">MoWAM: Explicit Future Motion Prediction for Efficient World Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="PointZero: 3D Point Track Completion for Learning Transferable 3D Dynamics">PointZero: 3D Point Track Completion for Learning Transferable 3D Dynamics</span></li><li><span class="dpr-home-dashboard-paper-title" title="GAVEL: Graph World Models for Verified and Efficient Long-Horizon LLM Task Planning">GAVEL: Graph World Models for Verified and Efficient Long-Horizon LLM Task Planning</span></li></ul>
+<p class="dpr-home-dashboard-empty">今日暂无推荐。</p>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
+
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -91,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">4 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Missing Bridges: Composition-Aware Active Imitation Learning">Missing Bridges: Composition-Aware Active Imitation Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="In-Context Robot Learning with VLM Agents">In-Context Robot Learning with VLM Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="Towards High-DoF Dexterous Manipulation through VLA Post-Training">Towards High-DoF Dexterous Manipulation through VLA Post-Training</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Fetch My Beer: Synthetic-to-real Hierarchical Policy for Smooth Pick-and-place">Fetch My Beer: Synthetic-to-real Hierarchical Policy for Smooth Pick-and-place</span></li><li><span class="dpr-home-dashboard-paper-title" title="ReShoot: Generative Visual Domain Randomization of Recorded Robot Demonstrations for Visuomotor Policy Learning">ReShoot: Generative Visual Domain Randomization of Recorded Robot Demonstrations for Visuomotor Policy Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="Learning and Transferring Closed-Loop Robot Software">Learning and Transferring Closed-Loop Robot Software</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>4</strong></span></div>
 </section>
 </div>
 

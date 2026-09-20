@@ -1,0 +1,69 @@
+{
+  "label": "2026-09-20",
+  "date": "2026-09-20",
+  "generated_at": "2026-09-20T21:25:01",
+  "count": 4,
+  "papers": [
+    {
+      "paper_id": "202609/20/2609.18119v1-fetch-my-beer-synthetic-to-real-hierarchical-policy-for-smooth-pick-and-place",
+      "section": "quick",
+      "title_en": "Fetch My Beer: Synthetic-to-real Hierarchical Policy for Smooth Pick-and-place",
+      "authors": "Yingyue Li, Chenyangguang Zhang, Ruida Zhang, Bowen Fu, Guangyao Zhai, Xiangyang Ji",
+      "date": "2026-09-16",
+      "pdf": "https://arxiv.org/pdf/2609.18119v1",
+      "score": "7.0",
+      "evidence": "合成到真实的分层策略迁移",
+      "tldr": "针对液体容器稳定搬运中需抑制晃动、防止泼洒的问题，现有流体仿真昂贵、遥操作模仿学习引入意外加速度，且策略多只关注任务完成。本文提出合成到真实的层次化框架，结合物理验证的数据生成与扩散控制器：高层将语言视觉映射为SE(3)目标，潜扩散控制器先在紧凑潜空间规划再解码密集动作块。实验表明，该系统在搬运平滑性与动态稳定性上优于当前先进操作策略。",
+      "tags": "query:embodied-ai",
+      "abstract_en": "Many real-world robotic applications require dynamically sensitive manipulation, where success depends not only on reaching a target state but on maintaining stable object dynamics throughout execution. We study the stable transport of liquid-filled containers, where a robot must move objects to target locations while suppressing sloshing and preventing spillage. Unlike conventional pick-and-place, this task imposes stringent requirements on motion smoothness and trajectory-level stability, exposing clear limitations in existing systems. Specifically, fluid simulation remains too costly for online reinforcement learning; human teleoperation introduces unintended accelerations that induce sloshing during imitation learning; and current policy pipelines optimize for task completion rather than dynamic stability. We propose a synthetic-to-real framework coupling physically validated data generation with a hierarchical, diffusion-based controller. The scalable data pipeline synthesizes grasps, filters unstable poses via a vision-language model, and validates transport trajectories through fluid simulation. The policy is organized with a high-level module that translates language and visual observations into SE(3) control targets, and a latent diffusion controller that first plans efficiently in a compact latent space and then decodes dense action chunks, enabling the high control frequency needed for smooth and stable motion. Extensive experiments show our system outperforms state-of-the-art manipulation policies in transport smoothness and dynamic stability. Our project page: https://fetch-my-beer.github.io/",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/20/2609.19661v1-reshoot-generative-visual-domain-randomization-of-recorded-robot-demonstrations-for-visuomotor-policy-learning",
+      "section": "quick",
+      "title_en": "ReShoot: Generative Visual Domain Randomization of Recorded Robot Demonstrations for Visuomotor Policy Learning",
+      "authors": "Chiyoung Kim, Min Sung Choi, Jinho Ju, Chanhoe Gu, Donghwan Hwang, Wonseok Choi, Woongsun Jeon, Minhyeok Lee",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.19661v1",
+      "score": "7.0",
+      "evidence": "生成式视觉域随机化合成演示数据",
+      "tldr": "模仿学习策略常过拟合训练演示的视觉条件，物体颜色或背景变化会导致明显性能下降。ReShoot通过视觉语言模型编辑目标属性，并用边缘条件视频生成器重渲染已录演示的双目视图，同时更新语言指令、原样复制动作与本体轨迹标签。在LIBERO上混合训练达到96.5%，接近仅真实数据的96.9%，并在LIBERO-Plus提升鲁棒性至85.5%；真机上重着色物体成功率从0.0%升至42.9%和47.5%。",
+      "tags": "query:embodied-ai",
+      "abstract_en": "Imitation-learned robot policies are frequently overfit to the visual conditions present in their training demonstrations. Consequently, variations in object color or background appearance often induce substantial performance degradation. A common mitigation strategy is to acquire additional demonstrations in each novel visual context; however, this approach is resource-intensive, requiring repeated access to a robot, a controlled environment, and human operation for every appearance condition to be covered. We introduce ReShoot, a framework that synthesizes visual diversity by re-rendering previously recorded demonstrations under altered appearances, thereby shifting the burden from data collection to generation. A vision-language model captions the scene, edits a targeted attribute (e.g., background, object color, or material), and an edge-conditioned video generator re-renders both camera views to match. The instruction is updated accordingly. The action sequence and proprioceptive trajectory are copied verbatim without relabeling, so each generated episode retains the recorded action and proprioceptive labels. On LIBERO, a policy trained on an equal mixture of recorded and re-rendered demonstrations matches the performance of recorded-only training (96.5% vs. 96.9%). Moreover, the mixed training set improves robustness to scene perturbations on LIBERO-Plus (85.5% vs. 82.3%). Across two physical robotic platforms, deploying ReShoot with 43 and 100 pre-collected demonstrations increased the success rate on recolored objects from 0.0% to 42.9% and 47.5%, respectively, while maintaining performance under the original recorded appearance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/20/2609.19906v1-learning-and-transferring-closed-loop-robot-software",
+      "section": "quick",
+      "title_en": "Learning and Transferring Closed-Loop Robot Software",
+      "authors": "So Kuroki, Yujin Tang",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.19906v1",
+      "score": "7.0",
+      "evidence": "复用并迁移闭环机器人策略代码到新任务",
+      "tldr": "闭环机器人策略需处理观测、状态与分支，人工设计调优成本高。本文把完整闭环实现当作可复用执行经验：编码智能体先在源任务由少量示范生成策略，并用仿真反馈迭代改进，存入软件库；新任务再借助该库、目标示范与执行反馈生成并改进策略，最终冻结执行。RoboCasa四个源任务成功率从28.3%升至64.2%；九个目标任务三次运行中，优化源码参考平均成功率57.0%，较初始源码参考提升15.6个百分点，表明执行改进软件可迁移助益新策略获取。",
+      "tags": "query:embodied-ai",
+      "abstract_en": "Closed-loop robot policies require observation processing, state management, and situation-dependent branching, making them costly to design and tune manually. Although coding agents increasingly support control-code generation and optimization, it remains unclear whether implementations improved on source tasks also support policy acquisition for new tasks. We study this question by treating complete closed-loop implementations as reusable execution experience. For each source task, a coding agent generates policy code from a few successful demonstrations and iteratively improves it using simulation feedback. The validation-selected implementations are retained in a software archive. For new tasks, the agent generates and improves policies using archived implementations, target demonstrations, and execution feedback. The resulting policy is then frozen and executes without further model calls. Across four source tasks in RoboCasa, iterative optimization increases mean success from 28.3% to 64.2%. Across nine target tasks and three independent runs, mean success is 45.2% without references, 41.5% with initial source code, and 57.0% with optimized source code. Optimized references outperform initial references in all three runs on the nine-task average, with a mean gain of 15.6 percentage points. These results demonstrate the value of execution-improved software as a resource for acquiring new policies in this setting, although initial references remain better on two target tasks when averaged across runs.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "paper_id": "202609/20/2609.20820v1-workspace-models-lightweight-robotic-memory-via-saliency-driven-supervision",
+      "section": "quick",
+      "title_en": "Workspace Models: Lightweight Robotic Memory via Saliency-Driven Supervision",
+      "authors": "Nitish Dashora, Douglas Chen, Idan Shenfeld, John Marangola, Pulkit Agrawal, Max Simchowitz",
+      "date": "2026-09-17",
+      "pdf": "https://arxiv.org/pdf/2609.20820v1",
+      "score": "6.0",
+      "evidence": "轻量潜在机器人记忆实现高效的部署时推理",
+      "tldr": "复杂机器人操作常需长期记忆，但直接输入完整历史会引入虚假相关并拖累策略。该工作提出workspace token：训练时用VLM识别任务所需当前与历史信息，再通过集合重建解码损失蒸馏为轻量潜变量记忆；部署时无需在线VLM查询，可直接替代观测。仿真与真机表明，它让策略在无VLM推理下解决记忆密集型任务，且更轻量、性能更好，为机器人策略提供可插拔记忆模块。",
+      "tags": "query:embodied-ai",
+      "abstract_en": "Complex robotic manipulation tasks frequently require a long-term memory of past events and actions. As conditioning on full histories renders policies prone to spurious correlations and degrades performance, many approaches to policy memory involve compressing historical information through expensive VLM queries in-the-loop to process only task-salient information. In this paper, we propose an alternative approach in which computationally intensive VLM queries are made during train-time to learn a lightweight latent memory that can be efficiently queried at deployment time. Our representation, which we call the \\textbf{workspace token}, is trained by (1) using a VLM to identify current and historical information necessary for completing a task, then (2) distilling these into the workspace token using a set-reconstruction decoder loss. In both simulation and hardware, we show that the workspace token can be used as a drop-in replacement for observations during deployment, enabling policies to solve memory-intensive tasks without the need for VLM reasoning in-the-loop. Interestingly, we found that workspace tokens are not only more lightweight but also lead to better policy performance.",
+      "source": "arxiv",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "errors": []
+}

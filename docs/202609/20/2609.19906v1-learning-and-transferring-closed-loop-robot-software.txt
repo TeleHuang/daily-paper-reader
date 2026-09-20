@@ -1,0 +1,254 @@
+Title: Learning and Transferring Closed-Loop Robot Software
+
+URL Source: https://arxiv.org/pdf/2609.19906v1
+
+Published Time: Fri, 18 Sep 2026 00:52:33 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# Learning and Transferring Closed-Loop Robot Software 
+
+So Kuroki, Yujin Tang (Sakana AI) 
+
+Abstract — Closed-loop robot policies require observation processing, state management, and situation-dependent branch-ing, making them costly to design and tune manually. Although coding agents increasingly support control-code generation and optimization, it remains unclear whether implementations improved on source tasks also support policy acquisition for new tasks. We study this question by treating complete closed-loop implementations as reusable execution experience. For each source task, a coding agent generates policy code from a few successful demonstrations and iteratively improves it using simulation feedback. The validation-selected implementations are retained in a software archive. For new tasks, the agent gen-erates and improves policies using archived implementations, target demonstrations, and execution feedback. The resulting policy is then frozen and executes without further model calls. Across four source tasks in RoboCasa, iterative optimization increases mean success from 28.3% to 64.2%. Across nine target tasks and three independent runs, mean success is 45.2% without references, 41.5% with initial source code, and 57.0% with optimized source code. Optimized references outperform initial references in all three runs on the nine-task average, with a mean gain of 15.6 percentage points. These results demonstrate the value of execution-improved software as a resource for acquiring new policies in this setting, although initial references remain better on two target tasks when averaged across runs. 
+
+I. I NTRODUCTION 
+
+Robots require closed-loop policies that adjust actions to observations to accomplish diverse tasks reliably. Im-plementing these policies as software involves combining object recognition, motion-phase management, and situation-dependent branches. Designing and tuning this logic manu-ally for each task is costly. Coding agents are making the acquisition and revision of such software increasingly automated. Code as Poli-cies shows that language models can generate programs using perception and control APIs to express observation-dependent policies [1]. Subsequent work uses execution feedback to rewrite control code, including closed-loop implementations and multi-file policy repositories [2], [3]. These studies treat code not merely as a fixed procedure, but as a policy representation updated through experience. Just as learned weights in neural policies support learning new tasks, improved control implementations may serve as resources for acquiring new policies. However, improving performance on one task does not necessarily yield an implementation that is useful for an-other. Conditional branches and control routines added or tuned during optimization may become overly specialized to source-task conditions, hindering transfer. Prior work reuses successful planning or policy code through retrieval and adaptation [4], [5], or organizes execution experience into reusable skills, repair knowledge, or functions [5]– [7]. In contrast, the value of retaining an entire closed-loop implementation, including observation processing, state management, and conditional logic, as a learned artifact of execution experience and using it as a reference for another task remains unclear. We therefore ask whether source-task optimization also makes the resulting implementation more useful for acquiring policies on target tasks. Our framework acquires closed-loop robot software through execution and uses the resulting implementations as examples for new tasks (Fig. 1). A coding agent synthesizes policies from a few demonstrations, optimizes them using simulation feedback, and retains Validation-selected imple-mentations in an archive. For a new task, the agent can in-spect the archive and select or revise relevant routines, using existing implementations with situation-dependent control logic to generate a new policy. We first evaluate performance gains from optimization and use observation ablations to analyze the inputs that support software acquisition. We then compare no references, initial source code, and optimized source code when generating and improving policies for target tasks. This comparison evaluates both the effect of referencing existing implemen-tations and how transfer performance varies with their stage of optimization. Across nine targets and three independent policy-generation runs, mean success is 45.2%, 41.5%, and 57.0%, respectively. Optimized references outperform initial references in all three runs on the nine-task average, yielding a mean gain of 15.6 percentage points. On the per-task three-run means, optimized references perform better on six tasks, tie on one, and perform worse on two. Thus, source-task optimization improves the average usefulness of reference implementations in this evaluation, without guaranteeing gains on every target. Our contributions are threefold:  
+
+> •
+
+Transfer of execution-improved robot software. We study whether closed-loop implementations optimized through execution feedback on source tasks can serve as useful references for acquiring policies on new tasks.  
+
+> •
+
+Execution-guided optimization of closed-loop poli-cies. Across four RoboCasa source tasks, iterative opti-mization increases mean success from 28.3% to 64.2%. We further analyze which observation inputs support effective policy acquisition through controlled ablations.  
+
+> •
+
+Source-task performance versus transferability. We compare initial and optimized references across nine target tasks and three independent runs to assess how source optimization affects transfer. arXiv:2609.19906v1 [cs.RO] 17 Sep 2026 1 
+
+> TurnOffFaucet
+> OpenDrawer
+> Pick-and-place
+> TurnOnMicrowave
+> Run in environment
+> feedback improve
+> run
+> </>
+> Coding agent
+> analyzes feedback
+> and edits code
+> Improved software
+> turn_off_ faucet/
+> policy.py
+> perception.py
+> config.yaml
+
+Learn from source tasks 2
+
+> turn_off_faucet/
+> policy.py, perception.py,
+> config.yaml
+> open_drawer/
+> policy.py, perception.py,
+> config.yaml
+> pick_and_place/
+> policy.py, perception.py,
+> config.yaml
+> turn_on_microwave/
+> policy.py, perception.py,
+> config.yaml
+> Reusable software
+> archive
+
+Software archive 3
+
+> Novel task: OpenCabinet
+> </>
+> Coding agent
+> retrieves and adapts
+> related software
+> open_ cabinet/
+> policy.py
+> perception.py
+> config.yaml
+> Create new Software
+
+Adapted software works 
+
+Transfer for a novel task  
+
+> Refer
+> Add Fig. 1. Learning and transferring closed-loop robot software. Source demonstrations initialize a policy that is revised using Train traces; Validation scores select an implementation for the archive. For a target task, the agent references existing implementations, generates a policy from successful demonstrations, and adapts the software through improvements using Train feedback.
+
+II. R ELATED WORK 
+
+A. Code as a Learnable Policy Representation 
+
+Representing policies and plans as code turns robot behav-ior acquisition into program generation and revision. Code as Policies and related approaches connect perception with planning and control through generated programs, enabling observation-dependent computation and action selection [1], [8], [9]. Beyond language specifications, demonstration-conditioned approaches infer procedures or conditions to acquire programmatic policies [10]–[12]. Our work shares this view of code as a policy representation acquired from task information and updated through execution experience. We generate an initial policy from a few demonstrations and optimize the resulting implementation as a resource for acquiring policies for new tasks. 
+
+B. Execution-Guided Code Optimization 
+
+Updating generated programs through experience allows policies to address situations their initial implementations cannot handle. Program-policy repair from additional demon-strations can modify action-selection predicates as well as parameters [13]. More recent coding-agent frameworks use observations, rewards, and failure records to revise con-trollers and multi-file policy implementations between tri-als [2], [3]. The observation, control-interface, and feedback choices supporting embodied coding agents have also been studied [14]. We share the use of execution feedback to revise closed-loop implementations and apply it to source policy acquisition. We then evaluate whether source-task optimization also makes an implementation more useful as a reference for another task. Since conditional branches and control routines may become overly specialized to the source task, we distinguish source performance gains from usefulness on target tasks. 
+
+C. Transferring Code and Repair Knowledge 
+
+Reusing experience across tasks requires choosing what to retain. Skill and repair-memory approaches preserve applica-bility conditions, code examples, or executable functions to support subsequent code generation and execution [6], [7], [15]. Memory Transfer Planning (MTP) retrieves and adapts successful planner-level code; its stored and retrieved units do not include the Composer or low-level language-model programs [4]. Our work shares the objective of using past execution experience on later tasks. Rather than requiring skill extraction or retaining only planner code, we retain complete closed-loop implementations containing observa-tion processing, state management, and conditional logic as learned artifacts of execution experience. For a new task, the coding agent uses these implementations as examples and selects or revises the necessary routines. We compare no references, initial source code, and optimized source code under common target demonstrations, observations, and generation and improvement rules. This evaluates both the effect of referencing existing implementations and how transfer performance varies with their stage of optimization. III. L EARNING AND TRANSFERRING CLOSED -L OOP 
+
+ROBOT SOFTWARE 
+
+Our method retains closed-loop control implementations improved through execution and uses them as examples when acquiring policies for new tasks (Fig. 1). We first define the task and interfaces (Sec. III-A), then describe optimization and retention (Sec. III-B), followed by archive-based transfer (Sec. III-C). 
+
+A. Task Definition and Policy Interface 
+
+For a manipulation task q, we seek a policy P that maps observations to actions and satisfies the task’s success condition within a horizon Hq . Let xt be the simulator state and ω the observation configuration. A closed-loop policy implements 
+
+ot = Oω (xt),
+
+(at, h t+1 ) = P (ot, h t; q). (1) Here, ot contains the permitted observations, at is a con-troller command, and ht is internal state, such as the current manipulation phase. The internal state is reset at the begin-ning of each episode. After each action, the policy receives a new observation and continues control. The observation con-figuration ω is fixed during code optimization. The concrete observations and control settings are given in Sec. IV. The coding agent AB receives a task instruction, success-ful demonstrations Dq , and the observation–action interface specification Iω . The budget B constrains code generation. Using these inputs and the additional information permitted at each stage, the agent outputs an executable policy package 
+
+P containing observation processing, conditional logic, and control code. Optimization updates the code and its configu-ration, not the model weights. The resulting policy executes without calling the coding model. For each source task, cases with different initial states are partitioned into disjoint Train, Validation, and Test sets before optimization. Train provides execution experience for code revision; Validation supports candidate comparison and selection; Test evaluates the selected, frozen policy. We denote the success rate of P on cases C by bJC (P ). Source Test results are not used for revision or reselection. Split sizes and generation budgets are specified in the experiments. 
+
+B. Optimizing and Retaining Implementations 
+
+We generate and improve code for each source task s to acquire implementations that can later serve as examples. The initial policy P (0)  
+
+> s
+
+is generated from successful demon-strations Ds, the task instruction, and Iω . The objective is not demonstration replay, but a policy that responds to new observations according to Eq. (1). Each candidate is executed in simulation. The agent receives Train observations, actions, task outcomes, and execution errors. From Validation, it receives only aggregate success and evaluation counts, not individual images or trajectories. Using the candidate code and this feedback, it revises observation processing, control parameters, condi-tions, and state transitions. Candidate versions and scores are retained. Each revision starts from the best eligible previously evaluated candidate. After K generations, including initial synthesis, an imple-mentation is selected by Validation success: 
+
+P ⋆s ∈ arg max      
+
+> P∈{ P(0)
+> s,...,P (K−1)
+> s}
+
+bJCval  
+
+> s
+
+(P ). (2) Here, Cval  
+
+> s
+
+is the Validation case set for source task s.The selected implementation is frozen and evaluated on Test. Implementations from source tasks S form the archive 
+
+M = {P ⋆s | s ∈ S} . We retain the code and assets needed for execution, without requiring context-dependent logic to be distilled into reusable skills. The archive exposes these implementations, but not source execution logs or evaluator internals, to the target coding agent. 
+
+C. Transfer Through Archive Access 
+
+For a new task q, the agent can use archived implemen-tations as examples. In addition to the target instruction, demonstrations, and interface, it receives read-only access to M and generates an initial policy: 
+
+eP (0)  
+
+> q
+
+= AB (q, Dq , Iω , M). (3) No source–target mapping is imposed. The agent chooses which implementations to inspect and which parts to reuse, combine, or modify. The archive is not automatically copied into the candidate workspace. The initial policy is executed on target Train cases. Observation–action trajectories and outcomes are returned to the agent for improvement. The final policy ePq is frozen and evaluated on Test; Test results are not returned for code revision. Execution counts and budgets are specified in Sec. IV-D. Controls either omit the archive or provide the initial poli-cies from the same source tasks. Demonstrations, interfaces, model, per-session limits, and improvement rules are shared. These comparisons assess both the value of archive access and the effect of the optimization stage of the referenced implementations. IV. E XPERIMENTS 
+
+We evaluate whether execution experience yields effective closed-loop software and whether the acquired implementa-tions help construct policies for new tasks. Table I and Fig. 2 evaluate source policy optimization and its progression. Next, Table II analyzes which observation information supports acquiring higher-performing policies through optimization. Finally, Table III evaluates whether implementations ac-quired on source tasks also help acquire policies for new tasks. 
+
+A. Environment and Evaluation Protocol 
+
+We use RoboCasa with a PandaOmron embodiment and a fixed task registry [16], [17]. The four source tasks are turn-ing off the sink faucet, opening a drawer, moving an object from the counter to the sink, and turning on the microwave. 1 2 3 4 5             
+
+> Generation
+> 0% 20% 40% 60% 80% 100%
+> Success rate
+> (a) Turn off sink faucet
+> 12345
+> Generation
+> (b) Open drawer
+> 12345
+> Generation
+> (c) Pick counter to sink
+> 12345
+> Generation
+> (d) Turn on microwave
+> Train Validation
+
+Fig. 2. Train and Validation success across effective generations for the four source tasks. Each split contains ten cases. Candidates that fail before a simulator step are excluded; when a raw generation has retries, the last evaluated candidate is shown. TABLE I SOURCE POLICY SUCCESS ON THE SAME THIRTY TEST CASES PER TASK . C ELLS REPORT SUCCESS RATES (%) WITH COUNTS OUT OF THIRTY ; M EAN IS THE FOUR -TASK MACRO -AVERAGE . P ANEL A COMPARES CODE POLICIES , AN ONLINE POLICY , AND SAME -DEMONSTRATION IMITATION LEARNING .PANEL B PROVIDES PUBLIC -POLICY REFERENCES WITH DIFFERENT TRAINING AND INPUT CONDITIONS . B OLD HIGHLIGHTS THE MEAN FOR OUR METHOD .Method Demos per task Runtime input Faucet Drawer Pick →Sink Microwave Mean ↑
+
+A. Code policies, online control, and same-demonstration reference 
+
+Iterative software (ours) 10 Full 56.7 (17/30) 70.0 (21/30) 76.7 (23/30) 53.3 (16/30) 64.2 
+
+First executable software 10 Full 33.3 (10/30) 3.3 (1/30) 26.7 (8/30) 50.0 (15/30) 28.3 GPT-6 Astra online 10 Full 70.0 (21/30) 50.0 (15/30) 60.0 (18/30) 26.7 (8/30) 51.7 BC-Transformer-10 10 3 RGB + proprio 23.3 (7/30) 6.7 (2/30) 3.3 (1/30) 3.3 (1/30) 9.2 
+
+B. Public multi-task checkpoints; contextual comparisons 
+
+GR00T N1.5 100 3 RGB + state 66.7 (20/30) 56.7 (17/30) 90.0 (27/30) 36.7 (11/30) 62.5 
+
+π0.5 / Human300 100 3 RGB + state 50.0 (15/30) 80.0 (24/30) 83.3 (25/30) 20.0 (6/30) 58.3 
+
+π0 / Human300 100 2 RGB + state 46.7 (14/30) 30.0 (9/30) 66.7 (20/30) 6.7 (2/30) 37.5 Diffusion Policy / Human300 100 3 RGB + proprio 26.7 (8/30) 13.3 (4/30) 30.0 (9/30) 10.0 (3/30) 20.0 Full: RGB, metric depth/points, GT-Geom, binary contact, and robot state. GT-Geom denotes simulator-provided ground-truth geometry-ID masks with name/class metadata. Language instructions are supplied where supported. Code policies make no runtime calls to the coding model; the online policy averages 52.6 calls per episode. Public-policy inference is distinct from these online coding-model calls. Public checkpoints differ in pretraining and observations; overlap between public-model training data and the demonstrations underlying our Test cases cannot be ruled out. 
+
+They cover articulated-object manipulation, object transport, and contact-dependent appliance operation. 
+
+Input information. The Full configuration supplies RGB, Metric 3D, GT-Geom, binary contact, and robot state at each policy step. RGB comprises three color views: left, right, and wrist-mounted cameras. Metric 3D comprises metric depth and world-frame point clouds reconstructed using camera calibration, with each point aligned to an image pixel. GT-Geom consists of ground-truth per-pixel MuJoCo geometry IDs and name/class metadata indicating the object or part associated with each ID. The mask contains no depth itself, but aligned 3D points associate an object’s image region with its spatial location. Binary contact signals indicate external-object contact for the robot, grippers, and fingers, without contact forces or object IDs. Robot state includes joint positions and veloci-ties, world-frame end-effector poses, gripper and other part joint positions, and controller-frame poses. The agent also receives the task instruction and action interface, with camera intrinsics and camera-to-world transforms available. 
+
+Observation conditions. The code and online policies in Table I, and the transfer conditions in Table III, use Full. Table II compares Full with three conditions removing Met-ric 3D, GT-Geom, or contact individually, and an RGB-only condition removing all three. Removing Metric 3D removes both depth and derived points; removing GT-Geom removes both masks and labels. Task instructions, calibration, robot state, action history, and the action interface are shared across conditions. Code is generated and optimized anew under each condition. Source optimization uses ten successful demonstrations per task, with ten Train cases corresponding one-to-one to the demonstrations and sharing their environments and initial states. Generated policies are executed from these initial states during Train evaluation. Ten Validation cases and thirty Test cases, disjoint from Train and each other, are used for policy selection and final evaluation, respectively. For each task, the first executable policy constitutes generation one. We alternate evaluation and improvement using execution feedback until generation five has been evaluated. The ob-servation ablation uses five Train, five Validation, and ten Test cases, running the improvement loop through generation three for each task and condition. Matched comparisons share case lists, embodiment, task horizons, and success predicates. The evaluation horizons are 300 steps for the faucet, 750 for the drawer, 600 for pick-and-place into the sink, and 450 for the microwave. Task-specific horizons and simulator settings are fixed across conditions. TABLE II OBSERVATION ABLATION WITH FIVE TRAIN CASES , FIVE VALIDATION CASES , AND TEN TEST CASES PER TASK AND CONDITION . O PTIMIZATION RUNS FOR THREE GENERATIONS EVALUATED IN SIMULATION , INCLUDING THE INITIAL POLICY . P OLICIES ARE REGENERATED AND OPTIMIZED UNDER EACH OBSERVATION RESTRICTION . T ASK INSTRUCTIONS , CALIBRATION , ROBOT STATE , AND ACTION HISTORY REMAIN AVAILABLE . T ASK COLUMNS REPORT SUCCESSES OUT OF TEN ; M EAN IS THE FOUR -TASK MACRO -AVERAGE SUCCESS RATE . B OLD HIGHLIGHTS THE FULL BASELINE AND THE SUCCESS -RATE DROPS FOR RGB ONLY AND WITHOUT GT-G EOM .Observation RGB 3D GT-Geom Contact Faucet Drawer Pick →Sink Microwave Mean (%)                                                
+
+> ↑
+> ∆Full (pp) RGB only ✓2/10 4/10 2/10 1/10 22.5 -42.5
+> Without metric 3D ✓✓✓8/10 10/10 7/10 2/10 67.5 +2 .5
+> Without GT-Geom ✓✓✓5/10 8/10 1/10 0/10 35.0 -30.0
+> Without contact ✓✓✓8/10 9/10 6/10 5/10 70.0 +5 .0
+> Full ✓✓✓✓10/10 9/10 6/10 1/10 65.0 0.0
+> 3D includes depth and derived point clouds. GT-Geom: GT geometry segmentation + labels, comprising ground-truth geometry-ID masks and corresponding geometry names, object-instance names, and class names. Without GT-Geom removes both masks and labels. ∆Full is the condition mean minus the Full mean, in percentage points. Each task-condition pair uses one optimization run; variation across independent runs is not measured. Per-session limits and stopping rules are shared, but retries and pre-execution failures make realized model calls and tokens unequal. These scores use a different budget from Table I.
+
+The coding model is gpt-6-astra with high reasoning effort. Prompts, model identifiers, and generation limits are recorded for reproducibility. We report success percentages and counts, together with four-task means in Tables I and II. 
+
+B. Closed-Loop Optimization and Baseline Comparisons 
+
+Effect of iterative optimization. Iterative optimization im-proves on the first executable code (Table I). Using the same ten demonstrations and Full observations, execution-guided revision followed by Validation selection increases mean Test success from 28.3% (34/120) to 64.2% (77/120), a gain of 35.8 percentage points. All four tasks improve. Train and Validation success show the same upward trend across tasks in Fig. 2; improvement is not confined to Train cases. 
+
+Direct use of the coding agent. Our method exceeds the online use of the same coding agent, which achieves 51.7% mean success, by 12.5 percentage points. The online condition receives the same ten demonstrations and Full ob-servations, and repeatedly generates short action sequences, executes them, and obtains updated observations. It requires 52.6 model calls per episode on average, whereas our frozen code executes without calls to the coding model. 
+
+Few-shot imitation learning. Our method exceeds the 9.2% mean success of BC-Transformer-10, trained separately per task on the same ten successful demonstrations [16]. Fol-lowing each method’s input specification, BC-Transformer receives three RGB views and robot state, while our method receives Full observations. Our method also uses execution experience during optimization, so we present this as a refer-ence comparison with different input and training conditions. 
+
+Public multi-task policies. Our method optimizes code separately for each task, whereas the public policies share weights trained across multiple RoboCasa tasks [17]. The public policies receive RGB and robot state, while our method receives Full observations. Given these differences in single-task versus multi-task training and input conditions, we present the following results as reference comparisons. Our mean success numerically exceeds the VLA foundation models GR00T N1.5 at 62.5% [18], [19], π0.5 at 58.3% [20], and π0 at 37.5% [21]. We use the public Human300 Dif-fusion Policy without additional training, which reaches 20.0% [17], [22]. 
+
+C. Inputs Supporting Effective Optimization 
+
+To complement the preceding optimization evaluation, we analyze which observation information supports acquiring higher-performing policies. Table II compares the perfor-mance of policies generated and optimized under the five conditions defined in Sec. IV-A. Mean success drops from 65.0% with Full to 22.5% with RGB only. Among single-group removals, removing GT-Geom causes the largest drop, to 35.0%, or 30.0 percentage points below Full. This suggests that the additional obser-vations, particularly GT-Geom, support the acquisition of effective control code in this setting. The individual contri-butions of pixel segmentation and labels, and generalization to estimated real-world segmentation, remain unevaluated. Without Metric 3D and without contact, mean success is 67.5% and 70.0%, respectively, slightly above Full. With one optimization run per task and condition, these differences do not establish that removing information is generally benefi-cial. Having analyzed the observation conditions supporting policy acquisition, we next examine whether implementa-tions acquired on source tasks also help acquire policies for new tasks. 
+
+D. Cross-Task Transfer of Optimized Software 
+
+Figure 3 and Table III evaluate the effect of using four implementations acquired on the source tasks in Table I as references for generating and improving policies on nine new tasks. Task-structure similarity defines four Near, two Intermediate, and three Far targets. Near transfers change operations or directions within similar mechanisms; Inter-mediate transfers include different operations on the same appliance or changes in placement context; Far transfers involve different devices or operations. 
+
+Comparison conditions. No reference provides no existing policy. Initial4 provides the first executable policies from tap_off/       
+
+> drawer_ open/
+> to_sink/
+> micro_ on/
+> tap_on/ to_cntr/
+> micro_ open/ cabinet_ open/ stove_ on/
+> drawer_ close/ micro_ off/ to_cab/ mug_set/
+
+(a) Source tasks (4) (b) Transfer tasks (9) Near Intermediate Far          
+
+> TurnOffSinkFaucet OpenDrawer PickPlace CounterToSink TurnOnMicrowave TurnOnSinkFaucet PickPlace SinkToCounter OpenMicrowave OpenCabinet TurnOnStove CloseDrawer TurnOffMicrowave PickPlace CounterToCabinet CoffeeSetupMug
+
+Transfer Fig. 3. Source and target tasks for software transfer. Four source tasks are shown on the left and nine target tasks on the right. Targets are grouped as Near, Intermediate, and Far by task-structure similarity. TABLE III TRANSFER WITH INITIAL AND OPTIMIZED REFERENCE CODE OVER THREE INDEPENDENT RUNS . I N EACH RUN , POLICIES ARE GENERATED FROM FIVE SUCCESSFUL DEMONSTRATIONS , IMPROVED USING FIVE TRAIN CASES , AND EVALUATED ON TEN SHARED TEST CASES PER TASK . T HE TEXT SPECIFIES ERROR -TRIGGERED REPAIR AND RE -EXECUTION . C ELLS REPORT MEAN SUCCESS RATE ± SAMPLE STANDARD DEVIATION (%) ACROSS THE THREE RUNS , WITH TOTAL SUCCESSES OUT OF THIRTY . T HE OVERALL ROW SUMMARIZES THE NINE -TASK MACRO -AVERAGE IN EACH RUN . B OLD HIGHLIGHTS THE HIGHEST OVERALL MEAN .Transfer Target task No reference ↑ Initial4 ↑ Best4 ↑
+
+Near TurnOnSinkFaucet 90.0 ± 17.3 (27/30) 76.7 ± 32.1 (23/30) 90.0 ± 10.0 (27/30) Near PickPlaceSinkToCounter 60.0 ± 52.0 (18/30) 0.0 ± 0.0 (0/30) 70.0 ± 20.0 (21/30) Near CloseDrawer 70.0 ± 52.0 (21/30) 86.7 ± 5.8 (26/30) 93.3 ± 11.5 (28/30) Near TurnOffMicrowave 3.3 ± 5.8 (1/30) 76.7 ± 15.3 (23/30) 60.0 ± 10.0 (18/30) Intermediate OpenMicrowave 80.0 ± 17.3 (24/30) 23.3 ± 40.4 (7/30) 83.3 ± 20.8 (25/30) Intermediate PickPlaceCounterToCabinet 63.3 ± 23.1 (19/30) 53.3 ± 23.1 (16/30) 56.7 ± 32.1 (17/30) Far OpenCabinet 23.3 ± 20.8 (7/30) 40.0 ± 10.0 (12/30) 40.0 ± 10.0 (12/30) Far TurnOnStove 16.7 ± 15.3 (5/30) 6.7 ± 11.5 (2/30) 20.0 ± 20.0 (6/30) Far CoffeeSetupMug 0.0 ± 0.0 (0/30) 10.0 ± 17.3 (3/30) 0.0 ± 0.0 (0/30) Mean (9 tasks, 3 runs) 45.2 ± 10.3 (122/270) 41.5 ± 10.5 (112/270) 57.0 ± 7.8 (154/270) Initial4 exposes the first executable policies from the four source tasks; Best4 exposes their source-Validation-selected optimized policies. StartCoffeeMachine is excluded from all conditions because of a known evaluation issue. Standard deviations measure variation across independent policy-generation runs, not uncertainty across individual Test cases. 
+
+the four source tasks, identical to the initial-code baseline in Table I. Best4 provides the optimized policies selected by source Validation. Both reference conditions expose four implementations as read-only resources. No source–target pairing is specified: the agent decides which implementations to inspect and which parts to reuse. All conditions start from the same minimal policy scaffold; reference code is not automatically copied. For each task and condition, the agent generates a policy from five shared successful demonstrations and improves it once using five Train rollouts. If the initial Train execution encounters a code error, the repaired code is rerun on the same five Train cases, and those trajectories support one fur-ther improvement. The final code is frozen and evaluated on ten shared Test cases, without target Validation selection or manual policy edits. The model, Full observations, cases, and per-session limits (30 minutes and 80 API calls) are shared. Error-triggered execution and improvement add computation, so total compute differs across conditions. We repeat target policy generation, improvement, and Test evaluation independently three times for each task and condition, using the same source archives, demonstrations, and case sets. Table III reports means and sample standard deviations across the three runs, with thirty Test evaluations per task and condition. For the overall result, we first compute the nine-task macro-average within each run and then summarize these three averages. 
+
+Source optimization and transfer. Best4 achieves 57 .0 ±
+
+7.8% mean success, compared with 45 .2 ± 10 .3% without references and 41 .5±10 .5% with Initial4. Best4 outperforms Initial4 on the nine-task average in all three runs, with a mean improvement of 15.6 percentage points. On the per-task three-run means, Best4 exceeds Ini-tial4 on six tasks, ties on OpenCabinet, and is lower on TurnOffMicrowave and CoffeeSetupMug. The largest gains occur on PickPlaceSinkToCounter (70.0 percentage points) and OpenMicrowave (60.0 percentage points). Initial4 does not improve the overall mean over no reference, showing that access to existing code alone is not sufficient to improve performance in this evaluation; the optimization stage of that code matters. The remaining task-level reversals may reflect source-specific specialization, reference selection, or synthesis vari-ability. Static analysis of the reference implementations’ Python code shows that the total number of if /elif 
+
+statements, excluding test code, increases from 622 in Initial4 to 741 in Best4 (19.1%). All four implementations show an increase, with TurnOnMicrowave increasing from 138 to 225. Although this increase alone does not establish special-ization or adaptation difficulty, situation-dependent branches and control routines can support source-task success while requiring revision for new tasks. The most useful reference may therefore depend both on its stage of optimization and on the number of improvement iterations on target Train cases. Assessing specialization requires analysis of reference traces and generated code, together with controlled interventions on the reused routines and the target adaptation budget [23]. V. L IMITATIONS AND FUTURE WORK 
+
+We use simulation to compare methods under controlled evaluation conditions; effectiveness on physical robots re-mains untested. Real-world deployment could draw on metric depth estimators based on Depth Anything V2 and segmenta-tion foundation models such as SAM 2 [24], [25]. Combining these models with object-name association, camera calibra-tion, and physical-robot observation and control interfaces offers a possible route to extending our method to real robots. Future work should test whether the generated software oper-ates reliably under perception errors and physical differences from the simulator. Three independent target-policy generation runs show a consistent average advantage of optimized over initial refer-ences, but some tasks still exhibit substantial variation across runs. The source archive is fixed across these runs, so vari-ability in source software acquisition is not evaluated. Further repetitions with independently acquired source archives and varying numbers of target improvement iterations would test how broadly the observed advantage holds and how it depends on the adaptation budget. VI. C ONCLUSION 
+
+We presented a method that optimizes closed-loop robot software through execution experience and transfers ac-quired implementations to new tasks. Code is treated as an updateable policy representation, learned from a few demonstrations and execution feedback. Implementations are retained without requiring explicit skill extraction and serve as examples for subsequent policy acquisition. Across four source tasks in RoboCasa, iterative optimiza-tion increases mean success from 28.3% to 64.2%. The ob-servation ablation identifies GT geometry segmentation and associated labels as important inputs for acquiring effective code. Across nine target tasks and three independent runs, Best4 achieves 57.0% mean success, compared with 41.5% for Initial4 and 45.2% without references. Best4 exceeds Initial4 in all three run-level averages, with a mean gain of 15.6 percentage points. These findings support retaining execution-improved closed-loop software as a resource for subsequent policy acquisition. The advantage is not uniform: initial references perform better on two tasks, highlighting the distinction between source performance and target use-fulness. REFERENCES [1] J. Liang, W. Huang, F. Xia, P. Xu, K. Hausman, B. Ichter, P. Florence, and A. Zeng, “Code as policies: Language model programs for embodied control,” arXiv preprint arXiv:2209.07753 , 2022. [Online]. Available: https://arxiv.org/abs/2209.07753 [2] V. Kumar, “Act-observe-rewrite: Multimodal coding agents as in-context policy learners for robot manipulation,” arXiv preprint arXiv:2603.04466 , 2026. [Online]. Available: https://arxiv.org/abs/ 2603.04466 [3] K. Elmaaroufi, J. Svegliato, S. Kalade, G. Schelle, S. A. Seshia, and M. Zaharia, “RHO: Your coding agent is secretly a roboticist,” arXiv preprint arXiv:2606.16458 , 2026. [Online]. Available: https://arxiv.org/abs/2606.16458 [4] T. Kagaya, S. Lakshmi, Y. Lou, T. J. Yuan, J. Karlekar, S. Pranata, N. Murakami, A. Kinose, and Y. You, “Memory transfer planning: LLM-driven context-aware code adaptation for robot manipulation,” arXiv preprint arXiv:2509.24160 , 2025. [Online]. Available: https://arxiv.org/abs/2509.24160 [5] G. Tziafas and H. Kasaei, “Lifelong robot library learning: Bootstrap-ping composable and generalizable skills for embodied control with language models,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2024, pp. 515–522. [6] R. Lu et al. , “ASPIRE: Agentic /skills discovery for robotics,”                                                                                   
+
+> arXiv preprint arXiv:2607.00272 , 2026. [Online]. Available: https: //arxiv.org/abs/2607.00272 [7] J. Zhang, J. Ge, H. Yoo, L. Fu, Z. Yang, Y. Liu, R. Saravanan, S. Yin, J. Yu, D. Niu, Z. Wang, R. Herzig, K. Goldberg, Y. Bai, D. M. Chan, I. Stoica, A. Kanazawa, J. Lei, H. Feng, and T. Darrell, “Playful agentic robot learning,” arXiv preprint arXiv:2606.19419 ,2026. [Online]. Available: https://arxiv.org/abs/2606.19419 [8] W. Huang, C. Wang, R. Zhang, Y. Li, J. Wu, and L. Fei-Fei, “VoxPoser: Composable 3D value maps for robotic manipulation with language models,” arXiv preprint arXiv:2307.05973 , 2023. [Online]. Available: https://arxiv.org/abs/2307.05973 [9] W. Huang, C. Wang, Y. Li, R. Zhang, and L. Fei-Fei, “ReKep: Spatio-temporal reasoning of relational keypoint constraints for robotic manipulation,” arXiv preprint arXiv:2409.01652 ,2024. [Online]. Available: https://arxiv.org/abs/2409.01652 [10] H. Wang, G. Gonzalez-Pumariega, Y. Sharma, and S. Choudhury, “Demo2Code: From summarizing demonstrations to synthesizing code via extended chain-of-thought,” in Advances in Neural Information Processing Systems ,2023. [Online]. Available: https: //arxiv.org/abs/2305.16744 [11] J. Xin, L. Zheng, K. Rahmani, J. Wei, J. Holtz, I. Dillig, and J. Biswas, “Programmatic imitation learning from unlabeled and noisy demonstrations,” IEEE Robotics and Automation Letters , 2024. [Online]. Available: https://arxiv.org/abs/2303.01440 [12] M. Murray, A. Gupta, and M. Cakmak, “Teaching robots with show and tell: Using foundation models to synthesize robot policies from language and visual demonstration,” in Proceedings of The 8th Conference on Robot Learning , ser. Proceedings of Machine Learning Research, vol. 270. PMLR, 2025, pp. 4033–4050. [Online]. Available: https://proceedings.mlr.press/v270/murray25a.html [13] J. Holtz, S. Andrews, A. Guha, and J. Biswas, “Iterative program synthesis for adaptable social navigation,” in IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2021, pp. 6256–6261. [Online]. Available: https://arxiv.org/abs/2103.04880
+
+[14] L. Fu, J. Yu, K. El-Refai, E. Kou, H. Xue, H. Huang, W. Xiao, G. Wang, D. Niu, F.-F. Li, G. Shi, J. Wu, S. Sastry, Y. Zhu, K. Goldberg, and L. Fan, “CaP-X: A framework for benchmarking and improving coding agents for robot manipulation,” 
+
+arXiv preprint arXiv:2603.22435 , 2026. [Online]. Available: https: //arxiv.org/abs/2603.22435 [15] D. Chen, A. R. Jain, E. Goossen, E. Romig, M. Murray, N. Walker, and M. Cakmak, “A few words go a long way: Language guided robot policy synthesis,” arXiv preprint arXiv:2607.23784 , 2026. [Online]. Available: https://arxiv.org/abs/2607.23784 [16] S. Nasiriany, A. Maddukuri, L. Zhang, A. Parikh, A. Lo, A. Joshi, A. Mandlekar, and Y. Zhu, “RoboCasa: Large-scale simulation of everyday tasks for generalist robots,” arXiv preprint arXiv:2406.02523 , 2024. [Online]. Available: https://arxiv.org/abs/ 2406.02523 [17] S. Nasiriany, S. Nasiriany, A. Maddukuri, and Y. Zhu, “RoboCasa365: A large-scale simulation framework for training and benchmarking generalist robots,” in International Conference on Learning Representations , 2026. [Online]. Available: https: //arxiv.org/abs/2603.04356 [18] J. Bjorck et al. , “GR00T N1: An open foundation model for generalist humanoid robots,” arXiv preprint arXiv:2503.14734 , 2025. [Online]. Available: https://arxiv.org/abs/2503.14734 [19] NVIDIA, “GR00T-N1.5-3B model card,” Hugging Face, 2025. [Online]. Available: https://huggingface.co/nvidia/GR00T-N1.5-3B [20] Physical Intelligence, K. Black et al. , “ π0.5: A vision-language-action model with open-world generalization,” arXiv preprint arXiv:2504.16054 , 2025. [Online]. Available: https://arxiv.org/abs/ 2504.16054 [21] K. Black et al. , “ π0: A vision-language-action flow model for general robot control,” arXiv preprint arXiv:2410.24164 , 2024. [Online]. Available: https://arxiv.org/abs/2410.24164 [22] C. Chi, Z. Xu, S. Feng, E. Cousineau, Y. Du, B. Burchfiel, R. Tedrake, and S. Song, “Diffusion policy: Visuomotor policy learning via action diffusion,” arXiv preprint arXiv:2303.04137 , 2023. [Online]. Available: https://arxiv.org/abs/2303.04137 [23] I. Berlot-Attwell, T. Sesterhenn, F. Rudzicz, and X. Si, “Is this LLM library learning? evaluation must account for compute and behaviour,” in Proceedings of the 19th Conference of the European Chapter of the Association for Computational Linguistics (Volume 1: Long Papers) .Association for Computational Linguistics, 2026, pp. 3534–3568. [Online]. Available: https://aclanthology.org/2026.eacl-long.163/ [24] L. Yang, B. Kang, Z. Huang, Z. Zhao, X. Xu, J. Feng, and H. Zhao, “Depth anything v2,” arXiv preprint arXiv:2406.09414 ,2024. [Online]. Available: https://arxiv.org/abs/2406.09414 [25] N. Ravi, V. Gabeur, Y.-T. Hu, R. Hu et al. , “SAM 2: Segment anything in images and videos,” arXiv preprint arXiv:2408.00714 ,2024. [Online]. Available: https://arxiv.org/abs/2408.00714
