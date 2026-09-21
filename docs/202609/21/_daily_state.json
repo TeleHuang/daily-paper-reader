@@ -1,0 +1,217 @@
+{
+  "date": "20260921",
+  "date_label": "",
+  "generated_at": "2026-09-21 22:26:42 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.21983v1",
+      "route": "202609/21/2609.21983v1-skelwam-a-skeleton-guided-world-action-model-for-zero-shot-cross-embodiment-manipulation",
+      "title": "SkelWAM: A Skeleton-Guided World-Action Model for Zero-Shot Cross-Embodiment Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "通过共享骨架几何世界-动作模型实现零样本跨具身操作",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.21022v1",
+      "route": "202609/21/2609.21022v1-catch-me-if-you-can-real-time-feedback-denoising-for-responsive-vlas",
+      "title": "Catch Me If You Can: Real-Time Feedback Denoising for Responsive VLAs",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向响应式VLA动作执行的实时反馈去噪",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.21045v1",
+      "route": "202609/21/2609.21045v1-dextera-from-a-single-image-to-deployable-dexterous-manipulation-via-real-to-sim-to-real",
+      "title": "DEXTERA: From a Single Image to Deployable Dexterous Manipulation via Real-to-Sim-to-Real",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "实-仿-实数据生成缓解灵巧操作数据稀缺",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.21220v1",
+      "route": "202609/21/2609.21220v1-safe-real-time-policy-steering-via-noise-space-trajectory-optimization-for-one-step-generative-policies",
+      "title": "Safe Real-Time Policy Steering via Noise-Space Trajectory Optimization for One-Step Generative Policies",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向单步生成策略实时引导的噪声空间轨迹优化",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.21228v1",
+      "route": "202609/21/2609.21228v1-focal-vla-subtask-guided-geometry-distillation-and-implicit-world-modeling-for-vision-language-action-models",
+      "title": "FOCAL-VLA: Subtask-Guided Geometry Distillation and Implicit World Modeling for Vision-Language-Action Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向VLA的隐式世界建模与几何蒸馏",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.21229v1",
+      "route": "202609/21/2609.21229v1-knowdemo-knowledge-guided-robot-demonstration-generation-from-human-videos",
+      "title": "KnowDemo: Knowledge-Guided Robot Demonstration Generation from Human Videos",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "从人类视频生成机器人示教以降低数据成本",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.21449v1",
+      "route": "202609/21/2609.21449v1-me-dex-10-bringing-heterogeneous-tactile-sensing-into-world-action-modeling",
+      "title": "ME-Dex 1.0: Bringing Heterogeneous Tactile Sensing into World Action Modeling",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "联合预测未来视觉、触觉与动作状态的统一世界动作模型",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.21461v1",
+      "route": "202609/21/2609.21461v1-atomego-exploring-ego-robot-integration-for-embodied-foundation-model-pretraining",
+      "title": "AtomEgo: Exploring Ego-Robot Integration for Embodied Foundation Model Pretraining",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "弥合人-机器人具身鸿沟的自我-机器人协同训练",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.21753v1",
+      "route": "202609/21/2609.21753v1-psr-predictive-sensorimotor-representation-learning-for-contact-rich-manipulation",
+      "title": "PSR: Predictive Sensorimotor Representation Learning for Contact-Rich Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向具身策略的预测性潜在表征学习",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.21788v1",
+      "route": "202609/21/2609.21788v1-from-pretraining-to-proficiency-real-world-subtask-rl-for-long-horizon-manipulation-with-minimal-human-intervention",
+      "title": "From Pretraining to Proficiency: Real-World Subtask RL for Long-Horizon Manipulation with Minimal Human Intervention",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "对预训练机器人基础策略在关键子任务上进行强化学习微调",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.22055v1",
+      "route": "202609/21/2609.22055v1-benchmarking-world-models-for-continual-learning-on-compositional-tasks",
+      "title": "Benchmarking World Models for Continual Learning on Compositional Tasks",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "在组合任务上评测世界模型的持续学习与知识复用",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.16071v1",
+      "route": "202609/21/2609.16071v1-schema-adaptive-action-conditioned-jepa-for-cross-machine-cnc-transfer-under-partial-sensor-overlap",
+      "title": "Schema-Adaptive Action-Conditioned JEPA for Cross-Machine CNC Transfer under Partial Sensor Overlap",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用于跨域迁移的模式自适应动作条件JEPA",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    },
+    {
+      "paper_id": "2609.18164v1",
+      "route": "202609/21/2609.18164v1-energy-regularized-imitation-learning-for-force--and-work-aware-robotic-manipulation",
+      "title": "Energy-Regularized Imitation Learning for Force- and Work-Aware Robotic Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "以可微能量正则微调预训练操作策略",
+      "first_seen_at": "2026-09-21 22:26:42 UTC",
+      "updated_at": "2026-09-21 22:26:42 UTC"
+    }
+  ]
+}
