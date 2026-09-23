@@ -1,0 +1,281 @@
+{
+  "date": "20260923",
+  "date_label": "",
+  "generated_at": "2026-09-23 22:28:58 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.20800v1",
+      "route": "202609/23/2609.20800v1-jepa-anything-learning-predictive-models-across-different-worlds",
+      "title": "JEPA-Anything: Learning Predictive Models across Different Worlds",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "以正交预测分解扩展联合嵌入预测架构，实现跨领域世界建模。",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.21514v1",
+      "route": "202609/23/2609.21514v1-skel-wam-a-hand-skeleton-conditioned-world-action-model-for-human-to-robot-manipulation-transfer",
+      "title": "Skel-WAM: A Hand-Skeleton-Conditioned World Action Model for Human-to-Robot Manipulation Transfer",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "借手部骨架实现人到机器人的跨具身操作迁移",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.21740v1",
+      "route": "202609/23/2609.21740v1-sandwich-residuals-parameter-efficient-test-time-adaptation-of-world-models",
+      "title": "Sandwich-Residuals: Parameter-Efficient Test-time Adaptation of World Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于自监督误差的世界模型参数高效测试时自适应",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.24271v1",
+      "route": "202609/23/2609.24271v1-me-brain-10-memory-cognition-and-action-for-evolving-embodied-intelligence",
+      "title": "ME-Brain-1.0: Memory, Cognition and Action for Evolving Embodied Intelligence",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "具备局部世界预测与可迁移技能的自演化具身系统",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.24433v1",
+      "route": "202609/23/2609.24433v1-foldquantvla-native-low-bit-quantization-of-vision-language-action-models-via-consistent-folding",
+      "title": "FoldQuantVLA: Native Low-Bit Quantization of Vision-Language-Action Models via Consistent Folding",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向VLA模型的后训练低比特量化以加速机器人端推理",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.24093v1",
+      "route": "202609/23/2609.24093v1-dexterous-robot-manipulation-from-human-demonstrations-via-contact-anchored-retargeting-and-residual-policy-learning",
+      "title": "Dexterous Robot Manipulation from Human Demonstrations via Contact-Anchored Retargeting and Residual Policy Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "人到手跨本体迁移保留接触结构",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.24313v1",
+      "route": "202609/23/2609.24313v1-neuido-neural-intrinsic-dynamics-operator-for-physics-informed-4d-world-models",
+      "title": "NeuIDO: Neural Intrinsic Dynamics Operator for Physics-Informed 4D World Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用神经算子学习内在动力学以构建物理信息4D世界模型",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.24411v1",
+      "route": "202609/23/2609.24411v1-zeva-ego-egocentric-mid-training-with-in-context-causal-learning-for-robot-manipulation",
+      "title": "Zeva-Ego: Egocentric Mid-Training with In-Context Causal Learning for Robot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "第一人称数据扩展至1万小时可匹配2000小时机器人演示，缓解数据稀缺",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.24563v1",
+      "route": "202609/23/2609.24563v1-arstag-an-agentic-real2sim2real-system-for-task-specific-robot-data-generation",
+      "title": "ARSTAG: An Agentic Real2Sim2Real System for Task-Specific Robot Data Generation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "智能体化Real2Sim2Real数据生成缓解机器人数据稀缺",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.24815v2",
+      "route": "202609/23/2609.24815v2-uranus-building-the-next-generation-simulation-infrastructure-for-embodied-ai",
+      "title": "Uranus: Building the Next-Generation Simulation Infrastructure for Embodied AI",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向可扩展机器人数据生成的数据驱动模拟器",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.25627v1",
+      "route": "202609/23/2609.25627v1-machembodied-u0-unified-understanding-and-generation-model-for-embodied-intelligence",
+      "title": "MachEmbodied-U0: Unified Understanding and Generation Model for Embodied Intelligence",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "耦合视觉动力学与动作生成的统一理解生成具身基础模型",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.22684v1",
+      "route": "202609/23/2609.22684v1-statemem-single-state-residual-memory-with-adaptive-inference-for-vision-language-action-policies",
+      "title": "StateMem: Single-State Residual Memory with Adaptive Inference for Vision-Language-Action Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向VLA策略的自适应推理与快速校正",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.24778v1",
+      "route": "202609/23/2609.24778v1-h2rbench-a-real-to-sim-benchmark-for-evaluating-human-to-robot-transfer",
+      "title": "H2RBench: A Real-to-Sim Benchmark for Evaluating Human-to-Robot Transfer",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "评估人类到机器人操作迁移方法的标准化基准",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.25666v1",
+      "route": "202609/23/2609.25666v1-deploying-foundation-models-for-embodied-navigation",
+      "title": "Deploying Foundation Models for Embodied Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "在真实环境中为具身导航智能体部署基础模型",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.26293v1",
+      "route": "202609/23/2609.26293v1-dual-frontier-when-can-an-agent-trust-its-world-model",
+      "title": "Dual-Frontier: When Can an Agent Trust Its World Model?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "何时可信任学习型世界模型进行规划与决策",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.24626v1",
+      "route": "202609/23/2609.24626v1-relationally-grounded-latent-world-models-for-autonomous-driving",
+      "title": "Relationally Grounded Latent World Models for Autonomous Driving",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "以关系接地监督的潜在世界模型预测表征",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    },
+    {
+      "paper_id": "2609.25187v1",
+      "route": "202609/23/2609.25187v1-x-planner-event-structured-task-planning-for-embodied-intelligence",
+      "title": "X-Planner: Event-Structured Task Planning for Embodied Intelligence",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "以VLM为骨干的具身智能任务规划",
+      "first_seen_at": "2026-09-23 22:28:58 UTC",
+      "updated_at": "2026-09-23 22:28:58 UTC"
+    }
+  ]
+}

@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-22</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-23</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 17 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-22 22:18:32 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-23 22:28:58 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-09-22 日报完成：17 篇论文中精读 6 篇、速读 11 篇，重点覆盖决策对齐世界模型与跨本体策略迁移。最值得看的是满分论文《D-JEPA: A Decision-Aligned Latent World Model》和《Latent Policy Steering》提出的高效跨本体迁移框架。普通读者可优先从这两篇入手，再顺带浏览速读中 VLMs 机器人控制与因果世界模型方向。</p>
+<p>今天（2026-09-23）日报共筛出17篇论文，精读6篇、速读11篇，焦点集中在世界模型与机器人操作迁移。</p>
+<p>最值得看的是两篇9.0分精读：JEPA-Anything 探索跨不同&quot;世界&quot;的预测模型学习，Skel-WAM 用手部骨架条件化的世界动作模型做人类到机器人的操作迁移；速读里 NeuIDO 的物理信息4D世界模型与 ARSTAG 的 Real2Sim2Real 数据生成也值得顺带一读。</p>
+<p>普通读者建议先从这两篇精读入手理解&quot;预测式世界模型+动作迁移&quot;的主线，再按兴趣挑速读中偏工程落地的数据生成与自中心因果学习方向。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,7 +83,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="D-JEPA: A Decision-Aligned Latent World Model">D-JEPA: A Decision-Aligned Latent World Model</span></li><li><span class="dpr-home-dashboard-paper-title" title="Latent Policy Steering: An Efficient and Flexible Framework for Cross-Embodiment Transfer">Latent Policy Steering: An Efficient and Flexible Framework for Cross-Embodiment Transfer</span></li><li><span class="dpr-home-dashboard-paper-title" title="MotionJEPA: Preventing Temporal Feature Collapse by Capturing Visual Changes in Latent Space">MotionJEPA: Preventing Temporal Feature Collapse by Capturing Visual Changes in Latent Space</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="JEPA-Anything: Learning Predictive Models across Different Worlds">JEPA-Anything: Learning Predictive Models across Different Worlds</span></li><li><span class="dpr-home-dashboard-paper-title" title="Skel-WAM: A Hand-Skeleton-Conditioned World Action Model for Human-to-Robot Manipulation Transfer">Skel-WAM: A Hand-Skeleton-Conditioned World Action Model for Human-to-Robot Manipulation Transfer</span></li><li><span class="dpr-home-dashboard-paper-title" title="Sandwich-Residuals: Parameter-Efficient Test-time Adaptation of World Models">Sandwich-Residuals: Parameter-Efficient Test-time Adaptation of World Models</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -94,7 +96,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="&quot;Dear LLaVA, Please Drive&quot;: A Depth-Aware Vision-Language Agent for Closed-Loop Robotic Control">&quot;Dear LLaVA, Please Drive&quot;: A Depth-Aware Vision-Language Agent for Closed-Loop Robotic Control</span></li><li><span class="dpr-home-dashboard-paper-title" title="Transferring the Intelligence of VLMs to Robotic Control">Transferring the Intelligence of VLMs to Robotic Control</span></li><li><span class="dpr-home-dashboard-paper-title" title="CausalWM: Causal Chain-of-Thought Reasoning for Embodied World Model">CausalWM: Causal Chain-of-Thought Reasoning for Embodied World Model</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="NeuIDO: Neural Intrinsic Dynamics Operator for Physics-Informed 4D World Models">NeuIDO: Neural Intrinsic Dynamics Operator for Physics-Informed 4D World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Zeva-Ego: Egocentric Mid-Training with In-Context Causal Learning for Robot Manipulation">Zeva-Ego: Egocentric Mid-Training with In-Context Causal Learning for Robot Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="ARSTAG: An Agentic Real2Sim2Real System for Task-Specific Robot Data Generation">ARSTAG: An Agentic Real2Sim2Real System for Task-Specific Robot Data Generation</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
