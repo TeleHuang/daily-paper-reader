@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-23</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-24</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 17 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-23 22:28:58 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-24 22:05:42 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,10 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今天（2026-09-23）日报共筛出17篇论文，精读6篇、速读11篇，焦点集中在世界模型与机器人操作迁移。</p>
-<p>最值得看的是两篇9.0分精读：JEPA-Anything 探索跨不同&quot;世界&quot;的预测模型学习，Skel-WAM 用手部骨架条件化的世界动作模型做人类到机器人的操作迁移；速读里 NeuIDO 的物理信息4D世界模型与 ARSTAG 的 Real2Sim2Real 数据生成也值得顺带一读。</p>
-<p>普通读者建议先从这两篇精读入手理解&quot;预测式世界模型+动作迁移&quot;的主线，再按兴趣挑速读中偏工程落地的数据生成与自中心因果学习方向。</p>
+<p>今日共生成 17 篇推荐（精读 6 篇，速读 11 篇）</p>
+<p>精读：《Latent evolving World Action Model》（9.0/10）, 《InternW0: A Foundational Physical World Model for Efficient Real-World Interactions》（9.0/10）</p>
+<p>速读：《DynaForge: Planning-Guided Residual Learning for Dynamic Manipulation Demonstration Generation》（7.0/10）, 《TriWorldBench: A Tri-View Consistency Perspective on Embodied World Models》（7.0/10）, 《EmbodiedSWE: Coding Agents for Long Horizon Dexterous Robotics》（7.0/10）</p>
+<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -83,7 +84,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="JEPA-Anything: Learning Predictive Models across Different Worlds">JEPA-Anything: Learning Predictive Models across Different Worlds</span></li><li><span class="dpr-home-dashboard-paper-title" title="Skel-WAM: A Hand-Skeleton-Conditioned World Action Model for Human-to-Robot Manipulation Transfer">Skel-WAM: A Hand-Skeleton-Conditioned World Action Model for Human-to-Robot Manipulation Transfer</span></li><li><span class="dpr-home-dashboard-paper-title" title="Sandwich-Residuals: Parameter-Efficient Test-time Adaptation of World Models">Sandwich-Residuals: Parameter-Efficient Test-time Adaptation of World Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Latent evolving World Action Model">Latent evolving World Action Model</span></li><li><span class="dpr-home-dashboard-paper-title" title="InternW0: A Foundational Physical World Model for Efficient Real-World Interactions">InternW0: A Foundational Physical World Model for Efficient Real-World Interactions</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Gaussian Worlds: Latent Geometry Matters for JEPAs">Beyond Gaussian Worlds: Latent Geometry Matters for JEPAs</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -96,7 +97,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="NeuIDO: Neural Intrinsic Dynamics Operator for Physics-Informed 4D World Models">NeuIDO: Neural Intrinsic Dynamics Operator for Physics-Informed 4D World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Zeva-Ego: Egocentric Mid-Training with In-Context Causal Learning for Robot Manipulation">Zeva-Ego: Egocentric Mid-Training with In-Context Causal Learning for Robot Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="ARSTAG: An Agentic Real2Sim2Real System for Task-Specific Robot Data Generation">ARSTAG: An Agentic Real2Sim2Real System for Task-Specific Robot Data Generation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="DynaForge: Planning-Guided Residual Learning for Dynamic Manipulation Demonstration Generation">DynaForge: Planning-Guided Residual Learning for Dynamic Manipulation Demonstration Generation</span></li><li><span class="dpr-home-dashboard-paper-title" title="TriWorldBench: A Tri-View Consistency Perspective on Embodied World Models">TriWorldBench: A Tri-View Consistency Perspective on Embodied World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="EmbodiedSWE: Coding Agents for Long Horizon Dexterous Robotics">EmbodiedSWE: Coding Agents for Long Horizon Dexterous Robotics</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>

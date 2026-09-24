@@ -1,0 +1,281 @@
+{
+  "date": "20260924",
+  "date_label": "",
+  "generated_at": "2026-09-24 22:05:42 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.27455v1",
+      "route": "202609/24/2609.27455v1-latent-evolving-world-action-model",
+      "title": "Latent evolving World Action Model",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "用JEPA预测嵌入替代VAE潜变量构建世界动作模型",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.27656v1",
+      "route": "202609/24/2609.27656v1-internw0-a-foundational-physical-world-model-for-efficient-real-world-interactions",
+      "title": "InternW0: A Foundational Physical World Model for Efficient Real-World Interactions",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "联合学习未来视觉动态与机器人控制的物理世界模型",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.21656v1",
+      "route": "202609/24/2609.21656v1-beyond-gaussian-worlds-latent-geometry-matters-for-jepas",
+      "title": "Beyond Gaussian Worlds: Latent Geometry Matters for JEPAs",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向联合嵌入预测架构的潜在几何与恢复分析",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.25689v1",
+      "route": "202609/24/2609.25689v1-motionforge-a-data-generation-pipeline-and-large-scale-benchmark-for-long-horizon-manipulation-of-dynamic-objects-with-domain-shifts",
+      "title": "MotionForge: A Data Generation Pipeline and Large-Scale Benchmark for Long-Horizon Manipulation of Dynamic Objects with Domain Shifts",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向域偏移动态操作的数据生成流水线与基准",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.27095v1",
+      "route": "202609/24/2609.27095v1-intelligence-across-embodiments",
+      "title": "Intelligence Across Embodiments",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "跨具身差异学习以实现通用具身智能",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.28339v1",
+      "route": "202609/24/2609.28339v1-beyond-future-prediction-denoising-as-generative-adaptation-for-robot-control",
+      "title": "Beyond Future Prediction: Denoising as Generative Adaptation for Robot Control",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "将预训练生成DiT先验迁移至机器人控制",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.25631v1",
+      "route": "202609/24/2609.25631v1-dynaforge-planning-guided-residual-learning-for-dynamic-manipulation-demonstration-generation",
+      "title": "DynaForge: Planning-Guided Residual Learning for Dynamic Manipulation Demonstration Generation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向动态操作的规划引导演示生成",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.26314v1",
+      "route": "202609/24/2609.26314v1-triworldbench-a-tri-view-consistency-perspective-on-embodied-world-models",
+      "title": "TriWorldBench: A Tri-View Consistency Perspective on Embodied World Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "评估具身世界模型预测动作结果的基准",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.27308v1",
+      "route": "202609/24/2609.27308v1-embodiedswe-coding-agents-for-long-horizon-dexterous-robotics",
+      "title": "EmbodiedSWE: Coding Agents for Long Horizon Dexterous Robotics",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "编码智能体在灵巧机器人任务与本体间迁移既有解决方案",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.27450v1",
+      "route": "202609/24/2609.27450v1-bee-intervention-adaptive-real-world-reinforcement-learning-with-vision-language-action-models",
+      "title": "BEE: Intervention-Adaptive Real-World Reinforcement Learning with Vision-Language-Action Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "在冻结预训练VLA上做在线强化学习以适配真实机器人控制",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.28107v1",
+      "route": "202609/24/2609.28107v1-distillation-for-efficient-multitask-manipulation-policies-via-conditional-flow-matching",
+      "title": "Distillation for Efficient Multitask Manipulation Policies via Conditional Flow Matching",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "通过蒸馏与流匹配实现高效多任务操作策略",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.28256v1",
+      "route": "202609/24/2609.28256v1-membodied-recurrent-associative-memory-for-vision-language-action-models",
+      "title": "MemBodied: Recurrent Associative Memory for Vision-Language-Action Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "为VLA模型降低上下文与推理延迟的固定大小情景记忆",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.28429v1",
+      "route": "202609/24/2609.28429v1-watch-recall-act-always-on-robots-in-concurrent-embodied-streams",
+      "title": "Watch, Recall, Act: Always-On Robots in Concurrent Embodied Streams",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "以轻量模块增强预训练π0.5主干，实现参数高效适配",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.22085v1",
+      "route": "202609/24/2609.22085v1-seeq-training-generalist-value-functions-for-long-horizon-robotic-manipulation",
+      "title": "SeeQ: Training Generalist Value Functions for Long-Horizon Robotic Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用价值函数引导长时程机器人操作控制",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.22691v1",
+      "route": "202609/24/2609.22691v1-generative-embodied-multiple-behavior-control-systems-for-human-like-agents",
+      "title": "Generative Embodied Multiple Behavior Control Systems for Human-like Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "目标导向控制器用情境感知世界模型预测动作后果",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.23445v1",
+      "route": "202609/24/2609.23445v1-biroad-learning-shared-and-role-adaptive-representations-for-bimanual-manipulation",
+      "title": "BiRoAD: Learning Shared and Role-Adaptive Representations for Bimanual Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向真实场景双臂协调操作的机器人策略",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    },
+    {
+      "paper_id": "2609.27513v1",
+      "route": "202609/24/2609.27513v1-behavior-aligned-action-tokenization-for-robot-policy-learning",
+      "title": "Behavior-Aligned Action Tokenization for Robot Policy Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "对齐共享运动的动作分词用于机器人策略学习",
+      "first_seen_at": "2026-09-24 22:05:42 UTC",
+      "updated_at": "2026-09-24 22:05:42 UTC"
+    }
+  ]
+}
