@@ -1,0 +1,185 @@
+{
+  "date": "20260925",
+  "date_label": "",
+  "generated_at": "2026-09-25 22:24:12 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.29171v1",
+      "route": "202609/25/2609.29171v1-representation-world-model-learning-states-transition-and-executable-plans-in-representation",
+      "title": "Representation World Model: Learning States, Transition and Executable Plans in Representation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "在表示空间学习状态、转移与可执行规划，通过潜路径规划",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.29382v1",
+      "route": "202609/25/2609.29382v1-decoupled-early-exits-for-task-dependent-compute-allocation-in-flow-matching-vlas",
+      "title": "Decoupled Early Exits for Task-Dependent Compute Allocation in Flow-Matching VLAs",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "解耦早退按任务分配算力以加速流匹配VLA推理",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.30127v1",
+      "route": "202609/25/2609.30127v1-faster-visuomotor-policy-learning-on-action-manifolds-via-riemannian-meanflow",
+      "title": "Faster Visuomotor Policy Learning on Action Manifolds via Riemannian MeanFlow",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "减少多步积分以实现实时机器人控制的更快视觉运动策略",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.28530v1",
+      "route": "202609/25/2609.28530v1-know-your-body-a-harness-for-direct-and-self-improving-robot-control-with-vlms",
+      "title": "Know Your Body: A Harness for Direct and Self-Improving Robot Control with VLMs",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "冻结权重的VLM框架配合自改进身体模型控制机器人",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.28927v1",
+      "route": "202609/25/2609.28927v1-streaming-wam-action-conditioned-world-action-model-for-asynchronous-robot-manipulation",
+      "title": "Streaming-WAM: Action-Conditioned World-Action Model for Asynchronous Robot Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "动作条件世界动作模型与异步机器人控制相结合",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.29091v1",
+      "route": "202609/25/2609.29091v1-from-passive-execution-to-active-exploration-agentic-embodied-manipulation-in-realistic-environments",
+      "title": "From Passive Execution to Active Exploration: Agentic Embodied Manipulation in Realistic Environments",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "真实环境中的智能体主动探索具身操作",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.29964v1",
+      "route": "202609/25/2609.29964v1-world-action-agent-harnessing-vlms-for-robot-manipulation-via-world-action-rehearsal",
+      "title": "World Action Agent: Harnessing VLMs for Robot Manipulation via World Action Rehearsal",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于世界动作预演让VLM操控机器人",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.29000v1",
+      "route": "202609/25/2609.29000v1-learning-from-mixed-quality-deployment-experience-for-robot-manipulation",
+      "title": "Learning from Mixed-Quality Deployment Experience for Robot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "利用自主积累的部署经验缓解数据稀缺",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.29310v1",
+      "route": "202609/25/2609.29310v1-egospeedup-transferring-human-manipulation-tempo-to-robot-policies",
+      "title": "EgoSpeedUp: Transferring Human Manipulation Tempo to Robot Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "将人类操作节奏作为时间监督迁移到机器人策略",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.29394v1",
+      "route": "202609/25/2609.29394v1-racap-agentic-reasoning-acting-and-coding-as-policies-for-evolvable-robot-learning",
+      "title": "RACaP: Agentic Reasoning, Acting, and Coding as Policies for Evolvable Robot Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "通过智能体推理实现可复用策略API迁移的可进化机器人学习",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    },
+    {
+      "paper_id": "2609.25369v1",
+      "route": "202609/25/2609.25369v1-capability-aware-arbitration-for-semantic-intent-based-shared-control",
+      "title": "Capability-Aware Arbitration for Semantic Intent-Based Shared Control",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于VLM与VLA的共享控制，面向真实具身机器人权限仲裁",
+      "first_seen_at": "2026-09-25 22:24:12 UTC",
+      "updated_at": "2026-09-25 22:24:12 UTC"
+    }
+  ]
+}

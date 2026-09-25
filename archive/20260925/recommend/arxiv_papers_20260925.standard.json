@@ -1,0 +1,473 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-25T22:16:47.981339+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2609.29171v1",
+      "source": "arxiv",
+      "title": "Representation World Model: Learning States, Transition and Executable Plans in Representation",
+      "abstract": "We propose the Representation World Model (RWM), which learns states, transitions, and executable plans directly in representation space. Unlike existing world models that typically learn latent representations together with explicit dynamics models and perform planning through search, optimization, or policy-based prediction, RWM directly incorporates planning into the learned representation geometry. RWM learns the representation geometry by applying inverse-dynamics supervision locally along latent paths constructed from endpoint representations, requiring these paths to preserve task-relevant state and transition information. At inference, planning is performed by directly constructing a latent path between the current and goal representations, with inverse dynamics used to recover the corresponding actions, without recursive rollouts or action-space search. Experiments on continuous-control benchmarks demonstrate the effectiveness of RWM for direct planning, while results on robotic manipulation further show its potential to extend to more complex embodied control tasks. These results suggest that planning directly in representation space provides a promising alternative to conventional world-model planning.",
+      "authors": [
+        "Yijun Yuan",
+        "Weicheng Zheng",
+        "Weibang Wang",
+        "Minghui Qin",
+        "Chang Sun",
+        "Junhao Huang",
+        "Kenan Li",
+        "Anmin Liu",
+        "Yicheng Yao",
+        "Hang Zhao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-09-24T07:43:35+00:00",
+      "link": "https://arxiv.org/pdf/2609.29171v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "learns states, transitions and executable plans in representation space, planning via latent paths",
+      "llm_evidence_cn": "在表示空间学习状态、转移与可执行规划，通过潜路径规划",
+      "llm_evidence": "在表示空间学习状态、转移与可执行规划，通过潜路径规划",
+      "canonical_evidence": "在表示空间学习状态、转移与可执行规划，通过潜路径规划",
+      "llm_tldr_en": "Representation World Model learns states, transitions and executable plans directly in representation space, embedding planning into learned geometry instead of search or policy prediction, enabling latent-path planning at inference.",
+      "llm_tldr_cn": "现有世界模型通常需要显式动力学模型并依赖搜索或策略预测来规划，效率与一致性受限。本文提出表示世界模型RWM，直接在表示空间中学习状态、转移与可执行规划，通过端点表示构造潜路径并施加逆动力学监督，使规划融入表示几何。推理时只需在当前与目标表示间直接构造潜路径即可完成规划。该工作为具身智能体提供了新的潜空间规划范式。",
+      "llm_tldr": "现有世界模型通常需要显式动力学模型并依赖搜索或策略预测来规划，效率与一致性受限。本文提出表示世界模型RWM，直接在表示空间中学习状态、转移与可执行规划，通过端点表示构造潜路径并施加逆动力学监督，使规划融入表示几何。推理时只需在当前与目标表示间直接构造潜路径即可完成规划。该工作为具身智能体提供了新的潜空间规划范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "new learning paradigm for embodied agents based on world models and latent space prediction",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.29382v1",
+      "source": "arxiv",
+      "title": "Decoupled Early Exits for Task-Dependent Compute Allocation in Flow-Matching VLAs",
+      "abstract": "Flow-matching Vision-Language-Action (VLA) models have emerged as a potential solution for generalist robot control, designed by combining a pretrained Vision-Language Model (VLM) backbone with an action expert that generates continuous robot actions. While these models exhibit impressive capabilities, due to their very high number of parameters, their computational requirements are often prohibitive for robotics control. To mitigate these inefficiencies, existing methods predominantly skip VLM backbone layers with early exits or reduce denoising steps, while leaving action expert depth untouched. We propose a framework that exposes backbone depth $V$, action expert depth $A$, and denoising steps $D$ as three jointly configurable compute axes in a VLA. Starting from a pretrained VLA, we attach lightweight Exit Transformers (ET) at intermediate depths in both the backbone and the action expert, trained to distil the last layer of the policy into each exit. Furthermore, we introduce a KV Cache synthesis mechanism that manages the missing keys and values of the skipped backbone layers, allowing the action expert to exit deeper than the backbone. Finally, we show that the optimal compute budget is task-dependent, with different tasks benefiting from different axes and depths. Notably, our method does not require training the original policy from scratch, and for each exit, it increases the number of parameters by only $2.1\\%$ for SmolVLA and $4.1\\%$ for $π_{0.5}$. We validate our approach across two flow-matching VLAs (SmolVLA, $π_{0.5}$) and two benchmarks (LIBERO, Meta-World), revealing complementary effects: $V$ and $A$ respectively reduce FLOPs and latency, while $D$ improves both. Our joint configurations $(V,A,D)$ reduce latency by $79.2\\%$ and computation (FLOPs) by $31.8\\%$, while improving mean success rate by $5.6\\%$.",
+      "authors": [
+        "Riccardo Andrea Izzo",
+        "Rimvydas Rubavicius",
+        "Gianluca Bardaro",
+        "Subramanian Ramamoorthy",
+        "Matteo Matteucci",
+        "Alessandro Suglia"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-24T11:10:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.29382v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "decoupled early exits allocate compute to accelerate flow-matching VLA inference",
+      "llm_evidence_cn": "解耦早退按任务分配算力以加速流匹配VLA推理",
+      "llm_evidence": "解耦早退按任务分配算力以加速流匹配VLA推理",
+      "canonical_evidence": "解耦早退按任务分配算力以加速流匹配VLA推理",
+      "llm_tldr_en": "Flow-matching VLA models are too heavy for robot control; this work exposes backbone depth, action expert depth and denoising steps as configurable axes for task-dependent compute allocation and faster inference.",
+      "llm_tldr_cn": "流匹配VLA模型虽能实现通用机器人控制，但参数量巨大导致计算开销难以满足实时控制需求，现有加速方法多只跳过VLM主干层或减少去噪步数，却未触及动作专家深度。作者提出解耦早退框架，将主干深度、动作专家深度与去噪步数作为三个可联合配置的算力轴，按任务难度动态分配计算。该框架在保持性能的同时显著降低推理成本，为实时机器人策略部署提供了灵活的加速方案。",
+      "llm_tldr": "流匹配VLA模型虽能实现通用机器人控制，但参数量巨大导致计算开销难以满足实时控制需求，现有加速方法多只跳过VLM主干层或减少去噪步数，却未触及动作专家深度。作者提出解耦早退框架，将主干深度、动作专家深度与去噪步数作为三个可联合配置的算力轴，按任务难度动态分配计算。该框架在保持性能的同时显著降低推理成本，为实时机器人策略部署提供了灵活的加速方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.30127v1",
+      "source": "arxiv",
+      "title": "Faster Visuomotor Policy Learning on Action Manifolds via Riemannian MeanFlow",
+      "abstract": "Visuomotor policies learn a direct map from raw sensory observations to robot action sequences. Policies based on Diffusion and Flow Matching capture the multimodal distribution over action sequences in an end-to-end manner. This expressivity comes at the cost of multi-step numerical integration of the learned vector field for action generation, which can be expensive and time-consuming, impeding fast control rates required in robotics applications. Furthermore, robot action sequences are usually defined on a smooth, differentiable manifold, requiring that the learned policy respects the intrinsic geometry of the robot's action space. Here, we present Riemannian MeanFlow Policy (RMFP), which learns the conditioned flow map of the probability path on the robot action manifold. Our formulation employs a flow map consistency objective grounded in the data by a Riemannian Conditional Flow Matching anchor. The flow map consistency condition is stable to train and constrains the learned model to finite-time transport, which yields on-manifold action sequence generation with as few as one network function evaluation. We present results on the spherical LASA and Push-T benchmarks, on the Tool Hang and Transport tasks of the Robomimic suite, and on the Franka Kitchen task with manifold-constrained action generation, and demonstrate that RMFP attains performance competitive with prior work at a lower sampling cost. We also employ RMFP on a real-world robotic manipulation task to demonstrate fast action generation under imperfect sensor measurements in the physical world.",
+      "authors": [
+        "S. Talha Bukhari",
+        "Austin Garrett",
+        "Yi Wei",
+        "Ruiqi Ni",
+        "Zachary Kingston",
+        "Aniket Bera"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T17:00:57+00:00",
+      "link": "https://arxiv.org/pdf/2609.30127v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "faster visuomotor policy learning reducing multi-step integration for real-time robot control",
+      "llm_evidence_cn": "减少多步积分以实现实时机器人控制的更快视觉运动策略",
+      "llm_evidence": "减少多步积分以实现实时机器人控制的更快视觉运动策略",
+      "canonical_evidence": "减少多步积分以实现实时机器人控制的更快视觉运动策略",
+      "llm_tldr_en": "Diffusion and flow-matching visuomotor policies need expensive multi-step integration, impeding fast robot control; Riemannian MeanFlow learns a conditioned flow map respecting action-manifold geometry to cut sampling steps.",
+      "llm_tldr_cn": "扩散与流匹配的视觉运动策略表达力强，但需多步数值积分生成动作，计算昂贵，难以满足机器人快速控制速率，且常忽视动作空间的流形几何。本文提出黎曼MeanFlow策略，学习条件流映射并尊重动作流形的内在几何。实验表明该方法在保持多模态表达力的同时显著减少采样步数，实现更快的控制速率。其意义在于为实时视觉运动策略提供了兼顾表达力与推理效率的新方案。",
+      "llm_tldr": "扩散与流匹配的视觉运动策略表达力强，但需多步数值积分生成动作，计算昂贵，难以满足机器人快速控制速率，且常忽视动作空间的流形几何。本文提出黎曼MeanFlow策略，学习条件流映射并尊重动作流形的内在几何。实验表明该方法在保持多模态表达力的同时显著减少采样步数，实现更快的控制速率。其意义在于为实时视觉运动策略提供了兼顾表达力与推理效率的新方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.28530v1",
+      "source": "arxiv",
+      "title": "Know Your Body: A Harness for Direct and Self-Improving Robot Control with VLMs",
+      "abstract": "A general-purpose vision-language model can understand a task goal without knowing how a particular robot's motion and functional parts produce the intended effect. We introduce KnowBody, a harness that makes these action-relevant body relations explicit, queryable, and revisable while keeping the model weights frozen. Initialized from one off-task trajectory, a partial body model guides action selection and the interpretation of past interactions. New evidence refines the model, and knowledge dependent on revised body estimates is rechecked before reuse. Across 32 fixed-budget trials on four real-robot tasks, initialized KnowBody achieves 75% completion versus 25% for the native harness and requires fewer planner rounds on successful trials in tasks completed by both. With persistent updates enabled, planner rounds decrease by 29-53% from the first to the fifth recorded success.",
+      "authors": [
+        "Zeyu Lou",
+        "Yanhong Zeng",
+        "Yong Wang",
+        "Chenyang Si"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-22T17:57:19+00:00",
+      "link": "https://arxiv.org/pdf/2609.28530v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "frozen-weight VLM harness with self-improving body model for robot control",
+      "llm_evidence_cn": "冻结权重的VLM框架配合自改进身体模型控制机器人",
+      "llm_evidence": "冻结权重的VLM框架配合自改进身体模型控制机器人",
+      "canonical_evidence": "冻结权重的VLM框架配合自改进身体模型控制机器人",
+      "llm_tldr_en": "Observes that VLMs know task goals but not how a robot's body produces effects, introducing KnowBody, a frozen-weight harness that makes action-relevant body relations explicit, queryable and revisable for control.",
+      "llm_tldr_cn": "通用视觉语言模型能理解任务目标，却不知道特定机器人的运动与功能部件如何产生预期效果。本文提出KnowBody，一种在冻结模型权重前提下使与动作相关的身体关系显式、可查询且可修正的框架，由一条离任务轨迹初始化部分身体模型并随新证据迭代修正。在四个真实机器人任务的32次固定预算试验中，完成率达75%，远高于原生框架的25%，且所需规划轮次更少。",
+      "llm_tldr": "通用视觉语言模型能理解任务目标，却不知道特定机器人的运动与功能部件如何产生预期效果。本文提出KnowBody，一种在冻结模型权重前提下使与动作相关的身体关系显式、可查询且可修正的框架，由一条离任务轨迹初始化部分身体模型并随新证据迭代修正。在四个真实机器人任务的32次固定预算试验中，完成率达75%，远高于原生框架的25%，且所需规划轮次更少。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.28927v1",
+      "source": "arxiv",
+      "title": "Streaming-WAM: Action-Conditioned World-Action Model for Asynchronous Robot Manipulation",
+      "abstract": "World action models (WAMs) that use future visual prediction at inference time incur substantial generation costs. Asynchronous execution reduces waiting by overlapping inference with robot motion, but visual predictions used for subsequent action generation must anticipate the effects of actions already scheduled for execution during inference. We introduce Streaming-WAM, which couples action-conditioned world modeling with asynchronous robot control to account for committed actions in future visual prediction. At each streaming update, the model conditions future visual prediction on the latest observation and the committed actions, which form the fixed prefix of the next action chunk. The resulting action-conditioned visual features guide generation of the remaining actions within the same joint update, so the continuation is informed by the scene changes expected during execution of the fixed prefix. On LIBERO, Streaming-WAM achieves an average success rate of 98.35\\% and reduces mean episode time by a factor of 2.93 relative to Fast-WAM. On the real-world Stamp Paper task, mean episode time falls from 90 s with synchronous Joint-WAM to 38 s with Streaming-WAM. These results show that Streaming-WAM supports efficient asynchronous control while maintaining high task success rates.",
+      "authors": [
+        "Xuyao Huang",
+        "Yixuan Wang",
+        "Zengyao Ye",
+        "Boyuan Zhao",
+        "Chenyang Yu",
+        "Haoran Wen",
+        "Zhijie Deng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T02:19:21+00:00",
+      "link": "https://arxiv.org/pdf/2609.28927v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "action-conditioned world-action model coupled with asynchronous robot control",
+      "llm_evidence_cn": "动作条件世界动作模型与异步机器人控制相结合",
+      "llm_evidence": "动作条件世界动作模型与异步机器人控制相结合",
+      "canonical_evidence": "动作条件世界动作模型与异步机器人控制相结合",
+      "llm_tldr_en": "World action models using future visual prediction at inference incur heavy generation cost. Streaming-WAM couples action-conditioned world modeling with asynchronous control, conditioning future prediction on committed actions so inference overlaps with motion while anticipating scheduled effects.",
+      "llm_tldr_cn": "使用未来视觉预测的世界动作模型在推理时开销巨大，异步执行虽能通过重叠推理与运动降低等待，但预测需考虑已调度执行的动作影响。作者提出Streaming-WAM，将动作条件世界建模与异步机器人控制耦合，在每次流式更新中以最新观测和已提交动作前缀为条件进行未来视觉预测。由此生成的动作条件视觉特征支持连续动作生成。该工作为世界模型驱动的实时机器人操作提供了高效范式。",
+      "llm_tldr": "使用未来视觉预测的世界动作模型在推理时开销巨大，异步执行虽能通过重叠推理与运动降低等待，但预测需考虑已调度执行的动作影响。作者提出Streaming-WAM，将动作条件世界建模与异步机器人控制耦合，在每次流式更新中以最新观测和已提交动作前缀为条件进行未来视觉预测。由此生成的动作条件视觉特征支持连续动作生成。该工作为世界模型驱动的实时机器人操作提供了高效范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.29091v1",
+      "source": "arxiv",
+      "title": "From Passive Execution to Active Exploration: Agentic Embodied Manipulation in Realistic Environments",
+      "abstract": "Recent advances in agentic systems have substantially enhanced the long-horizon capability of embodied manipulation. However, many existing frameworks still follow a passive execution paradigm, which limits their applicability to real-world scenarios involving textual semantic cues, distractors, and initially invisible targets. To bridge this gap, we propose an agent-based active exploration framework that enables robots to dynamically interact with the environment rather than merely execute predefined instructions. Specifically, our framework consists of three collaborative modules: a planning module for high-level task reasoning, a perception module for visual scene understanding, and an execution module for low-level manipulation. This design allows the robot to actively acquire task-relevant information, adapt its behavior based on environmental feedback, and complete manipulation tasks under partial observability. Furthermore, we introduce a fine-grained perception-execution interleaving strategy, which tightly couples visual feedback with skill execution to improve exploration robustness. We evaluate our method on a realistic Find-and-Place task, demonstrating its effectiveness in challenging environments where target objects must be actively discovered before manipulation.",
+      "authors": [
+        "Shilin Ma",
+        "Chubin Zhang",
+        "Xulong Bai",
+        "Zifeng Gao",
+        "Shiyi Zhang",
+        "Yansong Tang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T06:19:04+00:00",
+      "link": "https://arxiv.org/pdf/2609.29091v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "agentic active exploration for embodied manipulation in realistic environments",
+      "llm_evidence_cn": "真实环境中的智能体主动探索具身操作",
+      "llm_evidence": "真实环境中的智能体主动探索具身操作",
+      "canonical_evidence": "真实环境中的智能体主动探索具身操作",
+      "llm_tldr_en": "This paper proposes an agent-based active exploration framework that lets robots dynamically interact with realistic environments instead of passively executing predefined instructions.",
+      "llm_tldr_cn": "现有具身操作框架多采用被动执行范式，难以应对包含文本语义线索、干扰物与初始不可见目标的真实场景。本文提出基于智能体的主动探索框架，由高层任务推理的规划模块、视觉场景理解的感知模块与底层动作执行模块协同工作。机器人能够动态与环境交互而非仅执行预设指令，从而提升长时程操作能力。该工作推动了具身智能体在真实环境中的自主探索与主动操作。",
+      "llm_tldr": "现有具身操作框架多采用被动执行范式，难以应对包含文本语义线索、干扰物与初始不可见目标的真实场景。本文提出基于智能体的主动探索框架，由高层任务推理的规划模块、视觉场景理解的感知模块与底层动作执行模块协同工作。机器人能够动态与环境交互而非仅执行预设指令，从而提升长时程操作能力。该工作推动了具身智能体在真实环境中的自主探索与主动操作。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.29964v1",
+      "source": "arxiv",
+      "title": "World Action Agent: Harnessing VLMs for Robot Manipulation via World Action Rehearsal",
+      "abstract": "General-purpose vision-language models (VLMs) bring broad knowledge and spatial reasoning to robot manipulation, yet existing systems either use them indirectly, to predict constraints or write programs, or give them a view of the scene rather than a world in which to act. We present World Action Agent (WAA), a multi-agent harness through which VLMs pilot robots with basic tools, making every decision within a visual action workspace. The workspace has three properties. Contact views, selected automatically from the scene geometry, present the scene around the current interaction. Action rehearsal turns each action into an editable proposal that the agent, alone or through an Imagination Agent, previews and revises against planning feedback before execution. In-view correction closes the loop between observation, rehearsal, and low-level execution, letting the agent remove residual offsets in the view where it observes them. Through the same workspace, WAA acquires embodied procedural knowledge in two ways: it evolves multimodal skills from expert videos and human teaching under evidence-based review and consults them through a Skill Agent, and its interaction traces train smaller VLMs to pilot the same harness. On LIBERO-Pro, WAA with skills evolved only from LIBERO-90 reaches a state-of-the-art 75.6% average success, outperforming end-to-end VLAs, code-as-policy agents, and a visual-harness baseline with the same backbone; the same skills remain effective on robosuite without further learning. Fine-tuning Qwen3.5-9B on harness traces raises its out-of-domain success from 1.7% to 43.3%.",
+      "authors": [
+        "Yehang Zhang",
+        "Haojian Huang",
+        "Yifan Chang",
+        "Jianchong Su",
+        "Bohan Zhou",
+        "Yingjie Xu",
+        "Wosong Chen",
+        "Tianhao Zhou",
+        "Chenxu Wang",
+        "Tianyi Zhang",
+        "Yangkai Wei",
+        "Wenqian Li",
+        "Shiyuan Deng",
+        "Yinchuan Li",
+        "Ying-Cong Chen",
+        "Zexi Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-24T15:19:39+00:00",
+      "link": "https://arxiv.org/pdf/2609.29964v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "VLM-driven robot manipulation with world action rehearsal",
+      "llm_evidence_cn": "基于世界动作预演让VLM操控机器人",
+      "llm_evidence": "基于世界动作预演让VLM操控机器人",
+      "canonical_evidence": "基于世界动作预演让VLM操控机器人",
+      "llm_tldr_en": "World Action Agent is a multi-agent harness that lets VLMs pilot robots inside a visual action workspace, where contact views and editable action rehearsal with an Imagination Agent support real-world manipulation.",
+      "llm_tldr_cn": "通用视觉语言模型虽具备广泛知识，但在机器人操作中往往只被间接使用或仅提供场景视图，缺乏可行动的世界。本文提出World Action Agent多智能体框架，让VLM在含接触视图与动作预演的可视化动作工作区内直接操控机器人，动作可被编辑并经Imagination Agent预演修正。该工作把VLM从旁观者转变为行动者，为真实环境中的机器人操作提供了可预演的世界动作范式。",
+      "llm_tldr": "通用视觉语言模型虽具备广泛知识，但在机器人操作中往往只被间接使用或仅提供场景视图，缺乏可行动的世界。本文提出World Action Agent多智能体框架，让VLM在含接触视图与动作预演的可视化动作工作区内直接操控机器人，动作可被编辑并经Imagination Agent预演修正。该工作把VLM从旁观者转变为行动者，为真实环境中的机器人操作提供了可预演的世界动作范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.29000v1",
+      "source": "arxiv",
+      "title": "Learning from Mixed-Quality Deployment Experience for Robot Manipulation",
+      "abstract": "Robot policies deployed in real environments naturally accumulate mixed-quality experience, including successful executions, partial progress, and failures. Although these rollouts provide valuable information for further learning, directly incorporating them into imitation learning may reinforce undesirable behaviors, while offline reinforcement learning often suffers from unreliable value estimation under sparse rewards and limited data coverage. We consider a practical post-deployment setting where learning relies only on naturally accumulated autonomous rollouts, without additional human corrections or exploratory interaction. To effectively exploit such experience, we propose Predictive Action Chunk Learning (PACL). PACL first learns a predictive chunk-level critic that evaluates temporally extended action sequences and augments temporal difference learning with future latent prediction, providing richer supervision for long-horizon value estimation. The learned critic then converts chunk-level Q-values into discrete quality conditions, which guide a diffusion actor to learn jointly from these mixed-quality experiences without treating all behaviors as equivalent supervision. At inference, the actor generates multiple action chunks and the critic selects the highest valued candidate. Experiments across simulated and real-world robot manipulation tasks show that PACL consistently improves the pretrained policy and outperforms strong imitation learning and offline reinforcement learning baselines.",
+      "authors": [
+        "Yangang Ren",
+        "Yujie Yan",
+        "Zirui Li",
+        "Jiaming Guo",
+        "Di Zeng",
+        "Ji Tao",
+        "Lan Yu",
+        "Xuesong Tian",
+        "Chen Lv"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-24T04:08:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.29000v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "learning from autonomously accumulated deployment rollouts to overcome data scarcity",
+      "llm_evidence_cn": "利用自主积累的部署经验缓解数据稀缺",
+      "llm_evidence": "利用自主积累的部署经验缓解数据稀缺",
+      "canonical_evidence": "利用自主积累的部署经验缓解数据稀缺",
+      "llm_tldr_en": "Robot policies deployed in the real world accumulate mixed-quality rollouts; PACL learns predictive action chunks to exploit this experience without human corrections or extra exploration.",
+      "llm_tldr_cn": "机器人策略在真实环境部署后会自然积累包含成功、部分进展与失败的混合质量数据，直接用于模仿学习会强化不良行为，离线强化学习在稀疏奖励下价值估计也不可靠。为此作者提出预测式动作分块学习PACL，先学习预测性表示，再利用无需人工纠正与探索交互的自主rollout进行后部署学习。实验表明该方法能有效利用混合质量经验持续改进操作策略，为真实部署中的数据高效自我提升提供了新思路。",
+      "llm_tldr": "机器人策略在真实环境部署后会自然积累包含成功、部分进展与失败的混合质量数据，直接用于模仿学习会强化不良行为，离线强化学习在稀疏奖励下价值估计也不可靠。为此作者提出预测式动作分块学习PACL，先学习预测性表示，再利用无需人工纠正与探索交互的自主rollout进行后部署学习。实验表明该方法能有效利用混合质量经验持续改进操作策略，为真实部署中的数据高效自我提升提供了新思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.25369v1",
+      "source": "arxiv",
+      "title": "Capability-Aware Arbitration for Semantic Intent-Based Shared Control",
+      "abstract": "Shared control often allocates robot authority based on confidence in inferred human intent, assuming reliable autonomous execution. When this assumption fails, high intent confidence can cause over-helping. We present a capability-aware shared-control framework in which a vision-language model (VLM) infers human intent and provides semantic-intent confidence, while a vision-language-action (VLA) policy generates autonomous actions. VLA capability confidence is estimated online from the dispersion and local instability of stochastic action trajectories. We design a nonlinear arbitration policy that combines Bayesian-filtered semantic-intent confidence with VLA capability confidence through a sigmoid mapping to adapt robot authority. Our evaluation combined VLM/VLA confidence assessment with a study involving 12 participants performing pick-and-place and bidirectional stacking under in-distribution and out-of-distribution conditions. The proposed method achieved the highest task success rate (92%), compared with manual teleoperation (83%), intent-only arbitration (44%), and fixed equal-weight blending (10%). It also achieved higher control friendliness and lower authority-weighted disagreement than both shared-control baselines. These results demonstrate the benefit of incorporating VLA capability into authority allocation to mitigate over-helping and improve shared-control performance.",
+      "authors": [
+        "Zhaoda Du",
+        "Michael Bowman",
+        "Xiaoli Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-21T20:08:39+00:00",
+      "link": "https://arxiv.org/pdf/2609.25369v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "VLM and VLA based shared control for real embodied robot authority arbitration",
+      "llm_evidence_cn": "基于VLM与VLA的共享控制，面向真实具身机器人权限仲裁",
+      "llm_evidence": "基于VLM与VLA的共享控制，面向真实具身机器人权限仲裁",
+      "canonical_evidence": "基于VLM与VLA的共享控制，面向真实具身机器人权限仲裁",
+      "llm_tldr_en": "Shared control usually trusts inferred human intent and can over-help when autonomy fails; this framework combines VLM semantic-intent confidence with online VLA capability confidence via nonlinear arbitration.",
+      "llm_tldr_cn": "共享控制常基于人类意图置信度分配机器人权限，并假设自主执行可靠，当该假设失败时高意图置信度会导致过度帮助。本文提出能力感知共享控制框架，由VLM推断人类意图并给出语义置信度，VLA策略生成动作，并从随机动作轨迹的离散度与局部不稳定在线估计VLA能力置信度。非线性仲裁将二者融合以自适应调整机器人权限，实验验证其有效性。其意义在于为共享控制中的过度帮助问题提供了能力感知的仲裁机制。",
+      "llm_tldr": "共享控制常基于人类意图置信度分配机器人权限，并假设自主执行可靠，当该假设失败时高意图置信度会导致过度帮助。本文提出能力感知共享控制框架，由VLM推断人类意图并给出语义置信度，VLA策略生成动作，并从随机动作轨迹的离散度与局部不稳定在线估计VLA能力置信度。非线性仲裁将二者融合以自适应调整机器人权限，实验验证其有效性。其意义在于为共享控制中的过度帮助问题提供了能力感知的仲裁机制。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.29310v1",
+      "source": "arxiv",
+      "title": "EgoSpeedUp: Transferring Human Manipulation Tempo to Robot Policies",
+      "abstract": "Robot manipulation policies trained through imitation learning inherit not only the demonstrated behavior but also the conservative execution tempo of robot demonstrations. Existing acceleration approaches can execute faster than the original demonstrations, but determine the appropriate acceleration primarily from robot-side information or a predefined set of tempo factors, leaving open how to obtain a task-appropriate reference for how fast each manipulation phase should progress. We introduce EgoSpeedUp, a framework that uses human manipulation as temporal supervision for robot imitation learning. Our key insight is that human demonstrations naturally reveal task-appropriate, phase-wise manipulation tempo. Given slow robot demonstrations and human demonstrations of the same task, EgoSpeedUp aligns corresponding manipulation phases, estimates their relative execution tempos from multiple human demonstrations, and transfers the resulting phase-wise tempo by retiming the robot demonstrations. The retimed demonstrations are then used for standard behavior cloning, allowing the robot to retain its executable manipulation behavior while learning to perform it at a human-informed tempo. Across two real-world manipulation tasks, EgoSpeedUp improves the task success rate by an average of 25 percentage points (pp) while reducing successful execution time by 36.5%. These results demonstrate that human manipulation tempo provides an effective temporal reference for learning faster and more reliable robot policies.",
+      "authors": [
+        "Hanbit Oh",
+        "Yukiyasu Domae",
+        "Takuma Yagi"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-09-24T09:44:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.29310v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Transfers human manipulation tempo as temporal supervision for robot policies",
+      "llm_evidence_cn": "将人类操作节奏作为时间监督迁移到机器人策略",
+      "llm_evidence": "将人类操作节奏作为时间监督迁移到机器人策略",
+      "canonical_evidence": "将人类操作节奏作为时间监督迁移到机器人策略",
+      "llm_tldr_en": "EgoSpeedUp uses human manipulation tempo as temporal supervision to accelerate robot imitation policies, providing task-appropriate phase-wise speed references instead of robot-side heuristics.",
+      "llm_tldr_cn": "通过模仿学习训练的机器人操作策略会继承示教的保守执行节奏，现有加速方法多依赖机器人侧信息或预设速度因子，难以获得任务适配的速度参考。本文提出EgoSpeedUp，将人类操作视频揭示的分阶段操作节奏作为时间监督迁移到机器人策略学习中。实验表明该方法能依据任务阶段合理地加速机器人操作，提升执行效率。这一人机节奏迁移思路为机器人策略的时序适配提供了新途径。",
+      "llm_tldr": "通过模仿学习训练的机器人操作策略会继承示教的保守执行节奏，现有加速方法多依赖机器人侧信息或预设速度因子，难以获得任务适配的速度参考。本文提出EgoSpeedUp，将人类操作视频揭示的分阶段操作节奏作为时间监督迁移到机器人策略学习中。实验表明该方法能依据任务阶段合理地加速机器人操作，提升执行效率。这一人机节奏迁移思路为机器人策略的时序适配提供了新途径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning for robot policy learning across domains and embodiments",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.29394v1",
+      "source": "arxiv",
+      "title": "RACaP: Agentic Reasoning, Acting, and Coding as Policies for Evolvable Robot Learning",
+      "abstract": "General-purpose robot agents must learn from experience, transfer to new tasks, and act efficiently. Code as Policies (CaP) methods generate and repair programs at runtime, incurring latency and entangling reusable mechanisms with task-specific decisions. We introduce RACaP, an agentic framework that moves coding to evolution and uses a Reasoning-and-Acting (ReAct) loop to call frozen, typed Policy APIs at deployment. A two-phase strategy combines capability curriculum learning with autonomous self-evolution to improve the APIs, the ReAct harness, and experience memory. The APIs encode reusable physical mechanisms while exposing arguments for runtime adaptation. ReAct combines task-specific working memory, long-term experience memory, and visual feedback to select actions, verify outcomes, and recover from failures without modifying source code. RACaP achieves 54.4% success on LIBERO-90, 45.0% on zero-shot LIBERO-PRO, and 46.0% on LIBERO-Long, compared with at most 4.0% for CaP baselines on long-horizon tasks. On LIBERO-PRO, it achieves 2.5 times the success rate of CaP baselines and a 1.9-fold speedup in median policy time. For efficient on-robot deployment, rejection-sampled fine-tuning distills GPT-5.6 ReAct decisions into Qwen3-VL-8B-Instruct, yielding a 13.2-fold per-decision inference speedup and reducing repeated physical calls from 16 to 4. These results show that separating reusable code from runtime decisions supports continued evolution, effective transfer, and efficient long-horizon control.",
+      "authors": [
+        "Zexi Li",
+        "Yehang Zhang",
+        "Haojian Huang",
+        "Bohan Zhou",
+        "Wenqian Li",
+        "Chenxu Wang",
+        "Yifan Chang",
+        "Yangkai Wei",
+        "Tianyi Zhang",
+        "Ying-Cong Chen",
+        "Kaiwen Zhou",
+        "Yinchuan Li",
+        "James Cheng"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T11:22:45+00:00",
+      "link": "https://arxiv.org/pdf/2609.29394v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "evolvable robot learning transferring reusable policy APIs via agentic reasoning",
+      "llm_evidence_cn": "通过智能体推理实现可复用策略API迁移的可进化机器人学习",
+      "llm_evidence": "通过智能体推理实现可复用策略API迁移的可进化机器人学习",
+      "canonical_evidence": "通过智能体推理实现可复用策略API迁移的可进化机器人学习",
+      "llm_tldr_en": "Code-as-Policies methods repair programs at runtime, incurring latency and entangling reusable mechanisms with task-specific decisions. RACaP moves coding to evolution, using a ReAct loop to call frozen typed Policy APIs at deployment, combining curriculum learning with self-evolution.",
+      "llm_tldr_cn": "通用机器人智能体需从经验学习、迁移到新任务并高效行动，而代码即策略方法在运行时生成与修复程序，带来延迟并把可复用机制与任务决策纠缠在一起。作者提出RACaP，将编码移至进化阶段，部署时用推理-行动循环调用冻结的类型化策略API。两阶段策略结合能力课程学习与自主自进化，改进API、推理框架与经验记忆。该框架为可进化的机器人学习提供了可复用、可迁移的新范式。",
+      "llm_tldr": "通用机器人智能体需从经验学习、迁移到新任务并高效行动，而代码即策略方法在运行时生成与修复程序，带来延迟并把可复用机制与任务决策纠缠在一起。作者提出RACaP，将编码移至进化阶段，部署时用推理-行动循环调用冻结的类型化策略API。两阶段策略结合能力课程学习与自主自进化，改进API、推理框架与经验记忆。该框架为可进化的机器人学习提供了可复用、可迁移的新范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

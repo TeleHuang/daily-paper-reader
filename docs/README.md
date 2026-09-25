@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-24</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-25</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-24 22:05:42 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-25 22:24:12 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 17 篇推荐（精读 6 篇，速读 11 篇）</p>
-<p>精读：《Latent evolving World Action Model》（9.0/10）, 《InternW0: A Foundational Physical World Model for Efficient Real-World Interactions》（9.0/10）</p>
-<p>速读：《DynaForge: Planning-Guided Residual Learning for Dynamic Manipulation Demonstration Generation》（7.0/10）, 《TriWorldBench: A Tri-View Consistency Perspective on Embodied World Models》（7.0/10）, 《EmbodiedSWE: Coding Agents for Long Horizon Dexterous Robotics》（7.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>今天精读6篇、速读5篇共11篇，聚焦机器人操作与VLA前沿。最值得看的是9.0分的《Representation World Model》和《Decoupled Early Exits》，分别探索表征世界模型与流匹配VLA的任务自适应算力分配。建议普通读者优先从这两篇入手，再顺带浏览速读中的世界动作排练与混合质量经验学习。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -84,7 +81,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Latent evolving World Action Model">Latent evolving World Action Model</span></li><li><span class="dpr-home-dashboard-paper-title" title="InternW0: A Foundational Physical World Model for Efficient Real-World Interactions">InternW0: A Foundational Physical World Model for Efficient Real-World Interactions</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Gaussian Worlds: Latent Geometry Matters for JEPAs">Beyond Gaussian Worlds: Latent Geometry Matters for JEPAs</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Representation World Model: Learning States, Transition and Executable Plans in Representation">Representation World Model: Learning States, Transition and Executable Plans in Representation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Decoupled Early Exits for Task-Dependent Compute Allocation in Flow-Matching VLAs">Decoupled Early Exits for Task-Dependent Compute Allocation in Flow-Matching VLAs</span></li><li><span class="dpr-home-dashboard-paper-title" title="Faster Visuomotor Policy Learning on Action Manifolds via Riemannian MeanFlow">Faster Visuomotor Policy Learning on Action Manifolds via Riemannian MeanFlow</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -94,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="DynaForge: Planning-Guided Residual Learning for Dynamic Manipulation Demonstration Generation">DynaForge: Planning-Guided Residual Learning for Dynamic Manipulation Demonstration Generation</span></li><li><span class="dpr-home-dashboard-paper-title" title="TriWorldBench: A Tri-View Consistency Perspective on Embodied World Models">TriWorldBench: A Tri-View Consistency Perspective on Embodied World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="EmbodiedSWE: Coding Agents for Long Horizon Dexterous Robotics">EmbodiedSWE: Coding Agents for Long Horizon Dexterous Robotics</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="World Action Agent: Harnessing VLMs for Robot Manipulation via World Action Rehearsal">World Action Agent: Harnessing VLMs for Robot Manipulation via World Action Rehearsal</span></li><li><span class="dpr-home-dashboard-paper-title" title="Learning from Mixed-Quality Deployment Experience for Robot Manipulation">Learning from Mixed-Quality Deployment Experience for Robot Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="EgoSpeedUp: Transferring Human Manipulation Tempo to Robot Policies">EgoSpeedUp: Transferring Human Manipulation Tempo to Robot Policies</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>5</strong></span></div>
 </section>
 </div>
 
