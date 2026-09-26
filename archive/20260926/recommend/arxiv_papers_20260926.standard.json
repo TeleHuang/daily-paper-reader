@@ -1,0 +1,526 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-26T21:42:23.816938+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 5,
+    "deep_cap": 6,
+    "deep_selected": 5,
+    "quick_candidates": 8,
+    "quick_skim_target": 11,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2609.22674v1",
+      "source": "arxiv",
+      "title": "Mask-Aware Execution for Efficient JEPA Training",
+      "abstract": "Joint Embedding Predictive Architectures (JEPAs) are becoming a core representation-learning primitive and a building block for latent world models across vision, video, audio, brain dynamics, and time series. Despite (potential of) wide deployment, current JEPA training pipelines are inefficient: each input is executed through multiple mask-specific branches, with redundant target-side work, and memory-bound token routing. These costs grow with the number of masks and limit GPU efficiency. We present M-JEPA, a mask-aware execution architecture that restructures JEPA training without changing the learning objective. M-JEPA separates mask-independent computation from mask-dependent routing, enabling shared context encoder execution, fused token routing and slicing with backward support, sparse target encoder execution over the union of target tokens, and masked patch embedding for sparse inputs. The resulting pipeline preserves training semantics while reducing computation, memory traffic, and synchronization overhead. We implement M-JEPA for five JEPA variants and evaluate it on NVIDIA A100 GPUs. Compared against the state-of-the-art baselines, M-JEPA achieves up to 1.7x end-to-end training speedup for 2-10 masks. Separately, with masked patch embedding, 4.75x patch-embedding speedup at high sparsity. These results show that execution restructuring, rather than changes to the JEPA objective, is a key lever for efficient JEPA training.",
+      "authors": [
+        "Md Musfiqur Rahman Sanim",
+        "Zhihao Shu",
+        "Bahram Afsharmanesh",
+        "Amirali Mirian",
+        "Wei Niu",
+        "Gagan Agrawal"
+      ],
+      "primary_category": "cs.DC",
+      "categories": [
+        "cs.DC",
+        "cs.LG"
+      ],
+      "published": "2026-09-19T01:07:25+00:00",
+      "link": "https://arxiv.org/pdf/2609.22674v1",
+      "tags": [
+        "keyword:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "mask-aware execution to make JEPA training efficient",
+      "llm_evidence_cn": "掩码感知执行提升JEPA训练效率",
+      "llm_evidence": "掩码感知执行提升JEPA训练效率",
+      "canonical_evidence": "掩码感知执行提升JEPA训练效率",
+      "llm_tldr_en": "JEPA is a core representation primitive and latent world model building block, but its training runs multiple mask branches with redundant work. M-JEPA restructures execution to share mask-independent computation while keeping the objective unchanged.",
+      "llm_tldr_cn": "联合嵌入预测架构（JEPA）正成为视觉、视频、音频等领域的核心表示学习原语与潜在世界模型构件，但其训练管线需为每个掩码执行多个分支，存在冗余目标侧计算与受内存限制的词元路由，效率随掩码数量增长而下降。本文提出M-JEPA，在不改变学习目标的前提下将掩码无关计算与掩码相关路由分离，实现共享上下文编码器执行与融合的词元路由切片。该工作显著提升GPU训练效率，为大规模JEPA世界模型训练扫清工程瓶颈。",
+      "llm_tldr": "联合嵌入预测架构（JEPA）正成为视觉、视频、音频等领域的核心表示学习原语与潜在世界模型构件，但其训练管线需为每个掩码执行多个分支，存在冗余目标侧计算与受内存限制的词元路由，效率随掩码数量增长而下降。本文提出M-JEPA，在不改变学习目标的前提下将掩码无关计算与掩码相关路由分离，实现共享上下文编码器执行与融合的词元路由切片。该工作显著提升GPU训练效率，为大规模JEPA世界模型训练扫清工程瓶颈。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "joint embedding predictive architecture for self-supervised world models",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.24682v2",
+      "source": "arxiv",
+      "title": "Think Like a World Model, Act Like a VLA: Distilling World-Model Representations into Compact Robot Policies",
+      "abstract": "Vision-Language-Action (VLA) models map observations to actions with no objective that accounts for how the world responds, so their robustness is bounded primarily by data coverage. World models carry precisely that missing objective and are better grounded for it, yet rolling the future forward costs seconds per decision and rules them out of the control loop. We show the two can be separated. What a world model knows about physical scenes lives in its internal features; generating the future is merely the objective that produced them, so the grounding can be inherited while the generative machinery is left behind. We add one feature-alignment term to ordinary VLA training: a frozen world model is run over the training frames once and cached, and the student learns to agree with that cache. No teacher is loaded during training, the projector is discarded after it, and the deployed policy is identical to the undistilled baseline, running in 32ms and 1.86GB on a consumer RTX5090, so every gain is attributable to the representation rather than to added capacity or test-time compute. A 0.8B student reaches 97.9% on LIBERO, improves from 48.2% to 50.5% on RoboCasa-GR1 humanoid manipulation, and the same objective carries over to real hardware, on both a single-arm and a bimanual platform. The gain survives changes of student scale, backbone, alignment layer, and teacher, indicating a broad representational prior rather than a fragile alignment between two particular networks. Project page: https://thaw-vla.trung-dt.com/.",
+      "authors": [
+        "Trung Dao",
+        "Sankalp Yamsani",
+        "Jaden Park",
+        "Joohyung Kim",
+        "Yong Jae Lee"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-09-21T14:41:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.24682v2",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "distilling frozen world-model features into compact VLA policies to avoid slow rollouts and enable real-time control",
+      "llm_evidence_cn": "将冻结世界模型特征蒸馏进紧凑VLA策略，避免慢速推演以支持实时控制",
+      "llm_evidence": "将冻结世界模型特征蒸馏进紧凑VLA策略，避免慢速推演以支持实时控制",
+      "canonical_evidence": "将冻结世界模型特征蒸馏进紧凑VLA策略，避免慢速推演以支持实时控制",
+      "llm_tldr_en": "By adding one feature-alignment term, this work distills a frozen world model's grounded representations into compact VLA policies, inheriting physical grounding without the slow generative rollout.",
+      "llm_tldr_cn": "VLA模型直接将观测映射为动作，缺乏对世界如何响应的建模，鲁棒性受数据覆盖限制；而世界模型虽具备该目标，但前向推演每次决策需数秒，难以进入控制回路。该文指出二者可以分离：世界模型对物理场景的知识存于内部特征中，生成未来只是产生这些特征的目标。作者在常规VLA训练中加入一项特征对齐损失，用冻结的世界模型在训练时提供表征，推理时不再运行生成模块。由此获得兼具物理接地与实时性的紧凑策略，为世界模型知识向机器人策略的迁移提供新路径。",
+      "llm_tldr": "VLA模型直接将观测映射为动作，缺乏对世界如何响应的建模，鲁棒性受数据覆盖限制；而世界模型虽具备该目标，但前向推演每次决策需数秒，难以进入控制回路。该文指出二者可以分离：世界模型对物理场景的知识存于内部特征中，生成未来只是产生这些特征的目标。作者在常规VLA训练中加入一项特征对齐损失，用冻结的世界模型在训练时提供表征，推理时不再运行生成模块。由此获得兼具物理接地与实时性的紧凑策略，为世界模型知识向机器人策略的迁移提供新路径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.23269v1",
+      "source": "arxiv",
+      "title": "Latent Telepathy: Multi-Robot Communication with Self-Supervised Perceptual Latents",
+      "abstract": "In a decentralized multi-robot team under partial observability, the fact that decides a robot's next action is often visible only to a teammate. Existing decentralized methods communicate kinematic information, such as position or planned trajectory, which cannot convey what the teammate perceives. Learned communication in multi-agent reinforcement learning (MARL) can carry perceptual content, but the resulting messages are task-coupled and opaque. We propose Latent Telepathy. Each robot broadcasts the perceptual latent vector it already computes for its own use, the output of an encoder trained with a self-supervised joint-embedding predictive objective, frozen, and shared across the team. A teammate learns to act on it from task reward alone. Because the encoder already runs for perception, the message costs no additional computation and a single compact vector of bandwidth. Because the encoder is frozen before any policy is trained, the message means the same thing to every robot, and the receiving robot is never told what it means. We evaluate Latent Telepathy with a content-controlled protocol in which bandwidth, latency, topology and receiver are held fixed and only the message content varies. Broadcasting the latent lets a navigator avoid an occluded hazard in 99.7% of episodes, matching a noiseless hand-designed message. Position and trajectory messages remain at chance, and the raw camera image, 186 times wider, is less reliable than the compressed latent. The result holds from a discrete gridworld to rendered pixels under continuous velocity control, and the encoder decodes the hazard from a physical robot's camera in 102 of 102 live decisions. We also identify a requirement for porting MARL communication results to continuous control, that the decision a message informs must remain reachable by exploration, and show how to restore it.",
+      "authors": [
+        "Howard Wang",
+        "Han Zheng",
+        "Cathy Wu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG",
+        "cs.MA"
+      ],
+      "published": "2026-09-20T01:01:39+00:00",
+      "link": "https://arxiv.org/pdf/2609.23269v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised joint-embedding predictive objective for shared perceptual latents",
+      "llm_evidence_cn": "用自监督联合嵌入预测目标学习共享感知潜变量",
+      "llm_evidence": "用自监督联合嵌入预测目标学习共享感知潜变量",
+      "canonical_evidence": "用自监督联合嵌入预测目标学习共享感知潜变量",
+      "llm_tldr_en": "Latent Telepathy lets robots share the self-supervised joint-embedding perceptual latents they already compute, conveying what teammates perceive rather than only kinematics for decentralized coordination.",
+      "llm_tldr_cn": "在部分可观测的去中心化多机器人团队中，决定机器人下一步动作的信息往往只有队友能看到，而现有方法仅通信位置或轨迹等运动学信息，无法传递感知内容。本文提出Latent Telepathy，让每台机器人广播其通过自监督联合嵌入预测目标训练并冻结的感知潜向量。队友据此学习行动，实验显示该方法能有效传递感知信息，为多机器人协作提供了可解释且任务无关的通信方式。",
+      "llm_tldr": "在部分可观测的去中心化多机器人团队中，决定机器人下一步动作的信息往往只有队友能看到，而现有方法仅通信位置或轨迹等运动学信息，无法传递感知内容。本文提出Latent Telepathy，让每台机器人广播其通过自监督联合嵌入预测目标训练并冻结的感知潜向量。队友据此学习行动，实验显示该方法能有效传递感知信息，为多机器人协作提供了可解释且任务无关的通信方式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "joint embedding predictive architecture for self-supervised world models",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.27314v1",
+      "source": "arxiv",
+      "title": "CoRe-WAM: Correspondence-Aligned Temporal Residuals for World Action Models",
+      "abstract": "Comparing current and past observations helps robots understand scene changes and select subsequent actions during manipulation. However, comparing visual features at the same image location can mix different scene content when objects or the camera move. We introduce CoRe-WAM, a world-action model that incorporates correspondence-aligned visual changes through a parameter-efficient temporal interface. Its TraceDelta module uses correspondences from a frozen tracking model to transport historical visual features to current locations before computing signed differences in a shared pretrained feature space. Correspondence thus determines which historical content is compared with the present, rather than entering the policy as a separate trajectory representation. A lightweight adapter converts these differences into validity-gated residuals that supplement current visual conditioning, allowing the policy to use recent changes alongside current-scene information. Built on Motus, CoRe-WAM keeps the pretrained backbone weights frozen and optimizes 1.59 million parameters. With a 5,000-update adaptation budget, CoRe-WAM achieves 92.22% clean success across 50 RoboTwin 2.0 tasks, 3.56 percentage points above Motus; on randomized evaluation, it achieves 89.60% success, a 2.58-point gain. Integrating TraceDelta into a StarVLA-based policy improves clean success from 58.10% to 67.62%, supporting transfer of the temporal interface beyond Motus.",
+      "authors": [
+        "Bin Zhou",
+        "Jialong Liu",
+        "Jianan Wang",
+        "Changhao Chen",
+        "Kani Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-23T03:46:32+00:00",
+      "link": "https://arxiv.org/pdf/2609.27314v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "World-action model with parameter-efficient temporal interface for manipulation",
+      "llm_evidence_cn": "面向操作的世界动作模型与参数高效时序接口",
+      "llm_evidence": "面向操作的世界动作模型与参数高效时序接口",
+      "canonical_evidence": "面向操作的世界动作模型与参数高效时序接口",
+      "llm_tldr_en": "CoRe-WAM addresses feature comparison that mixes scene content when objects or camera move, introducing a world-action model with a parameter-efficient temporal interface whose TraceDelta module transports historical features via correspondences.",
+      "llm_tldr_cn": "在操作中比较当前与历史观测有助于理解场景变化，但按相同图像位置比较特征会在物体或相机移动时混淆场景内容。本文提出CoRe-WAM世界动作模型，其TraceDelta模块利用冻结跟踪模型的对应关系将历史视觉特征搬运到当前位置，再在共享预训练特征空间中计算带符号差异。该参数高效时序接口让对应关系决定比较哪些历史内容，而非作为独立轨迹输入策略。该工作为具身智能体基于世界模型的动作预测提供了新思路。",
+      "llm_tldr": "在操作中比较当前与历史观测有助于理解场景变化，但按相同图像位置比较特征会在物体或相机移动时混淆场景内容。本文提出CoRe-WAM世界动作模型，其TraceDelta模块利用冻结跟踪模型的对应关系将历史视觉特征搬运到当前位置，再在共享预训练特征空间中计算带符号差异。该参数高效时序接口让对应关系决定比较哪些历史内容，而非作为独立轨迹输入策略。该工作为具身智能体基于世界模型的动作预测提供了新思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.28984v1",
+      "source": "arxiv",
+      "title": "CrossSafe: Towards Cross-Embodiment Latent Safety Filters",
+      "abstract": "Cross-embodiment learning has shown that a single model, such as a vision-language-action (VLA) model, can learn state representations and manipulation skills that can be applied across heterogeneous robots to accomplish various tasks. We hypothesize that the same holds for safety enforcement. The reasoning required to satisfy a safety constraint, such as detecting an obstacle, recognizing that it should be avoided, and selecting a safe abstract action, is largely shared across robots. What differs across embodiments is how the abstract safe action is realized: morphology, kinematics, and dynamics determine which actions are safe and feasible. Consequently, the same action can be safe for one robot and unsafe for another. This is especially important for generalist manipulation policies that operate in a common end-effector action space without explicitly capturing how safety depends on the robot's morphology and kinematics. We propose embodiment-conditioned safety filtering, in which a Hamilton-Jacobi reachability-based value function and its corresponding safety-maximizing policy are shared across robots. Using a morphology-aware latent representation of the robot and its environment, we perform Hamilton-Jacobi reachability analysis directly in latent space so that the learned safety concepts can generalize across embodiments while remaining explicitly conditioned on each robot's morphology and kinematics. We evaluate our approach across five bimanual robot embodiments and five manipulation tasks with whole-body collision-avoidance constraints. Our results show that a single policy, jointly trained across five manipulation tasks and four embodiments, exhibits zero-shot generalization to a held-out embodiment, reducing the nominal policy's collision rate. They also show that training using more embodiments improves generalization.",
+      "authors": [
+        "Ihab Tabbara",
+        "Yuxuan Yang",
+        "Hussein Sibai"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG",
+        "eess.SY"
+      ],
+      "published": "2026-09-24T03:55:06+00:00",
+      "link": "https://arxiv.org/pdf/2609.28984v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "cross-embodiment latent safety filters sharing reasoning across heterogeneous robots",
+      "llm_evidence_cn": "跨异构机器人共享安全推理的跨具身潜在安全过滤器",
+      "llm_evidence": "跨异构机器人共享安全推理的跨具身潜在安全过滤器",
+      "canonical_evidence": "跨异构机器人共享安全推理的跨具身潜在安全过滤器",
+      "llm_tldr_en": "CrossSafe studies whether safety reasoning can be shared across embodiments via latent safety filters, separating shared abstract safe actions from embodiment-specific realization.",
+      "llm_tldr_cn": "论文针对跨具身学习中安全约束执行的问题，假设安全推理（如检测障碍、选择安全抽象动作）在机器人间大体共享，而具体实现因形态、运动学与动力学而异。作者提出跨具身潜在安全过滤器CrossSafe，将共享的抽象安全动作与具身相关的可行性实现相分离，使同一模型可适配异构机器人。该工作对通用VLA模型的安全部署具有重要意义，为跨具身技能与安全迁移提供了新思路。",
+      "llm_tldr": "论文针对跨具身学习中安全约束执行的问题，假设安全推理（如检测障碍、选择安全抽象动作）在机器人间大体共享，而具体实现因形态、运动学与动力学而异。作者提出跨具身潜在安全过滤器CrossSafe，将共享的抽象安全动作与具身相关的可行性实现相分离，使同一模型可适配异构机器人。该工作对通用VLA模型的安全部署具有重要意义，为跨具身技能与安全迁移提供了新思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "cross embodiment skill transfer in robot learning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.25274v1",
+      "source": "arxiv",
+      "title": "Learning to Plan in Human-Robot Collaboration: Multimodal Reinforcement Learning for Adaptive Interaction",
+      "abstract": "Robot assistants for older adults and people with disabilities need to perform collaborative tasks with users effectively. The core component of these systems is an interaction manager whose job is to observe and assess the task and infer the state of the human and their intent for the robot to choose the best course of action. Due to the sparseness of the data in this domain, the policy for such multimodal systems is often crafted by hand; as the complexity of interactions grows, this process is not scalable. This paper proposes a reinforcement learning (RL) approach to automatically generate the multimodal policy of the robot. Our system focuses on a realistic scenario where a robot assists a user in locating objects within a home environment, managing multimodal signals, including language and physical actions, to select the best action. In contrast to traditional dialog systems, our agent is trained with a simulator that uses human data and can deal with multiple modalities. We use a simple high-level reward function that needs no fine-tuning and enforce some preconditions to speed up the training process. A human study evaluating the system in a real-world setting demonstrates promising results, indicating high usability and effective task completion. This RL-based approach offers a scalable and interpretable alternative for designing interaction managers in multimodal human-robot collaborations.",
+      "authors": [
+        "Afagh Mehri Shervedani",
+        "Siyu Li",
+        "Natawut Monaikul",
+        "Bahareh Abbasi",
+        "Barbara Di Eugenio",
+        "Miloš Žefran"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-21T18:18:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.25274v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "robot assistant interaction manager in real-world collaborative tasks",
+      "llm_evidence_cn": "真实环境人机协作机器人交互管理",
+      "llm_evidence": "真实环境人机协作机器人交互管理",
+      "canonical_evidence": "真实环境人机协作机器人交互管理",
+      "llm_tldr_en": "Robot assistants must choose actions in human collaboration but policies are hand-crafted due to sparse data. This paper proposes reinforcement learning to automatically generate the multimodal interaction policy for a realistic object-finding assistive scenario.",
+      "llm_tldr_cn": "面向老年人及残障人士的辅助机器人需要在真实协作场景中理解人类状态与意图并选择合适动作，但该领域数据稀疏，多模态策略长期依赖人工设计，难以随交互复杂度扩展。本文提出用强化学习方法自动生成机器人的多模态交互策略，在机器人协助用户寻找物体的真实场景中验证。结果表明该框架能够减少人工设计负担并提升协作任务的自适应能力，为具身智能体的交互式规划提供可扩展方案。",
+      "llm_tldr": "面向老年人及残障人士的辅助机器人需要在真实协作场景中理解人类状态与意图并选择合适动作，但该领域数据稀疏，多模态策略长期依赖人工设计，难以随交互复杂度扩展。本文提出用强化学习方法自动生成机器人的多模态交互策略，在机器人协助用户寻找物体的真实场景中验证。结果表明该框架能够减少人工设计负担并提升协作任务的自适应能力，为具身智能体的交互式规划提供可扩展方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.22730v1",
+      "source": "arxiv",
+      "title": "BEACON: Belief-Enabled Adaptive CONtrol for Imitation Learning under Uncertainty",
+      "abstract": "Robot manipulation tasks often involve hidden state information that cannot be directly observed and must be inferred through sequential physical interactions. In such partially observable settings, conditioning an imitation learning policy directly on the recent raw observation history leads to poor performance. This is due to state aliasing, wherein identical observations may arise from different hidden states, and the policy receives conflicting action labels for the same input. To enable history-aware disambiguation capability, we propose conditioning a diffusion policy on a structured representation of the hidden states using Bayesian belief that exposes both the current most likely state estimate and the remaining uncertainty. This representation replaces raw history with a structured, compact input, enabling the policy to implicitly modulate between exploratory and exploitative behaviors based on belief uncertainty, without explicit mode switching or reward shaping. We evaluate across two domains with qualitatively different belief representations: a continuous belief for cornstalk gripper alignment via tactile sensing, and a discrete categorical distribution for latched door opening. In both domains, the belief-conditioned policy substantially outperforms the observation-only baseline and approaches privileged ground-truth performance, with ablations illustrating that the policy adapts its exploration behavior depending on the belief uncertainty at inference time.",
+      "authors": [
+        "Moonyoung Lee",
+        "Soumojit Bhattacharya",
+        "George Kantor",
+        "Oliver Kroemer"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-19T03:26:19+00:00",
+      "link": "https://arxiv.org/pdf/2609.22730v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "belief-conditioned diffusion policy for robot manipulation under uncertainty",
+      "llm_evidence_cn": "面向不确定机器人操作的信念条件扩散策略",
+      "llm_evidence": "面向不确定机器人操作的信念条件扩散策略",
+      "canonical_evidence": "面向不确定机器人操作的信念条件扩散策略",
+      "llm_tldr_en": "BEACON conditions a diffusion policy on a Bayesian belief over hidden states, exposing the most likely state and residual uncertainty to resolve state aliasing in partially observable robot imitation learning.",
+      "llm_tldr_cn": "机器人操作任务常包含必须通过序列交互推断的隐藏状态，而直接在原始观测历史上条件化模仿学习策略会因状态混叠导致冲突动作标签、性能下降。本文提出BEACON，用贝叶斯信念对隐藏状态进行结构化表示，同时暴露当前最可能状态估计与剩余不确定性，并将扩散策略条件化于该表示以实现历史感知的消歧。实验表明该方法在部分可观测操作场景下缓解状态混叠、提升策略稳健性。该工作为不确定性下的机器人模仿学习提供了结构化历史建模思路。",
+      "llm_tldr": "机器人操作任务常包含必须通过序列交互推断的隐藏状态，而直接在原始观测历史上条件化模仿学习策略会因状态混叠导致冲突动作标签、性能下降。本文提出BEACON，用贝叶斯信念对隐藏状态进行结构化表示，同时暴露当前最可能状态估计与剩余不确定性，并将扩散策略条件化于该表示以实现历史感知的消歧。实验表明该方法在部分可观测操作场景下缓解状态混叠、提升策略稳健性。该工作为不确定性下的机器人模仿学习提供了结构化历史建模思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.30023v1",
+      "source": "arxiv",
+      "title": "Res-HIL: Human-Guided Residual Reinforcement Learning for Sample-Efficient Dexterous Manipulation",
+      "abstract": "Imitation learning enables robots to acquire manipulation skills from demonstrations, but the resulting policies can fail outside the training data, while collecting more demonstrations requires substantial human effort. Human-in-the-loop reinforcement learning uses corrective feedback during online training, but typically learns the complete task policy rather than refining a pretrained imitation policy. We introduce Res-HIL, a human-in-the-loop residual reinforcement learning framework that learns corrective actions on top of a frozen imitation policy. Each human intervention provides two complementary learning signals: direct supervision of the residual policy and reward shaping of preceding autonomous behavior. Res-HIL combines these signals with zero initialization of the residual policy to stabilize and accelerate online learning. We evaluate Res-HIL on five contact-rich manipulation tasks spanning high-precision and long-horizon behaviors. With only 20 initial demonstrations, Res-HIL outperforms state-of-the-art full-policy human-in-the-loop reinforcement learning and residual fine-tuning without human guidance on every task after ten minutes of online training. Res-HIL improves its pretrained base policies and outperforms imitation policies trained with five times more demonstrations. An ablation study shows that direct residual supervision is critical to performance, while intervention-aware reward shaping substantially improves training efficiency.",
+      "authors": [
+        "Mariia Iavorskaia",
+        "Christian Dietz",
+        "Sebastian Albrecht",
+        "Majid Khadiv"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T16:00:02+00:00",
+      "link": "https://arxiv.org/pdf/2609.30023v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Human-in-the-loop residual RL for sample-efficient dexterous manipulation",
+      "llm_evidence_cn": "面向样本高效灵巧操作的人类引导残差强化学习",
+      "llm_evidence": "面向样本高效灵巧操作的人类引导残差强化学习",
+      "canonical_evidence": "面向样本高效灵巧操作的人类引导残差强化学习",
+      "llm_tldr_en": "Res-HIL addresses imitation policies failing outside training data and costly extra demonstrations, learning corrective residual actions on top of a frozen imitation policy where each human intervention gives direct residual supervision and reward shaping.",
+      "llm_tldr_cn": "模仿学习能让机器人从示范获取操作技能，但策略在训练数据外易失败，而补充示范需大量人力。本文提出Res-HIL，在冻结的模仿策略之上学习纠正性残差强化学习，每次人工干预同时提供残差策略的直接监督与对先前自主行为的奖励塑形。该框架以少量人类反馈提升样本效率与鲁棒性。该工作为克服具身机器人学习中的数据稀缺提供了人机协同的样本高效方案。",
+      "llm_tldr": "模仿学习能让机器人从示范获取操作技能，但策略在训练数据外易失败，而补充示范需大量人力。本文提出Res-HIL，在冻结的模仿策略之上学习纠正性残差强化学习，每次人工干预同时提供残差策略的直接监督与对先前自主行为的奖励塑形。该框架以少量人类反馈提升样本效率与鲁棒性。该工作为克服具身机器人学习中的数据稀缺提供了人机协同的样本高效方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.25754v1",
+      "source": "arxiv",
+      "title": "PLAT: Sparse Timed Keyframe Motion Tracking for Humanoid Control via Privileged Latent Transition Learning",
+      "abstract": "Humanoid motion tracking policies rely on dense frame-by-frame references, limiting their use as high-level motion controllers for planning and interactive motion generation. We study \\emph{Sparse Timed Keyframe Motion Tracking}, where a policy receives only sparse future keyframes and their desired arrival times, and must execute stable whole-body motions that reach successive goals. We propose \\textbf{PLAT}, a three-stage sparse timed keyframe motion tracking policy learning framework with \\textbf{P}rivileged \\textbf{LA}tent \\textbf{T}ransition learning. PLAT bridges dense motion tracking and sparse goal-conditioned control by exploiting dense goal sequences as privileged supervision during training while requiring only sparse timed keyframe commands at deployment. A pretrained dense tracking expert first provides robust motion priors. A privileged latent prior is then learned through DAgger-style imitation, followed by latent residual reinforcement learning that refines latent transitions instead of directly optimizing actions. Extensive simulation experiments demonstrate that PLAT maintains accurate and stable sparse timed keyframe tracking across varying planning horizons, with particularly strong performance under long-horizon commands. Successful deployment on a Unitree G1 humanoid robot further demonstrates the effectiveness and practicality of PLAT for sparse humanoid motion control.",
+      "authors": [
+        "Zepeng Wang",
+        "Jiangxing Wang",
+        "Chao Ma",
+        "Xiaochuan Shi",
+        "Zongqing Lu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-22T06:47:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.25754v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "humanoid whole-body control via privileged latent transition learning",
+      "llm_evidence_cn": "通过特权潜转移学习实现人形全身控制",
+      "llm_evidence": "通过特权潜转移学习实现人形全身控制",
+      "canonical_evidence": "通过特权潜转移学习实现人形全身控制",
+      "llm_tldr_en": "Humanoid motion tracking relies on dense frame references, limiting use as high-level controllers. PLAT studies sparse timed keyframe tracking and uses privileged latent transition learning with dense goal sequences as training supervision for stable whole-body motion.",
+      "llm_tldr_cn": "人形运动跟踪策略依赖逐帧密集参考，限制其作为高层运动控制器用于规划与交互式运动生成。论文研究稀疏定时关键帧运动跟踪，策略仅接收稀疏未来关键帧及其期望到达时间。提出三阶段PLAT框架，利用密集目标序列作为训练期特权监督，在稀疏目标条件下执行稳定全身运动并衔接密集跟踪与稀疏目标条件控制。",
+      "llm_tldr": "人形运动跟踪策略依赖逐帧密集参考，限制其作为高层运动控制器用于规划与交互式运动生成。论文研究稀疏定时关键帧运动跟踪，策略仅接收稀疏未来关键帧及其期望到达时间。提出三阶段PLAT框架，利用密集目标序列作为训练期特权监督，在稀疏目标条件下执行稳定全身运动并衔接密集跟踪与稀疏目标条件控制。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.30134v1",
+      "source": "arxiv",
+      "title": "Training-free Behavior Cloning",
+      "abstract": "Neural behavior cloning compresses demonstrations into large models, making individual actions difficult to trace and policy updates costly. Retrieval policies retain access to demonstrations but struggle with mismatch between recorded and live behavior. We introduce Behavior Predictive Control (BPC), which synthesizes policies without end-to-end policy training by combining an action-aware retrieval metric, a Hankel-based action-continuation prior, and a closed-form one-step residual correction. Inspired by behavioral systems theory, BPC predicts future actions by blending stored observation-action data that best reconstructs the recent runtime observation--action history. Across simulated benchmarks and real-robot deployments, BPC is competitive with learned policies such as $π_{0.5}$ (surpassing it in some cases), while reducing policy fitting from hours to seconds on consumer GPUs and supporting closed-loop control upwards of 75 Hz on a Jetson Orin Nano. The retrieved demonstration windows and their coefficients also provide an intrinsic estimate of task progress. Retaining demonstrations within the deployed policy makes its predictions traceable to supporting trajectories and enables behavior revision through the demonstration bank.",
+      "authors": [
+        "Maximilian Adang",
+        "Timothy Chen",
+        "Lars Osterberg",
+        "Aiden Swann",
+        "Mac Schwager"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T17:05:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.30134v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Training-free behavior cloning via retrieval and predictive control",
+      "llm_evidence_cn": "基于检索与预测控制的免训练行为克隆",
+      "llm_evidence": "基于检索与预测控制的免训练行为克隆",
+      "canonical_evidence": "基于检索与预测控制的免训练行为克隆",
+      "llm_tldr_en": "Behavior Predictive Control synthesizes robot policies without end-to-end training by combining an action-aware retrieval metric, a Hankel-based action-continuation prior and a closed-form residual correction, matching learned policies on benchmarks and real robots.",
+      "llm_tldr_cn": "神经行为克隆将示范压缩进大模型，导致动作难以追溯且策略更新昂贵，而检索式策略又面临记录与实时行为不匹配。本文提出行为预测控制（BPC），无需端到端策略训练，结合动作感知检索度量、基于Hankel的动作延续先验与闭式一步残差校正来合成策略。在仿真基准与真实机器人上，BPC与π0.5等学习策略相当。该工作为具身机器人策略学习提供了免训练的新范式。",
+      "llm_tldr": "神经行为克隆将示范压缩进大模型，导致动作难以追溯且策略更新昂贵，而检索式策略又面临记录与实时行为不匹配。本文提出行为预测控制（BPC），无需端到端策略训练，结合动作感知检索度量、基于Hankel的动作延续先验与闭式一步残差校正来合成策略。在仿真基准与真实机器人上，BPC与π0.5等学习策略相当。该工作为具身机器人策略学习提供了免训练的新范式。",
+      "llm_tags": [
+        "query:embodied-ai:composite"
+      ],
+      "matched_query_tag": "query:embodied-ai:composite",
+      "matched_query_text": "Papers central to 具身智能方向新论文跟踪：关注新范式引入、迁移学习/PEFT在具身智能上的应用，以及数据与推理瓶颈的新解法。, especially work that connects or combines: embodied artificial intelligence with robot agents in real-world environments; joint embedding predictive architecture for self-supervised world models; world model for planning and control in embodied agents; transfer learning for robot policy learning across domains and embodiments; cross embodiment skill transfer in robot learning; fast inference and model acceleration for real-time robot control; new learning paradigm for embodied agents based on world models and latent space prediction; transfer learning and parameter efficient adaptation of large pretrained models to robot control; data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning; inference acceleration of large multimodal models for real time robot policy deployment.",
+      "matched_requirement_id": "req-composite-embodied-ai",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.28818v1",
+      "source": "arxiv",
+      "title": "KeyGen: Unsupervised Keypoint based Object-Centric Representations for Category-Level Policy Generalization",
+      "abstract": "Generalization in robotic manipulation requires policies to perform tasks across diverse unseen object instances that vary in shape, size, and pose. However, conventional behavior cloning (BC) methods often overfit to instance-specific geometry and appearance, limiting transfer to novel objects. We introduce KeyGen, a framework that learns canonicalized semantic 3D keypoints from point clouds and uses them as structured object-centric representations for policy learning. A visuomotor diffusion policy conditions on these keypoints together with object-centric geometry to predict full manipulation trajectories, enabling consistent geometric correspondence across object instances. To evaluate category-level generalization, we construct a photorealistic simulation benchmark with three manipulation tasks and a planning-driven data generation pipeline that produces expert trajectories across diverse object instances. Experiments show that KeyGen significantly outperforms prior methods on both seen and unseen objects under pose variation, scales effectively with additional demonstrations per object, maintains robustness to object rescaling, and achieves strong performance in both simulation and real-world manipulation.",
+      "authors": [
+        "Shuxin Cao",
+        "Liquan Wang",
+        "Masoud Moghani",
+        "Benjamin Joffe",
+        "Animesh Garg"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-23T21:53:10+00:00",
+      "link": "https://arxiv.org/pdf/2609.28818v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "object-centric representations for category-level policy generalization",
+      "llm_evidence_cn": "面向类别级策略泛化的物体中心表示",
+      "llm_evidence": "面向类别级策略泛化的物体中心表示",
+      "canonical_evidence": "面向类别级策略泛化的物体中心表示",
+      "llm_tldr_en": "KeyGen learns canonicalized semantic 3D keypoints from point clouds as object-centric representations, enabling visuomotor diffusion policies to generalize across unseen object instances.",
+      "llm_tldr_cn": "论文针对传统行为克隆在机器人操作中易过拟合到特定物体几何与外观、难以迁移到新物体的问题，提出KeyGen框架，从点云中学习规范化语义三维关键点作为物体中心表示。该表示结合物体几何条件驱动视觉运动扩散策略预测完整操作轨迹，实现跨物体实例的一致几何对应。实验表明其在类别级泛化任务上优于传统方法，为机器人策略跨物体迁移提供了结构化表征思路。",
+      "llm_tldr": "论文针对传统行为克隆在机器人操作中易过拟合到特定物体几何与外观、难以迁移到新物体的问题，提出KeyGen框架，从点云中学习规范化语义三维关键点作为物体中心表示。该表示结合物体几何条件驱动视觉运动扩散策略预测完整操作轨迹，实现跨物体实例的一致几何对应。实验表明其在类别级泛化任务上优于传统方法，为机器人策略跨物体迁移提供了结构化表征思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning for robot policy learning across domains and embodiments",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.28952v1",
+      "source": "arxiv",
+      "title": "RoboRecover: Benchmarking Robot Policy Recovery under Execution Deviations",
+      "abstract": "Robot-policy benchmarks increasingly cover diverse tasks and preset out-of-distribution conditions, but typically evaluate complete trajectories from predefined initial states. These evaluations often focus on the initialized scene and the final outcome, while paying less attention to the dynamic interaction process. During closed-loop execution, actions and contacts can alter object relations and task progress, producing off-nominal intermediate states that need recovery. Recovery requires a policy to infer how task progress has changed, correct the relevant relations, and continue the original goal. We introduce RoboRecover, a benchmark for robot policy recovery under execution deviations. RoboRecover selects deviation states from trajectories, reconstructs them by replaying action prefixes, and evaluates policies on the original task. RoboRecover contains 2,000 scenarios across RoboTwin and LIBERO, with 1,000 scenarios and a fixed 800/200 train/test split on each platform. Results show that initial-state performance does not determine recovery performance and policies exhibit different recovery strengths across scenarios. Using its training split, RoboRecover further supports study on recovery interventions. RoboRecover establishes recovery from execution-induced intermediate states as a distinct dimension of robot policy evaluation.",
+      "authors": [
+        "Yang Li",
+        "Chen Zhao",
+        "Zhuoran Wang",
+        "Jiankang Wang",
+        "Chao Shao",
+        "Yihan Lin",
+        "Haitao Shen",
+        "Jing Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T03:05:34+00:00",
+      "link": "https://arxiv.org/pdf/2609.28952v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmark for robot policy recovery in real-world closed-loop execution",
+      "llm_evidence_cn": "面向真实闭环执行的机器人策略恢复基准",
+      "llm_evidence": "面向真实闭环执行的机器人策略恢复基准",
+      "canonical_evidence": "面向真实闭环执行的机器人策略恢复基准",
+      "llm_tldr_en": "RoboRecover benchmarks robot policy recovery: it selects deviation states from closed-loop trajectories and evaluates whether policies can infer changed task progress, correct object relations and resume goals.",
+      "llm_tldr_cn": "现有机器人策略基准多评估预设初始状态下的完整轨迹，忽视闭环执行中由动作与接触引发的异常中间状态。本文提出RoboRecover基准，从轨迹中选取偏差状态，考察策略能否推断任务进度变化、纠正物体关系并继续原目标。实验系统评估策略在执行偏差下的恢复能力，揭示动态交互中的薄弱环节，为真实环境中机器人策略的鲁棒恢复提供统一评测框架。",
+      "llm_tldr": "现有机器人策略基准多评估预设初始状态下的完整轨迹，忽视闭环执行中由动作与接触引发的异常中间状态。本文提出RoboRecover基准，从轨迹中选取偏差状态，考察策略能否推断任务进度变化、纠正物体关系并继续原目标。实验系统评估策略在执行偏差下的恢复能力，揭示动态交互中的薄弱环节，为真实环境中机器人策略的鲁棒恢复提供统一评测框架。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.29204v1",
+      "source": "arxiv",
+      "title": "AdaHVLA: Adaptive Harnesses for Long-Horizon Vision-Language-Action Execution",
+      "abstract": "Vision-language-action (VLA) models offer strong local control and instruction following but often struggle with long-horizon tasks requiring persistent memory and planning. Task harnesses provide persistent context for agent reasoning by retaining task history and tracking progress across execution stages. To bring these complementary capabilities together, we introduce AdaHVLA, an adaptive harness that refines code-based coordination policies through robot experience to better align agent reasoning and memory with VLA execution. Its decoupled multiagent adaptation process separates evidence analysis, harness revision, and behavioral assessment into distinct working contexts, using testable coordination hypotheses to guide revisions and subsequent rollouts to assess their predicted effects. A stateful revision graph links execution evidence, hypotheses, revisions, and observed effects, preserving alternative harnesses and adaptation memory to guide refinement across repeated attempts and continued adaptation across tasks and environments. In simulation, AdaHVLA raises mean test success on NaVILA-LH from 22.5\\% to as high as 57.5\\% and improves manipulation test success across three VLA backbones by up to 30.8 percentage points over the initial harness. Real-world deployment further illustrates how the adapted policies support stable execution across task stages.",
+      "authors": [
+        "Junyi Tang",
+        "Jie Peng",
+        "Zezhen Ding",
+        "Yuan Shen",
+        "Tianlong Chen"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T08:14:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.29204v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "adaptive harness refining code policies for long-horizon VLA robot execution",
+      "llm_evidence_cn": "为长时程VLA机器人执行精炼代码策略的自适应框架",
+      "llm_evidence": "为长时程VLA机器人执行精炼代码策略的自适应框架",
+      "canonical_evidence": "为长时程VLA机器人执行精炼代码策略的自适应框架",
+      "llm_tldr_en": "AdaHVLA couples VLA local control with task harnesses that retain history and track progress, refining code-based coordination policies through robot experience for long-horizon execution.",
+      "llm_tldr_cn": "视觉-语言-动作模型具备良好局部控制与指令跟随能力，但在需要持久记忆与规划的长时程任务中表现不佳。本文提出自适应框架AdaHVLA，通过保留任务历史、跟踪执行进度为智能体推理提供持续上下文，并用可检验的协调假设指导代码策略修订。该方法借助机器人经验迭代改进协调策略，提升长时程任务中推理、记忆与VLA执行的协同效果。",
+      "llm_tldr": "视觉-语言-动作模型具备良好局部控制与指令跟随能力，但在需要持久记忆与规划的长时程任务中表现不佳。本文提出自适应框架AdaHVLA，通过保留任务历史、跟踪执行进度为智能体推理提供持续上下文，并用可检验的协调假设指导代码策略修订。该方法借助机器人经验迭代改进协调策略，提升长时程任务中推理、记忆与VLA执行的协同效果。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    }
+  ]
+}

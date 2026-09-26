@@ -1,0 +1,217 @@
+{
+  "date": "20260926",
+  "date_label": "",
+  "generated_at": "2026-09-26 21:48:15 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.22674v1",
+      "route": "202609/26/2609.22674v1-mask-aware-execution-for-efficient-jepa-training",
+      "title": "Mask-Aware Execution for Efficient JEPA Training",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "掩码感知执行提升JEPA训练效率",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.24682v2",
+      "route": "202609/26/2609.24682v2-think-like-a-world-model-act-like-a-vla-distilling-world-model-representations-into-compact-robot-policies",
+      "title": "Think Like a World Model, Act Like a VLA: Distilling World-Model Representations into Compact Robot Policies",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "将冻结世界模型特征蒸馏进紧凑VLA策略，避免慢速推演以支持实时控制",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.23269v1",
+      "route": "202609/26/2609.23269v1-latent-telepathy-multi-robot-communication-with-self-supervised-perceptual-latents",
+      "title": "Latent Telepathy: Multi-Robot Communication with Self-Supervised Perceptual Latents",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "用自监督联合嵌入预测目标学习共享感知潜变量",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.27314v1",
+      "route": "202609/26/2609.27314v1-core-wam-correspondence-aligned-temporal-residuals-for-world-action-models",
+      "title": "CoRe-WAM: Correspondence-Aligned Temporal Residuals for World Action Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向操作的世界动作模型与参数高效时序接口",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.28984v1",
+      "route": "202609/26/2609.28984v1-crosssafe-towards-cross-embodiment-latent-safety-filters",
+      "title": "CrossSafe: Towards Cross-Embodiment Latent Safety Filters",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "跨异构机器人共享安全推理的跨具身潜在安全过滤器",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.25274v1",
+      "route": "202609/26/2609.25274v1-learning-to-plan-in-human-robot-collaboration-multimodal-reinforcement-learning-for-adaptive-interaction",
+      "title": "Learning to Plan in Human-Robot Collaboration: Multimodal Reinforcement Learning for Adaptive Interaction",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "真实环境人机协作机器人交互管理",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.30023v1",
+      "route": "202609/26/2609.30023v1-res-hil-human-guided-residual-reinforcement-learning-for-sample-efficient-dexterous-manipulation",
+      "title": "Res-HIL: Human-Guided Residual Reinforcement Learning for Sample-Efficient Dexterous Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向样本高效灵巧操作的人类引导残差强化学习",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.30134v1",
+      "route": "202609/26/2609.30134v1-training-free-behavior-cloning",
+      "title": "Training-free Behavior Cloning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于检索与预测控制的免训练行为克隆",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.22730v1",
+      "route": "202609/26/2609.22730v1-beacon-belief-enabled-adaptive-control-for-imitation-learning-under-uncertainty",
+      "title": "BEACON: Belief-Enabled Adaptive CONtrol for Imitation Learning under Uncertainty",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向不确定机器人操作的信念条件扩散策略",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.25754v1",
+      "route": "202609/26/2609.25754v1-plat-sparse-timed-keyframe-motion-tracking-for-humanoid-control-via-privileged-latent-transition-learning",
+      "title": "PLAT: Sparse Timed Keyframe Motion Tracking for Humanoid Control via Privileged Latent Transition Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "通过特权潜转移学习实现人形全身控制",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.28818v1",
+      "route": "202609/26/2609.28818v1-keygen-unsupervised-keypoint-based-object-centric-representations-for-category-level-policy-generalization",
+      "title": "KeyGen: Unsupervised Keypoint based Object-Centric Representations for Category-Level Policy Generalization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向类别级策略泛化的物体中心表示",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.28952v1",
+      "route": "202609/26/2609.28952v1-roborecover-benchmarking-robot-policy-recovery-under-execution-deviations",
+      "title": "RoboRecover: Benchmarking Robot Policy Recovery under Execution Deviations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向真实闭环执行的机器人策略恢复基准",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    },
+    {
+      "paper_id": "2609.29204v1",
+      "route": "202609/26/2609.29204v1-adahvla-adaptive-harnesses-for-long-horizon-vision-language-action-execution",
+      "title": "AdaHVLA: Adaptive Harnesses for Long-Horizon Vision-Language-Action Execution",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "为长时程VLA机器人执行精炼代码策略的自适应框架",
+      "first_seen_at": "2026-09-26 21:48:15 UTC",
+      "updated_at": "2026-09-26 21:48:15 UTC"
+    }
+  ]
+}

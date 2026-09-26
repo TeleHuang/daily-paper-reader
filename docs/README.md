@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-25</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-26</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 13 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>8</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-25 22:24:12 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-26 21:48:15 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今天精读6篇、速读5篇共11篇，聚焦机器人操作与VLA前沿。最值得看的是9.0分的《Representation World Model》和《Decoupled Early Exits》，分别探索表征世界模型与流匹配VLA的任务自适应算力分配。建议普通读者优先从这两篇入手，再顺带浏览速读中的世界动作排练与混合质量经验学习。</p>
+<p>2026-09-26 日报：精读 5 篇、速读 8 篇共 13 篇，聚焦机器人学习与高效训练。最值得看的是两篇 9 分工作：JEPA 训练用 Mask-Aware Execution 提效，以及把世界模型表征蒸馏进紧凑 VLA 机器人策略。普通读者可优先读这两篇精读，速读中的多模态人机协作与残差强化学习也适合按需选看。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -78,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Representation World Model: Learning States, Transition and Executable Plans in Representation">Representation World Model: Learning States, Transition and Executable Plans in Representation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Decoupled Early Exits for Task-Dependent Compute Allocation in Flow-Matching VLAs">Decoupled Early Exits for Task-Dependent Compute Allocation in Flow-Matching VLAs</span></li><li><span class="dpr-home-dashboard-paper-title" title="Faster Visuomotor Policy Learning on Action Manifolds via Riemannian MeanFlow">Faster Visuomotor Policy Learning on Action Manifolds via Riemannian MeanFlow</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Mask-Aware Execution for Efficient JEPA Training">Mask-Aware Execution for Efficient JEPA Training</span></li><li><span class="dpr-home-dashboard-paper-title" title="Think Like a World Model, Act Like a VLA: Distilling World-Model Representations into Compact Robot Policies">Think Like a World Model, Act Like a VLA: Distilling World-Model Representations into Compact Robot Policies</span></li><li><span class="dpr-home-dashboard-paper-title" title="Latent Telepathy: Multi-Robot Communication with Self-Supervised Perceptual Latents">Latent Telepathy: Multi-Robot Communication with Self-Supervised Perceptual Latents</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>5</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -91,12 +91,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">5 篇</strong>
+    <strong class="dpr-home-dashboard-count">8 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="World Action Agent: Harnessing VLMs for Robot Manipulation via World Action Rehearsal">World Action Agent: Harnessing VLMs for Robot Manipulation via World Action Rehearsal</span></li><li><span class="dpr-home-dashboard-paper-title" title="Learning from Mixed-Quality Deployment Experience for Robot Manipulation">Learning from Mixed-Quality Deployment Experience for Robot Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="EgoSpeedUp: Transferring Human Manipulation Tempo to Robot Policies">EgoSpeedUp: Transferring Human Manipulation Tempo to Robot Policies</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Learning to Plan in Human-Robot Collaboration: Multimodal Reinforcement Learning for Adaptive Interaction">Learning to Plan in Human-Robot Collaboration: Multimodal Reinforcement Learning for Adaptive Interaction</span></li><li><span class="dpr-home-dashboard-paper-title" title="Res-HIL: Human-Guided Residual Reinforcement Learning for Sample-Efficient Dexterous Manipulation">Res-HIL: Human-Guided Residual Reinforcement Learning for Sample-Efficient Dexterous Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Training-free Behavior Cloning">Training-free Behavior Cloning</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>5</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>8</strong></span></div>
 </section>
 </div>
 

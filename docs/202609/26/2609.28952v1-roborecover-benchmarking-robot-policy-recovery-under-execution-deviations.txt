@@ -1,0 +1,694 @@
+Title: RoboRecover: Benchmarking Robot Policy Recovery under Execution Deviations
+
+URL Source: https://arxiv.org/pdf/2609.28952v1
+
+Published Time: Fri, 25 Sep 2026 00:29:30 GMT
+
+Number of Pages: 15
+
+Markdown Content:
+# RoboRecover: Benchmarking Robot Policy Recovery under Execution Deviations 
+
+## Yang Li 1,2 , Chen Zhao 1,2 , Zhuoran Wang 1,2 , Jiankang Wang 3, Chao Shao 1,2 , Yihan Lin 1,2 , Haitao Shen 1,2 , Jing Zhang 1,4 ∗
+
+> 1
+
+School of Information, Renmin University of China, Beijing, China 
+
+> 2
+
+Key Laboratory of Data Engineering and Knowledge Engineering, Beijing, China 
+
+> 3
+
+University of Science and Technology of China 
+
+> 4
+
+Engineering Research Center of Database and Business Intelligence, Beijing, China 
+
+Abstract 
+
+Robot-policy benchmarks increasingly cover diverse tasks and preset out-of-distribution conditions, but typically evalu-ate complete trajectories from predefined initial states. These evaluations often focus on the initialized scene and the final outcome, while paying less attention to the dynamic interac-tion process. During closed-loop execution, actions and con-tacts can alter object relations and task progress, producing off-nominal intermediate states that need recovery. Recovery requires a policy to infer how task progress has changed, cor-rect the relevant relations, and continue the original goal. We introduce RoboRecover , a benchmark for robot policy recov-ery under execution deviations. RoboRecover selects devia-tion states from trajectories, reconstructs them by replaying action prefixes, and evaluates policies on the original task. RoboRecover contains 2,000 scenarios across RoboTwin and LIBERO, with 1,000 scenarios and a fixed 800/200 train/test split on each platform. Results show that initial-state perfor-mance does not determine recovery performance and policies exhibit different recovery strengths across scenarios. Using its training split, RoboRecover further supports study on re-covery interventions. RoboRecover establishes recovery from execution-induced intermediate states as a distinct dimension of robot policy evaluation. The project page is available on GitHub. 
+
+## 1 Introduction 
+
+Generalist robot policies have made rapid progress across ex-panding manipulation suites, including CALVIN, LIBERO, RoboTwin, VLABench, and RoboCasa (Mees et al. 2022; Liu et al. 2023; Mu et al. 2025; Zhang et al. 2025; Nasiriany et al. 2024). These robustness benchmarks vary in appear-ance, task composition, and other preset out-of-distribution conditions (Pumacay et al. 2024; Fei et al. 2025; Wang et al. 2025b; Kanwal et al. 2026). However, these evaluations usu-ally begin from predefined initial-states: they set the environ-ment before policy execution. The final success/failure label summarizes the trajectory, but does not capture the dynamic interaction process. Execution deviations emerge from policy interaction rather than difficult states defined before evaluation. Mis-directed motion, unstable contact, or displaced objects can disrupt task progress or invalidate a completed subtask. Sub-sequent actions can compound the error and drive the system into an off-nominal intermediate state. Recovery requires the 
+
+> ∗
+
+Corresponding author. •••  ×
+
+## Initial -State Evaluation  
+
+> Nominal State
+> (In -Distribution)
+> Off -Nominal State
+> (Out -of -Distribution)
+> Steps Failure
+
+## Recover y Evaluation  Recovery Point   
+
+> (Intermediate State)
+> Previous Frame of Recovery Point Recovery Point
+> (Approach Wrong Target)
+> Initial State Nominal State
+> (In -Distribution)
+> Recovery Point
+> (Intermediate State)
+> Off -Nominal State
+> (Out -of -Distribution)
+> Initial -state
+
+Figure 1: Initial-state evaluation vs. Recovery evaluation. 
+
+Recovery evaluation selects the recovery point at which an execution deviation occurs during interaction. policy to reassess the current state, restore the relevant rela-tions or contact, and continue the original task. Figure 1 con-trasts initial-state evaluation with recovery evaluation from execution-induced intermediate states. These interaction-induced states raise issues that prede-fined initial-state evaluations cannot answer. We therefore study three questions. Q1: How well can current robot poli-cies recover from intermediate states caused by execution de-viations? Q2: Do policies show different recovery strengths across task stages, deviation types, and trajectory sources? 
+
+Q3: Can interventions improve recovery from difficult inter-mediate states? We introduce RoboRecover , a benchmark for evaluating robot policy recovery under execution deviations. A recov-ery scenario is an intermediate task condition produced by deviations during dynamic robot—environment interaction, while the original task remains meaningful and evaluable. Each scenario records the task reset, original instruction, re-arXiv:2609.28952v1 [cs.RO] 24 Sep 2026 covery category, data source, and action prefix needed to reconstruct the recovery point. At evaluation time, the prefix is replayed and the candidate policy continues the original task from the reconstructed state. RoboRecover contains 2,000 scenarios in RoboTwin and LIBERO, with 1,000 scenarios and a fixed 800/200 train/test split per platform. RoboTwin test set contains Natural sce-narios collected from four source policies. LIBERO test set includes three sources: Natural scenarios, action-perturbed scenarios, and human-constructed scenarios. All scenarios undergo multi-stage filtering for data authenticity, difficulty, and reusability. We evaluate 6 policies per platform for each test scenario. Our results lead to some conclusions. Initial-state success does not determine recovery performance: on LIBERO, Uni-foLM achieves 98.83% initial-state success but only 48.00% recovery, while π0.5 reaches the best recovery rate of 64.40% despite a lower initial-state success rate of 94.17%. Capac-ity complementarity exists between policies: on RoboTwin, when source policies are evaluated on scenarios derived from themselves, they recover only 15.24–19.82%, whereas other policies on the same source groups reach 58.06–70.27%. Re-covery performance varies across Recovery Stage and Devi-ation Type, so a single overall score cannot fully describe policy behavior. Beyond evaluating fixed policies, we use the RoboRecover training split to study two intervention mechanisms. Rever-sion returns execution to an earlier state with less accumu-lated deviation. Correction learns from successful trajecto-ries generated by alternative policies on scenarios where the base policy performs poorly. It briefly controls the robot from the recovery point before returning control to the un-changed base policy. These interventions demonstrate how RoboRecover can support the development and evaluation of recovery mechanisms. Our contributions are as follows. 
+
+• Benchmark and protocol. We introduce RoboRecover across RoboTwin and LIBERO, covering diverse con-struction sources and recovery categories. Unlike initial-state evaluation, its action-prefix replay protocol recon-structs the same recovery state for each policy and tests whether it can correct the deviation and continue the orig-inal task. 
+
+• Recovery performance analysis. We evaluate different embodied policies on each platform and show that high initial-state success does not guarantee effective recov-ery. On LIBERO, the policy achieves the highest initial-state success rate of 98.83%, yet its recovery rate is only 48.00%. We further analyze how recovery changes across task stages and deviation types. 
+
+• Recovery mechanisms. We propose two simple but ef-fective methods: returning to an earlier, less-deviated state and applying a short correction learned from other poli-cies before returning base-policy control. These results demonstrate the training split’s utility and motivate fur-ther research on improving recovery capability. 
+
+## 2 Related Work 
+
+2.1 General Manipulation Benchmarks 
+
+CALVIN, LIBERO, RoboTwin, VLABench, and RoboCasa evaluate language-conditioned manipulation across diverse tasks, scenes, and embodiments (Mees et al. 2022; Liu et al. 2023; Mu et al. 2025; Zhang et al. 2025; Nasiriany et al. 2024). SIMPLER, THE COLOSSEUM, and LIBERO-Plus extend this setting with visual, robot, and environmental variations (Li et al. 2024; Pumacay et al. 2024; Fei et al. 2025). Although they broaden task diversity and preset Out-of-Distribution coverage, evaluation still begins from condi-tions specified before execution. RoboRecover instead eval-uates off-nominal intermediate states formed after robot ac-tions and contacts have changed the scene and task progress. It asks whether a policy can continue the original task from the consequences of prior interaction. 
+
+2.2 Failure-Aware Recovery Benchmarks 
+
+Recent work has extended robot-policy evaluation toward failure and recovery. RoboEval and recent SO-101 studies an-alyze failure stages, categories, and recovery behavior across complete trajectories (Wang et al. 2025a; Yu and Qiu 2026). FRBench with RePO-VLA evaluates recovery after prede-fined physical errors and uses recovery data to optimize a recovery-oriented policy (Liufu et al. 2026). These works provide important failure analysis, but naturally occurring deviations are not their primary evaluation unit. RoboRe-cover addresses this gap by converting Natural deviations from policy–environment trajectories into recovery scenar-ios. It additionally includes action-perturbed and human-constructed scenarios, evaluates multiple policies on the same recovery points, and analyzes recovery across source policies, task stages, and deviation types. RoboRecover there-fore provides a standardized evaluation of how current poli-cies recover from errors that emerge during dynamic interac-tion, rather than focusing only on predefined error injection. 
+
+## 3 Problem Formulation 
+
+Task and Initial-State Evaluation. We represent a task as 
+
+T = ( r, ℓ, c, S ), where r is the environment reset, ℓ is the original instruction, c is the success criterion, and S is the maximum number of environment steps. In initial-state eval-uation, a policy controls the trial from the predefined state produced by r. A trial succeeds if it satisfies c within S steps. 
+
+Execution Deviation and Recoverability. A trajectory containing T policy–environment interactions is τ =(o0, a 0, o 1, a 1, . . . , o T −1, a T −1, o T ), where ot is the obser-vation at interaction t, at is the action selected from ot, and 
+
+ot+1 is the resulting observation after executing at. An ex-ecution deviation occurs when previous actions or contacts disrupt nominal task progress and produce an off-nominal intermediate state . This state is recoverable if the original instruction and success criterion remain valid and the task could be completed by other policies. 
+
+Recovery Point and Recovery State. A recovery point is a selected time step t at which a stable execution devi-ation is present and recovery evaluation begins. The cor-responding environment state xt is the recovery state , and a<t = ( a0, . . . , a t−1) is the action prefix leading from the task reset to this state. 
+
+Recovery Stage and Deviation Type. Each recovery state is described along two axes. The Recovery Stage z specifies the task phase that the policy must resume: Approach, Contact, Move, or Place. Approach requires approaching the correct object or region again. Contact requires restoring effective contact or grasp. Move requires resuming proper object trans-port or movement. Place requires moving to the target region after a valid operation. The Deviation Type d specifies the observable error con-dition that must be corrected: Wrong Target, Wrong Pose, Stage Rollback, or Scene Change. Recovery Stage describes where task progress must resume, whereas Deviation Type describes what prevents normal interaction. Wrong Target indicates interaction with the wrong object or goal region. Wrong Pose indicates an unsuitable spatial relation between robot and object. Stage Rollback indicates lost contact, grasp, or previously completed task progress. Scene Change indi-cates that prior interaction has changed the scene and made the previous continuation unsuitable. 
+
+Recovery Scenario and Evaluation. Let m denote the con-struction source, and let xt := ot denote the visual and robot-state observation at recovery point t. A recovery sce-nario R = ( T , a<t , m, z, d ) combines the original task T ,action prefix a<t , construction source m, Recovery Stage z,and Deviation Type d as a fixed evaluation unit. During eval-uation, the environment is reset using r, and a<t is replayed through the simulator to reach the recovery point and produce 
+
+xt. The candidate policy initializes its observation/action his-tory at t, receives xt and the original instruction ℓ, and begins recovery. It receives up to S new environment interactions, while replay actions do not count toward this limit. 
+
+## 4 RoboRecover 
+
+4.1 Benchmark Overview 
+
+RoboRecover contains 2,000 recovery scenarios across RoboTwin and LIBERO, with 1,000 scenarios per platform and fixed 800/200 train/test splits. RoboTwin contains scenar-ios from 42 training tasks and 34 test tasks, while LIBERO contains scenarios from 40 training tasks and 38 test tasks. The training splits support recovery method development and all primary policy comparisons use the fixed test splits. Figure 2 summarizes the data composition and shows the rep-resentative recovery points from Stage–Type occupied group. RoboTwin consists of Natural scenarios collected from X-VLA, LingBot-VLA, SmolVLA, and π0.5 (Zheng et al. 2025; Wu et al. 2026; Shukor et al. 2025; Physical Intelligence et al. 2025). LIBERO combines Natural scenarios collected from 
+
+π0, π0.5, Being-H0.5, UnifoLM(Black et al. 2025; Physical Intelligence et al. 2025; Luo et al. 2026a; Unitree 2026), ad-ditionally includes action-perturbed and human-constructed scenarios. Construction source describes how a scenario was produced. The benchmark covers four Recovery Stages: Approach, Contact, Move, Place; and four Deviation Types: Wrong Tar-get, Wrong Pose, Stage Rollback, and Scene Change, as de-fined in the problem formulation. Nine Stage–Type combi-nations are present in both fixed test sets. 
+
+4.2 Scenario Sources and Construction 
+
+We construct candidate trajectories from three sources: Nat-ural policy trajectories, Action-Perturbed trajectories, and 
+
+Human-Constructed trajectories. In all three sources, devia-tions arise through robot–environment interactions dynami-cally rather than direct simulator state editing. 
+
+Natural Scenarios. Natural candidates are extracted from failed trajectories generated by multiple source policies. We exclude erratic or out-of-region motion, irreversible task damage, and all states where the robot cannot continue to interact correctly. Each accepted Natural scenario records of its source policy information. 
+
+Action-Perturbed Scenarios. Action-perturbed candidates are also generated from the interaction of policies. However, the perturbation is accepted only in the first 150 interaction steps, and the policy inference after 150 steps is not affected. During the first 150 interaction steps, we independently per-turb all three translational coordinates of each action between policy prediction and environment execution: 
+
+ϵd ∼ Uniform( −1.0, 1.0) , d ∈ { x, y, z },a′ 
+
+> d
+
+= ad + ϵd. (1) The perturbation is defined in normalized robot action space. If the perturbed action is not reachable by inverse kinemat-ics, we execute the original action. After perturbation, the robot usually falls into an off-nominal state that is difficult to execute. 
+
+Human-Constructed Scenarios. Human-constructed sce-narios are added on LIBERO after the Natural and Action-Perturbed candidates have been fully screened. They supple-ment task-relevant states that remain rare in the filtered data because LIBERO policies have high success rates and sel-dom produce such deviations, such as Place–Scene Change .These states are recoverable but remain challenging for most policies. Operators use a SpaceMouse through the simulator interface to create deviation and then complete the origi-nal task to verify recoverability. All the trajectories are pro-duced through remote control method, then undergo the same quality-control process. 
+
+4.3 Stage–Type and Recovery Point Annotation 
+
+Recovery points and Stage–Type labels are determined in the same annotation process. Three annotators review each com-plete trajectory using a shared guide and identify candidate points where a deviation causes the subsequent part of the trajectory to enter an off-nominal state. As a result, the recov-ery point is usually neither the first unusual frame nor the last frame of a failed episode. For Natural and action-perturbed trajectories, a candidate point is discarded if later policy ac-tions restore nominal progress, indicating that the deviation is temporary. For human-constructed trajectories, the opera-tor’s deliberate correction instead confirms that the selected state is recoverable. Annotators select the final stable devi-ation point, which subsequent steps stuck into a sustained failure. RoboRecover  2
+
+Platforms 
+
+# 2,000 
+
+Recovery scenarios 
+
+# 1,600 / 400 
+
+Train / Test 
+
+# 9
+
+Stage --Type groups 
+
+(a) Corpus Composition 
+
+# RoboTwin  1,000 Scenarios 
+
+Tasks: 42 train / 34 test 
+
+Train 800  Test 200 
+
+Natural  Scenario --source policy counts (colors below) 
+
+Train  169  112  320  199 
+
+Test  24  37  83  56   
+
+> X-VLA LingBot -VLA
+> SmolVLA π0.5
+
+# LIBERO  1,000 Scenarios 
+
+Tasks: 40 train / 38 test 
+
+Train 800  Test  200 
+
+Natural  Action -Perturbed  Human -Constructed 
+
+Train  170  504  126 
+
+Test  42  127  31     
+
+> π0 · 16 test scenarios π0.5 · 12 test scenarios
+> Being -H · 7 test scenarios UniFOLM · 7 test scenarios
+
+(b) Stage --Type Coverage 
+
+> Each thumbnail shows a representative Recovery Point.
+
+Left / right images: RoboTwin / LIBERO. 
+
+Cell counts: RoboTwin / LIBERO test scenarios. 
+
+Approach · Wrong Target 
+
+IMAGE  IMAGE  
+
+> RT 29 | LB 25
+
+Approach · Wrong Pose 
+
+IMAGE  IMAGE  
+
+> RT 44 | LB 49
+
+Approach · Stage Rollback 
+
+IMAGE  IMAGE 
+
+> RT 24 | LB 21
+
+Approach · Scene Change 
+
+IMAGE  IMAGE  
+
+> RT 4 | LB 28
+
+Contact · Wrong Pose 
+
+IMAGE  IMAGE  
+
+> RT 21 | LB 12
+
+Move · Wrong Pose 
+
+IMAGE  IMAGE 
+
+> RT 35 | LB 16
+
+Place · Wrong Target 
+
+IMAGE  IMAGE  
+
+> RT 18 | LB 7
+
+Place · Wrong Pose 
+
+IMAGE  IMAGE  
+
+> RT 23 | LB 31
+
+Place · Scene Change 
+
+IMAGE  IMAGE 
+
+> RT 2 | LB 11
+
+Figure 2: RoboRecover benchmark composition and coverage. The upper panels summarize platform, split, task, construction source, and source policies. The lower matrix shows one representative recovery point for each of the nine Stage–Type groups; cell counts report RoboTwin/LIBERO test scenarios. Recovery point identification and Stage–Type labeling are performed simultaneously within a single annotation pass. As annotators examine each trajectory, they mark candi-date recovery points and, at the same time, assign the cor-responding Recovery Stage and Deviation Type based on the observed state at that point. Labels are determined by majority vote across annotators, and scenarios without con-sensus are removed. We do not force equal category sizes: the benchmark largely preserves the distribution observed in Natural policy rollouts, while action-perturbed and human-constructed scenarios supplement uncommon but recover-able cases. 
+
+4.4 Scenario Filtering 
+
+Policy Difficulty Filtering. We filter candidates by keeping only scenarios of intermediate difficulty, as measured by how often a set of reference policies can successfully recover from them. Each candidate is evaluated in five independent trials by four VLA policies, giving 20 trials in total. RoboTwin uses X-VLA, LingBot-VLA, SmolVLA, and π0.5, while LIBERO uses π0, π0.5, Being-H0.5, and UnifoLM. We retain candi-dates with 2–18 successful trials, corresponding to a recovery rate between 10% and 90%. This screening removes nearly trivial and nearly unsolvable scenarios and is applied to all sources before the train/test split. 
+
+Replay-Based Data Checking. After difficulty filtering, each candidate undergoes replay validation. Some difficult states created during construction are sensitive to replay er-rors, which may cause the reconstructed state to differ from the original and lead the policy to infer from an unintended condition. We therefore inspect three inference trajectories from the preceding policy-filtering trials and verify that re-play reconstructs the same recovery condition. Candidates with inconsistent states, simulator crashes, or invalid actions are removed. To provide an objective consistency criterion, we compare both simulator states and rendered observations between the original and replayed trajectories. We measure robot and object state deviations directly from the simulator, requiring the end-effector position deviation to be below 2 mm and the object position deviation to be below 2 mm. We additionally compute the Structural Similarity Index Measure (SSIM) between the original and replayed RGB observations over the final five frames before the recovery point, and retain scenarios with an average SSIM score above 0.99. Manual inspection is performed only as a final sanity check to remove rare cases with physically inconsistent states that are not captured by numerical criteria. 
+
+## 5 Experiments 
+
+Our experiments are organized around 4 questions: 
+
+Q1: Can initial-states success predict recovery perfor-mance in recovery states? 
+
+Q2: Does a policy’s recovery performance stay consistent across stages and deviation types? 
+
+Q3: For a scenario generated by one policy, is that policy also the best at recovery, or can another policy recover better? 
+
+Q4: Are there any methods that can improve the recovery capability of policy? 
+
+5.1 Experimental Setup 
+
+We evaluate six policies on each platform, selected to cover VLA and world-action architectures with different pre-training and action-generation designs. RoboTwin includes X-VLA, LingBot-VLA, SmolVLA, π0.5, Fast-WAM, and LingBot-VA (Yuan et al. 2026; Li et al. 2026b). LIBERO includes π0, π0.5, Being-H0.5, UnifoLM, Cosmos-Policy, and Fast-WAM (Kim et al. 2026; Yuan et al. 2026). Model selection follows two principles. First, we choose distinct policies trained across multiple tasks within each platform. Second, we prioritize models with publicly avail-able Hugging Face checkpoints, high community adoption, and strong reported performance, ensuring that the evaluated policies are both competitive and accessible. 
+
+5.2 Initial-State and Recovery Performance 
+
+Setup and Metrics. We evaluate each policy on the same task configurations under two starting conditions. Initial-state evaluation is reset before policy inference, whereas recovery evaluation begins from the reconstructed recov-ery points after replaying action prefix. Both settings use the original instruction and success criterion. Initial-State Success Rate is the fraction of trials completed from the predefined initial state. For recovery scenario i, policy p, and trial k, let yi,p,k ∈{0, 1} indicate whether the original task is completed, and let 
+
+Ki,p denote the number of trials. We compute the scenario-level recovery rate and Overall Recovery Success Rate (RSR) as 
+
+ˆpi,p = 1
+
+Ki,p Ki,p 
+
+X
+
+> k=1
+
+yi,p,k , RSR p = 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+ˆpi,p . (2) Overall RSR is the primary recovery metric and gives ev-ery scenario equal weight. Figure 3 compares the evaluation difference. 
+
+Findings: High Initial-State Success Does Not Guarantee Strong Recovery. Every policy performs worse under re-covery evaluation, but the magnitude of the decrease varies substantially. On LIBERO, all six policies achieve at least 85.17% success from predefined initial states, yet the best re-covery result is only 64.40%, achieved by π0.5. Because the task, instruction, and success criterion remain unchanged, this gap mainly reflects the robot–scene states produced by prior interaction. It indicates a trajectory-level distribution shift: policies that perform well along nominal trajectories may still struggle with uncommon intermediate configura-tions, altered object relations, and partially invalidated task progress. For example, UnifoLM decreases from 98.83% initial-state success to 48.00% recovery, whereas π0.5 decreases from 94.17% to 64.40%. Their different performance drops show that strong initial-state results can conceal different sensitivities to execution-induced states. Both policies use pretraining, so the presence of pretraining alone does not explain this difference. π0.5 combines heterogeneous robot and web data with high-level subtask prediction and flow-matched action chunks, whereas UnifoLM uses continued VLM and robot pretraining with a DiT-based diffusion con-troller. This comparison suggests that diverse training data and explicit task decomposition may help a policy reassess partial task progress after a deviation. Fast-WAM similarly decreases from 96.83% to 54.00% without embodied pre-training, suggesting that video representation learning and co-training may provide useful information for interpreting changes across time. 
+
+5.3 Stage–Type Recovery Differences 
+
+Setup and Metrics. We divide the fixed test scenarios into the nine groups defined by Recovery Stage and Deviation Type. For each policy, the recovery rate of a Stage–Type group is obtained by averaging the scenario-level recovery rates within that group. Macro-9 RSR then averages the nine group rates with equal weight, whereas Overall RSR gives greater influence to groups containing more scenar-ios. Macro-9 RSR is used as a category-balanced diagnostic because several groups contain relatively few scenarios. Fig-ure 4 reports the group-level results and scenario counts. 
+
+Findings 1: The Same Deviation Type Requires Dif-ferent Recovery Across Task Stages. Recovery perfor-mance varies substantially across Recovery Stages and De-viation Types. On RoboTwin, LingBot-VA achieves 86.36% on Approach–Wrong Pose but only 21.74% on Place–Wrong Pose, where Fast-WAM reaches 65.22%. On LIBERO, Cos-mos Policy achieves 64.1% on Approach–Wrong Pose, whereas Being-H0.5 reaches 62.6% on Place–Wrong Pose. Although both groups contain a Wrong Pose deviation, they require different corrective behavior. Approach–Wrong Pose mainly requires the policy to re-localize the relevant object or target and produce an approach trajectory. Place– Wrong Pose occurs after more interaction has already taken place and requires the policy to correct the object relation while grasping the object. This helps explain why strength on one Stage–Type group does not necessarily transfer to another. 
+
+Findings 2: Stage–Type Weighting Changes Aggregate Conclusions. The difference also affects aggregate eval-uation. On RoboTwin, LingBot-VA has the highest Overall RSR at 59.50%, while Fast-WAM reaches the highest Macro-9 RSR at 55.62%. This change shows that conclusions can RoboTwin  
+
+> Initial -State Success (%) Recovery Success (%)
+
+X-VLA 54.3 
+
+49.8 X -VLA 
+
+LingBot -VLA 64.3 
+
+43.2 LingBot -VLA 
+
+SmolVLA 42.7  33.0 SmolVLA 
+
+π0.5 34.5  32.6 π0.5 
+
+FastWAM 81.0 
+
+49.3 FastWAM 
+
+LingBot -VA 83.8  59.5 LingBot -VA 
+
+## LIBERO  
+
+> Initial -State Success (%) Recovery Success (%)
+
+π0 85.2  37.8 π0 
+
+π0.5 94.2 
+
+64.4 π0.5 
+
+Being -H 91.7  46.8 Being -H
+
+UniFOLM 98.8 
+
+48.0 UniFOLM 
+
+Cosmos -Policy 97.8 
+
+52.1 Cosmos -Policy FastWAM 96.8 
+
+54.0 FastWAM Figure 3: Policy performance changes from initial-state to recovery evaluation. Lines connect each policy’s rank under matched initial-state and recovery evaluation. RoboTwin  Stage –Type RSR (%)                                                                  
+
+> Policy ↓ Stage –Type group (counts below) →
+> X-VLA 8.3 46.7 66.4 49.4 43.8 53.5 16.7 34.8 46.3
+> LingBot -VLA 33.3 26.4 41.1 38.6 65.7 33.3 16.7 53.6 63.0
+> SmolVLA 0.0 16.1 30.9 16.1 35.9 46.1 66.7 54.8 35.2
+> π0.5 18.3 19.7 22.6 22.8 31.8 58.5 66.7 47.5 21.1
+> FastWAM 75.0 29.2 50.0 41.4 52.4 48.6 83.3 65.2 55.6
+> LingBot -VA 50.0 62.5 86.4 62.1 52.4 71.4 50.0 21.7 22.2
+> A·SC A·SR A·WP A·WT C·WP M·WP P·SC P·WP P·WT
+
+LIBERO Stage –Type RSR (%)                                                                              
+
+> Policy ↓ Stage –Type group (counts below) →
+> π0 12.1 39.0 42.4 40.8 30.0 53.8 43.6 46.5 22.9
+> π0.5 50.0 77.1 59.6 70.4 55.0 71.2 81.8 61.3 82.9
+> Being -H24.3 35.2 42.4 58.4 48.3 63.7 34.5 62.6 68.6
+> UniFOLM 27.9 29.5 46.9 55.2 41.7 56.2 67.3 61.9 65.7
+> Cosmos 37.1 49.5 64.1 53.6 36.7 55.0 50.9 51.0 57.1
+> FastWAM 36.4 43.8 58.4 72.8 43.3 72.5 21.8 54.2 82.9
+> A·SC A·SR A·WP A·WT C·WP M·WP P·SC P·WP P·WT
+> Dot: category leader Hatched: N<10 Cell color: lower → higher RSR Rows = policies • columns = Stage –Type groups • values = RSR (%)
+> Recovery Stages: A = Approach C = Contact M = Move P = Place Deviation Ty pes: SC = Scene Change SR = Stage Rollback WP = Wrong Pose WT = Wrong Target
+
+Figure 4: Recovery rates across Stage–Type groups. Cells include scenario counts, and sparse groups are visually de-emphasized. Differences between groups can be hidden by Overall RSR. A ·SC: Approach-Scene Change. depend on how frequently different recovery situations oc-cur in the test set. On LIBERO, π0.5 performs best under both metrics, indicating that its advantage is less sensitive to Stage–Type weighting. Recovery should therefore be exam-ined across Stage–Type groups rather than described only by a single Overall RSR. 
+
+5.4 Cross-Policy Recovery Differences 
+
+Setup. This experiment uses Natural scenarios, which re-tain the policy whose rollout produced each deviation. We group scenarios by their source policy and evaluate all six candidate recovery policies. Diagonal comparisons measure source-policy retry, while off-diagonal comparisons mea-sure cross-policy recovery. Figure 5 reports these results. To measure policy complementarity beyond source groups, we also construct a retrospective oracle that selects the highest observed recovery rate among the six policies for each test scenario. 
+
+Findings: Cross-Policy Recovery Can Overcome Policy-Specific Failures. On RoboTwin, the source policy is not the strongest recoverer in any of the four source groups. Source-policy recovery ranges from 15.24–19.82%, whereas the observed-best alternative reaches 58.06–70.27%. LIBERO shows a similar pattern in its two best-supported source groups. This suggests that many deviations are not inher-ently unrecoverable: the source policy remains unsuccessful, while another policy can produce a suitable trajectory from the same scenario. The retrospective oracle reaches 95.63% on RoboTwin and 91.80% on LIBERO, exceeding the best fixed policy. This gap shows that the evaluated policies recover substantially differ-ent sets of scenarios. It additionally motivates the Correction model in Section 5.5: when a fixed base policy fails but an-other policy succeeds, the successful cross-policy trajectory can provide a corrective demonstration for learning recovery behavior. 
+
+5.5 Benchmark-Guided Recovery Interventions 
+
+The cross-policy results show that states that are difficult for one policy can remain recoverable by another. We therefore use the 800 LIBERO training scenarios to develop two in-terventions around the π0.5. Reversion reduces accumulated deviation by starting 30 steps before the recovery point. Cor-rection leaves the recovery point unchanged but temporarily transfers control to a learned correction policy for 30 steps. 
+
+Setup. Correction is trained from complementary cross-policy behavior. We select training scenarios where direct 
+
+π0.5 recovery is below 40% and at least one alternative pol-icy exceeds 60%. The alternative policies are evaluated four times, and their successful recovery trajectories are retained as correction demonstrations. These trajectories train a sep-arate π0.5-based controller with the same observation and action interface. After 30 steps, control returns to the origi-nal π0.5.We train a recovery monitor on the LIBERO training split. Four VLA screening policies each perform one trajectory on every training scenario, producing 3,200 trajectories from RoboTwin : Source -Conditioned RSR (%)                              
+
+> source ↓
+> recovery policy →
+> X-VLA L-VLA Smol π0.5 Fast L-VA
+> X-VLA 17.8 42.2 58.1 47.8 40.3 54.2
+> L-VLA 59.1 19.8 48.8 50.1 54.0 70.3
+> Smol 43.2 57.7 17.3 32.1 61.5 60.2
+> π0.5 67.3 37.6 35.2 15.2 32.1 53.6
+
+LIBERO: Source -Conditioned RSR (%)                                 
+
+> source ↓
+> recovery policy →
+> π0 π0.5 B-HUni Cos Fast
+> π0 31.3 60.0 63.8 62.5 70.0 63.8
+> π0.5 53.3 30.0 50.0 63.3 91.7 90.0
+> Being -H71.4 85.7 68.6 40.0 48.6 45.7
+> UniFOLM 48.0 80.0 28.0 72.0 64.0 64.0
+> Solid: source -policy retry Dashed: observed -best alternative Hatched: N<10 (descriptive) Cell color: lower → higher RSR
+
+Figure 5: Cross-policy recovery on Natural deviations. Rows identify source policies, and columns show the evaluated recovery policies. Solid outlines mark source-policy re-evaluation; dashed outlines mark the observed-best alternative. 
+
+Setting Recovery procedure RSR (%) Direct π0.5 Run π0.5 from the recovery point 64.4 Reversion Start 30 steps before the recovery point; run π0.5
+
+74.0 Monitor+Reversion Run π0.5; at the first trigger, roll-back 30 steps and resume 77.0 Correction Run Correction for 30 steps from the recovery point; resume π0.5
+
+71.2 Monitor+Correction Run π0.5; at the first trigger, ap-ply Correction for 30 steps 75.5 
+
+Table 1: LIBERO recovery-intervention results. Reversion changes the startingstate, whereas Correction adds a 30-step learned controller. Monitor-basedsettings activate the corre-sponding intervention selectively. the 800 scenarios. For each trajectory, frames strictly before the recovery point are labeled 0, while the recovery-point frame and all subsequent frames are labeled 1. We fine-tune Qwen3-VL-4B (Bai et al. 2025) as a binary classifier. During evaluation, the first positive prediction activates Reversion or Correction, after which monitoring stops. All methods are evaluated on the fixed 200-scenario test split using five trials per scenario. These intervention results are separate from the primary same-state policy leaderboard because Reversion changes the starting state and Correction adds an external controller. 
+
+Different Interventions Both Improve Recovery. Direct 
+
+π0.5 recovery reaches 64.4%. Reversion increases recovery to 74.0%, showing that reducing the deviation accumulated before the recovery point makes recovery easier for the un-changed base policy. Correction reaches 71.2%, showing that successful cross-policy trajectories can be transferred into short corrective behavior. The two interventions there-fore improve recovery through different routes: Reversion changes the state presented to the policy, whereas Correction temporarily strengthens the controller at the original recov-ery point. 
+
+Monitor Further Improves Intervention Effectiveness. 
+
+Adding a monitor improves both intervention strategies: Monitor+Reversion reaches 77.0%, and Monitor+Correction reaches 75.5%. In both cases, performance is higher than the corresponding interventions without monitoring, indicating that the monitor helps identify states where interventions are most beneficial. This suggests that beyond simply de-tecting likely failures of direct recovery, the monitor also provides useful guidance for when each intervention should be applied. These results highlight that RoboRecover bene-fits from combining learned intervention mechanisms with state-aware triggering, and that the training split can be used to develop such mechanisms while the fixed test split remains the final evaluation target. 
+
+## 6 Conclusion 
+
+Summary. We introduce RoboRecover, a benchmark for evaluating robot policies from replayable intermediate states created during execution. Its action-prefix replay protocol enables different policies to be evaluated from the same reconstructed recovery state, separating recovery capabil-ity from conventional initial-state task completion. Across RoboTwin and LIBERO, policy performance changes sub-stantially between initial-state and recovery evaluation, while the strongest recovery policy varies across deviation sources, types, and task stages. These results show that high initial-state success does not guarantee that a policy can interpret an off-nominal state, repair disrupted task progress, and con-tinue the original task. Our intervention experiments further demonstrate that recovery can be improved either by return-ing execution to an earlier state with less accumulated devia-tion or by applying a short correction learned from successful cross-policy trajectories. RoboRecover therefore establishes recovery as an explicit dimension of robot policy evaluation and demonstrates how its training split can support targeted recovery mechanisms. 
+
+Future Work. RoboRecover currently covers two simula-tion platforms, and extending it to additional task suites, robot embodiments, and real-world systems would broaden its scope. The recovery mechanisms studied here provide an initial demonstration of benchmark-guided method de-velopment rather than an exhaustive exploration of recovery strategies. Future work will evaluate broader policy families and develop advanced recovery mechanisms to detect exe-cution deviations and generate corrective behaviors across diverse tasks and environments. References 
+
+Bai, S.; Cai, Y.; Chen, R.; Chen, K.; Chen, X.; Cheng, Z.; Deng, L.; Ding, W.; Gao, C.; Ge, C.; Ge, W.; Guo, Z.; Huang, Q.; Huang, J.; Huang, F.; Hui, B.; Jiang, S.; Li, Z.; Li, M.; Li, M.; Li, K.; Lin, Z.; Lin, J.; Liu, X.; Liu, J.; Liu, C.; Liu, Y.; Liu, D.; Liu, S.; Lu, D.; Luo, R.; Lv, C.; Men, R.; Meng, L.; Ren, X.; Ren, X.; Song, S.; Sun, Y.; Tang, J.; Tu, J.; Wan, J.; Wang, P.; Wang, P.; Wang, Q.; Wang, Y.; Xie, T.; Xu, Y.; Xu, H.; Xu, J.; Yang, Z.; Yang, M.; Yang, J.; Yang, A.; Yu, B.; Zhang, F.; Zhang, H.; Zhang, X.; Zheng, B.; Zhong, H.; Zhou, J.; Zhou, F.; Zhou, J.; Zhu, Y.; and Zhu, K. 2025. Qwen3-VL Technical Report. arXiv preprint arXiv:2511.21631 .Black, K.; Brown, N.; Driess, D.; Esmail, A.; Equi, M. R.; Finn, C.; Fusai, N.; Groom, L.; Hausman, K.; Ichter, B.; Jakubczak, S.; Jones, T.; Ke, L.; Levine, S.; Li-Bell, A.; Mothukuri, M.; Nair, S.; Pertsch, K.; Shi, L. X.; Smith, L.; Tanner, J.; Vuong, Q.; Walling, A.; Wang, H.; and Zhilinsky, U. 2025. π0: A Vision-Language-Action Flow Model for General Robot Control. In Proceedings of Robotics: Science and Systems .Fei, S.; Wang, S.; Shi, J.; Dai, Z.; Cai, J.; Qian, P.; Ji, L.; He, X.; Zhang, S.; Fei, Z.; Fu, J.; Gong, J.; and Qiu, X. 2025. LIBERO-Plus: In-depth Robustness Analysis of Vision-Language-Action Models. arXiv preprint arXiv:2510.13626 .Kanwal, A.; Valle, P.; Ali, S.; and Arrieta, A. 2026. FATE-VLA: Failue-aware test generation for vision-language-action models. arXiv preprint arXiv:2606.02307 .Kim, M. J.; Gao, Y.; Lin, T.-Y.; Lin, Y.-C.; Ge, Y.; Lam, G.; Liang, P.; Song, S.; Liu, M.-Y.; Finn, C.; and Gu, J. 2026. Cosmos Policy: Fine-Tuning Video Models for Visuomotor Control and Planning. arXiv preprint arXiv:2601.16163 .Li, D.; Chen, Z.; Zhang, J.; and Li, J. 2026a. CorridorVLA: Explicit Spatial Constraints for Generative Action Heads via Sparse Anchors. arXiv preprint arXiv:2604.21241 .Li, L.; Zhang, Q.; Luo, Y.; Yang, S.; Wang, R.; Han, F.; Yu, M.; Gao, Z.; Xue, N.; Zhu, X.; Shen, Y.; and Xu, Y. 2026b. Causal World Modeling for Robot Control. arXiv preprint arXiv:2601.21998 .Li, X.; Hsu, K.; Gu, J.; Pertsch, K.; Mees, O.; Walke, H. R.; Fu, C.; Lunawat, I.; Sieh, I.; Kirmani, S.; Levine, S.; Wu, J.; Finn, C.; Su, H.; Vuong, Q.; and Xiao, T. 2024. Evaluat-ing Real-World Robot Manipulation Policies in Simulation. 
+
+arXiv preprint arXiv:2405.05941 .Liu, B.; Zhu, Y.; Gao, C.; Feng, Y.; Liu, Q.; Zhu, Y.; and Stone, P. 2023. Libero: Benchmarking knowledge transfer for lifelong robot learning. Advances in Neural Information Processing Systems , 36: 44776–44791. Liufu, W.; Guo, X.; Chen, R.; Liu, J.; Zhang, K.; Liang, X.; Lin, J.; Sun, D.; Wang, Y.; Xu, R.; Lin, B.; Yang, B.; Cao, T.; Peng, B.; Zhang, D.; Wang, G.; Wang, M.; Lin, L.; and Liang, X. 2026. RePO-VLA: Recovery-Driven Policy Optimization for Vision-Language-Action Models. arXiv preprint arXiv:2605.09410 .Luo, H.; Wang, Y.; Zhang, W.; Zheng, S.; Xi, Z.; Xu, C.; Xu, H.; Yuan, H.; Zhang, C.; Wang, Y.; Feng, Y.; and Lu, Z. 2026a. Being-H0.5: Scaling Human-Centric Robot Learn-ing for Cross-Embodiment Generalization. arXiv preprint arXiv:2601.12993 .Luo, H.; Zhang, W.; Feng, Y.; Zheng, S.; Xu, H.; Xu, C.; Xi, Z.; Fu, Y.; and Lu, Z. 2026b. Being-H0.7: A Latent World-Action Model from Egocentric Videos. arXiv preprint arXiv:2605.00078 .Mees, O.; Hermann, L.; Rosete-Beas, E.; and Burgard, W. 2022. CALVIN: A Benchmark for Language-Conditioned Policy Learning for Long-Horizon Robot Manipulation Tasks. IEEE Robotics and Automation Letters , 7(3): 7327– 7334. Mu, Y.; Chen, T.; Chen, Z.; Peng, S.; Lan, Z.; Gao, Z.; Liang, Z.; Yu, Q.; Zou, Y.; Xu, M.; Lin, L.; Xie, Z.; Ding, M.; and Luo, P. 2025. RoboTwin: Dual-Arm Robot Benchmark with Generative Digital Twins. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition ,27649–27660. Nasiriany, S.; Maddukuri, A.; Zhang, L.; Parikh, A.; Lo, A.; Joshi, A.; Mandlekar, A.; and Zhu, Y. 2024. RoboCasa: Large-Scale Simulation of Everyday Tasks for Generalist Robots. arXiv preprint arXiv:2406.02523 .Physical Intelligence; Black, K.; Brown, N.; Darpinian, J.; Dhabalia, K.; Driess, D.; Esmail, A.; Equi, M.; Finn, C.; Fusai, N.; Galliker, M. Y.; Ghosh, D.; Groom, L.; Hausman, K.; Ichter, B.; Jakubczak, S.; Jones, T.; Ke, L.; LeBlanc, D.; Levine, S.; Li-Bell, A.; Mothukuri, M.; Nair, S.; Pertsch, K.; Ren, A. Z.; Shi, L. X.; Smith, L.; Springenberg, J. T.; Stachowicz, K.; Tanner, J.; Vuong, Q.; Walke, H.; Walling, A.; Wang, H.; Yu, L.; and Zhilinsky, U. 2025. π0.5: A Vision-Language-Action Model with Open-World Generalization. 
+
+arXiv preprint arXiv:2504.16054 .Pumacay, W.; Singh, I.; Duan, J.; Krishna, R.; Thomason, J.; and Fox, D. 2024. THE COLOSSEUM: A Benchmark for Evaluating Generalization for Robotic Manipulation. In 
+
+Robotics: Science and Systems .Shukor, M.; Aubakirova, D.; Capuano, F.; Kooijmans, P.; Palma, S.; Zouitine, A.; Aractingi, M.; Pascal, C.; Russi, M.; Marafioti, A.; Alibert, S.; Cord, M.; Wolf, T.; and Cadene, R. 2025. SmolVLA: A Vision-Language-Action Model for Affordable and Efficient Robotics. arXiv preprint arXiv:2506.01844 .Unitree. 2026. UnifoLM-VLA-0: A Vision-Language-Action (VLA) Framework under UnifoLM Family. https://github. com/unitreerobotics/unifolm-vla. Accessed July 28, 2026. Wang, Y. R.; Ung, C.; Tan, C.; Tannert, G.; Duan, J.; Li, J.; Le, A.; Oswal, R.; Grotz, M.; Pumacay, W.; Deng, Y.; Krishna, R.; Fox, D.; and Srinivasa, S. 2025a. RoboEval: Where Robotic Manipulation Meets Structured and Scalable Evaluation. arXiv preprint arXiv:2507.00435 .Wang, Z.; Zhou, Z.; Song, J.; Huang, Y.; Shu, Z.; and Ma, L. 2025b. Vlatest: Testing and evaluating vision-language-action models for robotic manipulation. Proceedings of the ACM on Software Engineering , 2(FSE): 1615–1638. Wu, W.; Lu, F.; Wang, Y.; Yang, S.; Liu, S.; Wang, F.; Zhu, Q.; Sun, H.; Wang, Y.; Ma, S.; Ren, Y.; Zhang, K.; Yu, H.; Zhao, J.; Zhou, S.; Qiu, Z.; Xiong, H.; Wang, Z.; Wang, Z.; Cheng, R.; Li, Y.-L.; Huang, Y.; Zhu, X.; Shen, Y.; and Zheng, K. 2026. A Pragmatic VLA Foundation Model. arXiv preprint arXiv:2601.18692 .Yu, Y.; and Qiu, X. 2026. Benchmarking Vision-Language-Action Models on SO-101: Failure and Recovery Analysis. 
+
+arXiv preprint arXiv:2606.08881 .Yuan, T.; Dong, Z.; Liu, Y.; and Zhao, H. 2026. Fast-WAM: Do World Action Models Need Test-time Future Imagina-tion? arXiv preprint arXiv:2603.16666 .Zhang, S.; Xu, Z.; Liu, P.; Yu, X.; Li, Y.; Gao, Q.; Fei, Z.; Yin, Z.; Wu, Z.; Jiang, Y.-G.; and Qiu, X. 2025. VLABench: A Large-Scale Benchmark for Language-Conditioned Robotics Manipulation with Long-Horizon Reasoning Tasks. In Pro-ceedings of the IEEE/CVF International Conference on Com-puter Vision , 11142–11152. Zhang, Z.; Li, Z.; Rahmati, B.; Yang, R. H.; Ma, Y.; Rasouli, A.; Pakdamansavoji, S.; Wu, Y.; Zhang, L.; Cao, T.; Wen, F.; Wang, X.; Quan, X.; and Zhang, Y. 2026. Do World Action Models Generalize Better than VLAs? A Robustness Study. 
+
+arXiv preprint arXiv:2603.22078 .Zheng, J.; Li, J.; Wang, Z.; Liu, D.; Kang, X.; Feng, Y.; Zheng, Y.; Zou, J.; Chen, Y.; Zeng, J.; Zhang, Y.-Q.; Pang, J.; Liu, J.; Wang, T.; and Zhan, X. 2025. X-VLA: Soft-Prompted Transformer as Scalable Cross-Embodiment Vision-Language-Action Model. arXiv preprint arXiv:2510.10274 .A Benchmark Construction and Composition 
+
+The main paper describes the three construction sources, the Stage–Type taxonomy, and the recovery-point selection cri-teria. This section reports additional annotation, validation, and corpus statistics. 
+
+A.1 Annotation and Recovery-Point Selection 
+
+Three annotators independently review each complete trajec-tory. During the same annotation pass, they select the stable recovery point and assign its Recovery Stage and Deviation Type. Labels are resolved by majority vote, and scenarios without a stable majority are removed. Before majority reso-lution, the agreement rates for Recovery Stage and Deviation Type are approximately 92.17% and 82.82%, respectively. The fixed test sets contain the same nine nonempty Stage– Type combinations, but their frequencies are not balanced. Table 2 reports the support of each group.                       
+
+> Stage–Type RoboTwin LIBERO Approach–Wrong Target 29 25 Approach–Wrong Pose 44 49 Approach–Stage Rollback 24 21 Approach–Scene Change 428 Contact–Wrong Pose 21 12 Move–Wrong Pose 35 16 Place–Wrong Target 18 7Place–Wrong Pose 23 31 Place–Scene Change 211 Total 200 200
+
+Table 2: Numbers of fixed test scenarios in the nine occu-pied Stage–Type groups. 
+
+Figure 6 pairs one RoboTwin and one LIBERO example for every occupied Stage–Type group. Each image shows the observation at the selected recovery point, before recovery inference begins. 
+
+A.2 Difficulty Screening and Replay Validation 
+
+Each candidate is evaluated five times by each of four screen-ing policies, giving 20 recovery trials. We retain candidates with 2–18 successful trials, equivalent to an empirical re-covery rate between 10% and 90%. The screening policies and source-specific construction procedures are listed in the main paper. Difficult interaction states can be sensitive to small replay differences. Consequently, a prefix that executes successfully may still reconstruct a condition that differs from the one used during candidate screening. To detect such cases, we randomly select three of the screening inference trajectories for each retained candidate using seed 42. We replay the corresponding action prefixes and compare the reconstructed executions with the original trajectories around the recovery point. The simulator-state and image criteria follow the replay-validation procedure defined in the main paper. Human re-view is used only to confirm that the reconstructed robot– scene relation and task progress remain behaviorally consis-tent. The resulting validation pass rate is 97.32%. Candidates with inconsistent reconstruction, simulator failure, or invalid actions are removed before the train/test split is finalized. 
+
+A.3 Corpus Composition 
+
+Each platform contains 1,000 scenarios with a fixed 800/200 train/test split. RoboTwin contains only Natural scenar-ios, whereas LIBERO combines Natural, Action-Perturbed, and Human-Constructed scenarios. Table 3 summarizes the composition without including intermediate candidate-flow counts. RoboTwin preserves the Natural source-policy distribu-tion in both splits. The train/test counts are 169/24 for X-VLA, 112/37 for LingBot-VLA, 320/83 for SmolVLA, and 199/56 for π0.5. The 42 LIBERO Natural test scenarios con-tain 16 π0-source, 12 π0.5-source, 9 Being-H0.5-source, and 5 UniFOLM-source scenarios. Fast-WAM construction uses Being-H0.5 rollouts and is included in the Being-H0.5 source group. RoboTwin train and test sets share no sample identifier, JSON path, or exact instruction group. The 200 test scenarios form 183 trajectory clusters because 17 clusters contain two scenarios but different inference trajectories. LIBERO train and test sets share no Data-Path or complete episode key. The action-prefix replay protocol, policy initialization, and recovery horizon are defined in the main paper. In implemen-tation, every candidate policy receives an independently reset and replayed environment instance. Its observation/action is initialized at the recovery point. Replay actions do not con-sume the environment steps. A trial terminates when the original task-success criteria is satisfied, the task-specific re-covery environment steps reach the upper limit, or the simu-lator or policy adapter reports a runtime failure. 
+
+## B Evaluation Implementation and Statistical Protocol 
+
+Overall RSR follows the scenario-equal estimator defined in the main paper. Macro-9 RSR first averages scenario-level recovery rates within each of the nine Stage–Type groups and then gives the nine group rates equal weight. Macro-9 is therefore a category-balanced diagnostic, whereas Overall RSR preserves the empirical Stage–Type frequencies of the fixed test set. RoboTwin confidence intervals use 10,000 trajectory-cluster bootstrap draws over its 183 test clusters. LIBERO intervals use 10,000 scenario-bootstrap draws over the 200 test scenarios. Paired policy contrasts jointly resample both                             
+
+> Platform Split Scen. Tasks Natural Pert. Human RoboTwin Train 800 42 800 ––Test 200 34 200 ––LIBERO Train 800 40 170 504 126 Test 200 38 42 127 31
+
+Table 3: Corpus composition. Pert. denotes Action-Perturbed scenarios; dashes indicate construction sources not used on RoboTwin. Approach–Wrong Target 
+
+Image pending Image pending RoboTwin LIBERO Redirect from an irrelevant object or region and approach the correct task target. 
+
+Approach–Wrong Pose 
+
+Image pending Image pending RoboTwin LIBERO Correct the robot–object relation before attempting the intended interaction. 
+
+Approach–Stage Rollback 
+
+Image pending Image pending RoboTwin LIBERO Recover lost task progress and return to a valid approach phase. 
+
+Approach–Scene Change 
+
+Image pending Image pending RoboTwin LIBERO Reassess the changed scene and approach the currently valid object or region. 
+
+Contact–Wrong Pose 
+
+Image pending Image pending RoboTwin LIBERO Restore effective contact or grasp from an unsuitable robot–object pose. 
+
+Move–Wrong Pose 
+
+Image pending Image pending RoboTwin LIBERO Correct the object or end-effector pose before continuing transport. 
+
+Place–Wrong Target 
+
+Image pending Image pending RoboTwin LIBERO Redirect the object from the wrong goal region to the instructed destination. 
+
+Place–Wrong Pose 
+
+Image pending Image pending RoboTwin LIBERO Realign the object and robot before completing placement. 
+
+Place–Scene Change 
+
+Image pending Image pending RoboTwin LIBERO Reassess the changed target configuration before completing placement. 
+
+Figure 6: Representative recovery observations for the nine occupied Stage–Type groups. Each panel pairs RoboTwin (left) and LIBERO (right) examples and summarizes the recovery required to continue the original task. policies’ outcomes. Unless stated otherwise, pairwise inter-vals are not adjusted for multiple comparisons. 
+
+## C Complete Recovery Results 
+
+This section reports the complete initial-state and recovery results. Table 4 gives the point estimates and 95% confidence intervals for all 12 platform-policy evaluations on the fixed test splits. RoboTwin intervals use trajectory-cluster boot-strap, while LIBERO intervals use scenario bootstrap. The main paper provides the primary interpretation. Table 5 reports Macro-9 RSR, which weights the nine Stage–Type groups equally; Table 4 reports scenario-weighted Overall RSR. 
+
+C.1 Paired Policy Contrasts 
+
+Table 6 reports all paired policy contrasts on the same test units. Each entry gives policy A minus policy B, so a positive value favors A. The intervals are not adjusted for multiple comparisons. For RoboTwin, X, L, S, P, F, and V denote X-VLA, LingBot-VLA, SmolVLA, π0.5, Fast-WAM, and LingBot-VA. For LIBERO, P0, P5, B, U, C, and F denote π0, π0.5,Being-H0.5, UniFOLM, Cosmos-Policy, and Fast-WAM. 
+
+## D Comparison with LIBERO-Plus Preset-OOD Evaluation 
+
+LIBERO-Plus. LIBERO-Plus extends the original LIBERO benchmark with controlled perturbations in seven dimen-
+
+Policy Initial-state [95% CI] Recovery [95% CI] 
+
+RoboTwin 
+
+X-VLA 54.33 [47.60,60.86] 49.83 [43.25,56.35] LingBot-VLA 64.33 [57.62,70.65] 43.20 [36.60,49.57] SmolVLA 42.67 [37.11,48.13] 33.03 [27.66,38.65] 
+
+π0.5 34.50 [29.81,39.27] 32.60 [27.48,37.83] Fast-WAM 81.00 [75.00,86.63] 49.33 [42.12,56.46] LingBot-VA 83.75 [78.71,88.32] 59.50 [52.45,66.67] 
+
+LIBERO 
+
+π0 85.17 [81.17,89.00] 37.80 [32.70,43.20] 
+
+π0.5 94.17 [91.50,96.50] 64.40 [59.20,69.50] Being-H0.5 91.67 [88.33,94.67] 46.80 [40.90,52.70] UniFOLM 98.83 [97.83,99.67] 48.00 [41.60,54.60] Cosmos-Policy 97.83 [96.50,99.00] 52.10 [45.70,58.40] Fast-WAM 96.83 [94.50,98.67] 54.00 [47.80,60.10] 
+
+Table 4: Complete initial-state and recovery results on the fixed test splits (%). Bold marks the highest point estimate in each platform and evaluation condition. sions: camera viewpoint, robot initial state, language instruc-tion, lighting, background texture, sensor noise, and object layout (Fei et al. 2025). These perturbations are specified before a rollout begins. The policy then controls the com-plete episode from the perturbed initialization. LIBERO-Plus therefore measures robustness to predefined visual, linguis-tic, geometric, and environmental distribution shifts. 
+
+Difference from RoboRecover. RoboRecover evaluates a RoboTwin policy Macro-9 LIBERO policy Macro-9 X-VLA 40.65 π0 36.79 LingBot-VLA 41.30 π0.5 67.71             
+
+> SmolVLA 33.52 Being-H0.5 48.68
+> π0.534.33 UniFOLM 50.26 Fast-WAM 55.62 Cosmos-Policy 50.56 LingBot-VA 53.19 Fast-WAM 54.01
+
+Table 5: Macro-9 RSR on the fixed test splits (%), com-puted from unrounded scenario-level rates. Best values are bold. different condition. Its recovery point is reached after previ-ous robot actions and contacts have changed the scene and produced partial task progress. The candidate policy must interpret this intermediate condition, correct the deviation, and continue the original task. Thus, LIBERO-Plus asks whether a policy can complete a task when an external variation is introduced before execu-tion. RoboRecover asks whether a policy can continue after execution itself has produced an off-nominal state. The for-mer emphasizes robustness to preset OOD conditions, while the latter emphasizes reassessment and correction during task execution. 
+
+Overlapping policies. RoboRecover contains 12 platform-policy entries but 10 unique model families, because π0.5
+
+and Fast-WAM are evaluated on both platforms. Published LIBERO-Plus results are available for five of the six policies in our LIBERO evaluation. Table 7 compares these results with RoboRecover. LIBERO-Plus values are taken from pub-lished evaluations rather than rerun in our environment. 
+
+The two evaluations produce different policy orderings. 
+
+Among the four policies evaluated together in Zhang et al. (2026), the LIBERO-Plus order is 
+
+π0.5 > Cosmos-Policy > π 0 > Fast-WAM .
+
+Their RoboRecover order is 
+
+π0.5 > Fast-WAM > Cosmos-Policy > π 0.
+
+The ordering is unchanged if the reported π0 JAX rerun is used instead of its original LIBERO-Plus value. Fast-WAM shows the clearest reversal. It has the lowest LIBERO-Plus result among these four policies at 51.5%, but the second-highest RoboRecover rate at 54.00%. Cosmos-Policy shows the opposite tendency: it reaches 82.2% on LIBERO-Plus but 52.10% on RoboRecover. These results suggest that robustness to predefined perturbations does not directly determine the ability to interpret and repair an execution-induced intermediate state. The result is not that one benchmark is harder or more com-plete than the other. They expose different failure conditions. A policy may tolerate changes in camera, lighting, layout, or robot initialization but still fail after its own interaction has altered object relations and task progress. Conversely, a policy may recover effectively from an intermediate devia-tion while remaining sensitive to externally imposed visual or geometric shifts.                                                                                                                                        
+
+> Pair A−B
+> Initial-state ∆
+> (95% CI) Recovery ∆
+> (95% CI)
+> RoboTwin
+> X−L-10.00 [-19.24,-0.51] 6.63 [-3.45,16.73]
+> X−S11.67 [3.85,19.50] 16.80 [8.38,25.08]
+> X−P19.83 [11.68,27.81] 17.23 [8.16,26.21]
+> X−F-26.67 [-34.97,-18.26] 0.50 [-9.02,10.23]
+> X−V-29.42 [-37.35,-21.49] -9.67 [-18.77,-0.84]
+> L−S21.67 [12.41,30.36] 10.17 [1.51,18.41]
+> L−P29.83 [21.62,37.56] 10.60 [1.78,19.32]
+> L−F-16.67 [-23.42,-10.03] -6.13 [-14.35,2.26]
+> L−V-19.42 [-25.50,-13.50] -16.30 [-26.33,-6.57]
+> S−P8.17 [1.33,14.93] 0.43 [-5.95,7.04]
+> S−F-38.33 [-45.65,-30.69] -16.30 [-24.38,-8.23]
+> S−V-41.08 [-47.97,-34.02] -26.47 [-35.74,-17.35]
+> P−F-46.50 [-53.33,-39.26] -16.73 [-24.35,-9.10]
+> P−V-49.25 [-55.53,-42.64] -26.90 [-36.50,-17.66]
+> F−V-2.75 [-7.71,2.26] -10.17 [-20.41,0.00]
+> LIBERO
+> P0−P5-9.00 [-12.67,-5.67] -26.60 [-33.40,-19.90]
+> P0−B-6.50 [-11.33,-1.83] -9.00 [-16.30,-1.60]
+> P0−U-13.67 [-17.50,-10.00] -10.20 [-17.80,-2.60]
+> P0−C-12.67 [-16.83,-8.67] -14.30 [-22.00,-6.60]
+> P0−F-11.67 [-15.67,-8.00] -16.20 [-23.50,-8.90]
+> P5−B2.50 [-1.50,6.50] 17.60 [10.00,25.10]
+> P5−U-4.67 [-7.50,-2.33] 16.40 [9.10,23.80]
+> P5−C-3.67 [-6.67,-1.00] 12.30 [4.30,20.20]
+> P5−F-2.67 [-5.83,0.50] 10.40 [2.40,18.30]
+> B−U-7.17 [-10.50,-4.00] -1.20 [-9.00,6.70]
+> B−C-6.17 [-9.83,-2.83] -5.30 [-13.20,2.70]
+> B−F-5.17 [-9.00,-1.33] -7.20 [-14.30,-0.20]
+> U−C1.00 [-0.33,2.50] -4.10 [-11.40,3.20]
+> U−F2.00 [-0.17,4.50] -6.00 [-12.60,0.90]
+> C−F1.00 [-1.33,3.67] -1.90 [-8.30,4.70]
+
+Table 6: All paired policy contrasts in percentage points. 
+
+RoboTwin intervals use trajectory-cluster bootstrap; LIBERO intervals use paired scenario bootstrap. Ranking differences alone do not prove which model com-ponent causes these behaviors, because checkpoints, training data, and evaluation implementations also differ. They do provide evidence that LIBERO-Plus and RoboRecover scores are not interchangeable. Preset-OOD evaluation measures robustness to conditions defined before execution, whereas recovery evaluation measures the ability to reassess and cor-rect the consequences of prior interaction. 
+
+## E Stage–Type and Source-Conditioned Results 
+
+This section reports the complete results conditioned on Re-covery Stage, Deviation Type, construction source, task suite, and Natural source policy. These tables describe observed test-set behavior. They are not claims about the internal causes of policy behavior. Tables 8 and 9 report all nine nonempty Stage–Type groups. N is the number of scenarios in each group. Bold marks the largest point estimate in a row. Results from very small groups should be treated as descriptive. Model LIBERO-Plus Total RoboRecover Initial-state RoboRecover RSR                                       
+
+> π053.6 (69.4 rerun) 85.17 37.80
+> π0.585.7 94.17 64.40
+> Being-H0.5 78.5 †91.67 46.80 UniFOLM –98.83 48.00 Cosmos-Policy 82.2 97.83 52.10 Fast-WAM 51.5 96.83 54.00 Model RR platform L-Plus Comparability X-VLA RoboTwin 71.4 LIBERO checkpoint; model-family comparison only. SmolVLA RoboTwin 45.37 ‡Separately trained LIBERO checkpoint; model-family comparison only. LingBot-VLA RoboTwin –No published aggregate re-sult identified. LingBot-VA RoboTwin –RoboTwin 2.0-Plus only; no LIBERO-Plus result.
+
+Table 7: Published LIBERO-Plus results and RoboRe-cover results for overlapping model families (%). The π0
+
+value in parentheses is the JAX rerun reported by Zhang et al. (2026). †Being-H0.5 is reported by Luo et al. (2026b). 
+
+> ‡
+
+SmolVLA is reported under a separate LIBERO training and evaluation setup by Li et al. (2026a). Dashes indicate that no directly reported aggregate LIBERO-Plus result was identified. 
+
+E.1 Construction-Source and Task-Suite Results 
+
+RoboTwin scenarios are constructed from Natural roll-outs. LIBERO additionally contains Action-Perturbed and Human-Constructed scenarios. Table 10 reports LIBERO recovery rates by construction source and task suite. These results describe performance on the fixed test composition rather than the prevalence or causal difficulty of each condi-tion. The construction-source results vary by recovery pol-icy. For example, π0.5 is strongest on Human-Constructed and Action-Perturbed scenarios, whereas Cosmos-Policy is strongest on Natural scenarios. The task-suite results likewise show that no suite has the same ordering for every policy. These comparisons should be read with the group sizes re-ported in the table. 
+
+E.2 Natural Source-Policy Results 
+
+Natural scenarios retain the policy whose rollout produced the deviation. Table 11 fixes this source policy by row and gives the evaluated recovery policy by column. Italics mark reevaluation of the source policy, and bold marks the largest observed recovery rate in each row. The source matrices show that the policy producing a de-viation is not necessarily the policy with the highest recovery rate from that deviation. This comparison is possible because all recovery policies are evaluated on the same reconstructed scenarios within each source group.                                                             
+
+> RoboTwin Stage–Type ( N)X-VLA LingBot-VLA SmolVLA Approach–Scene Change (4) 8.33 33.33 0.00 Approach–Stage Rollback (24) 46.67 26.39 16.11 Approach–Wrong Pose (44) 66.36 41.06 30.91 Approach–Wrong Target (29) 49.43 38.62 16.09 Contact–Wrong Pose (21) 43.81 65.71 35.87 Move–Wrong Pose (35) 53.52 33.33 46.10 Place–Scene Change (2) 16.67 16.67 66.67 Place–Wrong Pose (23) 34.78 53.62 54.78 Place–Wrong Target (18) 46.30 62.96 35.19 RoboTwin Stage–Type ( N)π0.5Fast-WAM LingBot-VA Approach–Scene Change (4) 18.33 75.00 50.00 Approach–Stage Rollback (24) 19.72 29.17 62.50
+> Approach–Wrong Pose (44) 22.58 50.00 86.36
+> Approach–Wrong Target (29) 22.76 41.38 62.07
+> Contact–Wrong Pose (21) 31.75 52.38 52.38 Move–Wrong Pose (35) 58.48 48.57 71.43
+> Place–Scene Change (2) 66.67 83.33 50.00 Place–Wrong Pose (23) 47.54 65.22 21.74 Place–Wrong Target (18) 21.11 55.56 22.22
+
+Table 8: Complete RoboTwin recovery rates across Stage– Type groups (%). The two Scene Change groups contain only four and two scenarios. For each test scenario, we also compute the largest empir-ical recovery rate observed among the six evaluated policies. This retrospective value reaches 95.63% on RoboTwin and 91.80% on LIBERO, compared with 59.50% and 64.40% for the best fixed policy on each platform. The corresponding dif-ferences are 36.13 and 27.40 points. No RoboTwin scenario and one LIBERO scenario have zero observed success across all evaluated policies. This calculation uses test outcomes to select a policy sep-arately for every scenario. It is therefore not a deployable policy-selection method. It only shows that the evaluated policies succeed on different sets of recovery scenarios. 
+
+## F Recovery Mechanism Studies 
+
+The primary benchmark evaluates a fixed policy without ad-ditional assistance. This section studies how the training split can support recovery mechanisms. These experiments are exploratory and are not part of the primary direct-recovery leaderboard. 
+
+F.1 Monitor Training and Triggering 
+
+We construct the RoboTwin monitor data from 800 unique scenario IDs. We assign 720 IDs to training and 80 IDs to validation. All frames associated with the same ID remain in the same split. This prevents frames from the same scenario from appearing in both training and validation. Frames before the recovery point, excluding the recovery point itself, are labeled 0. The recovery-point frame and sub-sequent frames are labeled 1. The training set is balanced by sampling the same number of frames from both classes. We use two views of the held-out IDs: a balanced validation set LIBERO Stage–Type ( N ) π0 π0.5 Being-H0.5 Approach–Scene Change (28) 12.1 50.0 24.3 Approach–Stage Rollback (21) 39.0 77.1 35.2 Approach–Wrong Pose (49) 42.4 59.6 42.4 Approach–Wrong Target (25) 40.8 70.4 58.4 Contact–Wrong Pose (12) 30.0 55.0 48.3 Move–Wrong Pose (16) 53.8 71.2 63.7 Place–Scene Change (11) 43.6 81.8 34.5 Place–Wrong Pose (31) 46.5 61.3 62.6                                   
+
+> Place–Wrong Target (7) 22.9 82.9 68.6 LIBERO Stage–Type ( N)UniFOLM Cosmos Fast-WAM Approach–Scene Change (28) 27.9 37.1 36.4 Approach–Stage Rollback (21) 29.5 49.5 43.8 Approach–Wrong Pose (49) 46.9 64.1 58.4 Approach–Wrong Target (25) 55.2 53.6 72.8
+> Contact–Wrong Pose (12) 41.7 36.7 43.3 Move–Wrong Pose (16) 56.2 55.0 72.5
+> Place–Scene Change (11) 67.3 50.9 21.8 Place–Wrong Pose (31) 61.9 51.0 54.2 Place–Wrong Target (7) 65.7 57.1 82.9
+
+Table 9: Complete LIBERO recovery rates across Stage– Type groups (%). Cosmos denotes Cosmos-Policy. The Place–Wrong Target group contains seven scenarios and is reported descriptively. and a natural validation set that preserves the observed label distribution. Table 12 gives the scenario and frame counts for the train-ing split and both validation views. The monitor is trained for two epochs and 5,000 optimizer steps. We select the merged checkpoint at step 5,000. Table 13 reports the complete validation results. Precision, recall, and F1 refer to label 1. Replay actions are not monitored. Monitoring begins when policy inference starts from the recovery point and is per-formed at every environment step. The output is parsed strictly as 0 or 1. A single prediction of 1 activates the intervention. Each episode can trigger at most once, and monitoring stops after the trigger. When monitoring X-VLA, 152 of 200 test episodes trigger, giving an episode-level trigger rate of 76.0%. For LingBot-VLA, 166 of 200 episodes trigger, giving a rate of 83.0%. These rates measure whether an intervention is activated at least once. 
+
+F.2 Reversion Results 
+
+Reversion returns execution to an earlier point with less ac-cumulated deviation. The return distance depends on the task horizon. We return 30 environment steps when the maximum horizon is below 500 steps and 60 steps otherwise. When fewer preceding steps are available, the actual distance is limited to the available execution history. In the fixed setting, Reversion is applied directly at the recovery point. In the monitor-triggered setting, X-VLA first continues from the recovery point. The first positive monitor output then activates Reversion, after which X-VLA resumes                                                   
+
+> Group ( N)π0π0.5Being-H0.5
+> Construction source
+> Human-constructed (31) 44.5 70.3 38.7 Natural (42) 48.6 58.1 55.7 Action-perturbed (127) 32.6 65.0 45.8
+> Task suite
+> LIBERO-Spatial (28) 40.7 74.3 39.3 LIBERO-Object (57) 33.0 60.7 49.5 LIBERO-Goal (57) 35.4 67.0 42.8 LIBERO-10 (58) 43.4 60.7 51.7 Group ( N)UniFOLM Cosmos Fast-WAM
+> Construction source
+> Human-constructed (31) 50.3 43.9 41.3 Natural (42) 59.5 70.5 67.1 Action-perturbed (127) 43.6 48.0 52.8
+> Task suite
+> LIBERO-Spatial (28) 51.4 60.7 47.9 LIBERO-Object (57) 46.7 57.2 55.8 LIBERO-Goal (57) 48.4 43.5 56.5 LIBERO-10 (58) 47.2 51.4 52.8
+
+Table 10: LIBERO recovery rates by construction source and task suite (%). 
+
+control. On the RoboTwin test split, fixed Reversion with X-VLA reaches 54.5% recovery. Monitor-triggered Reversion reaches 59.0%. These results use one base policy and one Re-version configuration. They therefore provide an exploratory demonstration rather than a general comparison of recovery mechanisms. 
+
+F.3 LIBERO Monitor and Human Intervention 
+
+The LIBERO monitor fine-tunes Qwen3-VL-4B-Instruct on 262,669 labeled frames. The data contain 102,357 label-0 frames and 160,312 label-1 frames. Training uses LoRA with rank 16, a batch size of 4, gradient accumulation over 8 batches, and an effective batch size of 32. The learning rate is 5 × 10 −5.We additionally test human intervention on 50 LIBERO scenarios. In the direct setting, the human operator takes control from the recovery point and succeeds on 82% of the scenarios. In the monitor-triggered setting, the base policy acts until the first positive monitor output, after which the human takes control. This setting succeeds on 88% of the scenarios. Because this study contains only 50 scenarios and uses human control, the results are reported as an exploratory reference rather than a policy benchmark. 
+
+F.4 Correction Data and Training 
+
+The Correction controller is trained from successful trajec-tories produced by alternative donor policies. Each donor trajectory is first evaluated in four trials. We retain trajec-tories that succeed in at least three trials and complete all scheduled trials. The retained list is then deduplicated by its source record and checked for valid training trajectories. RoboTwin source ( N ) X-VLA LingBot-VLA SmolVLA X-VLA (24) 17.78 42.22 58.06 
+
+LingBot-VLA (37) 59.10 19.82 48.83 SmolVLA (83) 43.21 57.67 17.27 
+
+π0.5 (56) 67.26 37.62 35.24 RoboTwin source ( N ) π0.5 Fast-WAM LingBot-VA X-VLA (24) 47.78 40.28 54.17 LingBot-VLA (37) 50.09 54.05 70.27 
+
+SmolVLA (83) 32.13 61.45 60.24 
+
+π0.5 (56) 15.24 32.14 53.57 LIBERO source ( N ) π0 π0.5 Being-H0.5 
+
+π0 (16) 31.25 60.00 63.75 
+
+π0.5 (12) 53.33 30.00 50.00 Being-H0.5 (9) 73.33 80.00 64.44 
+
+UniFOLM (5) 48.00 80.00 28.00 LIBERO source ( N ) UniFOLM Cosmos Fast-WAM 
+
+π0 (16) 62.50 70.00 63.75 
+
+π0.5 (12) 63.33 91.67 90.00 Being-H0.5 (9) 42.22 46.67 44.44 UniFOLM (5) 72.00 64.00 64.00 
+
+Table 11: Complete Natural source-policy by recovery-policy matrices (%). Cosmos denotes Cosmos-Policy. Rows with small N are descriptive. 
+
+Split IDs Frames Label 0 Label 1 Training 720 320,000 160,000 160,000 Balanced val. 80 8,000 4,000 4,000 Natural val. 80 16,000 5,831 10,169 
+
+Table 12: RoboTwin monitor training and validation data. 
+
+The two validation sets use different frame-sampling distri-butions from the same 80 held-out scenario IDs. The current training initializes from the official LIBERO 
+
+π0.5 checkpoint and uses an action horizon of 10. Training uses a batch size of 256 and AdamW with gradient-norm clipping at 1.0. The learning rate is 5 × 10 −5, with 200 warmup steps and a 3,000-step schedule. Exponential mov-ing averaging uses a coefficient of 0.999. 
+
+Validation Acc. Prec. Recall F1 Macro-F1 FPR Balanced 85.49 86.11 84.63 85.36 85.49 13.65 Natural 86.42 91.99 86.14 88.97 85.66 13.09 Validation TN FP FN TP Balanced 3,454 546 615 3,385 Natural 5,068 763 1,409 8,760 
+
+Table 13: RoboTwin monitor validation results (%). The lower panel gives the corresponding confusion matrices. FPR is the false-positive rate.
