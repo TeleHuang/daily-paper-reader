@@ -1,0 +1,185 @@
+{
+  "date": "20260927",
+  "date_label": "",
+  "generated_at": "2026-09-27 22:12:00 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.22798v1",
+      "route": "202609/27/2609.22798v1-expert-play-contouring-control-faster-than-demonstration-planning-from-slow-expert-and-fast-play",
+      "title": "Expert-Play Contouring Control: Faster-than-Demonstration Planning from Slow Expert and Fast Play",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于世界模型的规划器实现超演示速度机器人执行",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.23133v1",
+      "route": "202609/27/2609.23133v1-aquacap-a-training-free-underwater-embodied-agent-with-code-as-policy",
+      "title": "AquaCap: A Training-Free Underwater Embodied Agent with Code-as-Policy",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "无需训练的水下具身智能体与代码即策略",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.23755v1",
+      "route": "202609/27/2609.23755v1-egowild2dex-learning-dexterous-robotic-manipulation-from-in-the-wild-human-experience",
+      "title": "EgoWild2Dex: Learning Dexterous Robotic Manipulation from In-the-Wild Human Experience",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "利用野外第一人称人类数据在真实家庭工厂药房学习灵巧机器人操作",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.24976v1",
+      "route": "202609/27/2609.24976v1-dextacwam-a-visuo-tactile-world-action-model-for-dexterous-manipulation",
+      "title": "DexTacWAM: A Visuo-Tactile World-Action Model for Dexterous Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向灵巧操作的视触觉世界动作模型",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.27734v1",
+      "route": "202609/27/2609.27734v1-infinova-infinite-novel-view-augmentation-for-viewpoint-invariant-robot-policies",
+      "title": "InfiNoVA: Infinite Novel View Augmentation for Viewpoint Invariant Robot Policies",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "生成稠密训练视角的数据增强以缓解数据稀缺",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.30092v1",
+      "route": "202609/27/2609.30092v1-self-adaptive-vla-for-robust-robot-deployment",
+      "title": "Self-Adaptive VLA for Robust Robot Deployment",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "后训练配方使大型VLA策略自适配部署期硬件偏移",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.30247v1",
+      "route": "202609/27/2609.30247v1-rolling-wam-world-action-models-with-rolling-imagination",
+      "title": "Rolling-WAM: World Action Models with Rolling Imagination",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "分散联合去噪以降低延迟，提升实时闭环控制",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.24189v1",
+      "route": "202609/27/2609.24189v1-a-topological-representation-with-object-path-graphs-for-open-vocabulary-instance-navigation",
+      "title": "A Topological Representation with Object-Path Graphs for Open-Vocabulary Instance Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "具身智能体通过统一拓扑表示在真实环境中导航",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.25398v1",
+      "route": "202609/27/2609.25398v1-norm2tex-augmenting-visuo-tactile-simulations-with-texture",
+      "title": "Norm2Tex: Augmenting Visuo-Tactile Simulations with Texture",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "增强触觉仿真以生成数据并缩小仿真到现实域差",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.29389v1",
+      "route": "202609/27/2609.29389v1-robo-harness-k1-harnessing-robot-use-agents-via-perception-augmentation",
+      "title": "Robo-Harness K1: Harnessing Robot-Use Agents via Perception Augmentation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向真实操作、以感知为工具的机器人智能体框架",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    },
+    {
+      "paper_id": "2609.30134v1",
+      "route": "202609/27/2609.30134v1-training-free-behavior-cloning",
+      "title": "Training-free Behavior Cloning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "免训练策略合成以缓解数据与训练成本",
+      "first_seen_at": "2026-09-27 22:12:00 UTC",
+      "updated_at": "2026-09-27 22:12:00 UTC"
+    }
+  ]
+}

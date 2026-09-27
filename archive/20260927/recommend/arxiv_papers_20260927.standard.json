@@ -1,0 +1,471 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-27T22:07:07.104009+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 7,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 5,
+    "quick_skim_target": 11,
+    "quick_selected": 5
+  },
+  "deep_dive": [
+    {
+      "id": "2609.22798v1",
+      "source": "arxiv",
+      "title": "Expert-Play Contouring Control: Faster-than-Demonstration Planning from Slow Expert and Fast Play",
+      "abstract": "Expert demonstrations often specify what a robot should do, but not how fast it can do it. Imitation Learning (IL) inherits demonstration timing, while directly accelerating the learned motion can fail when faster execution changes the robot-object dynamics. We study faster-than-demonstration execution as a dynamics-aware control problem and introduce Expert-Play Contouring Control (EPCC), which combines slow expert demonstrations with fast, non-expert play. Expert demonstrations train a latent trajectory generator whose predictions are reparameterized into a time-independent contour of successful task progression, while play trains a world model (WM) of fast-action outcomes. At deployment, our proposed planner uses the WM to optimize actions that makes maximize progress along the expert-derived contour while penalizing deviation from the intended task evolution. Averaged across three visuomotor manipulation tasks, EPCC achieves a $2.0\\times$ the throughput of the IL baseline, including $2.2\\times$ that of the throughput of the strongest acceleration baseline on a task with interaction-sensitive object dynamics. Our analysis shows that the gains concentrate where faster execution changes robot-object evolution. Together, our results highlight a simple yet effective principle: demonstrations provide task intent, while play data provides the dynamic coverage needed to execute that intent faster.",
+      "authors": [
+        "Seunghoon Cho",
+        "Wonsuhk Jung",
+        "Sundhar Vinodh Sangeetha",
+        "Shreyas Kousik"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-19T06:01:54+00:00",
+      "link": "https://arxiv.org/pdf/2609.22798v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "World-model-based planner for faster-than-demonstration robot execution",
+      "llm_evidence_cn": "基于世界模型的规划器实现超演示速度机器人执行",
+      "llm_evidence": "基于世界模型的规划器实现超演示速度机器人执行",
+      "canonical_evidence": "基于世界模型的规划器实现超演示速度机器人执行",
+      "llm_tldr_en": "Expert demonstrations specify what a robot should do but not how fast, and directly accelerating imitation-learned motion can break robot-object dynamics. EPCC combines slow expert demonstrations, reparameterized into a time-independent contour of task progress, with fast play that trains a world model of fast-action outcomes, whose planner selects faster actions at deployment.",
+      "llm_tldr_cn": "专家演示通常只说明机器人该做什么，却未说明能多快完成，模仿学习会继承演示时序，而直接加速又可能因机器人-物体动力学改变而失败。作者把超演示速度执行建模为动力学感知控制问题，提出专家-玩耍等值线控制EPCC：用慢速专家训练潜在轨迹生成器并重参数化为与时间无关的任务进展等值线，用快速玩耍训练快速动作结果的世界模型。部署时规划器借助世界模型选择快速动作，为超越演示速度的机器人规划提供新范式。",
+      "llm_tldr": "专家演示通常只说明机器人该做什么，却未说明能多快完成，模仿学习会继承演示时序，而直接加速又可能因机器人-物体动力学改变而失败。作者把超演示速度执行建模为动力学感知控制问题，提出专家-玩耍等值线控制EPCC：用慢速专家训练潜在轨迹生成器并重参数化为与时间无关的任务进展等值线，用快速玩耍训练快速动作结果的世界模型。部署时规划器借助世界模型选择快速动作，为超越演示速度的机器人规划提供新范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.23133v1",
+      "source": "arxiv",
+      "title": "AquaCap: A Training-Free Underwater Embodied Agent with Code-as-Policy",
+      "abstract": "Recent advances in vision-language-action models have stimulated growing interest in underwater embodied intelligence. However, their reliance on large-scale interaction data limits their applicability underwater, where data collection is costly and scarce. To address this challenge, we present AquaCap, a training-free Code-as-Policy framework for autonomous underwater navigation and manipulation. AquaCap employs a dual-layer agent that translates task instructions and environmental observations into condition-aware plans and executable control programs. Structured perception then provides the agent with semantic, geometric, and reliability-aware observations under degraded underwater conditions. A failure-aware memory diagnoses unsuccessful actions and supports closed-loop replanning and code revision. This design enables online adaptation without task-specific training or parameter updates. AquaCap achieves a 66.43% success rate in simulation. Real-world experiments further demonstrate autonomous grasping and object transport with an ROV, including the manipulation of targets displaced by hydrodynamic disturbances.",
+      "authors": [
+        "Xiaoshi Li",
+        "Yule Xu",
+        "Chunghiu Kong",
+        "Yizhou Zhou",
+        "Yang Liu",
+        "Hao Yang",
+        "Zihao Huang",
+        "Yunxiao Shan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-19T16:59:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.23133v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "training-free underwater embodied robot agent with code-as-policy",
+      "llm_evidence_cn": "无需训练的水下具身智能体与代码即策略",
+      "llm_evidence": "无需训练的水下具身智能体与代码即策略",
+      "canonical_evidence": "无需训练的水下具身智能体与代码即策略",
+      "llm_tldr_en": "Underwater embodied intelligence is limited by scarce and costly interaction data. AquaCap is a training-free code-as-policy framework where a dual-layer agent turns instructions and observations into plans and executable control programs, aided by structured perception and failure-aware memory for robust navigation and manipulation.",
+      "llm_tldr_cn": "水下具身智能因交互数据采集昂贵稀缺而受限，现有视觉-语言-动作模型难以直接适用。本文提出AquaCap，一种免训练的代码即策略框架，由双层智能体将任务指令与环境观测转化为条件感知的规划与可执行控制程序。结构化感知在退化水下环境中提供语义、几何与可靠性观测，失败感知记忆则诊断失败动作。该方法无需大规模交互数据即可完成自主水下导航与操作，为数据稀缺场景下的具身智能体提供了新思路。",
+      "llm_tldr": "水下具身智能因交互数据采集昂贵稀缺而受限，现有视觉-语言-动作模型难以直接适用。本文提出AquaCap，一种免训练的代码即策略框架，由双层智能体将任务指令与环境观测转化为条件感知的规划与可执行控制程序。结构化感知在退化水下环境中提供语义、几何与可靠性观测，失败感知记忆则诊断失败动作。该方法无需大规模交互数据即可完成自主水下导航与操作，为数据稀缺场景下的具身智能体提供了新思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.23755v1",
+      "source": "arxiv",
+      "title": "EgoWild2Dex: Learning Dexterous Robotic Manipulation from In-the-Wild Human Experience",
+      "abstract": "Egocentric human data provide a principled source of supervision for learning dexterous robot manipulation. Unlike prior approaches that often collect such data in constrained or specially constructed environments, we collect in-the-wild egocentric demonstrations in real-world settings, including homes, factories, and pharmacies, etc., where people perform their ordinary tasks while wearing head-mounted cameras. This collection protocol captures diverse workflows and hand-object interactions across long-tailed object and skill distributions, but also yields visually challenging observations due to scene clutter and head-motion-induced viewpoint changes (a mean cumulative rotation of $15.93^{\\circ}$/s). To address these issues, we introduce EgoWild2Dex, which transfers in-the-wild ego-human experience to dual-arm robots with dexterous hands by jointly aligning unstable egocentric views and human motions with robot observations and actions, respectively. This work offers three benefits. First, we introduce GeoFormer, a differentiable geometric transformer that warps noisy human observations toward robot observations. Second, we design a human-robot training scheme to bridge the embodiment gap, enabling high task success with limited robot supervision. Third, we release EgoWild, a 538.9-hour in-the-wild egocentric human dataset comprising 179,049 episodes, 125,961 unique task descriptions, and 1,282 object categories. On real robots, EgoWild2Dex achieves an average success rate of 96.7% across three long-horizon bimanual dexterous manipulation tasks and an average object-level zero-shot success rate of 33.3%. The data, models, and code will be released.",
+      "authors": [
+        "Kunyang Lin",
+        "Xutao Wen",
+        "Jingxi Lin",
+        "Lanyong Lin",
+        "Jiaming Liu",
+        "Tianshuo Yang",
+        "Xianchi Chen",
+        "Yue Han",
+        "Yiduo Li",
+        "Zhanpeng Zhang",
+        "Ping Luo"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-20T17:09:09+00:00",
+      "link": "https://arxiv.org/pdf/2609.23755v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "in-the-wild egocentric human data for dexterous robot manipulation in real-world homes, factories and pharmacies",
+      "llm_evidence_cn": "利用野外第一人称人类数据在真实家庭工厂药房学习灵巧机器人操作",
+      "llm_evidence": "利用野外第一人称人类数据在真实家庭工厂药房学习灵巧机器人操作",
+      "canonical_evidence": "利用野外第一人称人类数据在真实家庭工厂药房学习灵巧机器人操作",
+      "llm_tldr_en": "Collects in-the-wild egocentric human demonstrations in homes, factories and pharmacies to learn dexterous robot manipulation, tackling cluttered scenes and head-motion viewpoint changes with a new framework.",
+      "llm_tldr_cn": "现有灵巧操作学习多依赖受限或专门搭建环境采集的示范数据，难以覆盖真实世界的长尾场景。本文提出在家庭、工厂、药房等真实场景采集第一人称人类演示，并设计EgoWild2Dex框架应对场景杂乱与头部运动导致的剧烈视角变化。该方法利用野外人类经验训练灵巧机器人操作策略，在多样工作流与手物交互任务上取得良好表现，为降低真机数据采集成本提供了新途径。",
+      "llm_tldr": "现有灵巧操作学习多依赖受限或专门搭建环境采集的示范数据，难以覆盖真实世界的长尾场景。本文提出在家庭、工厂、药房等真实场景采集第一人称人类演示，并设计EgoWild2Dex框架应对场景杂乱与头部运动导致的剧烈视角变化。该方法利用野外人类经验训练灵巧机器人操作策略，在多样工作流与手物交互任务上取得良好表现，为降低真机数据采集成本提供了新途径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.24976v1",
+      "source": "arxiv",
+      "title": "DexTacWAM: A Visuo-Tactile World-Action Model for Dexterous Manipulation",
+      "abstract": "Dexterous manipulation depends on contact dynamics that are often only partially observable from vision. Recent World-Action Models (WAMs) couple predictive video world modeling with action generation, but remain largely vision-centric and therefore cannot directly model these contact dynamics. We present DexTacWAM, a visuo-tactile WAM that encodes each fingertip independently, aggregates the resulting features through a finger- and pose-aware tactile compressor, and injects the tactile latent into a video diffusion world model for joint visuo-tactile world modeling. Across six contact-rich dexterous manipulation tasks on a 22-DoF bimanual platform, DexTacWAM achieves the highest score on every task, averaging 70.6 versus 38.0 for the strongest baseline. Ablations attribute the gain to modeling contact evolution as part of the predicted world state rather than tactile conditioning alone: removing tactile world modeling reduces the four-task mean from 74.7 to 26.6 while keeping the same tactile features and action expert. After four hours of tactile-encoder adaptation with a frozen pretrained vision VAE, our continual vision-to-touch learning extends the pretrained video model to touch using roughly 100 demonstrations per task without tactile midtraining, while retaining visual prediction quality within 0.5 dB of vision-only counterparts. The compressor retains 89.4% of pre-fusion contact recall while enabling 2.26x faster training and 1.29x faster inference. Together, these results show that pretrained video priors can be extended to distributed multi-finger contact dynamics in a data- and compute-efficient manner.",
+      "authors": [
+        "Haoran Yuan",
+        "Zekai Wang",
+        "Boning Shao",
+        "Haoran Lu",
+        "Trevor Darrell",
+        "Ismini Lourentzou",
+        "Wei Zhan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-09-21T17:55:24+00:00",
+      "link": "https://arxiv.org/pdf/2609.24976v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "visuo-tactile world-action model for dexterous manipulation",
+      "llm_evidence_cn": "面向灵巧操作的视触觉世界动作模型",
+      "llm_evidence": "面向灵巧操作的视触觉世界动作模型",
+      "canonical_evidence": "面向灵巧操作的视触觉世界动作模型",
+      "llm_tldr_en": "World-action models are largely vision-centric and cannot model contact dynamics needed for dexterous manipulation. DexTacWAM encodes each fingertip, compresses tactile features and injects tactile latents into a video diffusion world model.",
+      "llm_tldr_cn": "灵巧操作依赖接触动力学，而视觉往往只能部分观测这些动力学；现有世界动作模型将预测性视频世界建模与动作生成耦合，却以视觉为中心，无法直接建模接触。本文提出视触觉世界动作模型DexTacWAM，独立编码各指尖触觉，经手指与姿态感知的触觉压缩器聚合后注入视频扩散世界模型进行联合建模。在22自由度双臂平台的六个接触丰富任务上，该方法均取得最高分，平均70.6远超最强基线的38.0。",
+      "llm_tldr": "灵巧操作依赖接触动力学，而视觉往往只能部分观测这些动力学；现有世界动作模型将预测性视频世界建模与动作生成耦合，却以视觉为中心，无法直接建模接触。本文提出视触觉世界动作模型DexTacWAM，独立编码各指尖触觉，经手指与姿态感知的触觉压缩器聚合后注入视频扩散世界模型进行联合建模。在22自由度双臂平台的六个接触丰富任务上，该方法均取得最高分，平均70.6远超最强基线的38.0。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.27734v1",
+      "source": "arxiv",
+      "title": "InfiNoVA: Infinite Novel View Augmentation for Viewpoint Invariant Robot Policies",
+      "abstract": "Vision-Language-Action (VLA) policies often rely strongly on the camera viewpoints seen during training, causing substantial performance degradation when deployed from unseen perspectives. Collecting demonstrations from sufficiently diverse physical viewpoints is expensive and still provides only sparse coverage of the viewpoint space. We introduce InfiNoVA, a data-augmentation framework that converts synchronized multi-camera demonstrations into a dense distribution of geometrically consistent training views. InfiNoVA reconstructs each manipulation trajectory as a time-varying 3D Gaussian representation and renders novel observations from sampled camera poses while preserving the original state-action correspondence. This explicit scene representation improves frame-level fidelity and temporal consistency while reducing task-critical hallucinations observed in generative novel-view synthesis. Across four real-world manipulation tasks, policies trained with InfiNoVA achieve 5.4x higher average success under unseen randomized viewpoints than both VISTA-based augmentation and the unaugmented policy. InfiNoVA further achieves 1.7x higher success than training directly on all five physical camera views. These results show that dense, geometrically grounded viewpoint augmentation provides a practical route toward camera-robust robot policies without modifying the underlying policy architecture.",
+      "authors": [
+        "Sai Puneeth Reddy Gottam",
+        "Elmar Rueckert",
+        "Vedant Dave"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-23T11:47:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.27734v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "data augmentation generating dense training views to overcome viewpoint scarcity",
+      "llm_evidence_cn": "生成稠密训练视角的数据增强以缓解数据稀缺",
+      "llm_evidence": "生成稠密训练视角的数据增强以缓解数据稀缺",
+      "canonical_evidence": "生成稠密训练视角的数据增强以缓解数据稀缺",
+      "llm_tldr_en": "VLA policies overfit to training camera viewpoints and degrade from unseen perspectives, while collecting diverse viewpoints is expensive. InfiNoVA reconstructs trajectories as time-varying 3D Gaussians and renders geometrically consistent novel observations, densifying the training view distribution.",
+      "llm_tldr_cn": "针对视觉-语言-动作策略过度依赖训练相机视角、在未见过视角下性能显著下降的问题，而从多样物理视角采集演示代价高昂且覆盖稀疏。本文提出InfiNoVA，一种数据增强框架，将同步多相机演示重建为时变三维高斯表示，并从采样相机位姿渲染几何一致的新观测。该方法在保持原始状态-动作对应关系的同时稠密化训练视角分布，有效提升了策略的视角不变性与数据效率。",
+      "llm_tldr": "针对视觉-语言-动作策略过度依赖训练相机视角、在未见过视角下性能显著下降的问题，而从多样物理视角采集演示代价高昂且覆盖稀疏。本文提出InfiNoVA，一种数据增强框架，将同步多相机演示重建为时变三维高斯表示，并从采样相机位姿渲染几何一致的新观测。该方法在保持原始状态-动作对应关系的同时稠密化训练视角分布，有效提升了策略的视角不变性与数据效率。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.30092v1",
+      "source": "arxiv",
+      "title": "Self-Adaptive VLA for Robust Robot Deployment",
+      "abstract": "While Vision-Language-Action (VLA) models demonstrate impressive capabilities in robotic manipulation, their memoryless nature renders them brittle to test-time environment shifts, particularly hardware shifts caused by wear or imperfect calibration. Enabling these models to self-adapt during deployment without requiring continuous on-site recalibration remains a critical bottleneck for real-world scalability. In this work, we introduce Self-Adaptive VLA, a novel post-training recipe that enables the policy to iteratively adapt to deployment-time hardware shifts leveraging its own rollouts as context. To do so, we first collect policy rollouts under deliberately injected hardware shifts. We then transform the base policy's training data into shift-conditioned expert demonstrations by pre-compensating the expert actions for these known shifts. Next, we introduce a lightweight, plug-in context encoder that compresses the context, including visual observation, proprioception, and actions in the shifted environment, into a latent context token. This token modulates the policy through adaptive layer normalization (AdaLN). Furthermore, we find that context tokens can be ensembled, allowing the policy to iteratively self-correct and mitigate failures step by step. Extensive experiments across four precision-critical bi-manual and dexterous manipulation tasks show that Self-Adaptive VLA recovers over 80% of the base policy's performance under hardware shifts, such as actuation bias and joint encoder offsets. Moreover, Self-Adaptive VLA enables more robust deployment to new workstations compared to the base policy. Our approach provides a pathway for robust large-scale real-world robot deployments and easier maintenance. See videos at https://icefoxzhx.github.io/self-adaptive-vla.",
+      "authors": [
+        "Hongxin Zhang",
+        "Chunru Lin",
+        "Tsun-Hsuan Wang",
+        "Zhenjia Xu",
+        "Chuang Gan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-09-24T16:37:46+00:00",
+      "link": "https://arxiv.org/pdf/2609.30092v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "post-training recipe adapts large VLA policy to deployment-time hardware shifts",
+      "llm_evidence_cn": "后训练配方使大型VLA策略自适配部署期硬件偏移",
+      "llm_evidence": "后训练配方使大型VLA策略自适配部署期硬件偏移",
+      "canonical_evidence": "后训练配方使大型VLA策略自适配部署期硬件偏移",
+      "llm_tldr_en": "VLA policies are brittle to deployment hardware shifts. This paper proposes a post-training recipe that turns shift-injected rollouts into shift-conditioned demonstrations, letting the policy self-adapt on-site without recalibration.",
+      "llm_tldr_cn": "视觉-语言-动作模型虽在操作任务上表现出色，但其无记忆特性使其在部署时对硬件磨损与标定误差等环境偏移十分脆弱，且持续现场重标定成本高昂。本文提出自适应VLA后训练配方，先注入硬件偏移采集策略rollout，再将训练数据转为偏移条件专家演示，使策略利用自身rollout作为上下文迭代自适配。实验显示该方法可在部署中缓解硬件偏移带来的性能下降，无需持续现场标定，为真实世界规模化部署提供可行路径。",
+      "llm_tldr": "视觉-语言-动作模型虽在操作任务上表现出色，但其无记忆特性使其在部署时对硬件磨损与标定误差等环境偏移十分脆弱，且持续现场重标定成本高昂。本文提出自适应VLA后训练配方，先注入硬件偏移采集策略rollout，再将训练数据转为偏移条件专家演示，使策略利用自身rollout作为上下文迭代自适配。实验显示该方法可在部署中缓解硬件偏移带来的性能下降，无需持续现场标定，为真实世界规模化部署提供可行路径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.30247v1",
+      "source": "arxiv",
+      "title": "Rolling-WAM: World Action Models with Rolling Imagination",
+      "abstract": "World Action Models (WAMs) couple action generation with future visual prediction for robotic manipulation. However, completing the joint video-action denoising process at each replanning cycle incurs substantial latency, delaying action updates and limiting closed-loop responsiveness. We present Rolling-WAM, a formulation that distributes joint denoising across successive replanning cycles. Our method maintains a sliding window of video-action chunks at staggered noise levels. At each step, a rolling noise schedule fully denoises the imminent action chunk for execution, while partially refining farther-future chunks. As the window advances with new camera observations, the retained future chunks continue their denoising process. This distributes the computational cost over time while carrying an evolving visual-action context across chunk boundaries. Evaluations on LIBERO, RoboTwin, and a real-world Unitree G1 humanoid show that Rolling-WAM achieves competitive manipulation performance. By removing the need to denoise the entire prediction horizon from scratch, it delivers a 4.5x steady-state replanning speedup over standard joint WAMs.",
+      "authors": [
+        "Yinghua Zhou",
+        "Junjie Ye",
+        "Yiqi Zhao",
+        "Hao Dong",
+        "Celina Shiyu Wang",
+        "Ruohai Ge",
+        "Tingyi Yang",
+        "Basile Van Hoorick",
+        "Gaurav Sukhatme",
+        "Vitor Guizilini",
+        "Yue Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV"
+      ],
+      "published": "2026-09-24T17:58:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.30247v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Distributing joint video-action denoising to cut latency for real-time robot control",
+      "llm_evidence_cn": "分散联合去噪以降低延迟，提升实时闭环控制",
+      "llm_evidence": "分散联合去噪以降低延迟，提升实时闭环控制",
+      "canonical_evidence": "分散联合去噪以降低延迟，提升实时闭环控制",
+      "llm_tldr_en": "Rolling-WAM distributes joint video-action denoising across replanning cycles with a sliding window of staggered-noise chunks, fully denoising the imminent action chunk while partially refining future ones to cut latency.",
+      "llm_tldr_cn": "世界动作模型将动作生成与未来视觉预测耦合，但每个重规划周期都要完成完整的视频-动作去噪，延迟高、动作更新滞后，限制了闭环响应能力。本文提出Rolling-WAM，将联合去噪分散到连续的重规划周期中：维护一个处于不同噪声水平的视频-动作分块滑动窗口，每个步骤只对即将执行的动作分块完全去噪，同时部分精修更远的未来分块。随着新相机观测推进窗口，保留的未来分块继续其去噪过程。该方法显著降低计算延迟，提升实时控制响应。",
+      "llm_tldr": "世界动作模型将动作生成与未来视觉预测耦合，但每个重规划周期都要完成完整的视频-动作去噪，延迟高、动作更新滞后，限制了闭环响应能力。本文提出Rolling-WAM，将联合去噪分散到连续的重规划周期中：维护一个处于不同噪声水平的视频-动作分块滑动窗口，每个步骤只对即将执行的动作分块完全去噪，同时部分精修更远的未来分块。随着新相机观测推进窗口，保留的未来分块继续其去噪过程。该方法显著降低计算延迟，提升实时控制响应。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.24189v1",
+      "source": "arxiv",
+      "title": "A Topological Representation with Object-Path Graphs for Open-Vocabulary Instance Navigation",
+      "abstract": "Vision-language navigation requires embodied agents to navigate environments using natural language instructions and visual observations. Existing approaches typically decompose navigation into sequential language-guided decisions or rely on online exploration without prior environmental knowledge. Scene graph representations offer compact semantic memory but remain decoupled from downstream navigation, which still depends on dense metric maps. To close this gap, we propose an object--path graph that unifies open-vocabulary semantic reasoning with topological navigation. The proposed representation jointly supports semantic grounding, graph-based localization, and navigation within a single lightweight topological framework. Building on this graph, we introduce a navigation strategy that combines global path planning with local inter-node execution through lightweight node localization and semantic visual servoing, enabling navigation directly over the graph without dense metric reconstruction. Experiments on HM3D and Replica demonstrate competitive performance in open-vocabulary object grounding through the proposed hierarchical graph structure, while achieving effective navigation performance. Real-world robot experiments further validate the practicality of the proposed framework.",
+      "authors": [
+        "Linwei Zheng",
+        "Daojie Peng",
+        "Bingtao Wang",
+        "Haoang Li",
+        "Jun Ma"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-21T07:01:14+00:00",
+      "link": "https://arxiv.org/pdf/2609.24189v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "embodied agents navigate real environments via unified topological representation",
+      "llm_evidence_cn": "具身智能体通过统一拓扑表示在真实环境中导航",
+      "llm_evidence": "具身智能体通过统一拓扑表示在真实环境中导航",
+      "canonical_evidence": "具身智能体通过统一拓扑表示在真实环境中导航",
+      "llm_tldr_en": "Vision-language navigation often relies on sequential decisions or dense metric maps. This paper proposes an object-path graph unifying open-vocabulary semantic grounding and topological navigation in one lightweight framework.",
+      "llm_tldr_cn": "视觉语言导航要求具身智能体依据自然语言指令与视觉观测在环境中导航，但现有方法多依赖序列式语言引导决策或在线探索，场景图记忆与下游导航脱节且仍依赖稠密度量地图。本文提出对象-路径图，将开放词汇语义推理与拓扑导航统一，在单一轻量拓扑框架内联合支持语义接地、图定位与导航。该表示无需稠密度量地图即可完成语义定位与导航，提升了紧凑性与可用性，为具身导航提供统一的语义-拓扑记忆表示。",
+      "llm_tldr": "视觉语言导航要求具身智能体依据自然语言指令与视觉观测在环境中导航，但现有方法多依赖序列式语言引导决策或在线探索，场景图记忆与下游导航脱节且仍依赖稠密度量地图。本文提出对象-路径图，将开放词汇语义推理与拓扑导航统一，在单一轻量拓扑框架内联合支持语义接地、图定位与导航。该表示无需稠密度量地图即可完成语义定位与导航，提升了紧凑性与可用性，为具身导航提供统一的语义-拓扑记忆表示。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.25398v1",
+      "source": "arxiv",
+      "title": "Norm2Tex: Augmenting Visuo-Tactile Simulations with Texture",
+      "abstract": "Large-scale datasets are essential for training generalist robot control policies. Collecting real-world tactile data is costly and time-consuming, motivating the use of tactile simulations. However, current tactile simulators capture only overall contact geometry and miss fine details like texture. This results in a significant domain shift between simulated and real tactile data. To address this gap, we introduce Norm2Tex, a plug-in method that augments simulations of vision-based tactile sensors with high-frequency surface details from normal map textures. By modifying the target object's depth map before a tactile simulator's rendering pipeline, Norm2Tex seamlessly integrates into different tactile simulators. We also evaluate sim-to-real transfer using material classification and a reinforcement learning task. Our results show that Norm2Tex preserves material-dependent tactile information across domains, improving texture recognition and producing material-dependent control behavior in the real world.",
+      "authors": [
+        "Seongjin Bien",
+        "Débora Oliveira Makowski",
+        "Roberto Calandra",
+        "Florian Walter",
+        "Wolfram Burgard"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-21T20:40:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.25398v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Augmenting tactile simulation to generate data and narrow sim-to-real gap",
+      "llm_evidence_cn": "增强触觉仿真以生成数据并缩小仿真到现实域差",
+      "llm_evidence": "增强触觉仿真以生成数据并缩小仿真到现实域差",
+      "canonical_evidence": "增强触觉仿真以生成数据并缩小仿真到现实域差",
+      "llm_tldr_en": "Large-scale data is essential for generalist robot policies, but real tactile data is costly and current tactile simulators miss fine texture, causing a sim-to-real domain shift. Norm2Tex is a plug-in method that augments vision-based tactile simulations with high-frequency surface details from normal map textures, integrating into different simulators and improving sim-to-real transfer.",
+      "llm_tldr_cn": "训练通用机器人控制策略依赖大规模数据集，但真实触觉数据采集昂贵耗时，因此常用触觉仿真；然而现有触觉仿真器只捕捉整体接触几何、缺失纹理等细节，造成仿真与真实触觉数据间的显著域差。作者提出即插即用的Norm2Tex，在渲染前修改目标物体深度图，用法线贴图纹理为视触觉仿真注入高频表面细节。方法可无缝集成到不同仿真器，并通过基于材质的评估验证仿真到现实迁移，缓解机器人触觉数据稀缺问题。",
+      "llm_tldr": "训练通用机器人控制策略依赖大规模数据集，但真实触觉数据采集昂贵耗时，因此常用触觉仿真；然而现有触觉仿真器只捕捉整体接触几何、缺失纹理等细节，造成仿真与真实触觉数据间的显著域差。作者提出即插即用的Norm2Tex，在渲染前修改目标物体深度图，用法线贴图纹理为视触觉仿真注入高频表面细节。方法可无缝集成到不同仿真器，并通过基于材质的评估验证仿真到现实迁移，缓解机器人触觉数据稀缺问题。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.29389v1",
+      "source": "arxiv",
+      "title": "Robo-Harness K1: Harnessing Robot-Use Agents via Perception Augmentation",
+      "abstract": "Foundation vision-language models (VLMs) understand objects, instructions, and spatial relations, yet translating this capability into robotic manipulation remains difficult. Vision-language-action (VLA) models require extensive demonstrations and may compromise pretrained understanding, while direct RGB-only VLM control is costly and strongly dependent on model capability. We introduce Robo-Harness K1, a robot-use agent (RUA) framework that exposes perception as tools. The agent queries calibrated depth, persistent visual anchors, spatial measurements, and grasp hypotheses, then selects generic motions from the returned evidence. This interface makes 3D geometry accessible without changing the VLM architecture or training a depth encoder. On matched LIBERO-PRO tasks, Gemini 3.7 Flash with K1 reaches 77.8% accuracy, surpassing GPT-6 Astra's 61.1% with an RGB-only harness; K1 further improves Astra to 88.9%. Without target fine-tuning, Gemini with K1 transfers to three RoboSuite arms and dual-arm RoboTwin tasks. On RoboTwin, it achieves 32.0% on Easy and 28.0% on Hard, showing resilience to visual and environmental perturbations. K1 also produces tool-call traces aligned with next-token training. A Qwen3.5-9B student trained on only 107 teacher episodes reaches 44.2% accuracy on new initial states versus 30.2% for OpenVLA, and 13.9% on held-out task conditions versus 0.0% for OpenVLA. These results suggest that perception-augmented RUAs offer a promising route to sample-efficient, generalizable robotic policies that leverage VLM capabilities through an accessible tool interface.",
+      "authors": [
+        "Zexi Li",
+        "Yehang Zhang",
+        "Wenqian Li",
+        "Haojian Huang",
+        "Chenxu Wang",
+        "Shiyuan Deng",
+        "Yangkai Wei",
+        "Tianyi Zhang",
+        "Binghui Xie",
+        "Bohan Zhou",
+        "Yifan Chang",
+        "Kaiwen Zhou",
+        "Ying-Cong Chen",
+        "James Cheng",
+        "Yinchuan Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T11:16:18+00:00",
+      "link": "https://arxiv.org/pdf/2609.29389v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Robot-use agent exposing perception tools for real-world manipulation",
+      "llm_evidence_cn": "面向真实操作、以感知为工具的机器人智能体框架",
+      "llm_evidence": "面向真实操作、以感知为工具的机器人智能体框架",
+      "canonical_evidence": "面向真实操作、以感知为工具的机器人智能体框架",
+      "llm_tldr_en": "Robo-Harness K1 builds a robot-use agent that exposes depth, anchors and grasp hypotheses as tools, enabling VLM-driven manipulation without retraining the model or adding a depth encoder.",
+      "llm_tldr_cn": "现有视觉语言模型虽能理解物体与空间关系，但直接用于机器人操作成本高且依赖模型能力，而视觉语言动作模型又需大量演示。本文提出Robo-Harness K1机器人使用智能体框架，将标定深度、视觉锚点、空间测量与抓取假设作为工具暴露给智能体，再由其从证据中选择通用动作。该接口无需修改VLM架构或训练深度编码器即可接入三维几何信息，在匹配实验中展现出更强的操作表现。工作为利用基础模型实现真实环境机器人操作提供了低成本、免重训的新范式。",
+      "llm_tldr": "现有视觉语言模型虽能理解物体与空间关系，但直接用于机器人操作成本高且依赖模型能力，而视觉语言动作模型又需大量演示。本文提出Robo-Harness K1机器人使用智能体框架，将标定深度、视觉锚点、空间测量与抓取假设作为工具暴露给智能体，再由其从证据中选择通用动作。该接口无需修改VLM架构或训练深度编码器即可接入三维几何信息，在匹配实验中展现出更强的操作表现。工作为利用基础模型实现真实环境机器人操作提供了低成本、免重训的新范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.30134v1",
+      "source": "arxiv",
+      "title": "Training-free Behavior Cloning",
+      "abstract": "Neural behavior cloning compresses demonstrations into large models, making individual actions difficult to trace and policy updates costly. Retrieval policies retain access to demonstrations but struggle with mismatch between recorded and live behavior. We introduce Behavior Predictive Control (BPC), which synthesizes policies without end-to-end policy training by combining an action-aware retrieval metric, a Hankel-based action-continuation prior, and a closed-form one-step residual correction. Inspired by behavioral systems theory, BPC predicts future actions by blending stored observation-action data that best reconstructs the recent runtime observation--action history. Across simulated benchmarks and real-robot deployments, BPC is competitive with learned policies such as $π_{0.5}$ (surpassing it in some cases), while reducing policy fitting from hours to seconds on consumer GPUs and supporting closed-loop control upwards of 75 Hz on a Jetson Orin Nano. The retrieved demonstration windows and their coefficients also provide an intrinsic estimate of task progress. Retaining demonstrations within the deployed policy makes its predictions traceable to supporting trajectories and enables behavior revision through the demonstration bank.",
+      "authors": [
+        "Maximilian Adang",
+        "Timothy Chen",
+        "Lars Osterberg",
+        "Aiden Swann",
+        "Mac Schwager"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-24T17:05:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.30134v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "training-free policy synthesis to overcome costly policy training",
+      "llm_evidence_cn": "免训练策略合成以缓解数据与训练成本",
+      "llm_evidence": "免训练策略合成以缓解数据与训练成本",
+      "canonical_evidence": "免训练策略合成以缓解数据与训练成本",
+      "llm_tldr_en": "Neural behavior cloning compresses demonstrations into large models, making policies costly to update and hard to trace. Behavior Predictive Control synthesizes policies without end-to-end training via action-aware retrieval, a Hankel action-continuation prior, and closed-form residual correction, competitive with learned policies on sim and real robots.",
+      "llm_tldr_cn": "神经行为克隆把示教压缩进大模型，导致单步动作难以追溯、策略更新代价高昂，而检索式策略又面临记录与实时行为不匹配的问题。本文提出行为预测控制（BPC），无需端到端策略训练即可合成策略：结合动作感知检索度量、基于Hankel矩阵的动作延续先验与闭式单步残差校正。方法受行为系统理论启发，通过混合最能重构近期观测-动作历史的存储数据预测未来动作。在仿真基准与真实机器人上，BPC可与π0.5等学习策略竞争，为数据与训练受限场景提供免训练方案。",
+      "llm_tldr": "神经行为克隆把示教压缩进大模型，导致单步动作难以追溯、策略更新代价高昂，而检索式策略又面临记录与实时行为不匹配的问题。本文提出行为预测控制（BPC），无需端到端策略训练即可合成策略：结合动作感知检索度量、基于Hankel矩阵的动作延续先验与闭式单步残差校正。方法受行为系统理论启发，通过混合最能重构近期观测-动作历史的存储数据预测未来动作。在仿真基准与真实机器人上，BPC可与π0.5等学习策略竞争，为数据与训练受限场景提供免训练方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}
