@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-27</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-28</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 11 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 16 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-27 22:12:00 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-29 00:06:38 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 11 篇推荐（精读 6 篇，速读 5 篇）</p>
-<p>精读：《Expert-Play Contouring Control: Faster-than-Demonstration Planning from Slow Expert and Fast Play》（8.0/10）, 《AquaCap: A Training-Free Underwater Embodied Agent with Code-as-Policy》（8.0/10）</p>
-<p>速读：《Rolling-WAM: World Action Models with Rolling Imagination》（8.0/10）, 《A Topological Representation with Object-Path Graphs for Open-Vocabulary Instance Navigation》（7.0/10）, 《Norm2Tex: Augmenting Visuo-Tactile Simulations with Texture》（7.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>今日共处理16篇论文（精读5篇、速读11篇），主线集中在世界动作模型与机器人操作方向。</p>
+<p>最值得看的是两篇9.0分精读：DualWAM（双系统世界动作模型，全局规划+局部精修）和DeltaWAM（面向双臂操作的Delta世界动作模型）；速读中WALT、RoboMonitor、VLaRL均7.0分，可作补充。</p>
+<p>普通读者建议先读这两篇9分精读建立框架，再按自动驾驶、机器人监控或VLA强化学习兴趣挑对应速读。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,12 +80,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Expert-Play Contouring Control: Faster-than-Demonstration Planning from Slow Expert and Fast Play">Expert-Play Contouring Control: Faster-than-Demonstration Planning from Slow Expert and Fast Play</span></li><li><span class="dpr-home-dashboard-paper-title" title="AquaCap: A Training-Free Underwater Embodied Agent with Code-as-Policy">AquaCap: A Training-Free Underwater Embodied Agent with Code-as-Policy</span></li><li><span class="dpr-home-dashboard-paper-title" title="EgoWild2Dex: Learning Dexterous Robotic Manipulation from In-the-Wild Human Experience">EgoWild2Dex: Learning Dexterous Robotic Manipulation from In-the-Wild Human Experience</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="DualWAM: Dual-System World Action Models for Asynchronous Global Planning and Local Refinement">DualWAM: Dual-System World Action Models for Asynchronous Global Planning and Local Refinement</span></li><li><span class="dpr-home-dashboard-paper-title" title="DeltaWAM: Delta World Action Models for Bimanual Manipulation">DeltaWAM: Delta World Action Models for Bimanual Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="AD-WM: Action-Discriminative World Models for Counterfactual Model Predictive Control">AD-WM: Action-Discriminative World Models for Counterfactual Model Predictive Control</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>5</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -94,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">5 篇</strong>
+    <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Rolling-WAM: World Action Models with Rolling Imagination">Rolling-WAM: World Action Models with Rolling Imagination</span></li><li><span class="dpr-home-dashboard-paper-title" title="A Topological Representation with Object-Path Graphs for Open-Vocabulary Instance Navigation">A Topological Representation with Object-Path Graphs for Open-Vocabulary Instance Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Norm2Tex: Augmenting Visuo-Tactile Simulations with Texture">Norm2Tex: Augmenting Visuo-Tactile Simulations with Texture</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="WALT: Learning World-Model-Aligned Latent Trajectories for Autonomous Driving">WALT: Learning World-Model-Aligned Latent Trajectories for Autonomous Driving</span></li><li><span class="dpr-home-dashboard-paper-title" title="RoboMonitor: Label-Efficient Runtime Monitoring of Robot Task Execution via Predictive Representation Learning">RoboMonitor: Label-Efficient Runtime Monitoring of Robot Task Execution via Predictive Representation Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="VLaRL: Augmenting Vision-Language-Action Models with Simulation-Trained Latent-Conditioned Residual RL">VLaRL: Augmenting Vision-Language-Action Models with Simulation-Trained Latent-Conditioned Residual RL</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>5</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
 </div>
 

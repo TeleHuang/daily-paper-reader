@@ -1,0 +1,265 @@
+{
+  "date": "20260928",
+  "date_label": "",
+  "generated_at": "2026-09-29 00:06:38 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.24868v1",
+      "route": "202609/28/2609.24868v1-dualwam-dual-system-world-action-models-for-asynchronous-global-planning-and-local-refinement",
+      "title": "DualWAM: Dual-System World Action Models for Asynchronous Global Planning and Local Refinement",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "双系统世界动作模型实现全局规划与高频闭环控制",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.28811v1",
+      "route": "202609/28/2609.28811v1-deltawam-delta-world-action-models-for-bimanual-manipulation",
+      "title": "DeltaWAM: Delta World Action Models for Bimanual Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "增量预测与流式记忆的世界动作模型用于控制",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.30264v1",
+      "route": "202609/28/2609.30264v1-ad-wm-action-discriminative-world-models-for-counterfactual-model-predictive-control",
+      "title": "AD-WM: Action-Discriminative World Models for Counterfactual Model Predictive Control",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向反事实模型预测控制的动作判别联合嵌入世界模型",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.31313v1",
+      "route": "202609/28/2609.31313v1-towards-vla-dreamer-refining-vla-behavior-using-world-models",
+      "title": "Towards VLA-Dreamer: Refining VLA Behavior Using World Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "在VLA嵌入空间训练预测世界模型做潜空间未来预测",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.31394v1",
+      "route": "202609/28/2609.31394v1-internw0--a-world-action-model-bridging-predictive-dynamics-and-actions-with-20k-hours-of-open-data",
+      "title": "InternW0-$Δ$: A World Action Model Bridging Predictive Dynamics and Actions with 20K+ Hours of Open Data",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "融合大规模预训练先验的统一世界动作模型",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.30436v1",
+      "route": "202609/28/2609.30436v1-walt-learning-world-model-aligned-latent-trajectories-for-autonomous-driving",
+      "title": "WALT: Learning World-Model-Aligned Latent Trajectories for Autonomous Driving",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "对齐世界模型的潜在轨迹空间用于规划",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.30715v1",
+      "route": "202609/28/2609.30715v1-robomonitor-label-efficient-runtime-monitoring-of-robot-task-execution-via-predictive-representation-learning",
+      "title": "RoboMonitor: Label-Efficient Runtime Monitoring of Robot Task Execution via Predictive Representation Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "动作条件未来特征预测作为预测式表示学习",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.30868v1",
+      "route": "202609/28/2609.30868v1-vlarl-augmenting-vision-language-action-models-with-simulation-trained-latent-conditioned-residual-rl",
+      "title": "VLaRL: Augmenting Vision-Language-Action Models with Simulation-Trained Latent-Conditioned Residual RL",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "冻结VLA残差策略的仿真到现实迁移",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.30965v1",
+      "route": "202609/28/2609.30965v1-fram-trajectory-guided-visual-feature-selection-for-compact-language-conditioned-robot-manipulation",
+      "title": "FRAM: Trajectory-Guided Visual Feature Selection for Compact Language-Conditioned Robot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "紧凑小策略降低参数量便于机器人操作部署",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.31112v1",
+      "route": "202609/28/2609.31112v1-dualmanip-agentic-dynamic-manipulation-via-dual-path-semantic-reasoning-and-geometric-adaptation",
+      "title": "DualManip: Agentic Dynamic Manipulation via Dual-Path Semantic Reasoning and Geometric Adaptation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "解耦VLM语义推理与快速几何自适应以降低延迟",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.24155v1",
+      "route": "202609/28/2609.24155v1-object-centric-conditioning-for-visuomotor-flow-matching",
+      "title": "Object-Centric Conditioning for Visuomotor Flow Matching",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "物体中心流匹配视觉运动机器人策略，兼顾推理效率",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.25766v1",
+      "route": "202609/28/2609.25766v1-neurosymbolic-action-model-learning-under-partial-observability",
+      "title": "Neurosymbolic Action Model Learning under Partial Observability",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "部分可观测下为规划学习动作模型",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.28247v1",
+      "route": "202609/28/2609.28247v1-controlling-collectives-of-ai-agents-in-reasoning-space-with-spatial-transformers",
+      "title": "Controlling Collectives of AI Agents in Reasoning Space with Spatial Transformers",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用LLM推理空间反馈控制多机器人集群",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.29281v1",
+      "route": "202609/28/2609.29281v1-online-task-adaptation-via-self-organisation",
+      "title": "Online Task Adaptation via Self-Organisation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "固定慢参数下的无梯度在线任务适配",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.30462v1",
+      "route": "202609/28/2609.30462v1-policy-calibrated-dagger-offline-calibrated-noise-injection-for-imitation-learning",
+      "title": "Policy-Calibrated DAgger: Offline Calibrated Noise Injection for Imitation Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向模仿学习的离线标定噪声注入数据采集",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    },
+    {
+      "paper_id": "2609.30951v1",
+      "route": "202609/28/2609.30951v1-bundled-contact-gradients-stabilizing-differentiable-simulation-for-deployable-dynamic-tasks",
+      "title": "Bundled Contact Gradients: Stabilizing Differentiable Simulation for Deployable Dynamic Tasks",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "样本高效的可微仿真梯度，助力策略迁移到真实世界",
+      "first_seen_at": "2026-09-29 00:06:38 UTC",
+      "updated_at": "2026-09-29 00:06:38 UTC"
+    }
+  ]
+}
