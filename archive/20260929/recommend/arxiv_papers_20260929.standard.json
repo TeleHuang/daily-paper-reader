@@ -1,0 +1,820 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-29T23:16:58.274008+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 21,
+    "deep_cap": 6,
+    "deep_selected": 8,
+    "quick_candidates": 26,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2609.32779v1",
+      "source": "arxiv",
+      "title": "Copper-Policy: Focus on the Representation for Robust Robot Manipulation",
+      "abstract": "World Action Models (WAMs) acquire behavioral priors by modeling future scene evolution, but predicting detailed futures in pixel or latent space incurs substantial cost. Recent evidence that co-training gains persist without test-time generation raises a question: what must a WAM learn to improve control? We introduce Copper-Policy, which learns a compact World representation with the policy rather than relying on a predefined target space. Through temporal joint-embedding prediction, it predicts future observation embeddings conditioned on task intention without reconstructing pixels. This prediction and action decoding shape the representation jointly, while the policy retains access to current-frame spatial detail for execution. Representation analyses show that the learned features better separate task-driven change from perturbations and provide complementary information for control. Compact prediction targets reduce training tokens per sample, enabling a 2B-parameter model trained in 9.67 hours on 8$\\times$ RTX 5090 GPUs and 6$\\times$ faster than Fast-WAM on matched A100 GPUs. Copper-Policy outperforms every compared method without embodied pretraining on RoboTwin and several embodied-pretrained VLAs on LIBERO-Plus (80.85%). On three challenging real-robot tasks, it performs comparably to $π_{0.5}$ and attains a higher average score. Together, these results show that Copper-Policy combines strong control performance with efficient training.",
+      "authors": [
+        "Zexin Feng",
+        "Yixu Feng",
+        "Lingyu Xiao",
+        "Shang Su",
+        "Kexin Zheng",
+        "Chang Xu",
+        "Mengkai Shi",
+        "Shuo Feng",
+        "Xintao Yan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-26T16:53:28+00:00",
+      "link": "https://arxiv.org/pdf/2609.32779v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "temporal joint-embedding prediction shapes a compact world representation with the policy",
+      "llm_evidence_cn": "时间联合嵌入预测与策略共同塑造紧凑世界表示",
+      "llm_evidence": "时间联合嵌入预测与策略共同塑造紧凑世界表示",
+      "canonical_evidence": "时间联合嵌入预测与策略共同塑造紧凑世界表示",
+      "llm_tldr_en": "Copper-Policy learns a compact world representation jointly with the policy via temporal joint-embedding prediction conditioned on task intention, avoiding pixel reconstruction while improving robust manipulation control.",
+      "llm_tldr_cn": "世界动作模型通过建模未来场景演化获得行为先验，但在像素或潜在空间预测详细未来代价高昂，且不清楚世界模型究竟需学到什么才能改善控制。本文提出Copper-Policy，通过时间联合嵌入预测在任务意图条件下预测未来观测嵌入，不重建像素，并与动作解码共同塑造紧凑世界表示。实验表明在保留当前帧空间细节的同时提升操作鲁棒性，说明表示而非生成才是关键，为基于世界模型与潜在预测的具身学习新范式提供支撑。",
+      "llm_tldr": "世界动作模型通过建模未来场景演化获得行为先验，但在像素或潜在空间预测详细未来代价高昂，且不清楚世界模型究竟需学到什么才能改善控制。本文提出Copper-Policy，通过时间联合嵌入预测在任务意图条件下预测未来观测嵌入，不重建像素，并与动作解码共同塑造紧凑世界表示。实验表明在保留当前帧空间细节的同时提升操作鲁棒性，说明表示而非生成才是关键，为基于世界模型与潜在预测的具身学习新范式提供支撑。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "new learning paradigm for embodied agents based on world models and latent space prediction",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.32921v1",
+      "source": "arxiv",
+      "title": "Adaptive Latent Capacity for World Models",
+      "abstract": "We introduce Adaptive LeWorldModel (ALeWM), a world model based on a joint-embedding predictive architecture (JEPA) that learns to concentrate predictive information in compact prefixes of a wide latent representation. To encourage this ordering, ALeWM learns a sequence-conditioned distribution over prefix lengths and trains the predictor to estimate the full next embedding from a sampled input prefix. As standard anti-collapse objectives encourage variation across latent coordinates and do not organize them by predictive importance, we also introduce MixSIGReg. MixSIGReg regularizes the masked embeddings against a prior-weighted mixture with Gaussian active prefixes and zeros in the remaining coordinates. As a result, the ALeWM objective encourages early coordinates to retain information useful for prediction and recursive planning. Our analysis shows that the mixture distribution used by MixSIGReg assigns higher variance to earlier coordinate blocks and lower variance to later ones. In addition, we show that, under specified assumptions, prediction error is minimized by placing the information most useful for prediction in earlier blocks. Empirically, we study the behavior of ALeWM in a controlled dynamical system with known state variables and in goal-conditioned visual control. We show that ALeWM consistently achieves higher mean success rates than tuned fixed-width LeWM, with lower planning capacity on average.",
+      "authors": [
+        "Idan Achituve",
+        "Lior Dikstein",
+        "Idit Diamant",
+        "Arnon Netzer",
+        "Hai Victor Habi"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-26T20:16:33+00:00",
+      "link": "https://arxiv.org/pdf/2609.32921v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "JEPA-based world model concentrating predictive information in compact latent prefixes",
+      "llm_evidence_cn": "基于JEPA、将预测信息集中于紧凑潜在前缀的世界模型",
+      "llm_evidence": "基于JEPA、将预测信息集中于紧凑潜在前缀的世界模型",
+      "canonical_evidence": "基于JEPA、将预测信息集中于紧凑潜在前缀的世界模型",
+      "llm_tldr_en": "ALeWM is a JEPA-based world model that learns a sequence-conditioned prefix-length distribution and MixSIGReg regularization to concentrate predictive information in compact latent prefixes.",
+      "llm_tldr_cn": "标准反坍缩目标只鼓励潜在坐标变化，却未按预测重要性组织潜在表示，导致世界模型表示冗余。本文提出基于联合嵌入预测架构的自适应世界模型ALeWM，学习序列条件的前缀长度分布，并用MixSIGReg对掩码嵌入正则化，使预测信息集中于紧凑前缀。结果表明早期坐标能保留更多预测信息，实现自适应潜在容量，为自监督世界模型的潜在表示组织提供新方法。",
+      "llm_tldr": "标准反坍缩目标只鼓励潜在坐标变化，却未按预测重要性组织潜在表示，导致世界模型表示冗余。本文提出基于联合嵌入预测架构的自适应世界模型ALeWM，学习序列条件的前缀长度分布，并用MixSIGReg对掩码嵌入正则化，使预测信息集中于紧凑前缀。结果表明早期坐标能保留更多预测信息，实现自适应潜在容量，为自监督世界模型的潜在表示组织提供新方法。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "joint embedding predictive architecture for self-supervised world models",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.33563v1",
+      "source": "arxiv",
+      "title": "MA-JEPA: Joint-Embedding World Models for Multi-Agent Reinforcement Learning",
+      "abstract": "World models improve sample efficiency by training policies on imagined trajectories, but their usefulness depends on learning representations that capture the information needed for future control. We study whether self-supervised joint-embedding prediction (JEPA) can provide this learning signal for multi-agent reinforcement learning. We introduce MA-JEPA, a stochastic world model that replaces observation reconstruction with prediction of target representations, enabling model-based multi-agent reinforcement learning with centralized training and decentralized execution. A categorical latent state and a causal Transformer are trained with posterior and action-conditioned dynamics prediction objectives and are then used for actor-critic learning from latent imagination. A training-only joint predictor conditions on all agents' local states and actions to predict each agent's next local observation embedding. These predictions are passed through the same local posterior used during real interaction with a centralized critic that is used only for value learning, with execution remaining decentralized. Our experiments show that this architecture performs strongly on SMAC, matching or exceeding the strongest reported comparator mean win rate on four of eight evaluated maps.",
+      "authors": [
+        "Brandon Gary Kaplowitz",
+        "Osaze James Obahor",
+        "Christian Schroeder de Witt"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.MA"
+      ],
+      "published": "2026-09-27T13:37:30+00:00",
+      "link": "https://arxiv.org/pdf/2609.33563v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "self-supervised joint-embedding prediction world model replacing observation reconstruction",
+      "llm_evidence_cn": "以自监督联合嵌入预测替代观测重建的世界模型",
+      "llm_evidence": "以自监督联合嵌入预测替代观测重建的世界模型",
+      "canonical_evidence": "以自监督联合嵌入预测替代观测重建的世界模型",
+      "llm_tldr_en": "MA-JEPA is a stochastic joint-embedding world model for multi-agent RL that replaces observation reconstruction with prediction of target representations, trained with posterior and action-conditioned dynamics objectives for centralized training and decentralized execution.",
+      "llm_tldr_cn": "世界模型能通过在想象轨迹上训练策略提升样本效率，但其效果取决于能否学到面向未来控制的表示。论文提出MA-JEPA，用自监督联合嵌入预测替代观测重建，以类别隐状态和因果Transformer训练后验与动作条件动力学预测目标，用于集中训练、分散执行的多智能体强化学习。该工作验证了JEPA式自监督信号可为多智能体世界模型提供有效学习信号。",
+      "llm_tldr": "世界模型能通过在想象轨迹上训练策略提升样本效率，但其效果取决于能否学到面向未来控制的表示。论文提出MA-JEPA，用自监督联合嵌入预测替代观测重建，以类别隐状态和因果Transformer训练后验与动作条件动力学预测目标，用于集中训练、分散执行的多智能体强化学习。该工作验证了JEPA式自监督信号可为多智能体世界模型提供有效学习信号。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "joint embedding predictive architecture for self-supervised world models",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.34085v1",
+      "source": "arxiv",
+      "title": "AD-E2E-JEPA: A Joint-Embedding Predictive Architecture For End-to-End Autonomous Driving",
+      "abstract": "Autonomous driving requires \\textit{world models} that can understand the physical world, reason and plan, and operate safely. In this paper, we first systematically evaluate existing action-conditioned joint-embedding predictive architecture (JEPA) world models, including LeWM, DINO-WM, and JEPA-WM for end-to-end autonomous driving (E2EAD). To isolate world-model quality from policy learning, we employ a goal-conditioned zero-shot planning setting that evaluates these models using ground-truth future observations as goals, without training any driving policy. We find that existing JEPA-based world models are either accurate for driving but computationally expensive, or computationally efficient but insufficient for planning. To address this trade-off, we propose \\textbf{AD-E2E-JEPA}, which introduces a SIGReg-regularized learnable projector applied to projected patch embeddings. The projector reduces the number of planning patches by $16\\times$ and the embedding dimension by $4\\times$, achieving a $100\\times$ inference speedup while retaining planning performance, with a 0.8-second runtime for an 8-frame rollout over 256 candidate trajectories. \\textit{Without} training any driving policy, the world model itself reaches the goals located 20 meters away on average within the displacement of respectively 4.0/2.8 meters, using world-model rollouts over trajectory vocabularies of respectively 256/8,192 candidates. On the NAVSIMv2 benchmark, it achieves 67.3/72.9 EPDMS with multiplicative safety metrics and 84.1/86.5 EPDMS$^{\\dagger}$ without them in goal-conditioned zero-shot planning. Experiments further show that the self-supervised pretrained projector improves downstream imitation learning performance from 80.2 to 85.4 EPDMS. The source code is available at https://github.com/HaoranZhuExplorer/AD-E2E-JEPA",
+      "authors": [
+        "Haoran Zhu",
+        "Wancong Zhang",
+        "Yann LeCun",
+        "Anna Choromanska"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.CV",
+        "cs.LG"
+      ],
+      "published": "2026-09-28T01:22:22+00:00",
+      "link": "https://arxiv.org/pdf/2609.34085v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "JEPA world models for end-to-end driving planning",
+      "llm_evidence_cn": "用于端到端驾驶规划的JEPA世界模型",
+      "llm_evidence": "用于端到端驾驶规划的JEPA世界模型",
+      "canonical_evidence": "用于端到端驾驶规划的JEPA世界模型",
+      "llm_tldr_en": "Evaluates action-conditioned JEPA world models for end-to-end autonomous driving in a goal-conditioned zero-shot planning setting, exposing accuracy-efficiency tradeoffs and proposing an improved architecture.",
+      "llm_tldr_cn": "自动驾驶需要能理解物理世界并推理规划的世界模型。本文系统评估了LeWM、DINO-WM、JEPA-WM等动作条件JEPA世界模型在端到端驾驶中的表现，采用目标条件零样本规划设置以分离世界模型质量与策略学习。结果显示现有模型或在驾驶上准确但计算昂贵，或高效却不足以规划，作者据此提出改进架构，为JEPA世界模型在自动驾驶中的应用提供了系统基准与设计方向。",
+      "llm_tldr": "自动驾驶需要能理解物理世界并推理规划的世界模型。本文系统评估了LeWM、DINO-WM、JEPA-WM等动作条件JEPA世界模型在端到端驾驶中的表现，采用目标条件零样本规划设置以分离世界模型质量与策略学习。结果显示现有模型或在驾驶上准确但计算昂贵，或高效却不足以规划，作者据此提出改进架构，为JEPA世界模型在自动驾驶中的应用提供了系统基准与设计方向。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "joint embedding predictive architecture for self-supervised world models",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.34375v1",
+      "source": "arxiv",
+      "title": "LRC-JEPA: Disentangling Dynamics and Residual Context for Efficient World Models",
+      "abstract": "Compact JEPA world models enable efficient latent-space planning, but low-dimensional representation trained under reward-free self-supervision must encode both action-conditioned dynamics and predictable visual context. This competition can entangle controllable state with high-rank nuisance appearance and degrade planning as scenes become more complex. We introduce LRC-JEPA, a lightweight end-to-end world model that routes information into a compact predictive latent $\\mathbf{z}$ and learned-query residual-context embeddings $\\mathbf{u}$. Only $\\mathbf{z}$ is propagated by the dynamics model and used for planning, while $\\mathbf{u}$ captures temporally persistent information for cross-attention reconstruction; a differentiable residual connection encourages the latent to retain complementary dynamic content. Under explicit assumptions, we show that the resulting representation is sufficient, minimal, nuisance-invariant, and disentangled. Across four simulated control environments, LRC-JEPA improves average planning success over a parameter-matched JEPA baseline by 9 percentage points and matches or exceeds substantially larger pretrained models. On the real-world Bridge-v2 set, its 5.5M-parameter active encoder outperforms DINO-WM (22.1M) and V-JEPA2 (303.9M) encoders while also enabling faster planning. Physical-state probes, reconstruction interventions, and ablations confirm the effectiveness of LRC-JEPA's representation disentanglement.",
+      "authors": [
+        "Luzhe Huang",
+        "Lei Chu",
+        "Jingyi Liang",
+        "Yuhuan Zhao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.RO"
+      ],
+      "published": "2026-09-28T05:48:14+00:00",
+      "link": "https://arxiv.org/pdf/2609.34375v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "JEPA world model with latent-space planning under self-supervision",
+      "llm_evidence_cn": "自监督下的JEPA世界模型与隐空间规划",
+      "llm_evidence": "自监督下的JEPA世界模型与隐空间规划",
+      "canonical_evidence": "自监督下的JEPA世界模型与隐空间规划",
+      "llm_tldr_en": "LRC-JEPA routes information into a compact predictive latent and residual-context embeddings, disentangling action-conditioned dynamics from nuisance appearance for efficient latent-space planning.",
+      "llm_tldr_cn": "紧凑JEPA世界模型的低维表征需同时编码动作动力学与可预测视觉上下文，易将可控状态与高维冗余外观纠缠并损害规划。本文提出LRC-JEPA，把信息分流到紧凑预测隐变量z与可学习查询的残差上下文嵌入u，仅由z经动力学传播并用于规划，u通过交叉注意力重构保留时序持久信息。实验表明该解耦能提升复杂场景下的规划稳定性与效率，为自监督世界模型提供更可用的隐空间表征。",
+      "llm_tldr": "紧凑JEPA世界模型的低维表征需同时编码动作动力学与可预测视觉上下文，易将可控状态与高维冗余外观纠缠并损害规划。本文提出LRC-JEPA，把信息分流到紧凑预测隐变量z与可学习查询的残差上下文嵌入u，仅由z经动力学传播并用于规划，u通过交叉注意力重构保留时序持久信息。实验表明该解耦能提升复杂场景下的规划稳定性与效率，为自监督世界模型提供更可用的隐空间表征。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "joint embedding predictive architecture for self-supervised world models",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.34414v1",
+      "source": "arxiv",
+      "title": "From World Models to World Action Models: Rethinking Next-State Prediction",
+      "abstract": "Predicting the next state is a core paradigm of World Models for modeling physical dynamics, emphasizing prediction fidelity. As World Models evolve into World-Action Models (WAMs), existing methods still fix the next state before training as RGB, a single latent feature, or a static combination of predefined targets, thereby constraining action learning to the inductive biases preserved by a particular representation. To address this limitation, we propose CF-WAM, a dynamic next-state prediction framework that samples visual, semantic, geometric, and interaction projections of the same future, standardizes them into a common video form, and supervises a unified WAM across these projections. The action-relevant constraints exposed by these projections accumulate across training steps, forcing WAM to capture the underlying state-transition structure that supports multiple projections of the same action-conditioned future. This dynamic mechanism also provides a natural cross-embodiment dynamics reference frame for Human and Robot learning. By jointly learning across different next-state parameterizations, heterogeneous Human and Robot experience can bypass appearance differences and directly contribute to shared state-transition learning, improving cross-embodiment generalization. Experiments show that CF-WAM improves both training efficiency and final control performance, while translating Human experience effectively into policy gains. CF-WAM achieves state-of-the-art performance on RoboCasa-GR1 with an average success rate of 82.50%, while reaching 82.65% on LIBERO-Plus and up to 84.00% in real-world evaluations.",
+      "authors": [
+        "Tingyu Yuan",
+        "Ziming Ji",
+        "Biaoliang Guan",
+        "Wen Ye",
+        "Wenrui Tian",
+        "Zhaopeng Gu",
+        "Feihong Zhang",
+        "Xu Yang",
+        "Yan Huang",
+        "Zhaowen Li",
+        "Chaoyang Zhao",
+        "Jinqiao Wang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-28T06:30:21+00:00",
+      "link": "https://arxiv.org/pdf/2609.34414v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "dynamic next-state prediction framework for world action models and latent projections",
+      "llm_evidence_cn": "面向世界动作模型的动态下一状态预测与多投影潜在表示框架",
+      "llm_evidence": "面向世界动作模型的动态下一状态预测与多投影潜在表示框架",
+      "canonical_evidence": "面向世界动作模型的动态下一状态预测与多投影潜在表示框架",
+      "llm_tldr_en": "CF-WAM rethinks next-state prediction in World-Action Models by sampling visual, semantic, geometric and interaction projections of the same future into a common video form, supervising a unified model to expose more action-relevant constraints.",
+      "llm_tldr_cn": "现有世界模型在训练前把下一状态固定为RGB、单一隐特征或预定义目标的静态组合，使动作学习受限于特定表示的归纳偏置。本文提出CF-WAM动态下一状态预测框架，对同一未来的视觉、语义、几何与交互投影进行采样，并统一为标准视频形式，从而监督一个统一的World-Action Model。实验表明这些投影能暴露更丰富的动作相关约束，提升动作学习效果。该工作为具身智能中基于世界模型与潜在空间预测的新范式提供了思路。",
+      "llm_tldr": "现有世界模型在训练前把下一状态固定为RGB、单一隐特征或预定义目标的静态组合，使动作学习受限于特定表示的归纳偏置。本文提出CF-WAM动态下一状态预测框架，对同一未来的视觉、语义、几何与交互投影进行采样，并统一为标准视频形式，从而监督一个统一的World-Action Model。实验表明这些投影能暴露更丰富的动作相关约束，提升动作学习效果。该工作为具身智能中基于世界模型与潜在空间预测的新范式提供了思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "new learning paradigm for embodied agents based on world models and latent space prediction",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.35047v1",
+      "source": "arxiv",
+      "title": "EMPIRIC: Experiment-Driven Learning of Residual World Models for Robot Planning",
+      "abstract": "A robot should be able to learn through experiments how unfamiliar objects behave and interact, then plan with that knowledge. It need not start from scratch: physics engines supply knowledge of motion and contact, but can omit entire mechanisms, such as glue curing, water heating, or wind. We present EMPIRIC, an agent that learns a residual world model: a physics engine extended with code for the missing mechanisms. The learned programs can introduce new forces, constraints, and hidden state, and Bayesian inference estimates their parameters and states from noisy observations. The resulting model lets the agent predict the outcomes of actions, choose informative experiments, and revise its hypotheses when predictions fail. Across five simulated domains, EMPIRIC learns interpretable, reusable models, and solves more tasks with fewer environment interactions than all three baselines. On a physical robot, it learns wind forces and domino masses to solve a manipulation task. Website and code: https://yichao-liang.github.io/empiric",
+      "authors": [
+        "Yichao Liang",
+        "Amber Li",
+        "Dat Nguyen",
+        "Emily Bunnapradist",
+        "Michelangelo Naim",
+        "Sreela Kodali",
+        "Matteo Merler",
+        "Bowen Li",
+        "Kiran Gopinathan",
+        "Yiyun Liu",
+        "Nikhil Pimpalkhare",
+        "Joshua B. Tenenbaum",
+        "Adrian Weller",
+        "Zenna Tavares",
+        "Tom Silver",
+        "Kevin Ellis"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-28T12:42:51+00:00",
+      "link": "https://arxiv.org/pdf/2609.35047v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "residual world model for robot planning via experiments",
+      "llm_evidence_cn": "通过实验学习残差世界模型以支持机器人规划",
+      "llm_evidence": "通过实验学习残差世界模型以支持机器人规划",
+      "canonical_evidence": "通过实验学习残差世界模型以支持机器人规划",
+      "llm_tldr_en": "EMPIRIC learns a residual world model that extends a physics engine with code for missing mechanisms, using Bayesian inference over parameters and hidden state to predict, choose experiments, and revise hypotheses.",
+      "llm_tldr_cn": "机器人应能通过实验学习陌生物体的行为并据此规划。物理引擎虽提供运动与接触知识，却可能缺失胶水固化、水加热或风等机制。本文提出EMPIRIC，学习残差世界模型，即用代码为缺失机制扩展物理引擎，可引入新力、约束与隐藏状态，并用贝叶斯推断从含噪观测中估计参数与状态。该模型使智能体能够预测动作结果、选择信息量大的实验并在预测失败时修正假设，在多个仿真任务中验证了有效性。",
+      "llm_tldr": "机器人应能通过实验学习陌生物体的行为并据此规划。物理引擎虽提供运动与接触知识，却可能缺失胶水固化、水加热或风等机制。本文提出EMPIRIC，学习残差世界模型，即用代码为缺失机制扩展物理引擎，可引入新力、约束与隐藏状态，并用贝叶斯推断从含噪观测中估计参数与状态。该模型使智能体能够预测动作结果、选择信息量大的实验并在预测失败时修正假设，在多个仿真任务中验证了有效性。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.35603v1",
+      "source": "arxiv",
+      "title": "Control-Geometry Straightening for Sampling-Based Latent Planning",
+      "abstract": "Joint-embedding predictive architectures enable planning with latent world models, but accurate transition prediction alone does not ensure that the planning objective is easy to optimize. We introduce Control-Geometry Straightening (CGS), a single auxiliary loss that learns planner-friendly representations by directly straightening control geometry for sampling-efficient planning. CGS matches pairwise cosine similarities among actions to those among corresponding latent differences only using local transitions from pixel-action pairs. The loss can be applied across world-model architectures using end-to-end learned or pretrained representations. Under linear-dynamics, our theoretical analysis connects this objective to temporal straightening and more balanced terminal-cost curvature across the full planning horizon, yielding finite-budget guarantees for MPPI, local contraction results for CEM, and convergence bounds for gradient descent. Across four control environments and multiple planners, CGS improves planning with fewer sampled candidates and refinement steps, achieving success-rate gains up to 20 and 12.6 percentage points over LeWorldModel (LeWM) and its temporal-straightening variant (LeWM+TS), respectively, with sampling-based planners using 128 candidates per update. Probes, comparisons with DINO-WM architecture, and planner-side ablations clarify how latent motion organization, state dependence, and dynamical context shape planning behavior. Straightening control geometry thus makes good action sequences easier to find under limited planning budgets.",
+      "authors": [
+        "Ziang Fu",
+        "Ning Ning"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "stat.ML"
+      ],
+      "published": "2026-09-28T16:51:33+00:00",
+      "link": "https://arxiv.org/pdf/2609.35603v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "auxiliary loss for JEPA latent world models enabling sampling-efficient planning",
+      "llm_evidence_cn": "面向JEPA潜在世界模型实现高效采样规划的辅助损失",
+      "llm_evidence": "面向JEPA潜在世界模型实现高效采样规划的辅助损失",
+      "canonical_evidence": "面向JEPA潜在世界模型实现高效采样规划的辅助损失",
+      "llm_tldr_en": "Joint-embedding predictive architectures allow latent world-model planning, but accurate prediction does not guarantee easy optimization. CGS adds one auxiliary loss straightening control geometry, matching action cosine similarities to latent differences for sampling-efficient planning.",
+      "llm_tldr_cn": "联合嵌入预测架构可用潜在世界模型进行规划，但仅靠精确的转移预测并不保证规划目标易于优化。论文提出控制几何拉直（CGS），用单一辅助损失将动作间余弦相似度与对应潜在差对齐，从而学到对规划器友好的表示。该方法可跨多种世界模型架构应用，在理论上联系到时间拉直，显著提升采样效率，为潜在空间规划提供了新的表示学习范式。",
+      "llm_tldr": "联合嵌入预测架构可用潜在世界模型进行规划，但仅靠精确的转移预测并不保证规划目标易于优化。论文提出控制几何拉直（CGS），用单一辅助损失将动作间余弦相似度与对应潜在差对齐，从而学到对规划器友好的表示。该方法可跨多种世界模型架构应用，在理论上联系到时间拉直，显著提升采样效率，为潜在空间规划提供了新的表示学习范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "joint embedding predictive architecture for self-supervised world models",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.32453v1",
+      "source": "arxiv",
+      "title": "DRAM: Delta-rule Recurrent Associative Memory for Robot Manipulation Policies",
+      "abstract": "Robotic manipulation is inherently history-dependent, yet most pretrained robotic policies condition on only the current observation or a short temporal window. Equipping such policies with long-term memory remains challenging: existing approaches either feed the backbone multi-frame observation windows, which substantially increase inference cost, or rely on pre-defined semantic features, which limit task generality and may also require the retraining of the backbone to adapt to the memory. We introduce DRAM (Delta-rule Recurrent Associative Memory), a plug-and-play memory module that can be attached to a wide range of pretrained robotic policies, endowing them with long-horizon memory without architectural modification or backbone retraining, requiring only task-specific post-training of the memory module and action expert. DRAM maintains a fixed-size associative memory using gated delta-rule linear attention, with a modified update that incorporates all tokens within each frame in parallel. An architecture-agnostic readout integrates historical context into action prediction across different policy architectures. Experiments show that DRAM consistently improves frozen pretrained policies over short-context baselines and alternative compact memory designs, validating its effectiveness as a fixed-size, post-hoc memory module trained with the backbone frozen.",
+      "authors": [
+        "Xinyu Zhao",
+        "Yixiang Shan",
+        "Tao Yang",
+        "Runyu Lei",
+        "Yiming Zhao",
+        "Jiaxin Fan",
+        "Zongbao Feng",
+        "Peng Jia"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-26T10:38:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.32453v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "plug-and-play memory module avoiding increased inference cost and backbone retraining",
+      "llm_evidence_cn": "即插即用记忆模块，避免推理成本上升与骨干重训",
+      "llm_evidence": "即插即用记忆模块，避免推理成本上升与骨干重训",
+      "canonical_evidence": "即插即用记忆模块，避免推理成本上升与骨干重训",
+      "llm_tldr_en": "DRAM is a plug-and-play delta-rule recurrent associative memory module that gives pretrained robot policies long-horizon memory without architectural changes, backbone retraining, or heavy inference cost.",
+      "llm_tldr_cn": "机器人操作本质依赖历史，但多数预训练策略仅用当前或短时观测，长时记忆要么靠多帧输入显著增加推理成本，要么依赖受限的预定义语义特征。论文提出DRAM，一种基于Delta规则的循环联想记忆即插即用模块，可附加到多种预训练策略上，无需改架构或重训骨干即可获得长时程记忆。该工作以轻量记忆提升了操作策略的历史依赖建模能力并控制推理开销。",
+      "llm_tldr": "机器人操作本质依赖历史，但多数预训练策略仅用当前或短时观测，长时记忆要么靠多帧输入显著增加推理成本，要么依赖受限的预定义语义特征。论文提出DRAM，一种基于Delta规则的循环联想记忆即插即用模块，可附加到多种预训练策略上，无需改架构或重训骨干即可获得长时程记忆。该工作以轻量记忆提升了操作策略的历史依赖建模能力并控制推理开销。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.32155v1",
+      "source": "arxiv",
+      "title": "RecastVLA: From Past Interaction to Future Control with Adaptive Policy States",
+      "abstract": "Sequential manipulation requires a robot to track what has already happened, even when the current scene no longer reveals it. Policies with explicit history representations make past interactions available as context for current decisions. We ask how action generation itself can form a persistent state for subsequent control. Building on action-side test-time training, RecastVLA maintains an adaptive policy state within a flow-matching vision-language-action policy. The state is represented by shared fast weights and remains fixed throughout action generation. Depth-specific interfaces read the same state, while features across depths and flow evaluations jointly define one update for the next policy call. Subsequent action losses train the initialization, interfaces, and update rule by differentiating through earlier state transitions. At deployment, updates use the policy's own action-generation features without expert action labels. Across LIBERO, RoboTwin, RoboDojo, and twelve real-robot tasks, RecastVLA improves mean success over a matched policy trained without test-time training, including 10.68 percentage points on RoboTwin Clean-to-Clean. In controlled RoboTwin comparisons, retaining state improves success, and the shared design exceeds independently trained layer-local TTT by 2.58 points.",
+      "authors": [
+        "Wenbo Li",
+        "Jun Yang",
+        "Yiteng Chen",
+        "Wei Zhang",
+        "Qingyao Wu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-26T02:17:13+00:00",
+      "link": "https://arxiv.org/pdf/2609.32155v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "adaptive policy state via shared fast weights in VLA policy",
+      "llm_evidence_cn": "VLA策略中基于共享快速权重的自适应策略状态",
+      "llm_evidence": "VLA策略中基于共享快速权重的自适应策略状态",
+      "canonical_evidence": "VLA策略中基于共享快速权重的自适应策略状态",
+      "llm_tldr_en": "RecastVLA maintains an adaptive policy state as shared fast weights within a flow-matching VLA policy, turning action generation into persistent context for future control.",
+      "llm_tldr_cn": "序列操作要求机器人记住已发生却不再显现于当前场景的交互历史，显式历史表征策略可将过往交互作为当前决策上下文。本文提出RecastVLA，基于动作侧测试时训练，在流匹配视觉-语言-动作策略中维护由共享快速权重表示、在动作生成期间保持固定的自适应策略状态。不同深度的接口读取同一状态，跨深度与流评估的特征共同定义下一次策略调用的更新。实验表明该持久状态有助于长时程控制并提升策略适应性。",
+      "llm_tldr": "序列操作要求机器人记住已发生却不再显现于当前场景的交互历史，显式历史表征策略可将过往交互作为当前决策上下文。本文提出RecastVLA，基于动作侧测试时训练，在流匹配视觉-语言-动作策略中维护由共享快速权重表示、在动作生成期间保持固定的自适应策略状态。不同深度的接口读取同一状态，跨深度与流评估的特征共同定义下一次策略调用的更新。实验表明该持久状态有助于长时程控制并提升策略适应性。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.31606v1",
+      "source": "arxiv",
+      "title": "Learning Robot Policies from Sparse Success Signals via STL-Guided Stein Variational Policy Gradient",
+      "abstract": "Learning robot policies for tasks with sparse success signals is challenging when completion depends on coordinated actions, precise contact outcomes, or satisfying several conditions together. Intricate physical interactions with the world further complicate these requirements. Prior work using conventional reward shaping mechanisms provides dense feedback but local progress might not translate into eventual task completion. We present Signal Temporal Logic-guided Stein Variational Policy Gradient (STL-SVPG), a population-based method that uses smooth STL robustness as a trajectory-level training objective. Differentiating this objective through the dynamics assigns credit to policy actions according to their effect on the complete task specification, rather than local progress alone. We evaluate the approach on six quadcopter and manipulator tasks that involves event-triggered responses, strictly ordered behavior, responses within specified deadlines, and physical interaction with the world. STL-SVPG achieves the highest mean success rate among the compared methods on five of six benchmarks. Simulation-trained policies trained in simulation transfer temporal and contact task behavior to the real world.",
+      "authors": [
+        "Hongrui Zheng",
+        "Cristian Ioan Vasile",
+        "Antonio Loquercio",
+        "Rahul Mangharam"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-25T17:55:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.31606v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "learning robot policies from sparse success signals, addressing scarce reward feedback",
+      "llm_evidence_cn": "从稀疏成功信号中学习机器人策略，缓解奖励反馈稀缺问题",
+      "llm_evidence": "从稀疏成功信号中学习机器人策略，缓解奖励反馈稀缺问题",
+      "canonical_evidence": "从稀疏成功信号中学习机器人策略，缓解奖励反馈稀缺问题",
+      "llm_tldr_en": "Learning robot policies from sparse success signals is hard when completion depends on coordinated actions or precise contact. STL-SVPG uses smooth Signal Temporal Logic robustness as a trajectory-level objective, assigning credit through dynamics to guide policy learning.",
+      "llm_tldr_cn": "当任务完成依赖协调动作、精确接触或多个条件同时满足时，仅有的稀疏成功信号使机器人策略学习十分困难，传统奖励塑形的稠密反馈也未必导向最终完成。论文提出STL-SVPG，用平滑的信号时序逻辑鲁棒性作为轨迹级目标，并借助动力学求导把信用分配给真正影响任务的动作。该方法属于群体式优化，为稀疏成功信号下的机器人策略学习提供了新的时序逻辑引导思路。",
+      "llm_tldr": "当任务完成依赖协调动作、精确接触或多个条件同时满足时，仅有的稀疏成功信号使机器人策略学习十分困难，传统奖励塑形的稠密反馈也未必导向最终完成。论文提出STL-SVPG，用平滑的信号时序逻辑鲁棒性作为轨迹级目标，并借助动力学求导把信用分配给真正影响任务的动作。该方法属于群体式优化，为稀疏成功信号下的机器人策略学习提供了新的时序逻辑引导思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.32591v1",
+      "source": "arxiv",
+      "title": "Think Fast, Plan Selectively: Adaptive Deliberation for Efficient Data-Driven MPC",
+      "abstract": "Data-driven model predictive control (MPC) combines learned world models with online trajectory optimization, achieving strong performance in continuous control. However, the per-step cost of sampling and evaluating hundreds of candidate trajectories restricts deployment to control frequencies well below what real-time robotics demands. Motivated by the dual-process theory of human cognition, which distinguishes between fast, intuitive processing (System 1) and slower, deliberative reasoning (System 2), we ask whether every decision requires the same degree of computational deliberation. We propose Fast-TD-MPC, a lightweight framework that adaptively routes between fast policy execution and test-time planning, reserving costly deliberation for states where it is most needed. Fast-TD-MPC delivers competitive task performance across 103 continuous control tasks while achieving up to ~4x faster inference. Under external disturbances, Fast-TD-MPC selectively falls back to planning, maintaining robustness comparable to the original planner.",
+      "authors": [
+        "Yi Xian Goh",
+        "Sze Jue Yang",
+        "Hao Luan"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-26T13:10:00+00:00",
+      "link": "https://arxiv.org/pdf/2609.32591v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "adaptive routing between fast policy execution and test-time planning for real-time robot control",
+      "llm_evidence_cn": "在快速策略执行与测试时规划间自适应切换，满足实时机器人控制",
+      "llm_evidence": "在快速策略执行与测试时规划间自适应切换，满足实时机器人控制",
+      "canonical_evidence": "在快速策略执行与测试时规划间自适应切换，满足实时机器人控制",
+      "llm_tldr_en": "Data-driven MPC is too slow for real-time robotics; Fast-TD-MPC adaptively routes between fast policy execution and costly test-time planning to cut per-step deliberation while retaining control quality.",
+      "llm_tldr_cn": "数据驱动模型预测控制需在线评估大量候选轨迹，单步计算开销过大，难以满足实时机器人控制频率。论文提出Fast-TD-MPC，借鉴双过程认知理论，在快速策略执行与慢速测试时规划之间自适应路由，仅对困难决策保留昂贵深思。实验表明该方法在保持连续控制性能的同时显著降低每步计算量，为世界模型驱动控制走向实时部署提供了新思路。",
+      "llm_tldr": "数据驱动模型预测控制需在线评估大量候选轨迹，单步计算开销过大，难以满足实时机器人控制频率。论文提出Fast-TD-MPC，借鉴双过程认知理论，在快速策略执行与慢速测试时规划之间自适应路由，仅对困难决策保留昂贵深思。实验表明该方法在保持连续控制性能的同时显著降低每步计算量，为世界模型驱动控制走向实时部署提供了新思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.32236v1",
+      "source": "arxiv",
+      "title": "RoboFFT: Finetuning generative robot policy via online reinforcement learning with forward process",
+      "abstract": "Generative models, such as diffusion and flow-based models, have shown strong promise for robot policy learning by capturing complex and multimodal action distributions from demonstrations. However, policies trained solely with imitation learning often suffer from imperfect demonstrations and distributional shifts, while further improvement typically requires additional expert data. Reinforcement learning offers a natural solution through environment interaction, but effectively finetuning generative robot policies remains challenging due to the intractability of likelihood estimation. In this work, we propose RoboFFT, a forward-process reinforcement learning framework for finetuning generative robot policies, which applies forward noising to sampled actions and uses the weighted score / flow matching loss to construct a surrogate policy ratio for PPO-style updates. We evaluate RoboFFT with popular generative robot policies on representative simulation benchmarks, including long-horizon planning and sparse reward settings. Extensive experiments and analysis demonstrate that RoboFFT consistently improves performance while achieving better stability and training efficiency. We further integrate RoboFFT into a real world RL framework and demonstrate its effectiveness in real world tasks. Project website: https://student-of-holmes.github.io/RoboFFT/.",
+      "authors": [
+        "Yu Li",
+        "Shenghe Hu",
+        "Yuhan Wang",
+        "Yaoxiang Pu",
+        "Haotong Zhang",
+        "Yuanpei Chen",
+        "Yaodong Yang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-26T04:52:58+00:00",
+      "link": "https://arxiv.org/pdf/2609.32236v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "finetuning generative robot policies via online reinforcement learning",
+      "llm_evidence_cn": "通过在线强化学习微调生成式机器人策略",
+      "llm_evidence": "通过在线强化学习微调生成式机器人策略",
+      "canonical_evidence": "通过在线强化学习微调生成式机器人策略",
+      "llm_tldr_en": "Generative robot policies trained by imitation suffer from imperfect demonstrations and distribution shift, and RL finetuning is hard due to intractable likelihoods. RoboFFT introduces a forward-process RL framework to finetune diffusion and flow policies via environment interaction.",
+      "llm_tldr_cn": "扩散与流匹配等生成模型能刻画多模态动作分布，但仅靠模仿学习的机器人策略易受次优演示与分布偏移影响，而进一步改进通常需要额外专家数据。强化学习可通过环境交互改进策略，但生成式策略的似然难以计算，微调颇具挑战。论文提出RoboFFT，一种基于前向过程的强化学习框架，用于在线微调生成式机器人策略。该方法在无需额外专家数据的情况下提升策略性能，属于面向机器人控制的参数高效适配思路。",
+      "llm_tldr": "扩散与流匹配等生成模型能刻画多模态动作分布，但仅靠模仿学习的机器人策略易受次优演示与分布偏移影响，而进一步改进通常需要额外专家数据。强化学习可通过环境交互改进策略，但生成式策略的似然难以计算，微调颇具挑战。论文提出RoboFFT，一种基于前向过程的强化学习框架，用于在线微调生成式机器人策略。该方法在无需额外专家数据的情况下提升策略性能，属于面向机器人控制的参数高效适配思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.33551v1",
+      "source": "arxiv",
+      "title": "FoLD: Force-Informed Learning for Dexterous Articulated Object Manipulation",
+      "abstract": "Transferring human demonstrations to dexterous robots remains challenging because differences in hand morphology and contact dynamics often cause retargeted motions to fail at producing the intended object behavior. We present \\textbf{FoLD}, a framework for learning dexterous manipulation of articulated objects through explicit force guidance. FoLD compute compensatory force fields from human demonstrations together with the robot's current interaction state, yielding a force prior that promotes the demonstrated object motion. This force prior informs a residual policy that adapts retargeted hand motions to the contact requirements of the task. We evaluate FoLD on a public benchmark for articulated object manipulation, where it consistently outperforms state-of-the-art baselines across tasks and embodiments. We further validate FoLD on real dexterous robot platforms, demonstrating successful transfer of human manipulation skills to robot execution. Here is the link of our project page: https://gghgghgghgg.github.io/FoLD-project-page/.",
+      "authors": [
+        "Haowei Shen",
+        "Tingai Li",
+        "Yumeng Liu",
+        "Wenyuan Guang",
+        "Xuanze Yang",
+        "Qing Fang",
+        "Kai Xu",
+        "Ligang Liu",
+        "Ruizhen Hu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-27T13:21:34+00:00",
+      "link": "https://arxiv.org/pdf/2609.33551v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "force-guided retargeting from human hand to dexterous robot",
+      "llm_evidence_cn": "从人手到灵巧机器人的力引导重定向",
+      "llm_evidence": "从人手到灵巧机器人的力引导重定向",
+      "canonical_evidence": "从人手到灵巧机器人的力引导重定向",
+      "llm_tldr_en": "FoLD learns dexterous articulated object manipulation by computing compensatory force fields from human demonstrations to form a force prior guiding a residual policy.",
+      "llm_tldr_cn": "由于手部形态与接触动力学差异，将人类演示迁移到灵巧机器人时重定向动作常无法产生预期物体行为。本文提出FoLD框架，依据人类演示与机器人当前交互状态计算补偿力场，形成促进目标物体运动的力先验，并用其引导残差策略适配任务的接触需求。在公开关节物体操作基准上FoLD持续优于对比方法，表明显式力引导能有效弥合人机形态差异，提升跨具身演示迁移的成功率。",
+      "llm_tldr": "由于手部形态与接触动力学差异，将人类演示迁移到灵巧机器人时重定向动作常无法产生预期物体行为。本文提出FoLD框架，依据人类演示与机器人当前交互状态计算补偿力场，形成促进目标物体运动的力先验，并用其引导残差策略适配任务的接触需求。在公开关节物体操作基准上FoLD持续优于对比方法，表明显式力引导能有效弥合人机形态差异，提升跨具身演示迁移的成功率。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "cross embodiment skill transfer in robot learning",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.33464v1",
+      "source": "arxiv",
+      "title": "VIDEAS: Distilling Explicit Action Semantics from Demonstration Videos for World Models via Prior-Guided Simulation",
+      "abstract": "World models learn internal representations of environment dynamics to predict future states, enabling agents to optimize action plans without physical interactions. However, developing world models that genuinely internalize underlying causal physical laws to explicitly reason about action preconditions and subsequent state transitions remains an open challenge. In this paper, we propose VIDEAS, a data distillation framework that transforms continuous physical dynamics from operational videos into explicit action semantics for foundation models. Specifically, it deconstructs visual demonstrations into discrete action trajectories and utilizes advanced vision-language models (VLMs) to extract structured knowledge encapsulating action preconditions and effects. To ensure physical consistency, we introduce a prior-guided trajectory simulation mechanism grounded within a text-based environment to rigorously validate the extracted knowledge. Notably, we incorporate negative trajectories to enrich knowledge completeness and enhance data diversity to mitigate cognitive bias. Furthermore, we present VIDEAS-WM, an 8B/9B-parameter suite of language-based world models trained on 34K high-quality samples derived from AgiBot-World dataset. Extensive experiments demonstrate that VIDEAS-WM establishes state-of-the-art performance in high-level embodied action semantic reasoning, exhibiting profound physical understanding and robust generalization across unseen scenarios.",
+      "authors": [
+        "Jianan Wang",
+        "Haoquan Zhai",
+        "Siyang Zhang",
+        "Bin Li",
+        "Juan Chen",
+        "Jingtao Qi",
+        "Zhuo Zhang",
+        "Enze Wang",
+        "Haoxiang Jin",
+        "Chen Qian"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-27T11:19:17+00:00",
+      "link": "https://arxiv.org/pdf/2609.33464v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "world model learning explicit action semantics from demonstration videos",
+      "llm_evidence_cn": "从演示视频中为世界模型蒸馏显式动作语义",
+      "llm_evidence": "从演示视频中为世界模型蒸馏显式动作语义",
+      "canonical_evidence": "从演示视频中为世界模型蒸馏显式动作语义",
+      "llm_tldr_en": "World models predict future states to plan without interaction, but rarely internalize causal physical laws. VIDEAS distills continuous dynamics from demonstration videos into explicit action semantics, deconstructing them into discrete action trajectories via VLMs.",
+      "llm_tldr_cn": "世界模型通过预测未来状态让智能体无需物理交互即可优化动作，但现有模型难以真正内化因果物理规律并显式推理动作前提与状态转移。VIDEAS 提出数据蒸馏框架，将操作视频中的连续物理动态拆解为离散动作轨迹，并借助先进视觉语言模型抽取结构化知识，为基座模型提供显式动作语义。该工作让世界模型具备更可解释的动作推理能力，为基于视频的具身世界模型学习提供了新路径。",
+      "llm_tldr": "世界模型通过预测未来状态让智能体无需物理交互即可优化动作，但现有模型难以真正内化因果物理规律并显式推理动作前提与状态转移。VIDEAS 提出数据蒸馏框架，将操作视频中的连续物理动态拆解为离散动作轨迹，并借助先进视觉语言模型抽取结构化知识，为基座模型提供显式动作语义。该工作让世界模型具备更可解释的动作推理能力，为基于视频的具身世界模型学习提供了新路径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.32239v1",
+      "source": "arxiv",
+      "title": "Federated Subspace Guided Vision-Language-Action Policy Distillation for Non-IID Multi-Robot Manipulation",
+      "abstract": "Federated learning offers a natural way for multiple robots to jointly improve manipulation policies without requiring centralized access to training demonstrations. However, non-IID task and environment distributions can induce representation drift and mutually incompatible robot-policy updates, making naive parameter aggregation destructive. We present FedDRMan, a federated subspace-guided distillation framework for heterogeneous robot manipulation. At each communication round, the server model provides a frozen teacher for local behavior cloning, while low-rank multimodal subspace and action-distribution distillation preserve globally useful representation geometry and policy behavior. To address heterogeneous aggregation, FedDRMan groups clients by update compatibility and maintains a persistent model for each cluster. The server then spectrally rebalances each compatible aggregate to mitigate attenuation of weaker task-relevant robot-policy update directions. Extensive experiments on LIBERO across diverse non-IID settings, heterogeneity levels, client participation variation, together with ablations and aggregation analyses, show that FedDRMan substantially improves knowledge transfer and consistently outperforms strong federated baselines achieving a peak mean success rate of 80.7%, 11.6 percentage points above the strongest evaluated federated baseline.",
+      "authors": [
+        "Biprodip Pal",
+        "Kaushik Roy",
+        "Yanming Zhu",
+        "Brendan Tidd",
+        "Alan Wee-Chung Liew",
+        "Peyman Moghadam"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV",
+        "cs.DC",
+        "cs.LG"
+      ],
+      "published": "2026-09-26T04:56:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.32239v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "low-rank subspace and action distillation for robot policies",
+      "llm_evidence_cn": "面向机器人策略的低秩子空间与动作蒸馏",
+      "llm_evidence": "面向机器人策略的低秩子空间与动作蒸馏",
+      "canonical_evidence": "面向机器人策略的低秩子空间与动作蒸馏",
+      "llm_tldr_en": "FedDRMan uses federated subspace-guided distillation with low-rank multimodal and action-distribution terms to preserve representation geometry across heterogeneous robots.",
+      "llm_tldr_cn": "联邦学习可让多机器人无需集中演示即可协同改进操作策略，但任务与环境的非独立同分布会导致表征漂移与策略更新互不相容，使朴素参数聚合具有破坏性。本文提出FedDRMan，在每轮通信中以服务端模型作为冻结教师进行本地行为克隆，并通过低秩多模态子空间蒸馏与动作分布蒸馏保留全局有用的表征几何与策略行为。实验表明该方法在异构机器人操作下有效缓解聚合冲突，提升协同策略性能。",
+      "llm_tldr": "联邦学习可让多机器人无需集中演示即可协同改进操作策略，但任务与环境的非独立同分布会导致表征漂移与策略更新互不相容，使朴素参数聚合具有破坏性。本文提出FedDRMan，在每轮通信中以服务端模型作为冻结教师进行本地行为克隆，并通过低秩多模态子空间蒸馏与动作分布蒸馏保留全局有用的表征几何与策略行为。实验表明该方法在异构机器人操作下有效缓解聚合冲突，提升协同策略性能。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.33665v1",
+      "source": "arxiv",
+      "title": "CompoWorld: Compositional Environment Scaling for General Agents",
+      "abstract": "Automatically generated environments provide a scalable source of interaction data for training general agents. However, existing approaches mainly generate tasks within a single environment, while real-world workflows require agents to connect information and actions across multiple services. We introduce Compositional Environment Scaling (\\textbf{CompoWorld}), which expands the task space by composing a finite library of reusable services. Coding agents turn tool specifications into verified services with typed states and shared interfaces, while a world model handles tools that cannot be reliably implemented. A random-walk procedure connects services through dependency graphs, enabling the generation and verification of tasks that require information to flow across services. Verified trajectories support supervised fine-tuning (SFT), while our Completion-Focused Rubric Reward guides reinforcement learning (RL) toward full task completion by emphasizing criteria with lower pass rates within each rollout group. We construct 448 services exposing 10,130 tools and use 3K SFT trajectories and 1K RL tasks to train Qwen3.6-35B-A3B. Experimental results show that CompoWorld improves on its backbone by 9.17 points on average across eight benchmarks. On AutomationBench, it surpasses frontier models such as Claude Opus 4.6 and leads all compared agent-specialized 35B-A3B models.",
+      "authors": [
+        "Xiao-Wen Yang",
+        "Weiyi Xu",
+        "Wen Da",
+        "Hang Xu",
+        "Canwei Li",
+        "Hong-Jie You",
+        "Pusen Dong",
+        "Yucheng Zeng",
+        "Zhaokai Luo",
+        "Yu-Feng Li",
+        "Yao Hu",
+        "Mu Chuan"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-09-27T15:25:01+00:00",
+      "link": "https://arxiv.org/pdf/2609.33665v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "automatically generated compositional environments and world model for training general agents",
+      "llm_evidence_cn": "为训练通用智能体自动生成组合式环境与世界模型",
+      "llm_evidence": "为训练通用智能体自动生成组合式环境与世界模型",
+      "canonical_evidence": "为训练通用智能体自动生成组合式环境与世界模型",
+      "llm_tldr_en": "CompoWorld scales environment generation by composing reusable services into dependency graphs, using coding agents and a world model to create and verify tasks that require cross-service information and action, generating training data for general agents.",
+      "llm_tldr_cn": "自动生成环境可为训练通用智能体提供可扩展的交互数据，但既有方法多在单一环境内生成任务，难以支持跨服务的真实工作流。本文提出组合式环境扩展CompoWorld：编码智能体把工具规范转化为带类型状态与共享接口的可用服务，世界模型负责处理难以可靠实现的工具，随机游走过程通过依赖图连接服务，从而生成并验证需跨服务整合信息与动作的任务。该工作为通用智能体提供了可扩展的数据生成与验证途径。",
+      "llm_tldr": "自动生成环境可为训练通用智能体提供可扩展的交互数据，但既有方法多在单一环境内生成任务，难以支持跨服务的真实工作流。本文提出组合式环境扩展CompoWorld：编码智能体把工具规范转化为带类型状态与共享接口的可用服务，世界模型负责处理难以可靠实现的工具，随机游走过程通过依赖图连接服务，从而生成并验证需跨服务整合信息与动作的任务。该工作为通用智能体提供了可扩展的数据生成与验证途径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.33575v1",
+      "source": "arxiv",
+      "title": "SLIP-VLA: Single-Step Latent Imagination for Policy Learning in Vision-Language-Action Models",
+      "abstract": "Vision-Language-Action models are increasingly effective for robotic manipulation, yet most predict actions directly from current observations without explicitly modeling future scene evolution. Recent methods introduce future prediction to improve action generation, but dense future modeling often requires expensive iterative denoising, while one-step alternatives can underperform their multi-step counterparts. To reconcile efficient future modeling with strong action performance, we present SLIP-VLA, a policy learning framework that equips VLA models with a Single-Step Latent Imagination for future-aware action prediction. SLIP-VLA obtains temporally dense future latent representations with a single denoising update, and we improve the perceptual sufficiency of these representations by aligning intermediate latents with future geometric and semantic features. We further improve their control sufficiency through action-conditioned latent world modeling and inverse dynamics modeling, explicitly coupling latent transitions with robot actions. SLIP-VLA achieves state-of-the-art performance across diverse simulation benchmarks and real-world manipulation tasks, while its single-step latent imagination takes only 12 ms.",
+      "authors": [
+        "Tianfu Li",
+        "Haoxuan Xu",
+        "Wenbo Chen",
+        "Haitian Li",
+        "Changchuan Yang",
+        "Xinhu Zheng",
+        "Jun Ma",
+        "Yuan Liu",
+        "Lujia Wang",
+        "Haoang Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-27T13:53:29+00:00",
+      "link": "https://arxiv.org/pdf/2609.33575v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "single-step latent imagination for future-aware action prediction in VLA",
+      "llm_evidence_cn": "面向VLA的单步潜在想象，实现未来感知的动作预测",
+      "llm_evidence": "面向VLA的单步潜在想象，实现未来感知的动作预测",
+      "canonical_evidence": "面向VLA的单步潜在想象，实现未来感知的动作预测",
+      "llm_tldr_en": "VLA models rarely model future scene evolution, and dense future prediction needs costly iterative denoising. SLIP-VLA adds single-step latent imagination to obtain dense future latents cheaply, improving manipulation policy accuracy and efficiency.",
+      "llm_tldr_cn": "现有视觉-语言-动作模型多直接从当前观测预测动作，缺乏对未来场景演化的建模，而引入未来预测又常需昂贵的迭代去噪。论文提出SLIP-VLA，通过单步去噪更新获得时间上稠密的未来潜在表示，实现未来感知的动作预测。实验显示该方法在提升操作策略性能的同时保持高效推理，为潜空间世界模型与机器人策略学习结合提供了新范式。",
+      "llm_tldr": "现有视觉-语言-动作模型多直接从当前观测预测动作，缺乏对未来场景演化的建模，而引入未来预测又常需昂贵的迭代去噪。论文提出SLIP-VLA，通过单步去噪更新获得时间上稠密的未来潜在表示，实现未来感知的动作预测。实验显示该方法在提升操作策略性能的同时保持高效推理，为潜空间世界模型与机器人策略学习结合提供了新范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "new learning paradigm for embodied agents based on world models and latent space prediction",
+      "matched_requirement_id": "req-7",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.32862v1",
+      "source": "arxiv",
+      "title": "RoboFoundry: System-as-Policy Evolution for Self-Learning Embodied Agents",
+      "abstract": "A foundation model should not act in isolation as an embodied agent. Yet, existing methods often optimize individual components of the agent stack, such as memory, context, skills, or action interfaces, rather than treating the supporting system itself as a unified policy. Moreover, interaction alone does not yield self-improvement unless execution experience is converted into persistent, validated system changes. We therefore propose RoboFoundry, the first embodied agentic framework that formulates this process as Self-Evolving System-as-Policy. RoboFoundry diagnoses capability gaps in decision-making and memory management, converts execution traces into validated task-specific system updates, and promotes recurring improvements to the general system. Evolution operates over two complementary surfaces: a context system that manages active internal context and persistent file-system memory, and a hierarchical skill system that organizes atomic skills, reusable compositions, and failure-conditioned recovery. A shared semantic interface separates embodiment-invariant decisions from embodiment-specific execution, allowing evolved system capabilities to transfer across heterogeneous robots. On EmbodiedBench, RoboFoundry achieves state-of-the-art performance, notably improving GPT-5.5 by 27.8%. It also brings Qwen3.7-Plus to near parity with GPT-5.5 (70.3% vs. 72.7%), showing consistent gains from system-as-policy evolution across foundation models. For long-horizon memory, RoboFoundry outperforms all baselines on RoboMemArena by at least 39.0%, even against methods assisted by external foundation models. On LIBERO-PRO, it further outperforms Cap-Agent0 by 243.8%-679.7% across all perturbation types. In real-world deployments, RoboFoundry demonstrates zero-shot transfer and online evolution across robots and tasks, highlighting its potential for fully autonomous embodied agents.",
+      "authors": [
+        "Jingsong Liang",
+        "Shuhao Liao",
+        "Shizhe Zhang",
+        "Diyuan Hou",
+        "Yuxin Cai",
+        "Xinjian Deng",
+        "Chengyang He",
+        "Wenhui Huang",
+        "Runjia Tan",
+        "Zhidong Wang",
+        "Lan Yu",
+        "Xuesong Tian",
+        "Guillaume Sartoretti",
+        "Jie Luo",
+        "Yao Mu",
+        "Wenjun Wu",
+        "Wanhua Li",
+        "Chen Lv"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-26T18:41:03+00:00",
+      "link": "https://arxiv.org/pdf/2609.32862v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "self-evolving system-as-policy for self-learning embodied agents converting experience into system updates",
+      "llm_evidence_cn": "自学习具身智能体的系统即策略自我演化框架",
+      "llm_evidence": "自学习具身智能体的系统即策略自我演化框架",
+      "canonical_evidence": "自学习具身智能体的系统即策略自我演化框架",
+      "llm_tldr_en": "RoboFoundry treats the agent support system itself as a unified policy, diagnosing capability gaps and converting execution traces into validated task-specific updates that promote recurring self-improvement of embodied agents.",
+      "llm_tldr_cn": "针对现有方法仅优化智能体栈的单个组件、交互本身难以带来持续自改进的问题，论文提出RoboFoundry，首个将支撑系统本身视为统一策略的具身智能体框架。该框架诊断决策与记忆管理中的能力缺口，把执行轨迹转化为经校验的任务特定系统更新，并将重复出现的改进提升为通用系统能力。这一自演化系统即策略范式让基础模型不再孤立行动，为具身智能体的自我学习与持续进化提供了新思路。",
+      "llm_tldr": "针对现有方法仅优化智能体栈的单个组件、交互本身难以带来持续自改进的问题，论文提出RoboFoundry，首个将支撑系统本身视为统一策略的具身智能体框架。该框架诊断决策与记忆管理中的能力缺口，把执行轨迹转化为经校验的任务特定系统更新，并将重复出现的改进提升为通用系统能力。这一自演化系统即策略范式让基础模型不再孤立行动，为具身智能体的自我学习与持续进化提供了新思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

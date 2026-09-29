@@ -1,0 +1,313 @@
+{
+  "date": "20260929",
+  "date_label": "",
+  "generated_at": "2026-09-29 23:29:05 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.32779v1",
+      "route": "202609/29/2609.32779v1-copper-policy-focus-on-the-representation-for-robust-robot-manipulation",
+      "title": "Copper-Policy: Focus on the Representation for Robust Robot Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "时间联合嵌入预测与策略共同塑造紧凑世界表示",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.32921v1",
+      "route": "202609/29/2609.32921v1-adaptive-latent-capacity-for-world-models",
+      "title": "Adaptive Latent Capacity for World Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于JEPA、将预测信息集中于紧凑潜在前缀的世界模型",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.33563v1",
+      "route": "202609/29/2609.33563v1-ma-jepa-joint-embedding-world-models-for-multi-agent-reinforcement-learning",
+      "title": "MA-JEPA: Joint-Embedding World Models for Multi-Agent Reinforcement Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "以自监督联合嵌入预测替代观测重建的世界模型",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.34085v1",
+      "route": "202609/29/2609.34085v1-ad-e2e-jepa-a-joint-embedding-predictive-architecture-for-end-to-end-autonomous-driving",
+      "title": "AD-E2E-JEPA: A Joint-Embedding Predictive Architecture For End-to-End Autonomous Driving",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "用于端到端驾驶规划的JEPA世界模型",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.34375v1",
+      "route": "202609/29/2609.34375v1-lrc-jepa-disentangling-dynamics-and-residual-context-for-efficient-world-models",
+      "title": "LRC-JEPA: Disentangling Dynamics and Residual Context for Efficient World Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "自监督下的JEPA世界模型与隐空间规划",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.34414v1",
+      "route": "202609/29/2609.34414v1-from-world-models-to-world-action-models-rethinking-next-state-prediction",
+      "title": "From World Models to World Action Models: Rethinking Next-State Prediction",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向世界动作模型的动态下一状态预测与多投影潜在表示框架",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.35047v1",
+      "route": "202609/29/2609.35047v1-empiric-experiment-driven-learning-of-residual-world-models-for-robot-planning",
+      "title": "EMPIRIC: Experiment-Driven Learning of Residual World Models for Robot Planning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "通过实验学习残差世界模型以支持机器人规划",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.35603v1",
+      "route": "202609/29/2609.35603v1-control-geometry-straightening-for-sampling-based-latent-planning",
+      "title": "Control-Geometry Straightening for Sampling-Based Latent Planning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向JEPA潜在世界模型实现高效采样规划的辅助损失",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.32453v1",
+      "route": "202609/29/2609.32453v1-dram-delta-rule-recurrent-associative-memory-for-robot-manipulation-policies",
+      "title": "DRAM: Delta-rule Recurrent Associative Memory for Robot Manipulation Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "即插即用记忆模块，避免推理成本上升与骨干重训",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.32591v1",
+      "route": "202609/29/2609.32591v1-think-fast-plan-selectively-adaptive-deliberation-for-efficient-data-driven-mpc",
+      "title": "Think Fast, Plan Selectively: Adaptive Deliberation for Efficient Data-Driven MPC",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "在快速策略执行与测试时规划间自适应切换，满足实时机器人控制",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.33464v1",
+      "route": "202609/29/2609.33464v1-videas-distilling-explicit-action-semantics-from-demonstration-videos-for-world-models-via-prior-guided-simulation",
+      "title": "VIDEAS: Distilling Explicit Action Semantics from Demonstration Videos for World Models via Prior-Guided Simulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "从演示视频中为世界模型蒸馏显式动作语义",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.33575v1",
+      "route": "202609/29/2609.33575v1-slip-vla-single-step-latent-imagination-for-policy-learning-in-vision-language-action-models",
+      "title": "SLIP-VLA: Single-Step Latent Imagination for Policy Learning in Vision-Language-Action Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向VLA的单步潜在想象，实现未来感知的动作预测",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.32155v1",
+      "route": "202609/29/2609.32155v1-recastvla-from-past-interaction-to-future-control-with-adaptive-policy-states",
+      "title": "RecastVLA: From Past Interaction to Future Control with Adaptive Policy States",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "VLA策略中基于共享快速权重的自适应策略状态",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.32236v1",
+      "route": "202609/29/2609.32236v1-robofft-finetuning-generative-robot-policy-via-online-reinforcement-learning-with-forward-process",
+      "title": "RoboFFT: Finetuning generative robot policy via online reinforcement learning with forward process",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "通过在线强化学习微调生成式机器人策略",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.32239v1",
+      "route": "202609/29/2609.32239v1-federated-subspace-guided-vision-language-action-policy-distillation-for-non-iid-multi-robot-manipulation",
+      "title": "Federated Subspace Guided Vision-Language-Action Policy Distillation for Non-IID Multi-Robot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向机器人策略的低秩子空间与动作蒸馏",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.32862v1",
+      "route": "202609/29/2609.32862v1-robofoundry-system-as-policy-evolution-for-self-learning-embodied-agents",
+      "title": "RoboFoundry: System-as-Policy Evolution for Self-Learning Embodied Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "自学习具身智能体的系统即策略自我演化框架",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.31606v1",
+      "route": "202609/29/2609.31606v1-learning-robot-policies-from-sparse-success-signals-via-stl-guided-stein-variational-policy-gradient",
+      "title": "Learning Robot Policies from Sparse Success Signals via STL-Guided Stein Variational Policy Gradient",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "从稀疏成功信号中学习机器人策略，缓解奖励反馈稀缺问题",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.33551v1",
+      "route": "202609/29/2609.33551v1-fold-force-informed-learning-for-dexterous-articulated-object-manipulation",
+      "title": "FoLD: Force-Informed Learning for Dexterous Articulated Object Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "从人手到灵巧机器人的力引导重定向",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    },
+    {
+      "paper_id": "2609.33665v1",
+      "route": "202609/29/2609.33665v1-compoworld-compositional-environment-scaling-for-general-agents",
+      "title": "CompoWorld: Compositional Environment Scaling for General Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "为训练通用智能体自动生成组合式环境与世界模型",
+      "first_seen_at": "2026-09-29 23:29:05 UTC",
+      "updated_at": "2026-09-29 23:29:05 UTC"
+    }
+  ]
+}
