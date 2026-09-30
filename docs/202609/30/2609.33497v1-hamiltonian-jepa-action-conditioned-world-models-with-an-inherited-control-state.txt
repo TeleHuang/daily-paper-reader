@@ -1,0 +1,748 @@
+Title: Hamiltonian JEPA: Action-Conditioned World Models with an Inherited Control State
+
+URL Source: https://arxiv.org/pdf/2609.33497v1
+
+Published Time: Tue, 29 Sep 2026 02:05:46 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+# HAMILTONIAN JEPA: A CTION -C ONDITIONED WORLD 
+
+# MODELS WITH AN INHERITED CONTROL STATE 
+
+Tamim Zoabi Ameen Ali Lior Wolf 
+
+The Blavatnik School of Computer Science, Tel Aviv University 
+
+{tamimzoabi, ameenali023 }@mail.tau.ac.il, wolf@cs.tau.ac.il 
+
+## ABSTRACT 
+
+Planning from pixels needs more than a latent space that is stable and predictable. The state the planner scores must also be organized by how actions move the system. Joint-embedding predictive architectures (JEPAs) avoid pixel reconstruc-tion by predicting future representations, but existing action-conditioned JEPAs ask one embedding to serve both perception and control. We introduce H-JEPA, which separates the two. A wide perceptual code is regularized toward a well-scaled isotropic geometry with a Bures-Wasserstein prior, and a fixed orthonor-mal slice of that code is the control state, which inherits the code’s covariance without any objective of its own. The state evolves under phase-conditioned dis-sipative port-Hamiltonian dynamics whose input port has orthonormal columns. Port-inverse consistency (PIC) reads the executed action back through the trans-pose of that port. We show that this readout is exactly the rollout error projected onto the port directions, so PIC is a parameter-free reweighting of prediction error and not an auxiliary action decoder. Untying the readout from the port breaks this identity and loses half of the gain. H-JEPA matches or exceeds reconstruction-free baselines, including the action-decoding Delta-JEPA, on four pixel-based control benchmarks after at most 10 training epochs, and its largest gain is on OGB-Cube (91 .9 against 79 .3 percent). Ablations on PushT and OGB-Cube separate the con-tributions of the structured predictor, PIC, the prediction horizon, the state rank, and the anti-collapse prior. 
+
+Github Link 
+
+## 1 INTRODUCTION 
+
+An agent that can predict the consequences of its actions can plan: it scores candidate action se-quences in imagination and executes the best one (Ha & Schmidhuber, 2018; Hafner et al., 2019). Trained on an offline corpus of interaction data, model-predictive control on a learned world model reaches goal images never demonstrated during training, with no reward function and no test-time gradient updates (Zhou et al., 2025; Sobal et al., 2025). The plan is only as good as the model’s response to actions. A model that captures appearance but blurs the difference between action se-quences ranks all plans alike, so action sensitivity is the central property of the learned dynamics. Learning such models from pixels raises the question of what to predict. Reconstruction-based mod-els regress future frames and can spend capacity on visual detail that is irrelevant to control (Watter et al., 2015; Hafner et al., 2019; 2020). Joint-embedding predictive architectures (JEPAs) instead predict future representations (LeCun, 2022; Assran et al., 2023; Bardes et al., 2024), which removes the reconstruction target but exposes training to representation collapse. LeWM (Maes et al., 2026) addressed collapse for action-conditioned world models by attaching SIGReg (Balestriero & LeCun, 2025), a sketched Gaussian regularizer, to the embedding the planner scores. This paper starts from the observation that stability is not the same as control. Matching a marginal embedding distribution certifies that no direction has died. It does not say which directions actions 1arXiv:2609.33497v1 [cs.LG] 27 Sep 2026 move, which coordinates should enter the planning metric, or how much capacity control requires. Three consequences follow. First, LeWM plans in the full embedding, so the metric that ranks candidates mixes control-relevant variation with dimensions that satisfy the prior without informing action selection. Second, the regularizer and the prediction loss act on the same coordinates, so their balance must be re-tuned whenever any other pressure changes. Third, latent-MSE objectives admit scale-degenerate solutions, since shrinking the targets makes prediction easy. Sub-JEPA (Zhao et al., 2026) found the full-space prior too restrictive for low-dimensional dynamics and relaxed it to random subspaces with clear gains, but its subspaces are views for the regularizer and not an extracted state. H-JEPA (Hamiltonian JEPA) separates the perceptual code from the control state and lets the state inherit its geometry. A wide code h ∈ RD is placed on a sphere by per-sample affine-free normal-ization and regularized toward isotropy with a Bures-Wasserstein moment penalty (Gelbrich, 1990). A fixed orthonormal projection U defines the state s = U ⊤h, whose covariance is a fixed function of the code’s covariance, so no separate state-space objective is needed. On this state we place a dissipative port-Hamiltonian step whose input port has orthonormal columns. Port-inverse consis-tency (PIC) reads the executed action back from the realized displacement through the transpose of the port, which is its exact pseudoinverse. The readout has no parameters and no free scale, and its residual equals the rollout error projected onto the port directions, so PIC reweights prediction error toward the directions in which actions act. H-JEPA matches or exceeds reconstruction, full-space-prior, and action-decoding baselines on Two-Room, Reacher, PushT, and OGB-Cube under the same planning protocol, with the largest gain on OGB-Cube ( 91 .9 percent against 79 .3 for the strongest baseline). Our contributions are as follows. (i) A two-space world model in which one distributional objective shapes perception and a fixed orthonormal map carries covariance to the planner-facing state, with an exact description of the in-herited covariance (§3.1 to §3.3). (ii) An analysis of anti-collapse penalties near vanishing variance, showing that the Bures-Wasserstein penalty keeps a constant restoring force on each standard devia-tion while SIGReg and the Euclidean covariance penalty lose theirs (§3.3). (iii) A phase-conditioned dissipative port-Hamiltonian predictor with an orthonormal input port, and PIC, which we show to be an exact error reweighting, with a control showing that the tie between readout and port accounts for half of its gain (§3.4, §3.5, §4.1). (iv) Planning, probing, and ablation results at a matched repre-sentation on two tasks, with diagnostics showing that the planner ranks candidates along directions beyond the probed physical variables (§4). 
+
+## 2 RELATED WORK 
+
+JEPA world models. LeCun (2022) proposed prediction in representation space as the basis of world models, validated by I-JEPA and V-JEPA (Assran et al., 2023; Bardes et al., 2024). LeJEPA (Balestriero & LeCun, 2025) motivates isotropic Gaussian embeddings and enforces them with SI-GReg. LeWM (Maes et al., 2026) brought this program to action-conditioned world models from pixels, and Sub-JEPA (Zhao et al., 2026) improved planning by applying the Gaussian constraint in K random subspaces, with K selected per benchmark. Delta-JEPA (Zhang et al., 2026) adds action sensitivity through a learned linear decoder on latent differences, and sensorimotor world models (Ivashkov et al., 2026) make inverse dynamics the perception objective. H-JEPA differs in three respects. The subspace is a single fixed slice that is the control state, the prior stays full-space at LeWM’s placement and reaches the state by inheritance, and the inverse readout is the forward model’s own input port. 
+
+Latent dynamics models for control. E2C, DVBF, World Models, PlaNet, and Dreamer learn latent dynamics through pixel reconstruction and often reward prediction (Watter et al., 2015; Karl et al., 2017; Ha & Schmidhuber, 2018; Hafner et al., 2019; 2020). DINO-WM plans with a frozen pretrained encoder (Zhou et al., 2025), and PLDM trains an end-to-end pixel JEPA with a VICReg-style objective (Sobal et al., 2025). H-JEPA uses neither pixels nor rewards as targets and trains its encoder end-to-end without teachers or stop-gradients (Grill et al., 2020). Its collapse defense is a moment-matching penalty in the Barlow Twins and VICReg family (Zbontar et al., 2021; Bardes et al., 2022), with the Euclidean covariance metric replaced by Bures-Wasserstein on Gaussians (Bhatia et al., 2019). 2Table 1: Design choices we relaxed during development, the failure each one produced in this architecture, and the constraint adopted instead. These observations motivate the constraints of §3 and complement the controlled ablations of §4.1.                       
+
+> Relaxed choice Observed failure Adopted constraint BatchNorm in the projector, or a standardizer on s
+> Hides collapse: skeeps unit marginals while
+> hdegenerates to rank one Per-sample affine-free LN 0, no normalizer on s(§3.1, §3.2) LSUV-style whitening of the projector activations at initialization (Mishkin & Matas, 2016) Amplifies projector weights about 10 4-fold, point-mass collapse within tens of steps Isotropy as a loss with bounded per-step influence (§3.3) Learnable projection UCo-adapts with the losses and collapses the rank of the state Fixed seeded orthonormal U
+> (§3.2) Learned action embedding The PIC regression target collapses to effective rank about 1.3
+> Raw normalized actions (§3.1) SIGReg, or the Euclidean penalty ∥bΣ−I∥2
+> F
+> The restoring force fades as variance shrinks, collapse within about 50 to 100 steps Bures-Wasserstein prior (§3.3) Unconstrained port gain The gain trades off against the encoder scale, so optimization moves scale and not content Orthonormal port via differentiable QR (§3.4)
+
+Structured dynamics. Hamiltonian neural networks learn a scalar energy whose gradient gen-erates conservative flow (Greydanus et al., 2019), with controlled and generalized variants (Zhong et al., 2020; Course et al., 2020; Chen et al., 2021) and image-based generative forms (Toth et al., 2020). That literature targets a specified physical state or reconstruction. H-JEPA instead adopts the port-Hamiltonian form (van der Schaft & Jeltsema, 2014) as an inductive bias for a reconstruction-free representation trained for planning, and uses port orthonormality to remove a scale freedom that would otherwise interact with the representation objective. 
+
+Inverse dynamics and state discovery. Recovering actions from transitions is a classical route to control-relevant features (Agrawal et al., 2016; Pathak et al., 2017), as are DeepMDP and bisim-ulation objectives (Gelada et al., 2019; Zhang et al., 2021). In exogenous-block MDPs, forward models with multi-step inverse prediction identify a control-endogenous state under stated assump-tions (Lamb et al., 2023), with known limits on when multi-step inverse prediction is sufficient (Levine et al., 2024), and displacement-level action decoding appears in recent JEPA world models (Zhang et al., 2026; Ivashkov et al., 2026). PIC ties the readout to the transpose of the forward input map. Tying a readout to the transpose of an input map is standard practice for language-model embeddings (Press & Wolf, 2017), where the transpose is not the inverse of that map in general (Gu et al., 2026). In H-JEPA the port is constrained to be orthonormal, which makes the transpose its exact pseudoinverse. The bottleneck view relates to the information bottleneck (Tishby et al., 2000; Alemi et al., 2017), predictive state representations (Littman & Sutton, 2001), and balanced truncation (Moore, 1981). 
+
+## 3 METHOD 
+
+Setting. We are given offline trajectories of RGB frames xt and continuous actions, with no rewards and no simulator state. The goal is a latent model in which a planner can roll out candidate action sequences and rank them by distance to an encoded goal image. An encoder produces a 
+
+perceptual code ht (§3.1). A fixed linear slice of the code is the control state st, the only quantity the planner scores (§3.2). One distributional prior acts on the code and keeps it from collapsing (§3.3). A port-Hamiltonian predictor advances the state under actions (§3.4). Training adds port-inverse consistency (PIC), which asks the predictor’s own action-input map to recover the executed action from the observed displacement (§3.5). One model step is 
+
+ht = E(xt), st = U ⊤ht, vt = st − st−1, ct = [ st, v t], ˆst+1 = Fθ (st, ¯at | ct).
+
+(1) Reading equation 1 from left to right, E is the image encoder and ht ∈ RD is the code of the single frame xt. The matrix U ∈ RD×r has orthonormal columns and is never trained, and st ∈ Rr with 3r ≤ D is the control state. Since st is computed from one frame it carries no motion information, so we form the finite-difference velocity vt ∈ Rr and concatenate it with the state into the phase 
+
+ct ∈ R2r (square brackets denote concatenation). The action ¯at ∈ Rda is the normalized control applied between frames t and t + 1 . The predictor Fθ with parameters θ advances st by one step under ¯at. The notation Fθ (· | ct) means that the vector fields inside the predictor are functions of the phase, while only the state is advanced. The velocity is recomputed from consecutive states, with v0 = 0 at the start of a window, and in open-loop rollouts it is formed from predictions, 
+
+ˆvt+i = ˆ st+i − ˆst+i−1. An overview figure is given in Appendix A. One rule organizes the design. The distributional objective acts only on perception, every map between the code and the planner is fixed or explicitly constrained, and no batch statistic or learned gain sits on that path. Each constraint answers a failure we observed when it was relaxed (Table 1). 3.1 PERCEPTION ON A SPHERE 
+
+Following the LeWM perception stack, each frame is encoded independently as 
+
+ht = LN 0
+
+ MLP(ViT( xt))  ∈ RD , LN 0(z) = √D z − mean( z)1
+
+∥z − mean( z)1∥2
+
+,
+
+with a ViT-T/14 trained from scratch (Dosovitskiy et al., 2021) and an MLP projector at D = 192 .
+
+LN 0 is LayerNorm without learned scale or bias. It centers each sample across its coordinates and fixes ∥h∥2 = √D, so every code satisfies e⊤h = 0 with e = 1/√D and lies on a common sphere. Fixing the radius removes a scale freedom that would let the encoder inflate or shrink transition magnitudes instead of improving geometry, so the prior of §3.3 redistributes variance and cannot grow it. Each model step spans m environment steps (the frameskip), and the action is the mean commanded control over that window, ¯at = 1
+
+> m
+
+Pmj=1 at,j , in normalized coordinates. We use no learned action embedding, which co-adapted with the dynamics in our experiments (Table 1). 3.2 A CONTROL STATE WITH INHERITED COVARIANCE 
+
+The control state is st = U ⊤ht ∈ Rr , where U is drawn once from a seeded QR factorization of a Gaussian matrix. Because U is fixed and linear, 
+
+Cov( s) = U ⊤Cov( h) U, (2) so the covariance geometry imposed on the perceptual code is inherited by the control state without introducing a separate state-space objective or normalization. We refer to this property as covariance inheritance . At the prior’s target Cov( h) = I − ee ⊤ (§3.3), Eq. equation 2 gives 
+
+Cov( s) = Ir − (U ⊤e)( U ⊤e)⊤.
+
+Thus the target covariance is isotropic up to a single exceptional direction, whose eigenvalue is 
+
+1 − | U ⊤e|22. For a random orthonormal U , |U ⊤e|22 concentrates around r/D , so the deviation from isotropy is controlled directly by the relative state dimension. When r < D , the state is therefore nearly isotropic with one direction receiving the corresponding shrinkage. When r = D,the centering direction e is contained in the span of U , giving one exact null direction. Trained codes need not reach the prior exactly, and Appendix G reports the resulting covariance spectra and the predicted null direction. Keeping U fixed also prevents the projection from co-adapting with the dynamics, while experiments with a learnable U instead produced degenerate low-rank states (Table 1). 3.3 A B URES -W ASSERSTEIN ISOTROPY PRIOR 
+
+Let H = {hj }nj=1 be the codes of all frames in a batch, pooled over batch and time, with empirical mean ˆμ = 1
+
+> n
+
+P 
+
+> j
+
+hj and covariance bΣ = 1
+
+> n
+
+P 
+
+> j
+
+(hj − ˆμ)( hj − ˆμ)⊤. Since every code satisfies 
+
+e⊤h = 0 , the covariance always has a zero eigenvalue along e, and the most isotropic covariance available is the projector P = I − ee ⊤ onto the hyperplane orthogonal to e. We penalize the squared 42-Wasserstein distance W 22 between the Gaussian with the empirical moments and the Gaussian with the target moments, which has the closed Bures-Wasserstein form (Gelbrich, 1990; Bhatia et al., 2019): 
+
+Liso (H) = 1
+
+D W 22
+
+ N (ˆ μ, bΣ) , N (0 , P ) = 1
+
+D
+
+
+
+∥ˆμ∥22 + PD−1
+
+> i=1
+
+ p ˆλi − 12
+
+(3) where ˆλ1, . . . , ˆλD−1 ≥ 0 are the eigenvalues of bΣ on that hyperplane. The second equality holds because bΣ and P commute. Equation 3 constrains only the first two moments and does not require 
+
+h to be Gaussian. It is the model’s only distributional objective. 
+
+Why Bures-Wasserstein. Write σi = √λi for the standard deviation of the code along one covariance direction. In H-JEPA the D − r code directions outside the slice receive no gradient from prediction or PIC, so the prior alone must hold them open, and what matters is the force a penalty exerts on σi as σi → 0. The three candidates behave differently:  
+
+> ∂∂σ
+
+(σ − 1) 2 = 2( σ − 1) → − 2
+
+| {z }
+
+> Bures-Wasserstein
+
+, ∂∂σ (σ2 − 1) 2 = 4 σ(σ2 − 1) → 0
+
+| {z } 
+
+> Euclidean ∥bΣ−I∥2
+> F
+
+, ∂∂σ T (σ) = O(σ) → 0
+
+| {z }
+
+> SIGReg
+
+.
+
+(4) Bures-Wasserstein is a quadratic penalty on standard deviations, close in spirit to the variance term of VICReg (Bardes et al., 2022), and keeps a constant pull on a dying direction. The Euclidean penalty is quadratic in the variance, so its pull fades linearly with σ. SIGReg, the sketched Epps-Pulley normality statistic T (EPPS & PULLEY, 1983) used by LeJEPA and LeWM, is a smooth bounded function of the samples and is therefore also quadratic in σ near a point mass (Appendix H). This matches what we saw in training. In collapse runs within H-JEPA the SIGReg score saturated as the code concentrated and its gradient became negligible, exactly where latent prediction admits a constant solution, and Table 4 shows the same contrast in planning success. 3.4 PHASE -CONDITIONED PORT -H AMILTONIAN DYNAMICS 
+
+Instead of an unconstrained transition map, the predictor has the form of a port-Hamiltonian system (van der Schaft & Jeltsema, 2014): autonomous motion is generated by a scalar energy and damped by a dissipation term, and the action enters through a separate input map called the port . We use this form as an inductive bias and do not assume that the latent coordinates are physical positions and momenta. For even r, the predictor consists of 
+
+J =
+
+ 0 −Ir/ 2
+
+Ir/ 2 0
+
+
+
+, Hθ : R2r → R, Rθ (c) = Lθ (c)Lθ (c)⊤ ⪰ 0, Gθ (c) ∈ Rr×da .
+
+(5) Here J ∈ Rr×r is the constant canonical symplectic matrix, with Ir/ 2 the identity of size r/ 2.It is skew-symmetric, so the flow J∇sH conserves H in continuous time. Hθ is a scalar energy computed by an MLP from the phase c = [ s, v ], and ∇sHθ denotes its gradient with respect to the state argument only, with v treated as a constant input. Lθ (c) ∈ Rr×r is a lower-triangular matrix output by a second MLP, so the dissipation matrix Rθ (c) is positive semidefinite by construction and can only remove energy. Gθ (c) is the input port, which maps an action in Rda to a state displacement. It is the output of a third MLP followed by a differentiable thin QR factorization, so its columns are orthonormal, Gθ (c)⊤Gθ (c) = Ida (it lies on the Stiefel manifold). All three networks take the phase as input, which is how velocity information reaches the dynamics. The continuous-time field 
+
+˙s = ( J − Rθ (c)) ∇sHθ (s, v ) + Gθ (c)¯ a is discretized with one explicit Euler step of size ∆t = 1 :
+
+ˆst+1 = Fθ
+
+ st, ¯at | ct
+
+ = st + ∆ t
+
+h  J − Rθ (ct)∇sHθ (st, v t)
+
+| {z }
+
+> passive flow
+
++ Gθ (ct) ¯ at
+
+| {z }
+
+> control flow
+
+i
+
+. (6) Continuous-time energy properties need not hold exactly after Euler discretization (§5). 
+
+The orthonormal port fixes action geometry and scale. An unconstrained input map B(c) can be written as G(c)S(c) with orthonormal G and gain S. The gain can trade off against latent scale and PIC readout, causing scale drift without improving content (Table 1). Constraining the port to orthonormal columns removes this freedom. The action Jacobian ∂F/∂ ¯a = ∆ t G θ (c) then has all singular values equal to ∆t, so one unit of normalized action produces one unit of direct latent displacement. State-dependent control effectiveness is therefore expressed through the port orientation and state geometry (Murray et al., 1994). 53.5 TRAINING OBJECTIVE 
+
+Training uses three terms, 
+
+L = Lpred + LPIC + Liso (H) , (7) with no pixel reconstruction, learned inverse model, contrastive loss, teacher network, or normaliza-tion of s.
+
+Open-loop prediction. We supervise the same multi-step composition the planner uses. Let T be the set of rollout start times in a batch. From an encoded state st, the model rolls forward for Kp
+
+steps under the executed actions, feeding back its own predictions, and matches the encoded future at every step: 
+
+Lpred = 1
+
+|T | Kp
+
+X
+
+> t∈T
+> Kp
+
+X 
+
+> i=1 1
+> r
+
+∥δt+i∥22 , δt+i = st+i − ˆst+i, ˆst+i = Fθ
+
+ ˆst+i−1, ¯at+i−1 | ˆct+i−1
+
+,
+
+(8) with ˆst = st and ˆct+i = [ˆ st+i, ˆvt+i]. Squared errors are averaged over coordinates, so all three terms are of order one. For Kp = 1 this is the next-latent regression of LeWM. We use Kp = 5 ,equal to the planning horizon, so training penalizes the composed rollouts that the planner ranks. 
+
+Port-inverse consistency (PIC). The port maps an action into a state displacement. PIC asks the same port, transposed, to map the observed displacement back to the action. At rollout step i,we subtract the passive flow from the observed displacement and read the remainder through the transpose of the port: 
+
+ˆut+i = Gθ (ˆ ct+i)⊤
+
+ st+i+1 − ˆst+i
+
+∆t −  J − Rθ (ˆ ct+i)∇sHθ
+
+ ˆst+i, ˆvt+i
+
+
+
+, (9) and penalize its distance to the executed action over KPIC rollout steps: 
+
+LPIC = 1
+
+|T | KPIC 
+
+X
+
+> t∈T
+> KPIC −1
+
+X 
+
+> i=0 1
+> da
+
+∥ˆut+i − ¯at+i∥22 . (10) Because the port has orthonormal columns, G⊤ 
+
+> θ
+
+is its exact pseudoinverse, as in tied input-output maps (Press & Wolf, 2017), so the readout needs no learned inverse model and has no scale of its own. Substituting the Euler step equation 6 into equation 9 (Appendix B) gives 
+
+ˆut+i − ¯at+i = 1∆t Gθ (ˆ ct+i)⊤δt+i+1 , (11) where δt+i+1 is the rollout error of equation 8. The prediction and PIC terms therefore combine into a single quadratic form in that error, 
+
+Lpred + LPIC = 1
+
+|T | Kp r
+
+X
+
+> t∈T
+> Kp
+
+X
+
+> i=1
+
+δ⊤
+
+> t+i
+
+
+
+I + rda ∆t2 Gt+i−1G⊤
+
+> t+i−1
+
+
+
+δt+i, (12) when KPIC = Kp, with Gt+i−1 = Gθ (ˆ ct+i−1).Equation 12 tells us what PIC actually measures. PIC is not a separate task of predicting actions. It is the same rollout error as Lpred , restricted to the da port directions through which the action enters the dynamics. Adding the two losses therefore gives a single rollout error, measured with a state-dependent metric that counts errors along the port directions 1 + r/ (da∆t2) times more than errors along any other direction. This view also explains why the model cannot satisfy PIC through a shortcut. There are two obvious shortcuts, and neither works. The first is to rescale the readout until actions become easy to decode. This fails because actions are in fixed normalized units, the port has unit singular values, and the scale of s is inherited rather than set by the readout. The second is to rotate the port away from the directions where the rollout is wrong. This fails because the same port also injects the action in Equation equation 6, so a port that no longer points at the error makes the prediction worse and raises Lpred .6Table 2: Planning success rate (%) on the four LeWM benchmarks over 500 test episodes per task, mean ± std over three training seeds. Baselines are evaluated under the Delta-JEPA protocol, in which Delta-JEPA trains for 50 epochs. H-JEPA trains for 10 epochs and is evaluated at the per-task checkpoint epoch selected on a held-out seed (§4).                                                                 
+
+> Method Two-Room Reacher PushT OGB-Cube PLDM 93 .73 ±1.03 64 .33 ±2.14 76 .13 ±1.70 57 .27 ±1.53
+> LeWM 74 .93 ±0.42 79 .87 ±0.90 84 .53 ±1.50 64 .13 ±1.89
+> Sub-JEPA 90 .60 ±0.53 81 .00 ±2.40 63 .73 ±0.12 62 .67 ±1.45
+> Delta-JEPA 100 .00 ±0.00 81 .33 ±0.50 89 .07 ±1.90 79 .27 ±1.81
+> H-JEPA (ours) 100 .00 ±0.00 86 .13 ±0.23 90 .40 ±0.60 91 .93 ±1.30
+
+Both arguments rest on one design choice: the action is read out through the same port Gθ that injected it. §4.1 tests this directly by replacing G⊤ 
+
+> θ
+
+in the readout with a fixed random orthonormal matrix, which breaks the link between injection and readout. We use KPIC = Kp = 5 throughout. 
+
+Planning. At test time we plan with the cross-entropy method (CEM) in a model-predictive control loop (Rubinstein, 1999). The goal image is encoded to sgoal = U ⊤E(xgoal ), candidate action sequences are rolled out with equation 6 for Kp steps, and each is scored by the terminal distance 
+
+∥ˆst+Kp − sgoal ∥22. The phase conditions the dynamics but is not part of the cost. Main results follow the Delta-JEPA budget of 500 episodes. Controlled ablations use the lower-cost LeWM budget with otherwise identical planning settings. 
+
+## 4 EXPERIMENTS 
+
+Setup. We evaluate on the four pixel-based planning benchmarks of the LeWM suite: Two-Room navigation (Maes et al., 2026), DeepMind Control Reacher (Tassa et al., 2018), PushT (Chi et al., 2025), and OGBench Cube manipulation (Park et al., 2025), hereafter OGB-Cube. All models train on the same offline image-action trajectories. We compare against PLDM (Sobal et al., 2025), LeWM (Maes et al., 2026), Sub-JEPA (Zhao et al., 2026), and Delta-JEPA (Zhang et al., 2026) under the Delta-JEPA evaluation protocol of 500 test episodes per task (Zhang et al., 2026), in which Delta-JEPA is trained from scratch for 50 epochs. We train H-JEPA for 10 epochs on every task. One held-out pilot seed, excluded from the reported averages, is used only to choose which epoch’s checkpoint to evaluate on each task, and this choice is then fixed for the remaining seeds: epoch 8 on Two-Room, 6 on Reacher, 10 on PushT, and 3 on OGB-Cube. H-JEPA uses AdamW (Loshchilov & Hutter, 2019), windows of T = 2 + Kp = 7 frames, and Kp = KPIC = 5 . The only task-specific architectural choice is the state rank: 32 on Two-Room and OGB-Cube, 64 on Reacher, and 192 on PushT, chosen once from the lower-budget sweep on a held-out seed in §4.1 and then fixed for the 500 -episode evaluation. Per-benchmark capacity selection is common in this suite: Sub-JEPA selects its number of subspaces per task ( K = 32 , except K = 16 on PushT, where 
+
+K = 32 fails) (Zhao et al., 2026). All other hyperparameters are shared (Appendix C). 
+
+Planning results. Table 2 reports planning success. H-JEPA is best or tied on every task. It sat-urates Two-Room together with Delta-JEPA, is within one standard deviation of Delta-JEPA on PushT, and leads by 4.8 points on Reacher and 12 .7 points on OGB-Cube. H-JEPA trains for 10 
+
+epochs, against 50 for Delta-JEPA. The Sub-JEPA paper reports higher numbers for itself ( 95 .0,
+
+84 .0, 89 .0, and 76 .3 on the four tasks) under a different protocol with 50 evaluation episodes, against 500 here (Zhao et al., 2026). H-JEPA is above those numbers as well. As a check on identical episodes, a paired comparison against the official LeWM checkpoint on N =200 matched episodes gives 88 .5 against 82 .0 on PushT (McNemar p ≈ 0.053 ). Absolute rates in this paired test are not comparable to Table 2. Because Table 2 changes representation and predictor together, §4.1 separates them. 
+
+What the state encodes. Physical probing (Appendix D) shows a consistent division of labor. H-JEPA is strongest on the directly controlled variable (PushT agent location, linear MSE 0.028 against 
+
+0.062 and 0.065 ), while LeWM and Sub-JEPA decode the PushT block pose better. On OGB-Cube, H-JEPA is far stronger on joint velocity and end-effector position, and the methods are at parity on Reacher. Planning quality is thus not monotone in object-pose decodability. 7Table 3: Predictor class on PushT at a matched representation and horizon ( Kp=5 in all rows). Parameters are total model followed by dynamics module. H-JEPA rows share the ViT-T/14 encoder and 0.79 M projector.                           
+
+> Predictor Params total / dyn. Success Representation LeWM, native embedding 18 .0M / 10 .8M20% SIGReg AdaLN transformer on H-JEPA, r=64 9.6M / 3.3M84% H-JEPA Port-Hamiltonian +PIC, r=64 7.2M / 0.86 M92% H-JEPA Port-Hamiltonian +PIC, r=192 11 .6M / 5.4M94 %H-JEPA
+
+Table 4: Mechanism ablations, success (%) at 
+
+N =300 . H is the port-Hamiltonian predictor. 
+
+> †
+
+Value from Table 2.                           
+
+> Configuration PushT Cube H+PIC, prior on h(full) 93 .391 .9†
+> MLP +PIC 85 .084 .3
+> H, no PIC 75 .089 .0
+> MLP, no PIC 32 .0
+> H+PIC, untied readout Q83 .7
+> H+PIC, prior on s86 .3
+> H+PIC, SIGReg prior 36 .7
+
+Table 5: Horizons on PushT, success (%).                
+
+> (Kp, K PIC )(1 ,0) (1 ,1) (3 ,3) (5 ,1) (5 ,5)
+> Success 12 34 94 90 94
+
+Table 6: State rank sweep, success (%).                     
+
+> Task r=16 r=32 r=64 r=192
+> Two-Room 100 100 100
+> Reacher 72 (80 )82 (84 )94 78
+> PushT 84 (81 )92 94
+> OGB-Cube 96 76 ,78
+
+What the predictor learns. Appendix E audits the learned fields on held-out trajectories. The balance between passive and control flow in equation 6 is task dependent. On PushT the control flow is only 0.13 times the passive flow, the passive flow is dominated by dissipation, and linear probes from the passive flow, control flow, and energy gradient each explain 88 to 90 percent of the physical state increment. On OGB-Cube the control flow is 1.53 times the passive flow. On Reacher and OGB-Cube the component-wise physical alignment is weaker, even though task variables remain strongly encoded in s.4.1 ABLATIONS AND ANALYSIS 
+
+Predictor class at a matched representation. The JEPA baselines use a causal AdaLN trans-former over three latents. We keep the H-JEPA perception stack, the fixed U , the state s, and Kp=5 ,and swap only the dynamics for that transformer (Table 3). With Kp=5 , LeWM’s transformer on its native SIGReg embedding reaches 20 percent. The same transformer on the H-JEPA representation reaches 84 percent. Replacing it by the port-Hamiltonian predictor with PIC raises success to 92 per-cent at r=64 while shrinking the dynamics module from 3.3M to 0.86 M parameters. The selected 
+
+r=192 model reaches 94 percent with 11 .6M parameters in total, below the 18 .0M of LeWM. The last swap changes temporal-state construction and action injection together with the predictor, so it compares complete predictor formulations at a matched representation and horizon. 
+
+Structured dynamics and PIC. Table 4 isolates the remaining choices at matched rank on PushT (r=64 , epoch 10 ) and OGB-Cube ( r=32 , seed 11 ), both at N =300 . The structured predictor helps by a similar amount on both: with PIC in place, replacing the port-Hamiltonian step by an unstruc-tured MLP costs 8.3 points on PushT ( 93 .3 to 85 .0) and 7.6 on OGB-Cube ( 91 .9 to 84 .3). The contribution of PIC is task dependent. Removing it costs 18 .3 points on PushT and 2.9 on OGB-Cube, where the full-model reference is the main-benchmark value and the gap is within evaluation noise at N =300 . This agrees with the reading of PIC as a reweighting equation 12 and with the predictor audit. On PushT the control flow is a small part of each displacement ( 0.13 of the passive flow), so an unweighted rollout loss is dominated by passive error and says little about the action-coupled part, and extra weight on the port directions matters. On OGB-Cube the control flow is the larger part ( 1.53 ), so the rollout loss already emphasizes it, and the extra weight from PIC is also smaller there ( 7.4 against 33 , since r = 32 and da = 5 ). Without the Hamiltonian structure, PIC matters most: the MLP falls from 85 .0 to 32 .0 on PushT without it. 8Tying the readout to the port. To test the tie between readout and port, we keep the full recipe, including the action target and the learned port Gθ in the forward step, and replace only G⊤ 
+
+> θ
+
+in the readout equation 9 by Q⊤ for a fixed random orthonormal Q ∈ Rr×da . The identity equation 11 then fails. The residual gains a term that vanishes only when the port coincides with Q (Appendix B), which competes with the state-dependent orientation that prediction asks of the port. This untied readout reaches 83 .7 percent, against 75 .0 without PIC and 93 .3 with the tied readout. An action readout through a fixed orthonormal map therefore already helps, and tying it to the port, which turns it into a pure reweighting of rollout error, accounts for the other half of the gain. 
+
+Prior type and placement. Moving the Bures-Wasserstein prior from the code h onto the scored state s lowers PushT success from 93 .3 to 86 .3, which supports regularizing perception and letting the state inherit. Replacing Bures-Wasserstein by SIGReg on h reaches 36 .7 percent at the same epoch 10 , consistent with equation 4. This is a statement about SIGReg inside H-JEPA, where the prior alone must hold open the code directions outside the slice. It is not a statement about LeWM, where SIGReg acts on the same coordinates as the prediction loss. 
+
+Training at the planning horizon. Table 5 (PushT, r=192 , N =50 , epoch 10 ) shows that one-step prediction does not compose into a plannable rollout, with or without one-step PIC ( 12 and 34 
+
+percent). Matching both horizons at three or five steps reaches 94 percent. Cutting PIC to one step while keeping Kp=5 gives 90 percent. We therefore set Kp = KPIC to the planning horizon. 
+
+Rank is the capacity knob. Table 6 shows that the useful control dimension is task dependent (bold: rank used in Table 2, parentheses: larger evaluation). Two-Room saturates at every tested rank, Reacher and OGB-Cube degrade at full rank, and PushT improves up to r=D. At r = D
+
+the slice compresses nothing but still separates the scored coordinates from the regularized ones. The selected ranks are capacity choices for the planning metric and not estimates of physical state dimension. An audit of the CEM cost on the r=64 PushT checkpoint makes this concrete. On the candidate sets scored during evaluation, we fit a linear map from the probed physical variables of Appendix D to the terminal state, split every terminal state into that reconstruction and the or-thogonal remainder, and rank candidates by the terminal cost computed from each part alone. The remainder alone has Spearman correlation 0.997 with the full candidate ranking and recovers 89 
+
+percent of the CEM elites, against 0.66 and 38 percent for the physical part. Planning therefore uses predictive directions beyond the variables exposed by standard physical probes. Appendix F reports the history ablation that led to the parameter-free phase, and Appendix I the training curves. 
+
+## 5 LIMITATIONS 
+
+H-JEPA uses mechanics as a structural bias and makes no claim of latent system identification. The learned coordinates are free to rotate around the planning objective, and the audit in Appendix E confirms that component-level physical alignment is task dependent. The explicit Euler step does not preserve the energy properties of the continuous-time field, which our short-horizon planner did not require. The orthonormal port fixes the singular values of the instantaneous action map. This removes a scale ambiguity and makes PIC well conditioned, but it gives up state-dependent action gain. The state rank is selected per task and not learned, and at r = D the state has one null direction (§3.2). The inherited covariance is only as isotropic as the trained code, and the measured spectra in Appendix G remain spread around one. Finally, our evidence is limited to offline pixel control in simulation with short-horizon CEM planning. Longer horizons, real observations, and online data collection remain to be tested. 
+
+## 6 CONCLUSION 
+
+We introduced H-JEPA, a world model that learns to plan from pixels without reconstruction by separating perceptual representation learning from the state used for control. A Bures-Wasserstein prior regularizes the perceptual code toward isotropy, while a fixed orthonormal projection transfers its covariance geometry to a control state with task-dependent dimension. A phase-conditioned port-Hamiltonian predictor structures the latent dynamics, and tied port-inverse consistency yields an exact reweighting of rollout error along action-input directions without an additional decoder. 9Ablations support the benefits of structured dynamics and, on PushT, regularizing perception and tying the inverse readout to the action port. H-JEPA matches or exceeds all evaluated baselines across four pixel-based control benchmarks. Together, these results establish covariance inheritance and structured, action-sensitive prediction as a promising combination for learning representations that support effective planning. ETHICS STATEMENT 
+
+This work studies representation learning and planning in standard simulated control benchmarks. It involves no human subjects, no personal data, and no dataset releases beyond configurations for public benchmarks. Although the present experiments are confined to simulation, deploying learned world models on physical systems would require application-specific validation of safety, robust-ness, and failure behavior. REPRODUCIBILITY STATEMENT 
+
+Section 3 specifies the model, training objective, and planning procedure, with equation 3, equa-tion 6, equation 8, and equation 10 defining the distributional objective, dynamics update, multi-step prediction loss, and PIC loss. Appendix B derives the PIC identity. Default hyperparameters and the per-task checkpoint epochs are listed in Appendix C. The probing protocol follows Zhang et al. (2026) and Maes et al. (2026) and is restated in Appendix D. Predictor diagnostics are in Appendix E, the geometry and collapse analyses in Appendices G and H, and optimization traces in Appendix I. An anonymized code release with training configurations for all reported runs is included as supplementary material. 
+
+## ACKNOWLEGMENTS 
+
+This work was supported by a Tel Aviv University Center for AI and Data Science (TAD) grant and by Len Blavatnik and the Blavatnik Family foundation. This research was also supported by the Ministry of Innovation, Science & Technology, Israel (1001576154) and the Michael J. Fox Foundation (MJFF-022407). The contribution of Tamim Zoabi is part of a PhD thesis research conducted at Tel Aviv University. 
+
+## REFERENCES 
+
+Pulkit Agrawal, Ashvin V Nair, Pieter Abbeel, Jitendra Malik, and Sergey Levine. Learning to poke by poking: Experiential learning of intuitive physics. In D. Lee, M. Sugiyama, U. Luxburg, I. Guyon, and R. Garnett (eds.), Advances in Neural Information Processing Systems , volume 29. Curran Associates, Inc., 2016. URL https://proceedings.neurips.cc/paper_ files/paper/2016/file/c203d8a151612acf12457e4d67635a95-Paper.pdf .Alexander A. Alemi, Ian Fischer, Joshua V. Dillon, and Kevin Murphy. Deep variational information bottleneck. In International Conference on Learning Representations , 2017. URL https: //openreview.net/forum?id=HyxQzBceg .Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, and Nicolas Ballas. Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture . In 2023 IEEE/CVF Conference on Computer Vision and Pattern Recog-nition (CVPR) , pp. 15619–15629, Los Alamitos, CA, USA, June 2023. IEEE Computer Society. doi: 10.1109/CVPR52729.2023.01499. URL https://doi.ieeecomputersociety. org/10.1109/CVPR52729.2023.01499 .Randall Balestriero and Yann LeCun. Lejepa: Provable and scalable self-supervised learning with-out the heuristics, 2025. URL https://arxiv.org/abs/2511.08544 .Adrien Bardes, Jean Ponce, and Yann LeCun. VICReg: Variance-invariance-covariance regulariza-tion for self-supervised learning. In International Conference on Learning Representations , 2022. URL https://openreview.net/forum?id=xm6YD62D1Ub .10 Adrien Bardes, Quentin Garrido, Jean Ponce, Xinlei Chen, Michael Rabbat, Yann LeCun, Mido Assran, and Nicolas Ballas. Revisiting feature prediction for learning visual representations from video. Transactions on Machine Learning Research , 2024. ISSN 2835-8856. URL https: //openreview.net/forum?id=QaCCuDfBk2 . Featured Certification. Rajendra Bhatia, Tanvi Jain, and Yongdo Lim. On the bures–wasserstein distance between pos-itive definite matrices. Expositiones Mathematicae , 37(2):165–191, 2019. ISSN 0723-0869. doi: https://doi.org/10.1016/j.exmath.2018.01.002. URL https://www.sciencedirect. com/science/article/pii/S0723086918300021 .Yuhan Chen, Takashi Matsubara, and Takaharu Yaguchi. Neural symplectic form: Learn-ing hamiltonian equations on general coordinate systems. In M. Ranzato, A. Beygelz-imer, Y. Dauphin, P.S. Liang, and J. Wortman Vaughan (eds.), Advances in Neural In-formation Processing Systems , volume 34, pp. 16659–16670. Curran Associates, Inc., 2021. URL https://proceedings.neurips.cc/paper_files/paper/2021/ file/8b519f198dd26772e3e82874826b04aa-Paper.pdf .Cheng Chi, Zhenjia Xu, Siyuan Feng, Eric Cousineau, Yilun Du, Benjamin Burchfiel, Russ Tedrake, and Shuran Song. Diffusion policy: Visuomotor policy learning via action diffusion. 
+
+The International Journal of Robotics Research , 44(10-11):1684–1704, 2025. doi: 10.1177/ 02783649241273668. URL https://doi.org/10.1177/02783649241273668 .Kevin Course, Trefor Evans, and Prasanth Nair. Weak form generalized hamiltonian learning. In H. Larochelle, M. Ranzato, R. Hadsell, M.F. Balcan, and H. Lin (eds.), Advances in Neu-ral Information Processing Systems , volume 33, pp. 18716–18726. Curran Associates, Inc., 2020. URL https://proceedings.neurips.cc/paper_files/paper/2020/ file/d93c96e6a23fff65b91b900aaa541998-Paper.pdf .Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, Jakob Uszko-reit, and Neil Houlsby. An image is worth 16x16 words: Transformers for image recogni-tion at scale. In International Conference on Learning Representations , 2021. URL https: //openreview.net/forum?id=YicbFdNTTy .T. W. EPPS and LAWRENCE B. PULLEY. A test for normality based on the empirical characteristic function. Biometrika , 70(3):723–726, 12 1983. ISSN 0006-3444. doi: 10.1093/biomet/70.3.723. URL https://doi.org/10.1093/biomet/70.3.723 .Carles Gelada, Saurabh Kumar, Jacob Buckman, Ofir Nachum, and Marc G. Bellemare. DeepMDP: Learning continuous latent space models for representation learning. In Kamalika Chaudhuri and Ruslan Salakhutdinov (eds.), Proceedings of the 36th International Conference on Machine Learning , volume 97 of Proceedings of Machine Learning Research , pp. 2170–2179. PMLR, 09–15 Jun 2019. URL https://proceedings.mlr.press/v97/gelada19a.html .Matthias Gelbrich. On a formula for the l2 wasserstein metric between measures on euclidean and hilbert spaces. Mathematische Nachrichten , 147(1):185–203, 1990. doi: https://doi.org/10. 1002/mana.19901470121. URL https://onlinelibrary.wiley.com/doi/abs/10. 1002/mana.19901470121 .Samuel Greydanus, Misko Dzamba, and Jason Yosinski. Hamiltonian neural networks. In H. Wallach, H. Larochelle, A. Beygelzimer, F. d'Alch´ e-Buc, E. Fox, and R. Garnett (eds.), 
+
+Advances in Neural Information Processing Systems , volume 32. Curran Associates, Inc., 2019. URL https://proceedings.neurips.cc/paper_files/paper/2019/ file/26cd8ecadce0d4efd6cc8a8725cbd1f8-Paper.pdf .Jean-Bastien Grill, Florian Strub, Florent Altch´ e, Corentin Tallec, Pierre Richemond, Elena Buchatskaya, Carl Doersch, Bernardo Avila Pires, Zhaohan Guo, Mohammad Gheshlaghi Azar, Bilal Piot, koray kavukcuoglu, Remi Munos, and Michal Valko. Bootstrap your own latent - a new approach to self-supervised learning. In H. Larochelle, M. Ranzato, R. Hadsell, M.F. Balcan, and H. Lin (eds.), Advances in Neural Information Processing Systems , volume 33, pp. 21271–21284. Curran Associates, Inc., 2020. URL https://proceedings.neurips.cc/paper_ files/paper/2020/file/f3ada80d5c4ee70142b17b8192b2958e-Paper.pdf .11 Jian Gu, Aldeida Aleti, Chunyang Chen, and Hongyu Zhang. Rethinking weight tying: Pseudo-inverse tying for lm stable training and updates, 2026. URL https://arxiv.org/abs/ 2602.04556 .David Ha and J¨ urgen Schmidhuber. Recurrent world models facilitate policy evolution. In S. Bengio, H. Wallach, H. Larochelle, K. Grauman, N. Cesa-Bianchi, and R. Garnett (eds.), 
+
+Advances in Neural Information Processing Systems , volume 31. Curran Associates, Inc., 2018. URL https://proceedings.neurips.cc/paper_files/paper/2018/ file/2de5d16682c3c35007e4e92982f1a2ba-Paper.pdf .Danijar Hafner, Timothy Lillicrap, Ian Fischer, Ruben Villegas, David Ha, Honglak Lee, and James Davidson. Learning latent dynamics for planning from pixels. In Kamalika Chaudhuri and Ruslan Salakhutdinov (eds.), Proceedings of the 36th International Conference on Machine Learning ,volume 97 of Proceedings of Machine Learning Research , pp. 2555–2565. PMLR, 09–15 Jun 2019. URL https://proceedings.mlr.press/v97/hafner19a.html .Danijar Hafner, Timothy Lillicrap, Jimmy Ba, and Mohammad Norouzi. Dream to control: Learning behaviors by latent imagination, 2020. URL https://arxiv.org/abs/1912.01603 .Petr Ivashkov, Randall Balestriero, and Bernhard Sch¨ olkopf. Sensorimotor world models: Percep-tion for action via inverse dynamics, 2026. URL https://arxiv.org/abs/2606.20104 .Maximilian Karl, Maximilian Soelch, Justin Bayer, and Patrick van der Smagt. Deep variational bayes filters: Unsupervised learning of state space models from raw data. In International Con-ference on Learning Representations , 2017. URL https://openreview.net/forum? id=HyTqHL5xg .Alex Lamb, Riashat Islam, Yonathan Efroni, Aniket Rajiv Didolkar, Dipendra Misra, Dylan J Foster, Lekan P Molu, Rajan Chari, Akshay Krishnamurthy, and John Langford. Guaranteed discovery of control-endogenous latent states with multi-step inverse models. Transactions on Machine Learning Research , 2023. ISSN 2835-8856. URL https://openreview.net/forum? id=TNocbXm5MZ .Yann LeCun. A path towards autonomous machine intelligence. OpenReview preprint , 2022. Alexander Levine, Peter Stone, and Amy Zhang. Multistep inverse is not all you need. In Re-inforcement Learning Conference , 2024. URL https://openreview.net/forum?id= xyrgG4rsqY .Michael Littman and Richard S Sutton. Predictive representations of state. In T. Dietterich, S. Becker, and Z. Ghahramani (eds.), Advances in Neural Information Processing Systems , vol-ume 14. MIT Press, 2001. URL https://proceedings.neurips.cc/paper_files/ paper/2001/file/1e4d36177d71bbb3558e43af9577d70e-Paper.pdf .Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. In International Confer-ence on Learning Representations , 2019. URL https://openreview.net/forum?id= Bkg6RiCqY7 .Lucas Maes, Quentin Le Lidec, Damien Scieur, Yann LeCun, and Randall Balestriero. Leworld-model: Stable end-to-end joint-embedding predictive architecture from pixels, 2026. URL 
+
+https://arxiv.org/abs/2603.19312 .V A Marˇ cenko and L A Pastur. Distribution of eigenvalues for some sets of random matrices. Math-ematics of the USSR-Sbornik , 1(4):457, apr 1967. doi: 10.1070/SM1967v001n04ABEH001994. URL https://doi.org/10.1070/SM1967v001n04ABEH001994 .Dmytro Mishkin and Jiri Matas. All you need is a good init, 2016. URL https://arxiv.org/ abs/1511.06422 .B. Moore. Principal component analysis in linear systems: Controllability, observability, and model reduction. IEEE Transactions on Automatic Control , 26(1):17–32, 1981. doi: 10.1109/TAC.1981. 1102568. 12 Richard M. Murray, Zexiang Li, and S. Shankar Sastry. A Mathematical Introduction to Robotic Manipulation . CRC Press, 1994. Seohong Park, Kevin Frans, Benjamin Eysenbach, and Sergey Levine. Ogbench: Bench-marking offline goal-conditioned rl. In Y. Yue, A. Garg, N. Peng, F. Sha, and R. Yu (eds.), International Conference on Learning Representations , volume 2025, pp. 94937–94982, 2025. URL https://proceedings.iclr.cc/paper_files/paper/2025/file/ ecd92623ac899357312aaa8915853699-Paper-Conference.pdf .Deepak Pathak, Pulkit Agrawal, Alexei A. Efros, and Trevor Darrell. Curiosity-driven exploration by self-supervised prediction. In Doina Precup and Yee Whye Teh (eds.), Proceedings of the 34th International Conference on Machine Learning , volume 70 of Proceedings of Machine Learning Research , pp. 2778–2787. PMLR, 06–11 Aug 2017. URL https://proceedings.mlr. press/v70/pathak17a.html .Ofir Press and Lior Wolf. Using the output embedding to improve language models. In Mirella Lapata, Phil Blunsom, and Alexander Koller (eds.), Proceedings of the 15th Conference of the European Chapter of the Association for Computational Linguistics: Volume 2, Short Papers , pp. 157–163, Valencia, Spain, April 2017. Association for Computational Linguistics. URL https: //aclanthology.org/E17-2025/ .Reuven Rubinstein. The cross-entropy method for combinatorial and continuous optimiza-tion. Methodology and Computing in Applied Probability , 1(2):127–190, September 1999. doi: 10.1023/A:1010091220143. URL https://ideas.repec.org/a/spr/metcap/ v1y1999i2d10.1023_a1010091220143.html .Uladzislau Sobal, Wancong Zhang, Kyunghyun Cho, Randall Balestriero, Tim G. J. Rudner, and Yann LeCun. Learning from reward-free offline data: A case for planning with latent dynamics models. In D. Belgrave, C. Zhang, H. Lin, R. Pascanu, P. Koniusz, M. Ghas-semi, and N. Chen (eds.), Advances in Neural Information Processing Systems , volume 38, Main Conference, pp. 43905–43941. Curran Associates, Inc., 2025. doi: 10.52202/ 085713-1465. URL https://proceedings.neurips.cc/paper_files/paper/ 2025/file/3e7cf447f21cd11c846463affefce665-Paper-Conference.pdf .Yuval Tassa, Yotam Doron, Alistair Muldal, Tom Erez, Yazhe Li, Diego de Las Casas, David Bud-den, Abbas Abdolmaleki, Josh Merel, Andrew Lefrancq, Timothy Lillicrap, and Martin Ried-miller. Deepmind control suite, 2018. URL https://arxiv.org/abs/1801.00690 .Naftali Tishby, Fernando C. Pereira, and William Bialek. The information bottleneck method, 2000. URL https://arxiv.org/abs/physics/0004057 .Peter Toth, Danilo J. Rezende, Andrew Jaegle, S´ ebastien Racani` ere, Aleksandar Botev, and Irina Higgins. Hamiltonian generative networks. In International Conference on Learning Represen-tations , 2020. URL https://openreview.net/forum?id=HJenn6VFvB .Arjan van der Schaft and Dimitri Jeltsema. Port-hamiltonian systems theory: An introductory overview. Foundations and Trends in Systems and Control , 1(2-3):173–378, 06 2014. ISSN 2325-6818. doi: 10.1561/2600000002. URL https://doi.org/10.1561/2600000002 .Manuel Watter, Jost Springenberg, Joschka Boedecker, and Martin Riedmiller. Em-bed to control: A locally linear latent dynamics model for control from raw im-ages. In C. Cortes, N. Lawrence, D. Lee, M. Sugiyama, and R. Garnett (eds.), Ad-vances in Neural Information Processing Systems , volume 28. Curran Associates, Inc., 2015. URL https://proceedings.neurips.cc/paper_files/paper/2015/ file/a1afc58c6ca9540d057299ec3016d726-Paper.pdf .Jure Zbontar, Li Jing, Ishan Misra, Yann LeCun, and Stephane Deny. Barlow twins: Self-supervised learning via redundancy reduction. In Marina Meila and Tong Zhang (eds.), Pro-ceedings of the 38th International Conference on Machine Learning , volume 139 of Proceed-ings of Machine Learning Research , pp. 12310–12320. PMLR, 18–24 Jul 2021. URL https: //proceedings.mlr.press/v139/zbontar21a.html .13 Amy Zhang, Rowan Thomas McAllister, Roberto Calandra, Yarin Gal, and Sergey Levine. Learn-ing invariant representations for reinforcement learning without reconstruction. In International Conference on Learning Representations , 2021. URL https://openreview.net/forum? id=-2FCwDKRREu .Zhenghao Zhang, Yuanxiang Wang, Zhenyu Guan, Yujia Yang, Bingkang Shi, Tianyu Zong, Hongzhu Yi, Guoqing Chao, Xingchen Chen, Tiankun Yang, Chenxi Bao, Tao Yu, Jingjing Zhou, and Jungang Xu. Delta-jepa: Learning action-sensitive world models via latent difference decod-ing, 2026. URL https://arxiv.org/abs/2606.31232 .Kai Zhao, Dongliang Nie, Yuchen Lin, Zhehan Luo, Yixiao Gu, Deng-Ping Fan, and Dan Zeng. Sub-jepa: Subspace gaussian regularization for stable end-to-end world models, 2026. URL 
+
+https://arxiv.org/abs/2605.09241 .Yaofeng Desmond Zhong, Biswadip Dey, and Amit Chakraborty. Symplectic ode-net: Learning hamiltonian dynamics with control. In International Conference on Learning Representations ,2020. URL https://openreview.net/forum?id=ryxmb1rKDS .Gaoyue Zhou, Hengkai Pan, Yann LeCun, and Lerrel Pinto. DINO-WM: World models on pre-trained visual features enable zero-shot planning. In Forty-second International Conference on Machine Learning , 2025. URL https://openreview.net/forum?id=D5RNACOZEI .
+
+## A ARCHITECTURE OVERVIEW 
+
+Figure 1 summarizes the training-time model: perception on a sphere, the fixed orthonormal slice, the port-Hamiltonian predictor, and the three losses. H-JEPA - training               
+
+> Perception on a sphere → control state → phase-conditioned port-Hamiltonian dynamics
+> ℒiso
+> input frame xt
+> ht
+> ht
+> UTr
+> st
+> āt
+> Latent dynamics Fθ
+> ŝt+1 =st+ Δt·[( J−R)∇H+G ā t]
+> TRAINING SIGNALS · open-loop rollout to the planning horizon K= 5
+> st
+> Fθ
+> ŝt+1 ŝt+2
+> Fθ
+> ŝt+3
+> Fθ
+> ŝt+4
+> Fθ
+> ŝt+5
+> Fθ
+> ℒpred
+> Σ‖ŝ−s‖²
+> ℒpic
+> Σ‖û−ā‖²
+> ℒ=
+> ℒpred +
+> ℒpic +
+> ℒiso
+> E
+
+Figure 1: H-JEPA. The Bures-Wasserstein prior Liso acts only on the spherical code ht. A fixed orthonormal slice U ⊤ yields the control state st. The phase-conditioned port-Hamiltonian predictor 
+
+Fθ is supervised open-loop ( Lpred ), PIC reads actions back through the port transpose ( LPIC ), and planning scores s alone. 
+
+## B DERIVATION OF THE PIC IDENTITY 
+
+Fix a rollout step i and abbreviate c = ˆ ct+i, s = ˆ st+i, v = ˆ vt+i, and ¯a = ¯ at+i. The model’s one-step prediction from the rollout state is 
+
+ˆst+i+1 = s + ∆ t
+
+h J − Rθ (c)∇sHθ (s, v ) + Gθ (c) ¯ a
+
+i
+
+. (13) 14 Substituting the readout of equation 9 and using Gθ (c)⊤Gθ (c) = I,
+
+ˆut+i − ¯a = Gθ (c)⊤h st+i+1 −s 
+
+> ∆t
+
+−  J − Rθ (c)∇sHθ (s, v )
+
+i
+
+− Gθ (c)⊤Gθ (c) ¯ a (14) 
+
+= 1∆t Gθ (c)⊤h
+
+st+i+1 − s − ∆t J − Rθ (c)∇sHθ (s, v ) − ∆t G θ (c) ¯ a
+
+i
+
+(15) 
+
+= 1∆t Gθ (c)⊤ st+i+1 − ˆst+i+1 
+
+ = 1∆t Gθ (c)⊤δt+i+1 , (16) which is equation 11. The PIC residual is the projection of the open-loop state error onto the port subspace, scaled by 1/∆t. Summing 1 
+
+> r
+
+∥δ∥22 and 1 
+
+> da∆t2
+
+∥G⊤δ∥22 over the same steps gives the quadratic form in equation 12, which weights error along the da port directions by a factor 
+
+1 + r/ (da∆t2) relative to the remaining r − da directions. With ∆t = 1 this factor is 17 on Two-Room, 33 on Reacher, 97 on PushT at r = 192 , and 7.4 on OGB-Cube. The identity does not remove the action readout. On a transition that the model predicts exactly, the transpose map returns ˆu = ¯ a. Off such transitions the readout is an orthogonal projection of the residual displacement, so it never amplifies noise, its magnitude is bounded by the transition energy, and LPIC is of order one at initialization in normalized units. The identity also explains the control in §4.1, where the readout uses a fixed random orthonormal Q⊤ in place of Gθ (c)⊤ while the forward step keeps Gθ . The same substitution now gives 
+
+ˆut+i − ¯a = 1∆t Q⊤δt+i+1 +  Q⊤Gθ (c) − I¯a. (17) The first term is again a projected rollout error. The second is new and vanishes only if Gθ (c) = Q
+
+for every visited phase, so the untied loss pulls the port toward a fixed frame while Lpred asks it to follow the state. With the tied readout this term is identically zero and the port is left free. The control recovers about half of the gain ( 75 .0 to 83 .7, against 93 .3 with the tied readout), and the tie supplies the rest. Weighting error along the directions in which actions enter is qualitatively related to the controllability side of balanced realizations (Moore, 1981), with predictive accuracy playing the analogous role for observability. 
+
+## C DEFAULT CONFIGURATION AND TRAINING DETAILS 
+
+Table 7: Default H-JEPA configuration. Task-specific entries are shown explicitly for rank, action dimension, and checkpoint epoch. 
+
+Quantity Value Perceptual dimension D 192 
+
+Encoder ViT-T/14 from scratch, MLP projector 192 → 2048 → 192 
+
+Output normalization affine-free LayerNorm, ∥h∥ = √D, per sample Projection U fixed random orthonormal, seeded QR History and phase 2 frames, c = [ s, v ] with v = s − sprev , left-pad v0 = 0 
+
+Net action dimension da 2 on Two-Room, Reacher, PushT, 5 on OGB-Cube Port constraint Stiefel, G⊤G = I via differentiable QR Dissipation R = LL ⊤ with lower-triangular L, seeded so R ≈ (ρinit /r )I, ρinit = 10 −2
+
+Dynamics MLPs depth 3, width 256 , GELU, no dropout 
+
+Hθ head initialization N (0 , 10 −3) so passive drift starts near zero Step size ∆t 1.0
+
+Horizons Kp = 5 (equal to the CEM horizon), KPIC = 5 
+
+Window length T 7
+
+Optimizer AdamW, lr 5 × 10 −5, weight decay 10 −3, bf16, grad clipping Training length and seeds 10 epochs on every task, checkpoint epoch 8/6/10 /3 for Two-Room/Reacher/PushT/OGB-Cube selected on a held-out pilot seed, reported seeds {3072 , 7, 11 }
+
+Baseline protocol Delta-JEPA evaluation protocol (Zhang et al., 2026), with 50 training epochs for Delta-JEPA CEM horizon 5, receding 5, 300 samples, 30 iters PushT, 10 elsewhere Evaluation N = 500 main, lower-budget ablations use N = 50 or N = 300 as stated Diagnostic probe linear head on detached displacements, logging only 
+
+Table 7 lists the defaults. The three losses are summed without weights, which places PIC and prediction on comparable scales in normalized action and state units. For context, Zhang et al. 15 Table 8: Physical latent probing on PushT ( ρ is the Pearson correlation).                                                                                       
+
+> Property Method Linear MSE ↓Linear ρ↑MLP MSE ↓MLP ρ↑
+> Agent location H-JEPA 0.028 ±0.003 0.986 0.008 ±0.003 0.996
+> LeWM 0.062 ±0.012 0.968 0.017 ±0.006 0.992
+> Sub-JEPA 0.065 ±0.009 0.966 0.016 ±0.004 0.992
+> Block location H-JEPA 0.152 ±0.025 0.926 0.049 ±0.024 0.979
+> LeWM 0.038 ±0.011 0.982 0.024 ±0.014 0.990
+> Sub-JEPA 0.033 ±0.009 0.984 0.017 ±0.007 0.992
+> Block angle H-JEPA 0.331 ±0.053 0.822 0.199 ±0.024 0.896
+> LeWM 0.199 ±0.019 0.898 0.108 ±0.025 0.944
+> Sub-JEPA 0.201 ±0.013 0.895 0.072 ±0.015 0.965
+
+Table 9: Physical latent probing on Reacher ( ρ is the Pearson correlation).                                                              
+
+> Property Method Linear MSE ↓Linear ρ↑MLP MSE ↓MLP ρ↑
+> Finger position H-JEPA 0.002 ±0.000 0.999 0.000 ±0.000 1.000
+> LeWM 0.002 ±0.000 0.999 0.000 ±0.000 1.000
+> Sub-JEPA 0.002 ±0.000 0.999 0.000 ±0.000 1.000
+> Joint position H-JEPA 0.601 ±0.125 0.588 0.742 ±0.111 0.562
+> LeWM 0.636 ±0.120 0.573 0.738 ±0.116 0.550
+> Sub-JEPA 0.639 ±0.125 0.575 0.726 ±0.129 0.559
+
+(2026) sweep the weight of their learned action decoder in the same action units and report collapse below 0.1 with a broad workable range from 1 to 50 . The two losses are not equivalent, so we treat this as context and not as hyperparameter transfer. The readout itself is two matrix products plus one thin QR factorization per step, with no linear solve and no regularizer, run under bf16 autocast with the factorization in a small fp32 island, as is standard for spectral operations. 
+
+## D FULL PHYSICAL PROBING TABLES 
+
+The protocol follows Zhang et al. (2026) and Maes et al. (2026): 20 ,000 frames, trajectory-level train and test split, targets z-scored on the train split, an OLS linear probe and a 2×256 ReLU MLP probe trained for 100 epochs, and three probe seeds governing MLP initialization and minibatch order (the OLS fit is deterministic given the split), reported as mean ± std. H-JEPA probes the control state s = U ⊤h at the task-specific converged checkpoints defined in §4 (PushT seed 11 at 
+
+r=192 , Reacher seed 3072 at r=64 , OGB-Cube seed 3072 at r=32 ), and LeWM and Sub-JEPA use their official projected 192 -d embeddings. Angular and quaternion targets are evaluated in raw coordinates, so wrap-around and sign ambiguity depress correlations for all methods alike, and those rows should be read comparatively. Tables 8, 9, and 10 report PushT, Reacher, and OGB-Cube in turn. 
+
+## E INTERPRETING THE PORT -H AMILTONIAN PREDICTOR 
+
+The port-Hamiltonian parameterization is introduced as an inductive bias rather than an assumption that the learned coordinates recover physical positions, momenta, or energies. We therefore ask a more limited question: after training for planning, does the predictor use its structured components in a meaningful and task-dependent way? We audit the best planning checkpoint for each bench-mark on 24 ,576 held-out expert transitions, evaluating the learned fields only on encoded states encountered in the data. 
+
+The imposed structure is realized numerically. For each transition we decompose the predicted velocity into 
+
+˙s =  J − R(c)∇sH(s, v )
+
+| {z }
+
+> passive flow
+
++ G(c)¯ a
+
+| {z } 
+
+> control flow
+
+. (18) 16 Table 10: Physical latent probing on OGB-Cube ( ρ is the Pearson correlation).                                                                                                                                                                                           
+
+> Property Method Linear MSE ↓Linear ρ↑MLP MSE ↓MLP ρ↑
+> Joint position H-JEPA 0.445 ±0.044 0.670 0.554 ±0.056 0.685
+> LeWM 0.579 ±0.060 0.645 0.775 ±0.109 0.647
+> Sub-JEPA 0.492 ±0.067 0.676 0.557 ±0.059 0.675
+> Joint velocity H-JEPA 0.740 ±0.027 0.432 0.713 ±0.039 0.541
+> LeWM 1.069 ±0.038 0.088 2.674 ±0.236 0.050
+> Sub-JEPA 0.988 ±0.032 0.203 1.595 ±0.226 0.101
+> End-effector position H-JEPA 0.007 ±0.000 0.997 0.002 ±0.000 0.999
+> LeWM 0.027 ±0.003 0.987 0.020 ±0.001 0.991
+> Sub-JEPA 0.025 ±0.002 0.988 0.014 ±0.000 0.993
+> End-effector yaw H-JEPA 1.315 ±0.291 −0.124 2.133 ±0.448 −0.113
+> LeWM 2.046 ±0.483 −0.161 2.198 ±0.370 −0.143
+> Sub-JEPA 1.575 ±0.411 0.008 2.115 ±0.380 −0.078
+> Block position H-JEPA 0.023 ±0.001 0.989 0.009 ±0.001 0.996
+> LeWM 0.011 ±0.001 0.995 0.010 ±0.001 0.995
+> Sub-JEPA 0.053 ±0.005 0.975 0.010 ±0.001 0.995
+> Block quaternion H-JEPA 1.352 ±0.439 0.138 1.753 ±0.421 0.103
+> LeWM 1.822 ±0.403 −0.010 2.512 ±0.505 −0.035
+> Sub-JEPA 1.662 ±0.434 0.021 2.273 ±0.358 −0.010
+> Block yaw H-JEPA 1.142 ±0.233 0.184 1.804 ±0.222 0.024
+> LeWM 1.779 ±0.448 −0.025 1.856 ±0.368 −0.050
+> Sub-JEPA 1.313 ±0.270 0.208 1.589 ±0.558 0.161
+
+Table 11: Learned port-Hamiltonian structure on held-out transitions. The relative contribution of dissipation, passive dynamics, and direct control changes markedly across tasks.                 
+
+> Task ∥R∇H∥∥J∇H∥∥G¯a∥∥passive ∥
+> tr( G⊤RG )tr( R)corr(tr R, ∥v∥)
+> PushT 4.35 0.13 0.001 0.48 Reacher 1.16 0.56 0.008 0.24 OGB-Cube 1.11 1.53 0.184 0.13
+
+The Stiefel constraint is satisfied to numerical precision on all three tasks, ∥G⊤G − I∥∞ ≈ 4.8 ×
+
+10 −7, while R(c) = L(c)L(c)⊤ remains positive semidefinite by construction. Thus, the analysis below probes the learned fields within the intended decomposition and not artifacts of constraint violation. 
+
+The balance of passive and controlled dynamics is task dependent. Table 11 shows that the predictor does not use the same decomposition across environments. PushT is strongly dominated by passive, dissipative flow: ∥R∇H∥/∥J∇H∥ = 4 .35 , while the direct control flow is only 0.13 
+
+times the passive flow on expert trajectories. Reacher is more balanced, and OGB-Cube becomes control dominated, with ∥G¯a∥/∥passive ∥ = 1 .53 . The overlap tr( G⊤RG )/ tr( R) is nearly zero on PushT but substantially larger on OGB-Cube, indicating that the learned dissipative and actuated subspaces themselves adapt to the task. PushT provides the clearest physical interpretation. Its learned dissipation increases with latent speed ( corr(tr R, ∥v∥) = 0 .48 ), and the dissipative component dominates the conservative compo-nent, consistent with a representation organized around the strongly dissipative contact dynamics of pushing. OGB-Cube exhibits the opposite regime: direct actuation is larger than the passive field and actuation overlaps more strongly with the learned dissipative subspace. We emphasize that these quantities are measured in learned latent coordinates and should be interpreted as structural signatures, not estimates of physical coefficients in SI units. 
+
+When the task permits it, the learned fields align with physical change. To test whether the decomposition contains interpretable information beyond its relative magnitudes, we fit linear ridge 17 Table 12: Linear physical alignment of the learned predictor. R2 is measured on held-out transi-tions using ridge regression.                         
+
+> Task Passive →∆yG¯a→∆y∇H→∆ys→y
+> PushT 0.881 0.875 0.899 0.953 Reacher 0.351 0.033 0.291 0.514 OGB-Cube 0.268 0.323 0.312 0.561
+
+probes from each field to the corresponding physical state increment ∆y. Results are shown in Table 12. On PushT, the passive field, control field, and Hamiltonian gradient each explain approxi-mately 88 to 90 percent of the variance in the physical increment. The control state itself predicts the physical state with R2 = 0 .95 . Thus, on this task the latent decomposition is not only structurally valid but closely aligned with observable physical evolution. The same factor-wise interpretation is weaker on Reacher and OGB-Cube. This does not imply that the learned state is non-physical: complementary probes recover finger position in Reacher with correlation 0.999 , and end-effector and block position in OGB-Cube with correlations 0.997 and 
+
+0.989 , respectively. Rather, these tasks appear to represent the variables useful for planning more holistically in s, without requiring each of the H, R, and G components to be linearly aligned with a privileged physical coordinate. 
+
+Interpretation. These results suggest two levels at which the structured predictor is useful. First, the port-Hamiltonian parameterization provides a calibrated decomposition into passive, dissipa-tive, and directly controlled change whose relative use adapts across tasks. Second, when the underlying task admits a simple physical factorization, as in PushT, the learned fields themselves become strongly interpretable in terms of physical evolution. Successful planning does not require this stronger property: on Reacher and OGB-Cube, control-relevant physical information remains clearly present in the planning state even when it is distributed across the nonlinear predictor. We therefore view the port-Hamiltonian structure primarily as an inductive bias that organizes latent dynamics, with physical interpretability emerging where supported by the task rather than being imposed by construction. 
+
+## F HISTORY MECHANISM ABLATION 
+
+An earlier variant used a three-frame history fused by a learned mixer with LayerNorm, c =LN( Whist [s, ∆1, ∆2]) . After training, about 90 percent of the mixer’s Frobenius energy concen-trated on the latest state, and zeroing the difference channels barely changed one-step predictions (cosine similarity about 0.99 ), so the mixer was learning to ignore the history it was built to fuse. The current parameter-free phase c = [ s, v ] with a two-frame window removes the mixer and its normal-ization entirely, keeps s a single-frame representation, and leaves the planner’s metric untouched, and it is the variant used in all selected recipes. 
+
+## G GEOMETRY OF THE INHERITED CONTROL STATE 
+
+This appendix makes the inheritance statement of §3.2 exact and compares it with trained models. 
+
+Target covariance of the state. Let e = 1/√D. LN 0 gives e⊤h = 0 for every sample, so 
+
+Cov( h) e = 0 for any encoder, and the target of equation 3 is P = I − ee ⊤. The exact covariance of a uniform distribution on the radius-√D sphere inside the hyperplane is DD−1 P , which differs from 
+
+P by 0.5 percent at D = 192 , and we use the unit target as a fixed convention. If Cov( h) = P , then by equation 2 
+
+Cov( s) = U ⊤(I − ee ⊤)U = Ir − ww ⊤, w = U ⊤e. (19) This matrix has eigenvalue 1 with multiplicity r − 1 and one exceptional eigenvalue 1 − ∥ w∥22 along 
+
+w. For U drawn uniformly among orthonormal frames, ∥w∥22 follows a Beta   r 
+
+> 2
+
+, D−r
+
+> 2
+
+ distribution with mean r/D . When r = D, U is an orthogonal matrix, ∥w∥2 = 1 , and the exceptional eigenvalue is exactly zero: the state then has one null direction, the image of the centering direction. 18 Table 13: Measured geometry of the control state on n = 512 encoded frames from the selected checkpoints. The Marchenko-Pastur (MP) interval is the range of sample eigenvalues that an exactly isotropic state would show at this n and r (Marˇ cenko & Pastur, 1967). 
+
+exceptional measured eigenvalues of Cov( s)
+
+Model ∥U ⊤e∥22 r/D 1 − ∥ U ⊤e∥22 min median max MP interval PushT, r = 64 0.356 0.333 0.644 0.236 0.713 2.48 [0 .42 , 1.83] 
+
+PushT, r = 192 1.000 1.000 0.000 1.3 × 10 −6 0.877 3.31 [0 .15 , 2.60] 
+
+OGB-Cube, r = 32 0.116 0.167 0.884 0.015 0.625 1.46 [0 .56 , 1.56] 0 20 40 60              
+
+> Eigenvalue index
+> 0.5 1.0 1.5 2.0 2.5
+> Cov( s) eigenvalue  1 − ‖ U⊤e‖22050 100 150 200
+> Eigenvalue index
+> 0123
+> Cov( s) eigenvalue  1 − ‖ U⊤e‖22010 20 30
+> Eigenvalue index
+> 0.0 0.5 1.0 1.5
+> Cov( s) eigenvalue  1 − ‖ U⊤e‖22
+
+(a) PushT, r = 64 (b) PushT, r = 192 (c) OGB-Cube, r = 32 
+
+Figure 2: Eigenvalues of Cov( s) for the selected checkpoints. The dashed line marks the ex-ceptional eigenvalue 1 − ∥ U ⊤e∥22 of the target covariance and the dotted line marks one. At 
+
+r = D = 192 the predicted null direction appears as the last eigenvalue. 
+
+What trained models show. Table 13 and Figure 2 support three statements. First, the measured 
+
+∥U ⊤e∥22 is close to r/D for each seeded projection, as expected. Second, the structural prediction at r = D is confirmed: the smallest eigenvalue of Cov( s) is 1.3 × 10 −6, so the full-rank PushT state lives in a hyperplane of dimension D − 1. Third, for r < D every state direction retains nonzero variance, but the spectrum is spread around one and is not flat, and the smallest eigenvalue on OGB-Cube is well below the Marchenko-Pastur range. Part of this spread is a finite-sample effect, as the MP intervals show, and part is residual anisotropy of the code, whose own covariance eigenvalues reach about 2.75 in these checkpoints. The smallest measured eigenvalue lies below the exceptional value of the target in both r < D models, so the tail of the spectrum is set by this residual anisotropy and not by the centering direction. The tail is lowest on OGB-Cube, whose selected checkpoint is from epoch 3. We therefore describe the state as inheriting a full-rank, well-scaled covariance from the code, which is exactly isotropic only at the prior’s optimum. 
+
+## H ANTI -COLLAPSE PENALTIES NEAR VANISHING VARIANCE 
+
+Consider one covariance direction with variance λ and standard deviation σ = √λ, and write the samples along it as zj = σx j with standardized xj . For any penalty ℓ, the chain rule gives 
+
+∂ℓ ∂σ = 2 σ ∂ℓ ∂λ , (20) so a penalty whose eigenvalue derivative stays bounded as λ → 0 exerts a force on σ that vanishes linearly, and only a derivative that diverges like λ−1/2 keeps a constant force. The three penalties of equation 4 fall on the two sides of this line, as Figure 3 shows. 
+
+Bures-Wasserstein. ℓ = ( √λ − 1) 2 has ∂λℓ = 1 − λ−1/2, which diverges at exactly the compen-sating rate, and ∂σ ℓ = 2( σ − 1) → − 2.
+
+Euclidean covariance penalty. ℓ = ( λ − 1) 2 has ∂λℓ = 2( λ − 1) → − 2, bounded, and ∂σ ℓ =4σ(σ2 − 1) → 0.
+
+SIGReg. The Epps-Pulley statistic (EPPS & PULLEY, 1983) compares the empirical charac-teristic function φn(τ ) = 1
+
+> n
+
+P 
+
+> j
+
+exp(i τ σx j ) with that of a standard Gaussian under a weight 19 ω, T (σ) = n R |φn(τ ) − e−τ 2/2|2 ω(τ ) dτ . Expanding at small σ with standardized xj gives 
+
+φn(τ ) = 1 − 12 τ 2σ2 + O(σ3), where the cubic term is purely imaginary, hence 
+
+T (σ) = T (0) − κ σ 2 + O(σ4), κ = n
+
+Z
+
+τ 2 1 − e−τ 2/2ω(τ ) dτ > 0. (21) The statistic is bounded, since |φn(τ ) − e−τ 2/2| ≤ 2, its eigenvalue derivative tends to the constant 
+
+−κ, and its force on σ is −2κσ → 0. A collapsing direction therefore sees a saturated SIGReg score and a vanishing restoring force, as we observed in training. 10 −2 10 −1 10 0
+
+Eigenvalue λ   
+
+> 10 −2
+> 10 0
+> 10 2
+> |∂ L/∂ λ|
+> Bures ‖Σ − I‖2
+> FSIGReg
+
+Figure 3: Eigenvalue derivatives of the three penalties on synthetic data. The plot shows |∂ℓ/∂λ |
+
+against λ. Bures-Wasserstein rises as λ−1/2 when λ → 0, while the Euclidean penalty and SIGReg flatten to constants. By equation 20, a flat curve means a force on the standard deviation that vanishes like √λ, and the λ−1/2 rise means a constant force. Vertical offsets reflect the native normalization of each statistic and are not comparable across curves. The comparison is between slopes. 
+
+## I TRAINING BEHAVIOR 
+
+All H-JEPA models were trained end-to-end for 10 epochs on a single NVIDIA RTX A5000 GPU with the optimization settings of Appendix C. A held-out pilot seed, excluded from the three-seed benchmark average, was used once to choose which epoch’s checkpoint to evaluate on each task. We then fixed this choice at epoch 8 for Two-Room, 6 for Reacher, 10 for PushT, and 3 for OGB-Cube for every reported seed. For comparison, Delta-JEPA is trained for 50 epochs under its evaluation protocol (Zhang et al., 2026). Figures 4 and 5 show the available extended traces for PushT and OGB-Cube, including prediction, PIC, and Bures-Wasserstein isotropy on both training and valida-tion data. The curves remain closely matched between training and validation. PushT improves steadily over all 10 epochs. OGB-Cube reaches its useful regime within the first three epochs, after which the representation-level losses continue to decrease without a corresponding need for a later checkpoint. The traces also show that all three objectives can be optimized jointly without loss-specific warm-up schedules or alternating optimization. 20 1 2 3 4 5 6 7 8 9 10                   
+
+> Epoch
+> 0.10 0.15 0.20 0.25 0.30 0.35
+> Prediction loss
+> Train Validation 12345678910
+> Epoch
+> 0.00 0.05 0.10 0.15 0.20 0.25
+> PIC loss
+> Train Validation 12345678910
+> Epoch
+> 0.2 0.3 0.4 0.5 0.6 0.7
+> Isometry loss
+> Train Validation
+
+(a) Prediction (b) Port-inverse consistency (c) Isotropy Figure 4: H-JEPA training on PushT. Training and validation losses across the 10 -epoch run for 
+
+(a) open-loop latent prediction, (b) port-inverse consistency (PIC), and (c) the Bures-Wasserstein isotropy objective. All objectives decrease smoothly, with closely tracking training and validation curves. 1 2 3 4 5 6 7 8 9 10                   
+
+> Epoch
+> 0.02 0.04 0.06 0.08 0.10
+> Prediction loss
+> Train Validation 12345678910
+> Epoch
+> 0.05 0.10 0.15 0.20 0.25
+> PIC loss
+> Train Validation 12345678910
+> Epoch
+> 0.10 0.15 0.20 0.25 0.30 0.35
+> Isometry loss
+> Train Validation
+
+(a) Prediction (b) Port-inverse consistency (c) Isotropy Figure 5: H-JEPA training on OGB-Cube. Training and validation losses for (a) open-loop latent prediction, (b) PIC, and (c) isotropy. All three objectives fall rapidly during the first epochs and subsequently improve smoothly, with little separation between training and validation curves. The benchmark model uses the epoch-3 OGB-Cube checkpoint selected in §4. The extended trace shows that lower representation-level losses after convergence are not required for the reported planning result. 21

@@ -1,0 +1,499 @@
+Title: RoboICL: Embodied In-Context Learning with GPT-6 Astra
+
+URL Source: https://arxiv.org/pdf/2609.34261v1
+
+Published Time: Tue, 29 Sep 2026 02:57:13 GMT
+
+Number of Pages: 21
+
+Markdown Content:
+AI Model TF September 2026 
+
+# ROBO ICL: E MBODIED IN-C ONTEXT LEARNING WITH 
+
+# GPT-6 A STRA 
+
+Fangcheng Liu 1† , Yeqing Shen 1† , Anda Cheng 1† , Weishi Mi 2, Chao Tang 2, Chenyuan Liu 3,Yushun Xiang 3, Tingguang Li 2, Yong-Lu Li 3, and Yehui Tang 1 B 
+
+> 1
+
+Samsung Research, Beijing, China 2 Samsung Robotics eXperience  
+
+> 3
+
+Shanghai Jiao Tong University 
+
+{fc.liu, yeqing.shen, anda.cheng, yehui.tang}@samsung.com  
+
+> †
+
+Equal Contribution B Corresponding Author 
+
+## ABSTRACT 
+
+General-purpose vision-language models offer a promising way to zero-shot robot control: GPT-6 Astra excels at open-ended and language- or image-conditioned manipulation but remains substantially weaker on high-precision and long-horizon tasks. We introduce RoboICL , an in-context robot-control framework that narrows these gaps without robot-specific parameter updates or a learned VLA. RoboICL separates demonstration context , which provides recorded examples when avail-able, from interaction memory , which accumulates the model’s own actions and observed outcomes. Both use a shared observation–action–receipt–observation grammar. To preserve experience across task stages, RoboICL combines sampled demonstration blocks with bounded anchored memory. Fixed anchors keep earlier rollout interactions available for in-context learning, while the latest interaction supports immediate error correction. Across 30 RoboDojo tasks, using zero shot for Open and one demonstration elsewhere, RoboICL improves on official zero-shot GPT-6 Astra by 20–27 progress-score points in every category. It leads the leaderboard baselines on Memory and Open, achieves comparable performance to the strongest Precision baseline, and remains competitive on Long-Horizon. Its 30-task Overall score is 50.64, versus 33.68 for the strongest baseline. On a separate ten-task subset, RoboICL scores 60.60, within 2.00 points of the π0.5 +GPT-6 Astra hybrid approach. On three real-robot tasks, mean progress rises from 14.45 at zero shot to 63.33 at one shot and 78.89 at three shots. On two develop-ment tasks, optional Jev-gated action reuse reduces GPT-6 Astra calls by 33–48%. Code is available at https://github.com/Mosi-AI/RoboICL. 
+
+## 1 INTRODUCTION 
+
+Large language models (LLMs) can infer task patterns from examples provided at inference time, without updating their parameters (Brown et al., 2020). Extending this ability to robot control requires connecting language, images, and proprioception to continuous actions. Execution also changes the information available for the next decision: a grasp may fail, contact may stop motion, or the robot may reach a state absent from the demonstrations. Unlike language modeling, em-bodied control still lacks a broadly applicable foundation model that can be deployed across tasks without robotics-specific adaptation. Many Vision-Language-Action (VLA) and World-Action-Model (WAM) systems acquire their capabilities through substantial robot-specific training or post-training (Fu et al., 2024; Vosylius & Johns, 2025; Sridhar et al., 2025; Zhou et al., 2026; Generalist Team, 2026). Recent evaluations of GPT-6 Astra point to a complementary possibility: a general-purpose Vision-Language Model (VLM) can generate robot actions directly (Chen et al., 2026b; Zhang et al., 2026). It performs extraordinarily on open-ended and language- or image-conditioned manipulation, yet remains substantially weaker on high-precision and long-horizon tasks (Figure 1). The practical question is therefore how to organize context so that a fixed model can make full use of the information provided by prior examples and the experience it accumulates during execution. 1arXiv:2609.34261v1 [cs.RO] 28 Sep 2026 AI Model TF September 2026 Precision Long-Horizon Memory Open        
+
+> 020 40 60 80
+> Mean progress score
+> 38.53 38.3 34.4 24.8 28.2
+> 44.11 46.0 57.8 33.7 44.1
+> 70.00
+> 37.8 33.3 47.7 8.6
+> 54.75
+> 6.7 9.1 2.4 1.7
+> RoboICL + GPT-6 Astra GPT-6 Astra Liber-0 Preview Simate-beta DM0.5 GalaxeaVLA (G0.5)
+> +26 +23 +27 +20
+
+Figure 1: RoboDojo category-level comparison. Baseline scores are reproduced from the Ro-boDojo leaderboard, with GPT-6 Astra denoting the official zero-shot results (Zhang et al., 2026). As no training demonstrations are available for Open, RoboICL uses interaction memory alone (zero-shot) in this category; all other categories use one demonstration (one-shot). Integer labels on the official GPT-6 Astra bars show RoboICL’s absolute gains in progress-score points. Among the strongest methods currently listed on the leaderboard, RoboICL leads on Memory and Open, is comparable to the strongest method on Precision, and remains competitive on Long-Horizon, with-out robot-specific post-training. Table 2 reports the per-task evaluation counts. Prior work provides inference-time context through several routes. Demonstration-conditioned robot policies consume sensorimotor examples (Duan et al., 2017; Fu et al., 2024; Vosylius & Johns, 2025; Sridhar et al., 2025), while frozen language and vision-language models use prompted skills, programs, spatial representations, or numerical actions (Di Palo & Johns, 2024; Yin et al., 2025; Cheng et al., 2026). Concurrent systems further combine demonstrations with execution feedback (Chen et al., 2026c; Cheng et al., 2026). These advances make feedback-conditioned con-trol feasible, while leaving open how a general-purpose VLM should organize actions, their realized consequences, and the experience accumulated over long-horizon execution. We introduce RoboICL , an in-context learning framework tailored to robot control. RoboICL turns inference-time context into a structured interface with two components that serve distinct roles. 
+
+Demonstration context remains fixed during an episode and presents recorded trajectories as few-shot examples. Interaction memory updates as the robot acts and records the corresponding evidence from its own rollout, including progress, errors, and corrections. Rather than encode these sources through separate interfaces, RoboICL gives them a shared interaction grammar—observation, action chunk, execution receipt, and result observation. In demonstration context, the receipt describes the retained expert-action sequence between the two observations; in interaction memory, it reports the execution of the model-generated action chunk. The model therefore encounters the same before– action–after pattern in both sources. RoboICL uses bounded anchored memory to preserve the structure of long trajectories without se-rializing every frame. From each demonstration, it retains non-overlapping action blocks sampled across the trajectory, giving the model examples from the early, intermediate, and late stages of the task. During execution, interaction memory retains the first interaction, selected later interac-tions at predefined step intervals, and the latest completed interaction. The model can thus refer back to the initial scene and earlier action outcomes while using the latest feedback to decide what to do next. Whenever discarded steps separate two retained blocks, RoboICL inserts an explicit 
+
+<TRAJECTORY_GAP> record so that their observations are not read as consecutive. RoboICL achieves substantially higher progress scores than official zero-shot GPT-6 Astra in all four categories shown in Figure 1. Among the compared methods, it leads on Memory and Open, is comparable to the strongest method on Precision, and remains competitive on Long-Horizon. Its 30-task Overall score is 50.64, exceeding the strongest baseline’s 33.68 by 16.96 points. Open is especially notable because no demonstrations are available and RoboICL uses interaction memory alone. Separately, Table 1 reports a ten-task panel with 5 requested layouts per task, whereas the of-2AI Model TF September 2026 ficial RoboDojo zero-shot evaluation uses 50 episodes per task (Zhang et al., 2026). On this smaller panel, RoboICL with GPT-6 Astra alone (60.60) approaches the reported performance (62.60) of GPT-as-Policy’s π0.5 + GPT-6 Astra ensemble (Su et al., 2026). On three single-arm real-robot tasks, mean progress score rises from 14.45 without demonstrations to 78.89 with three demonstra-tions. We further measure token usage and wall time, connect adaptive action horizons to model-call frequency, and study the potential of Jev-gated action reuse (Jev AI, 2026) to reduce inference cost (Section 4.4). RoboICL makes three primary contributions: • A robot-native ICL framework. Demonstration context and interaction memory present prior examples and rollout experience to a general-purpose VLM through a shared interac-tion grammar, without robot-specific parameter-update. • Minimal, auditable control. A direct API harness exposes one function tool for con-tinuous action chunks and uses neither an external skill library nor a general-purpose coding-agent runtime. Its model-facing loop consists of context serialization, a single ac-tion schema, and deterministic validation and execution. • Closing GPT-6 Astra’s gaps in high-precision and long-horizon control. Without robot-specific post-training, RoboICL leads the compared RoboDojo leaderboard methods on Memory, Open, and 30-task Overall, while achieving comparable performance to sota base-lines on Precision. The framework is further validated on three single-arm real-robot tasks. 
+
+## 2 RELATED WORK 
+
+Robot learning from context. Few-shot language modeling established examples as an inference-time interface (Brown et al., 2020), later extended to multimodal inputs by Frozen (Tsimpoukelli et al., 2021) and Flamingo (Alayrac et al., 2022). In robotics, ICRT (Fu et al., 2024) and Instant Policy (Vosylius & Johns, 2025) learn context-conditioned control from sensorimotor sequences or demonstration pairs; RICL (Sridhar et al., 2025) augments a pretrained VLA with demonstra-tion retrieval; and Zero-WAM (Zhou et al., 2026) and GEN-1.5 (Generalist Team, 2026) acquire deployment-time adaptation through large-scale video, trajectory, or physical-interaction pretrain-ing. RoboICL studies a complementary setting: it elicits action chunks from a frozen general-purpose VLM through demonstration context and interaction memory, presented in a shared inter-action grammar, without training a robot-specific policy or action head. 
+
+Frozen models and interaction feedback. Frozen LLMs and VLMs control robots through skill selection (Ahn et al., 2022), program generation (Liang et al., 2022), spatial planning (Huang et al., 2023), or numerical actions from structured spatial representations (Di Palo & Johns, 2024; Yin et al., 2025). Show-Harness (Chen et al., 2026c) uses semantic action interfaces for closed-loop control. ReAct (Yao et al., 2023) and Reflexion (Shinn et al., 2023) use feedback and memory for sequential decision making, while Zeva (Chen et al., 2026a) and Reflective VLA (Lian et al., 2026) study interaction histories in robotics. Among close concurrent works, GPT-as-Policy Direct (Su et al., 2026) uses a persistent VLM agent to generate absolute end-effector targets from observa-tions and online history without expert demonstrations or a learned VLA. GPT-Policy (Cheng et al., 2026) additionally conditions on demonstrations and selects Cartesian waypoint and gripper tools. RoboICL instead generates per-step Cartesian-increment and gripper sequences, and uses bounded anchored memory to retain visual transitions in a shared demonstration–interaction grammar. The distinction lies in action and context representation, rather than the presence of online feedback. 
+
+## 3 ROBO ICL: C ONTEXT AND CONTROL INTERFACE 
+
+3.1 FRAMEWORK OVERVIEW 
+
+RoboICL organizes robot control as a sequence of model calls and executed actions. Its demonstra-tion context supplies recorded examples, while its interaction memory retains experience from the current episode. Let t index model decision rounds, g denote the task instruction, and (ot, z t) denote the current visual observation and proprioceptive state. Demonstration context DK = {D(k)}Kk=1 
+
+contains K expert demonstrations and remains fixed throughout the episode; interaction memory 
+
+Mt updates after execution. The serializer labels these sources T RAIN and L IVE , respectively; 3AI Model TF September 2026 
+
+Figure 2: A shared interaction grammar for demonstration context and interaction memory. 
+
+Both sources use observation–action–receipt–observation records. Synthetic demonstration receipts describe recorded intervals, action counts, target tracking, and result states. Execution receipts report realized actions and controller feedback. The general action dimension is da, with da = 14 for the illustrated RoboDojo interface. The lower panel shows a bottle-task request at step 687: four fixed anchors and the latest interaction, with explicit gaps between retained intervals. TRAIN denotes examples in the request, not parameter training. Zero-shot control uses K = 0 .With action dimension da and prediction horizon H, a fixed multimodal model πθ receives request 
+
+Qt and predicts an action chunk At:
+
+Qt = Serialize( g, DK , Mt, o t, z t), At ∼ πθ ( · | Qt), At ∈ RH×da . (1) The parameters θ remain fixed: actions are conditioned on the instruction, current state, and retained context without deployment-time gradient updates. The robot control harness calls the multimodal API directly and exposes a single act function-call tool that accepts a continuous action chunk and a concise execution note. It requires neither an external skill library nor a general-purpose coding-agent runtime. Figure 2 summarizes the shared interaction grammar and memory design. The action dimension and camera configuration depend on the embodiment. In the bimanual Ro-boDojo, da = 14 : each row of At, for i ∈ { 1, . . . , H }, specifies seven values per arm: 
+
+at,i = [∆ pLt,i , ∆rLt,i , u Lt,i , ∆pRt,i , ∆rRt,i , u Rt,i ], ∆p, ∆r ∈ R3, u ∈ [0 , 1] . (2) Here, L and R identify the arms, ∆p and ∆r are world-frame translation and rotation-vector incre-ments, and u is an absolute normalized gripper target ( 1 open, 0 closed). The controlled reference point is each arm’s link-6 origin, distinct from the fingertip midpoint or a calibrated tool center point (TCP); the increments remain expressed in world-aligned axes. Deterministic code validates the shape and bounds, solves inverse kinematics, and executes the admissible prefix without supplying learned action proposals. At RoboDojo’s 25 Hz control rate, a complete chunk represents H/ 25 
+
+seconds of simulated actuation, separate from model inference latency. Section 3.4 describes hori-zon selection; Section 4.3 reports the separate single-arm, two-camera real-robot study; Section 4.5 studies an optional gate for reusing a predicted suffix. 3.2 SHARED INTERACTION GRAMMAR 
+
+Each request places the task instruction and demonstration context first, followed by interaction memory and the current observation and robot state. Both sources use the same interaction grammar. An interaction indexed by j has the record 
+
+cj =  (oj , z j ), A j , r j , (oj+1 , z j+1 ), (3) 4AI Model TF September 2026 Same frozen GPT-6 Astra; di ff erent controllers Task + three RGB views + robot state · No expert demonstrations · Online feedback 
+
+> RECENT IMAGES + MOTION PLANNING
+
+RoboDojo   
+
+> Head L wrist R wrist
+> 3 separate image inputs
+> PERSISTENT CHAT + LINK-6 TARGETS
+
+GPT-as-Policy Direct   
+
+> Head L wrist R wrist
+> 3 separate image attachments
+> ANCHORED MEMORY + ACTION CHUNKS
+
+RoboICL                 
+
+> L wrist Head R wrist
+> 1 stitched triptych · 1920 × 480
+> Recent images + older text
+> text text ··· RGB RGB
+> Last 2 ordinary observation turns
+> ↓
+> GPT-6 Astra
+> Responses API · medium
+> ↓
+> Absolute grasp-point targets
+> Poses + gripper commands
+> ↓
+> Motion-planned trajectory
+> Joint playback · variable duration
+> ↓
+> Observation + target errors
+> Measured state vs. target
+> Persistent conversation
+> History fi les Notes Images
+> On-demand fi le / image tools
+> ↓
+> GPT-6 Astra
+> Codex runtime · xhigh
+> ↓
+> Absolute link-6 targets
+> Poses + binary grippers
+> ↓
+> Local IK target tracking
+> 1–5 tracking steps · 25 Hz
+> ↓
+> Observation + step counts
+> State + terminal outcome
+> Bounded anchored memory
+> t₀ ··· t₁ ··· t₂ ··· latest
+> B = 25 · separated by <TRAJECTORY_GAP>
+> ↓
+> GPT-6 Astra
+> Responses API · xhigh
+> ↓
+> Per-step action matrix
+> act: H × 14 deltas / grippers
+> ↓
+> Validate + IK + execute
+> Adaptive H = 5–25 · 25 Hz
+> ↓
+> Observation + receipt
+> Executed pre fi x + control events
+
+Figure 3: Same frozen GPT-6 Astra under three zero-shot controller designs. All three sys-tems receive the task, robot state, head and bilateral-wrist images, and online feedback, without expert demonstrations or a learned VLA. The official RoboDojo controller (Zhang et al., 2026) re-tains recent images and older text, predicts absolute grasp-point poses and gripper commands, and motion-plans a joint trajectory lasting up to 10 s. GPT-as-Policy Direct (Su et al., 2026) maintains a persistent tool-accessible conversation, predicts absolute dual-arm link-6 targets, and tracks them with local inverse kinematics for 1–5 steps at 25 Hz. RoboICL stitches the three views into one trip-tych, retains B = 25 temporally distributed interactions in bounded anchored memory, and predicts an adaptive H × 14 sequence of per-step arm increments and gripper targets for validated execution at 25 Hz. The comparison summarizes how context retention, image packaging, action parameteri-zation, and execution horizon distinguish the three zero-shot controllers. where (oj , z j ) and (oj+1 , z j+1 ) are the states before and after the interaction. In interaction memory, 
+
+Aj is the proposed action chunk, and rj reports predicted, dispatched, and executed step counts, the executed interval, target tracking, and controller interruptions. These counts identify any unexecuted suffix of Aj . In demonstration context, rj is a synthetic receipt constructed from the recorded actions and endpoint states. It contains the source interval, action counts and indices, an action-ledger hash, the last target, its tracking residual relative to the recorded result state, and the sampled endpoint indices. All recorded actions in the selected block are represented as executed; the receipt is not measured deployment-time controller feedback. The shared grammar makes both sources readable through the same tool-call interface while preserving their provenance. Only positive-length executed transitions are committed to anchored memory. A rejection that exe-cutes no commands remains in the immediate request tail, allowing correction from the same state without allocating another anchor. Pending correction calls and receipts are serialized with the next positive-length transition; a retained chunk can therefore contain several correction exchanges in addition to the transition in Equation (3). RoboDojo observations concatenate synchronized left-wrist, head, and right-wrist RGB views into a 
+
+1920 × 480 triptych. Proprioception includes joint states, gripper command states, and end-effector poses; the request also provides head-camera calibration and the public task description and scoring rubric. Camera geometry, action bounds, inverse kinematics, and validation are handled outside the learned policy. Implementation details are provided in the RoboICL codebase. 3.3 BOUNDED ANCHORED MEMORY 
+
+After decision round t, execution receipt rt and the next observation (ot+1 , z t+1 ) complete interac-tion ct. Interaction memory incorporates this evidence through 
+
+Mt+1 = Update( Mt, c t), (4) 5AI Model TF September 2026 where the deterministic update operator applies a bounded retention policy. Let T be the episode’s maximum environment steps and B memory slots, the first B − 1 retain fixed temporal anchors with targets τi = ⌊iT /B ⌋ for i = 0 , . . . , B − 2, and the final slot retains the latest interaction. This bounds detailed visual history independently of episode length. Explicit <TRAJECTORY_GAP> 
+
+records omitted intervals so that separated observations do not appear adjacent. Demonstration context shares the same constructing method. RoboICL selects J non-overlapping interaction chunks per demonstration, retaining each block’s start observation, recorded expert ac-tions, synthetic receipt, and result observation in the format of Equation (3). The deterministic preparation procedure uses approximately uniform temporal targets, adjusted to action-valid win-dows while preserving trajectory endpoints. Gap markers identify omitted segments. Demonstra-tion blocks provide procedural examples, while memory blocks expose rollout-specific progress and errors. Appendix A.1 specifies the selection rules and terminal-side exceptions. The anchor design follows this in-context learning view: both demonstration context (TRAIN) and interaction memory (LIVE) retain complete interactions distributed over the trajectory, making ear-lier task stages available alongside recent feedback. A recent-only window preserves the same in-teraction grammar but progressively drops those earlier visual transitions; the latest-interaction slot preserves immediate feedback within our distributed selection. The evaluated API configuration limits each request to 50 images. Retained interaction endpoints contribute at most 2KJ + 2 B triptychs before deduplication; separately retained terminal observa-tions add to this count. Shared endpoints are emitted once, and a pre-inference budget check reserves capacity for the full configured interaction memory. Thus demonstration coverage and interaction memory must be allocated jointly. Section 4.1 compares allocations and specifies the main zero-and one-shot budgets, including terminal-observation exceptions. The three-shot scaling study uses 
+
+K = 3 , J = 5 , and B = 5 (40 endpoints). Gap metadata and other serialized text fall outside this image bound; total tokens and inference cost vary with episode length and replanning. 3.4 EFFICIENCY -AWARE CONTEXT AND EXECUTION 
+
+Stable prefixes for cache reuse. Bounded memory is also organized to avoid rewriting reusable context. The task instruction, demonstration messages, and fixed camera calibration form a fixed prefix. Within interaction memory, completed anchors and the closed gaps preceding them remain unchanged as the episode advances. The latest non-anchor interaction, the still-growing gap before it, and pending corrections form a mutable suffix. The request view is built separately from the stored observations and exchanges, so pruning does not modify the archived experience. Demon-stration and live observations use the same image-encoding path, preserving unchanged image bytes across requests. Where supported by the model endpoint, cache-boundary hints are placed on text delimiters after complete observations or closed gaps within the stable prefix; mutable suffix con-tent is left unmarked. This keeps completed context eligible for cache reuse as the episode advances. Section 4.4 measures realized cache reuse from provider-reported token counters, and Appendix C.1 verifies stable request prefixes. 
+
+Step-limit-based action horizons. Action chunks amortize one model inference over several robot steps, while shorter chunks admit more frequent visual correction. We assign the RoboDojo prediction and execution horizon from the public task step limit T :
+
+H(T ) = 
+
+
+
+5, T ≤ 400 ,
+
+10 , 400 < T ≤ 700 ,
+
+15 , 700 < T ≤ 1100 ,
+
+20 , 1100 < T ≤ 1600 ,
+
+25 , T > 1600 .
+
+(5) The mapping is fixed within each episode and shared across the main zero- and one-shot conditions. With full execution and no early termination, the nominal call count is ⌈T /H ⌉; rejections and inter-rupted chunks can require additional calls. The design therefore trades inference frequency against feedback delay through one shared rule rather than a separate horizon for each layout or shot count. The main benchmarks use this controller without the Jev gate. 6AI Model TF September 2026 0/5 0/15 0/25 8/16 12/12 16/8 22/2 Context allocation (demonstration / interaction blocks J/B)020 40 60 80 100 Mean progress score     
+
+> Zero-shot: interaction memory One-shot: context allocation
+> Build Tower Cover Blocks Put Bottles into Dustbin Insert Tubes
+
+Figure 4: Scaling interaction memory and allocating demonstration context. Each point is a task’s mean progress score over five layouts. The horizontal axis gives J/B : retained demonstration blocks and interaction-memory blocks. Left (blue): without demonstrations ( J = 0 ), increasing 
+
+B retains more of the robot’s own experience. The plotted scores rise for Build Tower and Cover Blocks. Right (beige): one demonstration is sampled at different densities while J + B = 24 .The intermediate allocations (12 , 12) and (16 , 8) achieve the highest four-task means; allocating 22 blocks to the demonstration and only two to interaction memory lowers scores on three tasks. Thus, denser demonstration coverage alone does not guarantee better control. Dashed links connect the zero- and one-shot configurations, where both demonstration content and memory capacity change. 
+
+## 4 EXPERIMENTS 
+
+We first establish a common context configuration, then evaluate simulation performance from a ten-task panel to broader category coverage. We next test demonstration conditioning on a real robot, measure inference cost and cache reuse, and reduce model calls through Jev-gated action reuse. 4.1 EVALUATION PROTOCOL AND CONTEXT CONFIGURATION 
+
+We evaluate simulated bimanual manipulation on RoboDojo (Chen et al., 2026b). Throughout the paper, progress score denotes normalized task credit on a 0–100 scale; its mean is distinct from the fraction of episodes that complete the task. RoboDojo uses its native scoring rules, while the real-robot study assigns credit to predefined stages. Layouts are evaluated at seed zero; Overall is an unweighted mean of task means. Each task uses the step-limit-based horizon in Equation (5), fixed within an episode and shared between the main zero- and one-shot conditions. 
+
+Choosing a shared context allocation. With K demonstrations, J blocks per demonstration, and 
+
+B memory blocks, the total retained interaction budget is C = KJ + B. The one-shot study fixes 
+
+C = 24 and compares (J, B ) ∈ { (8 , 16) , (12 , 12) , (16 , 8) , (22 , 2) } on four tasks with five layouts each. Figure 4 gives four-task mean progress scores of 57.50, 80.25, 80.00, and 60.75, respectively. We select the balanced J = B = 12 allocation because it achieves the highest aggregate score and use it for all main one-shot results. Build Tower and Insert Tubes also show why interaction memory cannot be reduced to two slots simply to retain denser demonstrations. 
+
+Anchored versus recent interaction memory. At the selected one-shot allocation ( K = 1,
+
+J = B = 12 ), we compare anchored memory with a first-plus-recent selector that retains the first complete interaction and the latest 11 complete interactions. Demonstration blocks, all other controller settings, and the image cap are unchanged. On the same four tasks and five layouts per task used in the context-allocation study, the first-plus-recent variant achieves a mean progress score of 73.50, compared with 80.25 for the previously evaluated anchored setting. The respective gains from anchored memory are 14 points on Build Tower, 9 on Put Bottles into Dustbin, and 4 on Insert Tubes; both selectors score 100 on Cover Blocks. This controlled comparison supports the bene-fit of retaining temporally distributed interactions beyond the initial interaction and recent history 7AI Model TF September 2026 under the evaluated one-shot configuration. Because these tasks and layouts also informed context allocation, validation on held-out tasks and layouts remains necessary to establish generality. 
+
+Main zero- and one-shot settings. The main one-shot setting uses one task-specific demonstra-tion with J = B = 12 , yielding at most 48 retained endpoint images before deduplication. Play Tic-Tac-Toe and Play Stacking Toy additionally retain a terminal demonstration observation, for at most 49 images. Zero-shot control assigns the budget to interaction memory alone ( K = 0 ,
+
+B = 25 ); Open and Classify Objects by Language use this setting because task-specific demon-strations are unavailable. Figure 4 also reports the B ∈ { 5, 15 , 25 } zero-shot study. These defaults remain fixed across the following benchmark panels. 4.2 SIMULATION BENCHMARK RESULTS 
+
+We first compare ten tasks with five requested layouts against GPT-as-Policy Direct, then expand to the four RoboDojo categories shared with the official leaderboard. 
+
+Zero-shot baselines. Zero-shot denotes the absence of supplied expert demonstrations, not the absence of task descriptions, online history, or execution feedback. Figure 3 distinguishes the official RoboDojo baseline in Figure 1, GPT-as-Policy Direct in Table 1, and zero-shot RoboICL. All three use a frozen GPT-6 Astra without a learned VLA, but differ in their context and control interfaces. The official controller plans joint trajectories to absolute grasp-point targets, with distance-dependent durations of at most 10 s and associated gripper commands after arm arrival. Direct instead uses local inverse kinematics to track absolute dual-arm link-6 targets for 1–5 control steps at 25 Hz; RoboICL executes a validated prefix of its per-step action matrix with task-adaptive 
+
+H ∈ { 5, 10 , 15 , 20 , 25 }. All three observe the head and bilateral wrist cameras. The official con-troller sends three separate image content items. The released Direct runner likewise attaches three separate camera previews, each resized to a maximum edge of 480 pixels by default, while keeping originals accessible through tools. RoboICL concatenates three native 640 × 480 views into one 
+
+1920 × 480 triptych per observation; each retained endpoint therefore occupies one image slot while preserving all three views. RoboICL deterministically selects temporally distributed observation– action–receipt–observation records for every request. Appendix A.2 compares action tools and his-tory retention in concurrent work. 
+
+Comparison with GPT-as-Policy. Direct and RoboICL each request five layouts per task on the ten-task panel in Table 1, compared with 50 episodes per task in the official evaluation. We aggregate both methods by equally averaging task means. Table 1 reports 60.60 for the main setting versus 45.60 for zero-shot RoboICL and 38.50 for GPT-as-Policy Direct, a 22.10-point improvement over Direct. The main setting is higher than Direct on six tasks, lower on three, and tied on one; it is within 2.00 points of the hybrid VLA–VLM mean of 62.60. Zero-shot RoboICL also exceeds Direct by 7.10 points. The largest increase from zero to one shot is on Build Tower, from 16 to 100. Imitate Sorting Sequence remains at 90, and Put Bottles into Dustbin changes only from 70 to 73, while Classify Objects drops from 100 to 71. 
+
+RoboDojo leaderboard comparison. Figure 1 and Table 2 compare RoboICL with official zero-shot GPT-6 Astra and four published robot-policy baselines across all 30 tasks in Open, Memory, Precision, and Long-Horizon, using RoboDojo’s public layouts and native scoring. Each category equally averages its complete task set. Tasks with substantial layout variation receive 50 evaluations, while stable tasks receive 20; tasks whose evaluation is discontinued are waived and assigned zero. Table 2 reports per-task evaluation counts. RoboICL leads the compared category means on Memory and Open. Its Precision score of 38.53 is comparable to Liber-0 Preview’s 38.28. It ranks third on Long-Horizon, behind Simate-beta and Liber-0 Preview, and achieves the highest 30-task Overall score at 50.64. 
+
+Gains on memory and precision tasks. RoboICL combines leading Memory and Open scores with competitive Precision and Long-Horizon performance; its 50.64 Overall score in Table 2 is 16.96 points above the strongest comparison method. The task rows show where the advantage arises. Anchor zero preserves the episode’s first observation, retaining information needed when the 8AI Model TF September 2026 Table 1: Ten-task RoboDojo comparison. Mean progress score (0–100); Overall averages the ten task means. Direct denotes GPT-as-Policy’s Codex-based controller (Su et al., 2026); Figure 3 compares it with the official baseline and RoboICL. RoboICL uses task-dependent horizons, with 
+
+B = 25 at zero shot and J = B = 12 at one shot. External columns retain their published protocols (Zhang et al., 2026; Su et al., 2026). RoboICL targets five layouts per task and averages valid scores; † marks reused zero-shot results.                                                                                     
+
+> VLA / WAM Hybrid 0-shot 1-shot Task
+> Galaxea G0.5 OpenWAM απ0.5GPT-6 Astra
+> +π0.5
+> GPT-6 Astra Direct GPT-6 Astra
+> RoboICL
+> GPT-6 Astra
+> RoboICL
+> Organize the table 46.33 62.50 23.33 60.00 30.00 45.00 50.00 Classify by language 1.07 1.33 0.60 38.00 60.00 44.00 44 .00 †
+> Imitate sorting sequence 1.67 2.90 1.60 53.00 0.00 90.00 90.00 Arrange largest number 4.11 4.36 2.29 50.00 57.00 71.00 58.00 Pack objects into a box 17.12 20.83 18.36 50.00 50.00 16.00 36.00 Classify objects 10.33 5.53 24.67 71.00 100.00 100.00 71.00 Build Tower 82.93 52.53 37.73 64.00 12.00 16.00 100.00 Make a Kong in Mahjong 90.00 32.00 26.67 40.00 0.00 0.00 0.00 Fold clothes 32.75 51.31 29.12 100.00 40.00 4.00 84.00 Put bottles in a bin 96.30 94.03 79.93 100.00 36.00 70.00 73.00
+> Overall 38.26 32.73 24.43 62.60 38.50 45.60 60.60 GPT-6 Astra execution note
+> “The slot is slightly to the right of the coin in the wrist image. Translate laterally and refine yaw while remaining above the bank.”
+> Five 25 Hz commands: 1.0 and 3.5 mm lateral increments with a 0.012 rad yaw correction per step.
+> Closed-loop completion
+> 210: align and descend · 215–220: millimetric corrections and seating · 225: release
+> score 100
+
+Deposit Coin · final-insertion request step 205 · right wrist · score 100 
+
+> Current observation
+
+Figure 5: The critical wrist-guided request in Deposit Coin. The figure shows the right-wrist observation from the request at step 205. GPT-6 Astra identifies the coin–slot offset and emits five 25 Hz commands with millimeter-scale translation and a small yaw correction. Subsequent requests complete alignment, seating, and release; the selected episode receives score 100. goal depends on the initial state. On two such tasks, Cover Blocks and Swap T, RoboICL scores 100 and 80, compared with 49.30 and 18.00 for official zero-shot GPT-6 Astra, respectively. The gains also extend beyond remembering the initial scene. Imitate Sorting Sequence reaches 75.00 against 8.63 for the strongest VLA/WAM baseline, while the precision tasks Deposit Coin and Play Xylophone improve the corresponding strongest baselines by 59.33 and 40.67 points. 
+
+Grasp and insertion correction on Deposit Coin. Deposit Coin requires more than lifting a small, thin object: a score of 100 requires the coin’s bounding box to enter the bank’s narrow slot region and both arms to return to origin. Every comparison method in Table 2 scores at most 18.67, whereas RoboICL averages 78.00 over 50 layouts, including 37 full-score episodes. The selected layout-0 episode exposes the closed-loop precision behind this aggregate result. At step 15, GPT-6 Astra explicitly switches from coarse approach to “ wrist imagery for millimetric centering. ”It detects failed retention from RGB at steps 45, 65, and 90, changes both overlap and grasp height, confirms a stable pinch at step 110, and then transfers the coin between the two hands. The decisive insertion request occurs at step 205 (Figure 5). From the current right-wrist image, the model identifies which side of the slot remains misaligned and emits five small Cartesian and yaw corrections while holding the coin above the bank. The next requests align and descend, correct 9AI Model TF September 2026 Table 2: Four-category RoboDojo comparison. Mean progress score (0–100). Published VLA/WAM columns use three seeds and 50 episodes per task; official zero-shot GPT-6 Astra (Robo-Probe) uses one seed and 50 episodes per task (Chen et al., 2026b; Zhang et al., 2026). All RoboICL evaluations use seed 0. RoboICL uses zero shot on Open and one shot elsewhere; blue and orange cells mark these settings. Upper-right markers give the number of evaluated layouts; 0 marks a waived task assigned zero. Bold marks the highest score in each row. 
+
+VLA / WAM GPT-6 Astra 
+
+Galaxea G0.5 DM0.5 Liber-0 Preview Simate-beta RoboProbe 
+
+Task (Liu et al., 2026) (Dexmal Team, 2026) (Zhang et al., 2026) (Zhang et al., 2026) (Zhang et al., 2026) RoboICL 
+
+Open 
+
+Align Blocks 0.00 0.00 0.00 0.00 50.00 90.00 50 
+
+Classify Objects by Language 1.07 0.47 3.87 6.00 46.00 70.80 50 
+
+General Pickup 12.67 14.00 34.00 49.33 84.00 90.00 50 
+
+Pick from Conveyor by Image 0.00 0.00 0.00 0.00 4.00 22.00 50 
+
+Pour by Language 0.00 0.00 0.00 0.00 0.40 0.00 0
+
+Solve Equation 0.00 0.00 0.00 0.00 40.00 86.00 50 
+
+Stack Blocks by Language 0.13 4.80 15.60 17.33 48.00 79.20 50 
+
+Store Tools in Toolbox 0.00 0.17 0.00 0.33 2.50 0.00 0
+
+Category mean 1.73 2.43 6.68 9.12 34.36 54.75 
+
+Memory 
+
+Cover Blocks 20.67 100.00 100.00 100.00 49.30 100.00 20 
+
+Imitate Sorting Sequence 1.67 1.80 8.63 4.67 58.90 75.00 20 
+
+Match & Pick from Conveyor 29.33 70.67 64.00 56.00 62.00 65.00 20 
+
+Press by Number 0.00 95.33 0.00 0.67 70.00 100.00 20 
+
+Swap T 0.00 0.00 53.33 0.00 18.00 80.00 20 
+
+Swap Blocks 0.00 18.67 0.67 38.67 0.00 0.00 0
+
+Category mean 8.61 47.74 37.77 33.33 43.04 70.00 
+
+Precision 
+
+Build Tower 82.93 55.20 84.33 87.40 16.40 80.60 50 
+
+Deposit Coin 10.93 13.87 18.67 16.40 16.00 78.00 50 
+
+Fasten Screws 30.00 40.20 61.80 40.93 36.40 49.80 50 
+
+Insert Key 14.90 4.90 0.90 10.90 14.40 15.00 20 
+
+Insert Tubes 58.53 71.73 82.53 41.20 6.00 40.80 50 
+
+Play Xylophone 0.00 0.67 0.00 3.33 8.00 44.00 50 
+
+Plug in Charger 0.67 2.67 27.33 29.33 0.00 0.00 0
+
+Pour Balls into Vase 28.00 9.33 30.67 45.33 4.00 0.00 0
+
+Category mean 28.25 24.82 38.28 34.35 12.65 38.53 
+
+Long-Horizon 
+
+Classify Objects 10.33 26.83 19.73 61.63 69.00 85.50 50 
+
+Fill Egg Holder 3.03 1.37 12.57 16.60 5.50 21.30 50 
+
+Fill Pen Holder 41.27 22.10 49.77 50.37 5.00 29.80 50 
+
+Make a Kong in Mahjong 90.00 56.67 18.00 76.00 0.00 0.00 0
+
+Organize the Table 46.33 44.00 47.50 71.83 39.50 55.00 20 
+
+Play Stacking Toy 0.47 1.20 26.73 0.00 6.60 0.00 0
+
+Play Tic-Tac-Toe 65.23 35.77 95.67 86.27 10.70 98.75 20 
+
+Put Bottles into Dustbin 96.30 81.70 97.90 100.00 35.30 62.50 20 
+
+Category mean 44.12 33.70 45.98 57.84 21.45 44.11 
+
+Overall 21.48 25.80 31.81 33.68 26.86 50.64 
+
+the remaining offset by a few millimeters, seat the coin, and release it at step 225. The wrist view confirms release at step 230 with score 100 at step 259. This trace shows how the demonstration sup-plies the task procedure while interaction memory and the latest observation support repeated visual correction within that procedure. Appendix B.1 provides complementary examples on contact-rich screw fastening and bimanual role adaptation in Fill Pen Holder. 4.3 TRANSFER TO REAL -ROBOT MANIPULATION 
+
+To test demonstration-conditioned control on a different embodiment, we evaluate RoboICL on a Franka Research 3 arm. A human expert collects three demonstrations per task through GELLO, and observations combine a wrist-mounted D405 camera with an external D515 camera. We test 
+
+Peg in Hole , Folding Towel , and Building Bridge , spanning precision, deformable-object, and long-horizon manipulation. Each zero-, one-, and three-shot condition contains five trials with randomized object positions and orientations. The metric averages normalized credit for predefined task stages. Figure 6 illustrates the three tasks. 10 AI Model TF September 2026 Peg in Hole: “Put the peg in the hole” Folding Towel: “Fold the towel along its diagonal” 
+
+Building Bridge: “Place the two blocks as bridge piers, then lay the plank across them” 
+
+Figure 6: Real-robot manipulation. Executions of Peg in Hole, Folding Towel, and Building Bridge using a Franka Research 3 with wrist and external RGB cameras. 0 1 2 3Demonstrations 020 40 60 80 100 Mean progress score     
+
+> 34 55 52 88 432 30 82
+> (a) Simulation
+> Put Bottles into Dustbin Build Tower
+> 013Demonstrations
+> 10 60 70 30 90 100 3.34 40 66.67
+> (b) Real-Robot
+> Peg in Hole Folding Towel Building Bridge
+
+Figure 7: Shot scaling in simulation and on a real robot. Left: five-layout simulator means at 
+
+H = 15 and J = B = 5 . Right: five-trial real-robot means under staged progress scoring. Three demonstrations improve every shown task over zero shot. On the real robot, every task improves from zero to one to three demonstrations (Figure 7, right); the three-task mean rises from 14.45 to 63.33 and 78.89. This result extends demonstration condition-ing to precision, deformable-object, and longer-horizon real-robot manipulation without parameter updates. At three shots, two of five Peg in Hole trials complete insertion, and Building Bridge gains 26.67 points over one shot. The left panel supplies a complementary simulator shot-scaling study at H = 15 and J = B = 5 .Both tasks improve from zero to three demonstrations, with a dip from one to two shots. Every added demonstration contributes five blocks, whereas the context-allocation study holds J + B fixed. Table 3: Folding Towel OOD progress scores. Three-shot mean progress score (0– 100) over five trials per towel. Unseen tow-els do not appear in the demonstrations. 
+
+Test condition Progress score Seen 1 100.00 Unseen 1 90.00 Unseen 2 (larger towel) 40.00 Mean across unseen conditions 65.00 
+
+To examine robustness beyond the demonstrated in-stance, we further evaluate Folding Towel in the three-shot setting with two unseen towels. Perfor-mance remains high on Unseen 1, whereas the larger Unseen 2 scores 40, which is 60 points below the seen towel, and only one of its five trials receives full credit (Table 3). Although the high-level goal remains a diagonal fold, the model does not reliably adapt its motion to the change in object scale. This behavior suggests that the frozen model uses demonstrations to ground broad folding knowledge in the embodiment and action space but may follow the demonstrated motion too closely. Appendix B.2 describes the detailed failure modes and OOD examples. 11 AI Model TF September 2026 Table 4: Inference use and latency on three five-layout task pairs. Each row averages five scored episodes. Tokens are provider-reported input plus output; KV-cache hit rate is the token-weighted cached share of input. Calls count completed API requests, chunks count executed tool calls, API time sums request latency, and wall time includes simulator and transport overhead. 
+
+Task Shot Progress score Tokens (M) KV-cache hit (%) Calls / chunks API (min) Wall (min) Build Tower 0 16 5.040 91.66 77.4 / 72.4 48.8 58.7 1 100 3.265 92.28 40.2 / 39.6 31.5 37.9 Classify Objects 0 100 2.632 89.27 55.6 / 53.4 29.9 37.4 1 71 5.573 94.03 62.6 / 62.2 43.3 52.8 Put Bottles into Dustbin 0 70 3.246 90.93 64.4 / 61.2 31.4 37.9 1 73 5.091 93.78 61.8 / 61.0 38.8 46.3 
+
+4.4 INFERENCE COST , LATENCY , AND CACHE REUSE 
+
+Having established control performance, we measure its inference demand under the context and action interfaces of Section 3.4: cached tokens, model calls, API latency, and end-to-end wall time. 
+
+Token use and elapsed time. Table 4 uses three tasks for which all five zero-shot and five one-shot episodes from Table 1 have complete usage records, totaling 30 episodes. Each request uses native 
+
+1920 × 480 JPEG triptychs, comprising three 640 × 480 views, with original image detail and a 50-image limit. The zero-shot setting uses B = 25 ; one shot uses J = B = 12 .Demonstrations can shorten an episode while enlarging each request. On Build Tower, mean progress score increases from 16 to 100 as calls fall from 77.4 to 40.2 and total tokens from 5.04 to 3.27 million. Classify Objects and Put Bottles consume more tokens with one shot. Across the six conditions, mean uncached input ranges from 248,000 to 413,000 tokens per episode and mean output from 45,000 to 85,000. Across all 1,810 completed requests, the provider reports 113.15 million of 122.51 million input tokens as cached, a token-weighted KV-cache hit rate of 92.4%. The remaining 9.35 million input tokens are uncached, and total input plus output is 124.24 million tokens. 
+
+KV-cache hit rate across model calls. Figure 8 resolves the episode totals into individual model calls. For episode e and completed-call index t, the token-level KV-cache hit rate is ρe,t = Ce,t /I e,t ,where C and I are provider-reported cached and total input tokens. The traces reach high hit rates after the initial calls, with occasional sharp drops hidden by episode averages. Pooling input tokens across the three tasks, the first-call rate is 25.9% at zero shot and 71.1% at one shot; over calls six onward, it reaches 91.4% and 94.3%, respectively. 1 20 40 60 80 025 50 75 100         
+
+> KV-cache hit rate (%)
+> (a) Build Tower
+> 0-shot 1-shot
+> 120 40 60 80
+> (b) Classify Objects
+> 120 40 60 80
+> (c) Put Bottles into Dustbin
+
+Figure 8: KV-cache hit rate across model calls. The same three-task, 30-episode panel as Table 4. Thin lines show each layout; thick lines give the pooled token-level rate 100 P 
+
+> e
+
+Ce,t / P 
+
+> e
+
+Ie,t at each call index. Later points average the episodes that reach that call. Curves use completed re-sponses with provider usage and include all input modalities. 12 AI Model TF September 2026 
+
+Relation to external resource reports. In a public resource report, GPT-as-Policy averages 22.65 million tokens per episode for direct GPT-6 Astra and 12.50 million for its π0.5 hybrid over 50 episodes per method (GPT-as-Policy authors, 2026). Their 154.6 and 75.5 reported decisions are executed action chunks, whereas Table 4 separately counts API requests and executed chunks. Their token-level KV-cache hit rates are approximately 97–98%, with mean uncached input of approxi-mately 458,000 and 318,000 tokens per episode. These figures provide a resource reference under their published protocol; Table 4 provides the corresponding decomposition for RoboICL. 4.5 REDUCING MODEL CALLS WITH JEV 
+
+Cache reuse reduces repeated input processing, while every fresh model call still incurs inference. Jev provides a complementary mechanism: execute more of an existing proposal when feedback indicates that replanning is unnecessary. We evaluate it as an optional gate after the main RoboICL benchmarks. We tested Jev, a System One decision model that returns typed, probability-backed judgments from structured state and questions (Jev AI, 2026), as a gate for reusing a GPT-6 Astra-predicted action suffix. The zero-shot simulator study covers standard layouts 0–4 of Align Blocks 
+
+and General Pickup , with five episodes per task and condition. Both conditions use GPT-6 Astra with xhigh reasoning, the same task prompt, cameras, action constraints, 20 predicted actions per request, up to five executed actions per segment, and 25 interaction-memory slots. Pure GPT-6 Astra replans after each segment. Jev can approve one further five-action segment from the current plan using proprioception, execution tracking, and the plan note, but no RGB. It therefore controls action reuse without generating actions. The gate configuration was selected on these layouts, making this a development-set evaluation. Table 5: Complete-task success and paired completion time with Jev. Counts are over five layouts. The last column sums wall-clock seconds only over layouts successful in both conditions, in the order pure GPT-6 Astra/GPT-6 Astra+Jev; n gives the number of jointly successful layouts.            
+
+> Task Pure GPT-6 Astra GPT-6 Astra+Jev Paired wall time (s) Align Blocks 3/5 2/5 1128/865 ( n= 1 )General Pickup 4/5 5/5 3642/2327 ( n= 4 )
+
+Table 5 shows the success tradeoff: General Pickup increases from 4/5 to 5/5, while Align Blocks changes from 3/5 to 2/5. On the four jointly successful General Pickup layouts, wall time falls by 36.1%. Across all five layouts, GPT-6 Astra requests fall from 181 to 121 on Align Blocks and from 116 to 60 on General Pickup; provider-reported GPT-6 Astra tokens fall from 9.53 to 5.08 million and from 4.95 to 1.39 million, respectively. Jev adds approximately 0.86 seconds per gate call. On General Pickup layout 3, Jev uses 103 robot steps versus pure GPT-6 Astra’s 75 despite 13 versus 15 requests: fewer model calls can coexist with more robot actions. Appendix C.2, including Tables 6 and 7, reports every outcome and runtime measurement. The study establishes substantial GPT-6 Astra call and token reductions on both tasks, with task-dependent effects on success. 
+
+## 5 CONCLUSION AND LIMITATIONS 
+
+RoboICL organizes demonstrations and online experience into a shared context and control in-terface for a frozen multimodal model. Execution receipts connect actions to realized outcomes, bounded anchors retain temporally distributed visual evidence. RoboICL leads the compared Ro-boDojo methods on Memory and Open, achieves comparable performance on Precision, and remains competitive on Long-Horizon. Demonstration scaling on three real-robot tasks extends the approach beyond simulation without parameter updates. Efficiency depends on both context reuse and feedback frequency. Provider counters show a 92.4% token-weighted KV-cache hit rate across 1,810 calls. Jev gating reduces GPT-6 Astra calls and tokens on both evaluated tasks with task-dependent effects on success. The experiments cover GPT-6 Astra, RoboDojo, and three real-robot tasks; Jev is evaluated on its development layouts. Broader models and hardware platforms, and held-out Jev evaluation are the next tests of generality. 13 AI Model TF September 2026 
+
+## REFERENCES 
+
+Michael Ahn, Anthony Brohan, Noah Brown, Yevgen Chebotar, Omar Cortes, Byron David, Chelsea Finn, Chuyuan Fu, Keerthana Gopalakrishnan, Karol Hausman, Alex Herzog, Daniel Ho, Jasmine Hsu, Julian Ibarz, Brian Ichter, Alex Irpan, Eric Jang, Rosario Jauregui Ruano, Kyle Jeffrey, Sally Jesmonth, Nikhil J Joshi, Ryan Julian, Dmitry Kalashnikov, Yuheng Kuang, Kuang-Huei Lee, Sergey Levine, Yao Lu, Linda Luu, Carolina Parada, Peter Pastor, Jornell Quiambao, Kanishka Rao, Jarek Rettinghouse, Diego Reyes, Pierre Sermanet, Nicolas Sievers, Clayton Tan, Alexander Toshev, Vincent Vanhoucke, Fei Xia, Ted Xiao, Peng Xu, Sichun Xu, Mengyuan Yan, and Andy Zeng. Do As I Can, Not As I Say: Grounding Language in Robotic Affordances. arXiv preprint arXiv:2204.01691 , 2022. URL https://arxiv.org/abs/2204.01691 .Jean-Baptiste Alayrac, Jeff Donahue, Pauline Luc, Antoine Miech, Iain Barr, Yana Hasson, Karel Lenc, Arthur Mensch, Katie Millican, Malcolm Reynolds, Roman Ring, Eliza Rutherford, Serkan Cabi, Tengda Han, Zhitao Gong, Sina Samangooei, Marianne Monteiro, Jacob Menick, Sebastian Borgeaud, Andrew Brock, Aida Nematzadeh, Sahand Sharifzadeh, Mikolaj Binkowski, Ricardo Barreira, Oriol Vinyals, Andrew Zisserman, and Karen Simonyan. Flamingo: a Visual Lan-guage Model for Few-Shot Learning. In Advances in Neural Information Processing Systems ,volume 35, 2022. URL https://arxiv.org/abs/2204.14198 .Tom B. Brown, Benjamin Mann, Nick Ryder, Melanie Subbiah, Jared Kaplan, Prafulla Dhari-wal, Arvind Neelakantan, Pranav Shyam, Girish Sastry, Amanda Askell, Sandhini Agar-wal, Ariel Herbert-Voss, Gretchen Krueger, Tom Henighan, Rewon Child, Aditya Ramesh, Daniel M. Ziegler, Jeffrey Wu, Clemens Winter, Christopher Hesse, Mark Chen, Eric Sigler, Mateusz Litwin, Scott Gray, Benjamin Chess, Jack Clark, Christopher Berner, Sam McCan-dlish, Alec Radford, Ilya Sutskever, and Dario Amodei. Language Models are Few-Shot Learners. In Advances in Neural Information Processing Systems , volume 33, pp. 1877–1901, 2020. URL https://proceedings.neurips.cc/paper_files/paper/2020/ hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html .Fu Chen, Xin Ding, Bingjia Huang, Xiangyu Li, Mingju Wang, Jiawei He, Kun Li, Wei Sun, Yunxin Liu, Hao Wu, and Ting Cao. Zeva: In-Context Causal Learning for Generalizable Embodied Manipulation. arXiv preprint arXiv:2608.30880 , 2026a. URL https://arxiv.org/abs/ 2608.30880 .Tianxing Chen, Yue Chen, Zixuan Li, Junyuan Tang, Kailun Su, Haoran Lu, Weijie Wan, Baijun Chen, Songling Liu, Haowen Yan, Honghao Su, Zhiyang Dou, Kaixuan Wang, Dandan Zhang, Yunze Liu, Yan Qin, Qiwei Liang, Qiwei Wu, Zijian Lin, Wenwei Lin, Yuran Wang, Minghua He, Tianshu Wu, Ruihai Wu, Jingquan Zhou, Kai-Chong Lei, Haibao Yu, Yuanfeng Ji, Weiyang Jin, Guanyu Lin, Xiaofan Li, Qi Xiong, Renjing Xu, Zhongyu Li, Wenhao Chai, Enze Xie, Zi-wei Wang, Yao Mu, Hao Dong, Wojciech Matusik, Mingyu Ding, Wenbo Ding, Ping Luo, and Masayoshi Tomizuka. RoboDojo: A Unified Sim-and-Real Benchmark for Comprehensive Eval-uation of Generalist Robot Manipulation Policies. arXiv preprint arXiv:2607.04434 , 2026b. URL 
+
+https://arxiv.org/abs/2607.04434 .Yanzhe Chen, Zechen Bai, Zhijun Cao, Wenzheng Zeng, Kevin Qinghong Lin, Yiqi Lin, Guoqiang Liang, Kevin Yuchen Ma, Qiming Huang, and Mike Zheng Shou. Show-Harness: Just a VLM Agent Can Play Robots. arXiv preprint arXiv:2609.10522 , 2026c. URL https://arxiv. org/abs/2609.10522 .Dongzhou Cheng, Taoran Yi, Ye Fang, Xingwu Zhang, Fan Feng, Yixuan Li, Gengxiong Zhuang, Rongze Wang, Shuai Yang, Wei Song, Weizhi Xue, Minyan Wu, Jie Gui, Jiaqi Wang, and Tong Wu. In-Context Robot Learning with VLM Agents. arXiv preprint arXiv:2609.19138 , 2026. URL https://arxiv.org/abs/2609.19138 .Dexmal Team. DM0.5: An open-world foundation model for general-purpose embodied intelli-gence, July 2026. URL https://www.dexmal.com/blog/dm0.5/index_en.html .Norman Di Palo and Edward Johns. Keypoint Action Tokens Enable In-Context Imitation Learning in Robotics. In Proceedings of Robotics: Science and Systems , 2024. URL https://arxiv. org/abs/2403.19578 .14 AI Model TF September 2026 Yan Duan, Marcin Andrychowicz, Bradly C. Stadie, Jonathan Ho, Jonas Schneider, Ilya Sutskever, Pieter Abbeel, and Wojciech Zaremba. One-Shot Imitation Learn-ing. In Advances in Neural Information Processing Systems , volume 30, 2017. URL 
+
+https://proceedings.neurips.cc/paper_files/paper/2017/hash/ ba3866600c3540f67c1e9575e213be0a-Abstract.html .Letian Fu, Huang Huang, Gaurav Datta, Lawrence Yunliang Chen, William Chung-Ho Panitch, Fangchen Liu, Hui Li, and Ken Goldberg. In-Context Imitation Learning via Next-Token Pre-diction. arXiv preprint arXiv:2408.15980 , 2024. URL https://arxiv.org/abs/2408. 15980 .Generalist Team. GEN-1.5: Embodied Foundation Models are One-Shot Learners. Generalist AI Blog , August 2026. URL https://generalistai.com/blog/gen-1.5 . Published August 19, 2026. Accessed September 21, 2026. GPT-as-Policy authors. Token usage: resource accounting for the RoboDojo evaluation. Response to GitHub issue 2, 2026. URL https://github.com/anonymous-report-421/ GPT-as-Policy/issues/2 . Author response dated September 15, 2026. Accessed Septem-ber 26, 2026. Wenlong Huang, Chen Wang, Ruohan Zhang, Yunzhu Li, Jiajun Wu, and Li Fei-Fei. VoxPoser: Composable 3D Value Maps for Robotic Manipulation with Language Models. In Proceedings of the 7th Conference on Robot Learning , volume 229, pp. 540–562. PMLR, 2023. URL https: //proceedings.mlr.press/v229/huang23b.html .Jev AI. Build with Jev: Developer documentation. Online documentation, 2026. URL https: //thejevai.com/docs . Accessed September 27, 2026. Qing Lian, Kent Yu, and Lei Zhang. Reflective VLA: In-Context Action Consequences Make VLAs Generalize. arXiv preprint arXiv:2606.25215 , 2026. URL https://arxiv.org/ abs/2606.25215 .Jacky Liang, Wenlong Huang, Fei Xia, Peng Xu, Karol Hausman, Brian Ichter, Pete Florence, and Andy Zeng. Code as Policies: Language Model Programs for Embodied Control. arXiv preprint arXiv:2209.07753 , 2022. URL https://arxiv.org/abs/2209.07753 .Yicheng Liu, Zibin Dong, Baijun Ye, Tianyuan Yuan, Tao Jiang, Anqi Yang, Shicheng Cao, Haonan Liu, Yue Sun, Zihan Guo, et al. G0. 5: One autoregressive stream for robot reasoning and action. 
+
+arXiv preprint arXiv:2608.11739 , 2026. Noah Shinn, Federico Cassano, Edward Berman, Ashwin Gopinath, Karthik Narasimhan, and Shunyu Yao. Reflexion: Language Agents with Verbal Reinforcement Learning. arXiv preprint arXiv:2303.11366 , 2023. URL https://arxiv.org/abs/2303.11366 .Kaustubh Sridhar, Souradeep Dutta, Dinesh Jayaraman, and Insup Lee. RICL: Adding In-Context Adaptability to Pre-Trained Vision-Language-Action Models. In Proceedings of the 9th Con-ference on Robot Learning , volume 305, pp. 5022–5038. PMLR, 2025. URL https:// proceedings.mlr.press/v305/sridhar25a.html .Jiayi Su, Yixin Zheng, Mi Yan, Li Yi, Zhizheng Zhang, and He Wang. GPT 6Astra as an embodied policy. Technical report and code, 2026. URL https: //github.com/anonymous-report-421/GPT-as-Policy . Report: https:// anonymous-report-421.github.io/public-website/ . Accessed September 21, 2026. Maria Tsimpoukelli, Jacob Menick, Serkan Cabi, S. M. Ali Eslami, Oriol Vinyals, and Felix Hill. Multimodal Few-Shot Learning with Frozen Language Models. In Advances in Neural Information Processing Systems , volume 34, 2021. URL 
+
+https://proceedings.neurips.cc/paper_files/paper/2021/hash/ 01b7575c38dac42f3cfb7d500438b875-Abstract.html .Vitalis Vosylius and Edward Johns. Instant Policy: In-Context Imitation Learning via Graph Diffusion. In International Conference on Learning Representations , 2025. URL https: //www.robot-learning.uk/instant-policy .15 AI Model TF September 2026 Shunyu Yao, Jeffrey Zhao, Dian Yu, Nan Du, Izhak Shafran, Karthik Narasimhan, and Yuan Cao. ReAct: Synergizing Reasoning and Acting in Language Models. In International Conference on Learning Representations , 2023. URL https://arxiv.org/abs/2210.03629 .Yida Yin, Zekai Wang, Yuvan Sharma, Dantong Niu, Trevor Darrell, and Roei Herzig. In-Context Learning Enables Robot Action Prediction in LLMs. In IEEE International Conference on Robotics and Automation , 2025. URL https://arxiv.org/abs/2410.12782 .Wenbo Zhang, Kaixuan Wang, Yutao Ouyang, Xiaoyu Huang, Liyang Li, Kailun Su, Weiyang Jin, Wenhao Chai, Haotian Liang, Zhiyang Dou, Yue Chen, and Tianxing Chen. An unex-pected robot policy: Early evaluations of GPT-6 Astra on RoboDojo and beyond. RoboDojo technical report, September 2026. URL https://robodojo-benchmark.com/report/ gpt-6-astra-eval . Published September 16, 2026. Accessed September 21, 2026. Jiaming Zhou, Qihang Zhang, Gangwei Xu, Cunxin Fan, Yujie Zhao, Ruilin Wang, Yiming Luo, Shuai Yang, Xing Zhu, Yujun Shen, Junwei Liang, and Yinghao Xu. Zero-WAM: In-Context World-Action Modeling from Human Videos for Open-Ended Task Generalization. arXiv preprint arXiv:2608.26103 , 2026. URL https://arxiv.org/abs/2608.26103 .16 AI Model TF September 2026 
+
+## A METHOD AND IMPLEMENTATION 
+
+A.1 CONTEXT CONSTRUCTION 
+
+Interaction memory. Interaction memory exposes how earlier decisions change the environment. After decision round t, the execution system returns receipt rt and the next observation (ot+1 , z t+1 ),thereby completing interaction ct. The deterministic update operator inserts this interaction and applies the retention policy in Section 3.3, allowing a later decision to relate the current state to earlier actions, task progress, unsuccessful contacts, and execution interruptions. Retaining every completed interaction would make the request grow with episode length. RoboICL instead allocates B slots to interaction memory. The first B − 1 slots provide fixed temporal anchors across the episode, while the final slot preserves the latest completed interaction. With T denoting the maximum number of environment steps and i ∈ { 0, . . . , B − 2} indexing a fixed anchor, its target is τi = ⌊iT /B ⌋. The initial nonempty interaction occupies anchor zero, and every later anchor stores the first completed interaction cj whose interval satisfies sj < τ i ≤ ej . The latest-interaction slot supplies the most recent outcome for local correction and is deduplicated if the same interaction occupies an anchor. Sparse retention can otherwise make observations separated by many environment steps appear ad-jacent. Explicit <TRAJECTORY_GAP> records therefore mark intervals between retained inter-actions, omitting full images and action arrays while preserving interval boundaries and compact execution metadata. For T = 700 and B = 5 , targets are 0, 140 , 280 , 420 . The released request retains intervals [0 , 15] , [133 , 148] , [268 , 283] , [418 , 433] , and the latest interval [672 , 687] . At most 
+
+B complete interactions are retained, requiring at most 2B endpoint triptychs before deduplication. 
+
+Demonstration context. Expert demonstrations supply task knowledge before execution begins. The K demonstrations in DK remain unchanged throughout the episode while Mt evolves. Each selected expert interaction contains the recorded action chunk, its endpoint observations, and a syn-thetic receipt constructed for serialization. Serializing complete demonstrations would consume the multimodal context budget before online interaction begins. RoboICL selects J non-overlapping ac-tion chunks from each trajectory. Each selected block preserves the source actions and its start and result observations, while explicit gaps identify omitted intervals. Retained block endpoints con-tribute at most 2JK + 2 B triptychs before deduplication; The three-shot scaling configuration uses 
+
+K = 3 , J = 5 , 15 controller steps per block, and B = 5 , yielding at most 40 endpoint triptychs. The main one-shot configuration and its terminal-observation exceptions are specified in Section 4.1. 
+
+Selecting main demonstration windows. The main preparation rule uses approximately uniform targets with deterministic action-validity adjustment. For a trajectory containing N source observa-tions and action horizon H, the intended final start is ℓ = N − 1 − H. The first and last windows must be valid. We form twelve targets qi = round( iℓ/ 11) for i = 0 , . . . , 11 , using nearest rounding with ties to even. Interior starts are selected in temporal order: choose the valid integer start closest to qi within [si−1 + H, ℓ − H(11 − i)] , breaking distance ties toward the earlier frame. The inter-val enforces nonoverlap and leaves space for the remaining blocks. Candidates are filtered by the translation and rotation-vector norm bounds for both arms. Subsequent reference validation checks the full action contract and observation alignment. Source actions are preserved without clipping or rewriting. A terminal-fallback variant chooses the latest valid complete block at or before N − 1 − H and places the temporal targets relative to that start. The true terminal observation is retained separately if the last selected block ends earlier. This variant applies to Fill Pen Holder, Fill Egg Holder, Play Tic-Tac-Toe, and Play Stacking Toy. Only the latter two leave a terminal gap (15 and 18 source frames, respectively), each requiring one extra triptych. Explicit gaps separate these terminal frames from the final selected block’s actual result. The released evaluation configuration records each demonstration’s source episode and selected starts; every result endpoint is start plus H. The five-block shot-scaling study uses a gripper-event heuristic followed by endpoint alignment. 17 AI Model TF September 2026 A.2 CONCURRENT -WORK INTERFACE DETAILS 
+
+GPT-as-Policy Direct (Su et al., 2026) uses a persistent conversation, history files, writable notes, and image tools to support decisions about the absolute targets in Figure 3. The distinct GPT-Policy framework (Cheng et al., 2026) uses move_to for an absolute tool-center-point (TCP) pose, 
+
+move_eef_chunk for an ordered sequence of absolute TCP waypoints, and set_gripper for a separate gripper change. Its controller interpolates waypoints, solves inverse kinematics, and assigns timing, holding gripper targets fixed during each motion request. Thus it supports numerical action chunks, but the controller determines the intervening samples and timing. RoboICL’s single act 
+
+tool instead accepts an H × da matrix specifying Cartesian increments and gripper targets at every step, executed at 25 Hz in RoboDojo. Both concurrent frameworks return execution feedback. GPT-Policy limits older live images while retaining accumulated text or host-generated summaries; RoboICL retains anchored visual endpoints and the latest interaction under a shared demonstration/memory budget, uses the same observation– action–receipt–observation grammar for both sources, and marks executed prefixes and omitted in-tervals through receipts and <TRAJECTORY_GAP> records. GPT-Policy evaluates ten real-robot tasks with three trials per condition; its evaluation supports the interface comparison here, while our benchmark comparisons use methods evaluated on RoboDojo. 
+
+## B EVALUATION PROTOCOLS AND ANALYSES 
+
+B.1 ADDITIONAL QUALITATIVE CASE STUDIES 
+
+Replanning after an interrupted prefix. Figure 9 connects the method’s proposed–executed dis-tinction to a recorded Build Tower trajectory. At step 165, the policy proposes 15 commands, but the controller executes only five before rejecting the next command. The following execution note requests smaller rotations, and the rollout subsequently completes the tower. A zero-shot rollout on the same layout receives 10 at the step limit. Step 165 · head camera · one-shot  
+
+> (a) Action proposed
+> Step 170 · head camera · one-shot
+> (b) Prefix interrupted
+> Step 185 · head camera · one-shot
+> (c) Replanned recovery
+> Proposed vs. executed
+> 15 proposed at step 165 At step 170: 5 executed; 10 discarded
+> Next note: “Replan from the interrupted pose with smaller rotations.”
+> Step 600 · head camera · TRAIN12 / LIVE12
+> (d) One-shot outcome: 100
+> Step 1050 · head camera · LIVE25
+> (e) Zero-shot outcome: 10
+> Build Tower · execution interruption H15 · same L0 and seed 0
+
+Figure 9: Recovery after an interrupted action prefix. On Build Tower L0, the one-shot policy (H = 15 , J = B = 12 ) proposes 15 commands at step 165. The controller executes five before a continuity rejection at step 170 and discards the ten-command suffix. The next execution note requests smaller rotations; construction continues and reaches score 100 at step 600. The same layout and seed under zero-shot RoboICL ( B = 25 ) receive 10 at the 1050-step limit. All panels use native head-camera frames. 
+
+Contact strategy in Fasten Screws. The selected layout-2 pair contrasts zero-shot control, which scores 20, with a three-shot rollout that scores 100 (Figure 10, top). The three-shot policy brings the 18 AI Model TF September 2026 Fasten Screws: 0-shot, score 20 Fasten Screws: 3-shot, score 100   
+
+> Demo 0: left hand holds holder Demo 96: right hand holds holder
+> Rollout: before handoff, t = 27.0 s Rollout: after handoff, t = 31.96 s
+
+Figure 10: Complementary examples of demonstration-conditioned manipulation. Top: termi-nal views from Fasten Screws layout 2, where zero-shot RoboICL scores 20 and three-shot RoboICL scores 100. Middle: Fill Pen Holder demonstrations with opposite hand assignments. Bottom: the selected rollout before and after transferring the filled holder from the right hand to the left. Each observation concatenates the left-wrist, head, and right-wrist views in that order. yellow and white nuts to their corresponding screws, fastens them through repeated short clockwise motions with release-and-regrasp resets, and completes the red assembly after an additional recov-ery. The zero-shot rollout instead spends much of its longer execution searching for a stable grasp. The comparison shows how demonstrations can supply both the operation order and the contact strategy for a precision task. 
+
+Bimanual role adaptation in Fill Pen Holder. The demonstrations expose two valid hand assign-ments: episode 0 holds the holder with the left hand and inserts with the right, while episodes 96 and 99 reverse those roles. In the selected seed-1/layout-0 rollout, the policy begins with the right hand holding the filled holder, brings it to the left gripper, establishes a new left-hand grasp, and releases the right gripper. The rollout therefore connects role assignments that appear separately in the demonstrations, executing a stable mid-air transfer while the pens remain in the holder. A policy-service failure ends the recording after step 802 before an official task score is returned. B.2 REAL -ROBOT PROTOCOL AND FAILURE ANALYSIS 
+
+Platform and demonstrations. Experiments use a Franka Research 3 arm. A human expert col-lects three demonstrations per task using GELLO as the teleoperation interface. Visual observations comprise RGB images from a wrist-mounted D405 camera and an external third-person D515 cam-era. Zero-shot evaluation provides no demonstration, one-shot evaluation uses the same selected demonstration in every trial, and three-shot evaluation uses all three demonstrations. 
+
+Tasks and evaluation protocol. The three tasks span high-precision, deformable-object, and long-horizon manipulation. Peg in Hole requires insertion with a nominal peg–hole tolerance of 
+
+1 mm . Folding Towel requires folding a towel along its diagonal. Building Bridge re-quires positioning two bridge piers before placing the deck. Each task and shot setting contains five trials, with object positions randomized within a 10 cm × 10 cm region and orientations randomized about the gravity-aligned axis. Each trial receives a progress score on the same 0–100 display scale used throughout the paper. For Peg in Hole , picking up and inserting the peg each contribute 50 points. For Folding Towel , picking up the towel and completing the fold each contribute 50 points. For Building Bridge , each of the six pickup or placement stages contributes 100 /6
+
+points. Figure 7 reports mean progress score, not complete-task success rate. 19 AI Model TF September 2026 Folding Towel (Unseen Towel 1) Folding Towel (Unseen Towel 2) 
+
+Figure 11: Selected three-shot Folding Towel executions with two unseen towels: Unseen 1 (left) and the larger Unseen 2 (right). Table 3 reports progress scores over five trials per condition. 
+
+Failure analysis. Eleven of 15 zero-shot trials receive no progress credit, although some rollouts still exhibit basic manipulation; for example, the robot can pick up a towel corner without completing the diagonal fold. Demonstrations increase mean progress score to 63.33 with one shot and 78.89 with three shots. Three of five three-shot Peg in Hole trials stop after pickup: the robot brings the peg near the hole and then stalls during insertion as successive RGB observations change little after contact. Building Bridge remains the lowest-scoring task at every shot count. It gains 26.67 points between one and three shots, compared with 10 points on each other task, and one of five three-shot trials receives full credit. Its longer trajectory is represented by a bounded set of demonstration blocks and interaction-memory anchors. 
+
+## C CACHE -PREFIX CHECKS AND DETAILED JEV RESULTS 
+
+C.1 CACHE -PREFIX VERIFICATION 
+
+The 30 episodes used for the resource and cache figures contain 1,810 completed requests and 1,780 consecutive-request comparisons. Every marked cache frontier remains byte-identical across its comparison, and each episode retains one fixed-prefix identity. This verifies the stable request pre-fixes; provider cached-input counters supply the measured KV-cache hit rates. C.2 JEV -GATED EXECUTION : COMPLETE FIVE -LAYOUT RECORD 
+
+Section 4.5 describes the Jev protocol and reports success counts and paired completion times. Ta-bles 6 and 7 give all 20 scored outcomes and condition-level model use. Table 6: Every Jev-panel layout. Each cell is progress score (0–100) / executed robot steps / wall-clock seconds (rounded). Scores in this panel are 0 or 100; Failed 200-step episodes are shown but excluded from successful-pair completion-time comparisons.                          
+
+> Task Layout Pure GPT-6 Astra GPT-6 Astra+Jev Align Blocks 00/200/4489 0/200/1135 1100/151/1128 100/148/865 2100/167/1490 0/200/1120 3100/138/1054 0/200/1199 40/200/2358 100/141/827 General Pickup 0100/64/1335 100/70/440 1100/99/857 100/73/557 2100/83/792 100/84/683 3100/75/658 100/103/648 40/200/1436 100/89/576
+
+C.3 PAIRED COMPLETION TIME 
+
+Jev and pure GPT-6 Astra both succeed on Align Blocks layout 1 (864.91 versus 1127.98 seconds) and General Pickup layouts 0–3 (summed wall times of 2327.17 versus 3641.54 seconds). Jev also 20 AI Model TF September 2026 Table 7: Total model use across each five-layout condition. GPT-6 Astra calls and API seconds use completed requests; tokens are provider-reported response usage. Jev reuse counts executed steps approved by the gate. Totals include all five episodes.                         
+
+> Task Condition Success GPT-6 Astra calls GPT-6 Astra API s GPT-6 Astra tokens Jev votes / reused steps Align Blocks Pure GPT-6 Astra 3/5 181 9407 9,534,190 0 / 0 GPT-6 Astra+Jev 2/5 121 4101 5,083,650 113 / 315 General Pickup Pure GPT-6 Astra 4/5 116 4192 4,952,887 0 / 0 GPT-6 Astra+Jev 5/5 60 2095 1,391,331 53 / 140
+
+succeeds on Align Blocks layout 4, where pure GPT-6 Astra fails, so that episode has no paired completion-time baseline. On General Pickup layout 3, Jev takes 103 robot steps versus 75 for pure GPT-6 Astra while using 13 versus 15 GPT-6 Astra requests. Fewer model calls can therefore coexist with more physical actions. Failed runs remain in the success denominator and outside the paired completion-time sum. 21

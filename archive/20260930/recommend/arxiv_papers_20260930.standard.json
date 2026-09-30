@@ -1,0 +1,721 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-09-30T22:42:41.286442+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 14,
+    "deep_cap": 6,
+    "deep_selected": 6,
+    "quick_candidates": 19,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2609.33497v1",
+      "source": "arxiv",
+      "title": "Hamiltonian JEPA: Action-Conditioned World Models with an Inherited Control State",
+      "abstract": "Planning from pixels needs more than a latent space that is stable and predictable. The state the planner scores must also be organized by how actions move the system. Joint-embedding predictive architectures (JEPAs) avoid pixel reconstruction by predicting future representations, but existing action-conditioned JEPAs ask one embedding to serve both perception and control. We introduce H-JEPA, which separates the two. A wide perceptual code is regularized toward a well-scaled isotropic geometry with a Bures-Wasserstein prior, and a fixed orthonormal slice of that code is the control state, which inherits the code's covariance without any objective of its own. The state evolves under phase-conditioned dissipative port-Hamiltonian dynamics whose input port has orthonormal columns. Port-inverse consistency (PIC) reads the executed action back through the transpose of that port. We show that this readout is exactly the rollout error projected onto the port directions, so PIC is a parameter-free reweighting of prediction error and not an auxiliary action decoder. Untying the readout from the port breaks this identity and loses half of the gain. H-JEPA matches or exceeds reconstruction-free baselines, including the action-decoding Delta-JEPA, on four pixel-based control benchmarks after at most $10$ training epochs, and its largest gain is on OGB-Cube ($91.9$ against $79.3$ percent). Ablations on PushT and OGB-Cube separate the contributions of the structured predictor, PIC, the prediction horizon, the state rank, and the anti-collapse prior.",
+      "authors": [
+        "Tamim Zoabi",
+        "Ameen Ali",
+        "Lior Wolf"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-27T12:05:41+00:00",
+      "link": "https://arxiv.org/pdf/2609.33497v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "action-conditioned JEPA world model with inherited control state for planning",
+      "llm_evidence_cn": "具备继承控制状态的动作条件JEPA世界模型用于规划",
+      "llm_evidence": "具备继承控制状态的动作条件JEPA世界模型用于规划",
+      "canonical_evidence": "具备继承控制状态的动作条件JEPA世界模型用于规划",
+      "llm_tldr_en": "H-JEPA separates perception and control in action-conditioned JEPA world models, regularizing a wide perceptual code and slicing a fixed orthonormal control state under port-Hamiltonian dynamics for planning from pixels.",
+      "llm_tldr_cn": "从像素进行规划不仅需要稳定可预测的潜在空间，还要求规划器打分的状态按动作如何驱动系统来组织，而现有动作条件JEPA让同一嵌入同时承担感知与控制。本文提出H-JEPA，将二者分离：用Bures-Wasserstein先验将宽感知编码正则化为各向同性几何，并取固定正交切片作为继承其协方差的控制状态，在相位条件耗散端口哈密顿动力学下演化。该设计使世界模型更符合物理结构，提升潜在空间预测与规划控制质量。其贡献在于为JEPA式自监督世界模型在具身智能体规划控制中提供了结构化新方案。",
+      "llm_tldr": "从像素进行规划不仅需要稳定可预测的潜在空间，还要求规划器打分的状态按动作如何驱动系统来组织，而现有动作条件JEPA让同一嵌入同时承担感知与控制。本文提出H-JEPA，将二者分离：用Bures-Wasserstein先验将宽感知编码正则化为各向同性几何，并取固定正交切片作为继承其协方差的控制状态，在相位条件耗散端口哈密顿动力学下演化。该设计使世界模型更符合物理结构，提升潜在空间预测与规划控制质量。其贡献在于为JEPA式自监督世界模型在具身智能体规划控制中提供了结构化新方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "joint embedding predictive architecture for self-supervised world models",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.34608v1",
+      "source": "arxiv",
+      "title": "Efficient World Action Model Inference with Adaptive Intermediate States",
+      "abstract": "World Action Models (WAMs) enable future-aware control by jointly modeling actions and environment dynamics. However, iterative diffusion or flow inference incurs substantial denoising latency. Prior inference state offers a natural opportunity for acceleration, yet changing planning contexts, observations, and intermediate representations can quickly render retained state stale. Preserving useful computation therefore requires adapting inference state rather than reusing it as-is. To this end, we present $\\mathrm{WAM}{\\scriptstyle\\mathrm{ACHINE}}$, a training-free framework that accelerates WAM inference by preserving and adapting inference state for efficient and accurate continuation as the control loop evolves. Across closed-loop replans, Trajectory Remapping remaps replan state from the preceding replan to initialize the next replan, reducing redundant trajectory generation. Across denoising steps, Observation Rebinding performs anticipatory inference during action execution and rebinds retained denoising state to the real observation for continuation when consistency checks pass, reducing latency exposed to the control loop. Across Transformer layers, Residual Rescaling selectively rescales retained layer state and refreshes it through full computation of the middle layers when probe checks fail, reducing repeated Transformer computation. Evaluations of three representative WAM architectures on LIBERO and RoboTwin 2.0 show that $\\mathrm{WAM}{\\scriptstyle\\mathrm{ACHINE}}$ achieves 1.47-3.05$\\times$ speedups in observation-to-action latency and 2.23-3.27$\\times$ speedups in GPU inference time per replan, while preserving 96.69-99.54% of native WAM task success.",
+      "authors": [
+        "Zhinnan Liu",
+        "Haozhi Han",
+        "Ruge Zhang",
+        "Teng Ma",
+        "Tao Ma",
+        "Zheng Liu",
+        "Yifeng Chen",
+        "Yunquan Zhang",
+        "Ting Cao",
+        "Yunxin Liu",
+        "Kun Li"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-28T08:37:39+00:00",
+      "link": "https://arxiv.org/pdf/2609.34608v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "training-free acceleration of world action model inference for real-time control loops",
+      "llm_evidence_cn": "面向实时控制循环的世界动作模型免训练推理加速",
+      "llm_evidence": "面向实时控制循环的世界动作模型免训练推理加速",
+      "canonical_evidence": "面向实时控制循环的世界动作模型免训练推理加速",
+      "llm_tldr_en": "World Action Models enable future-aware control but diffusion/flow inference is slow. WAMACHINE is a training-free framework that preserves and adapts inference state across closed-loop replans to accelerate WAM inference while keeping accuracy, supporting real-time robot control.",
+      "llm_tldr_cn": "世界动作模型通过联合建模动作与环境动态实现面向未来的控制，但迭代式扩散或流推理带来大量去噪延迟，且规划上下文与观测变化会使缓存状态迅速失效。本文提出免训练的WAMACHINE框架，通过在闭环重规划过程中保留并自适应地更新推理状态，实现高效且准确的推理延续。实验表明该方法能显著降低推理延迟并保持控制精度，为实时机器人控制提供了一种无需重训练即可落地的加速方案。",
+      "llm_tldr": "世界动作模型通过联合建模动作与环境动态实现面向未来的控制，但迭代式扩散或流推理带来大量去噪延迟，且规划上下文与观测变化会使缓存状态迅速失效。本文提出免训练的WAMACHINE框架，通过在闭环重规划过程中保留并自适应地更新推理状态，实现高效且准确的推理延续。实验表明该方法能显著降低推理延迟并保持控制精度，为实时机器人控制提供了一种无需重训练即可落地的加速方案。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.35138v2",
+      "source": "arxiv",
+      "title": "FlexiWorld: Learning and Planning via Flexible Action Chunks Across Multiple Time Scales",
+      "abstract": "Latent world models predict future states for goal-directed planning using action chunks spanning multiple primitive steps. Existing methods typically use fixed-length chunks and either omit goal-conditioned action generation or limit their supervision to short goal spans. We introduce FlexiWorld, a JEPA-based world model that combines mixed-span goal supervision with variable-length action chunks to improve long-horizon control. During training, we sample varying goal spans and randomly partition the actions into variable-length chunks. We jointly train the world model with a causal action encoder that embeds variable-length chunks and an autoregressive actor that generates primitive actions sequentially. Student Forcing reduces exposure bias by training on generated action prefixes. For planning, Actor-Residual Cross-Entropy Method (ARCEM) combines action-residual search with within-chunk autoregressive feedback and chunk-boundary latent prediction. Across four benchmarks and goal distances, FlexiWorld with ARCEM achieves 89.29% mean success, compared with 83.98% for the strongest baseline. PushT ablations show improved direct control from mixed-span supervision, variable-length chunks, and Student Forcing. Without retraining, FlexiWorld supports different planning chunk lengths: longer chunks accelerate ARCEM by approximately $1.3\\times$ on average while maintaining comparable average success.",
+      "authors": [
+        "Shidu Ren",
+        "Qilin Gu",
+        "Zhenghao Ni",
+        "Junhan Sun",
+        "Jiaqi Wang",
+        "Damien Scieur",
+        "Yunze Liu"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-28T13:26:49+00:00",
+      "link": "https://arxiv.org/pdf/2609.35138v2",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "JEPA-based latent world model with action chunks for goal-directed planning",
+      "llm_evidence_cn": "基于JEPA的潜空间世界模型与动作分块规划",
+      "llm_evidence": "基于JEPA的潜空间世界模型与动作分块规划",
+      "canonical_evidence": "基于JEPA的潜空间世界模型与动作分块规划",
+      "llm_tldr_en": "FlexiWorld is a JEPA-based latent world model that mixes variable-length action chunks with mixed-span goal supervision for long-horizon control, addressing fixed-length chunk limits in goal-conditioned planning.",
+      "llm_tldr_cn": "针对现有潜空间世界模型使用固定长度动作分块、缺乏目标条件动作生成或监督跨度太短的问题，本文提出FlexiWorld，一种基于JEPA的世界模型，结合混合跨度目标监督与可变长度动作分块。训练时采样不同目标跨度并将动作随机划分为变长块，联合训练因果动作编码器与自回归执行器。该方法提升了长时程控制能力，为自监督世界模型规划提供了更灵活的时间尺度范式。",
+      "llm_tldr": "针对现有潜空间世界模型使用固定长度动作分块、缺乏目标条件动作生成或监督跨度太短的问题，本文提出FlexiWorld，一种基于JEPA的世界模型，结合混合跨度目标监督与可变长度动作分块。训练时采样不同目标跨度并将动作随机划分为变长块，联合训练因果动作编码器与自回归执行器。该方法提升了长时程控制能力，为自监督世界模型规划提供了更灵活的时间尺度范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "joint embedding predictive architecture for self-supervised world models",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.32069v1",
+      "source": "arxiv",
+      "title": "Find Something You Can't Do: Agentic Real-World Reinforcement Learning for Self-Improving VLA Models",
+      "abstract": "Vision--language--action (VLA) models provide strong priors for robotic manipulation but are typically deployed as frozen policies, unable to improve from their own failures. Real-world reinforcement learning (RL) offers a path to continued improvement, yet manual environment resets and task-success supervision hinder autonomous learning. We introduce \\textbf{FIND}, an agentic real-world RL framework that closes the loop between scene understanding, weakness-aware practice, self-evaluation, and policy improvement in a persistent workspace. FIND reframes autonomous practice as a scene-conditioned, performance-aware task-selection problem: instead of restoring a predefined scene after each rollout, it uses the resulting scene to determine what to practice next. A vision--language agent identifies feasible tasks from a predefined library, prioritizes those with lower recent success rates, and evaluates outcomes using paired pre- and post-execution observations. We instantiate FIND with a frozen $π_{0.5}$ VLA and residual off-policy RL. Across eight real-world manipulation tasks, the independent human-assessed success rate improves from $55\\%$ to $71.9\\%$. A representative run completes 456 autonomous episodes within 6 hours of interaction, requiring 30 scene-recovery interventions and no human-provided reward labels during online learning. Ablations and systematic evaluations further examine key design choices, agent evaluation accuracy, and human intervention requirements. Our website is made publicly available at: FIND.github.io.",
+      "authors": [
+        "Yuan Fang",
+        "Zechu Li",
+        "Haolei Tong",
+        "Puze Liu",
+        "Georgia Chalvatzaki"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-25T23:06:53+00:00",
+      "link": "https://arxiv.org/pdf/2609.32069v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-improving VLA via real-world RL without manual resets",
+      "llm_evidence_cn": "真实世界强化学习自我改进VLA策略",
+      "llm_evidence": "真实世界强化学习自我改进VLA策略",
+      "canonical_evidence": "真实世界强化学习自我改进VLA策略",
+      "llm_tldr_en": "FIND is an agentic real-world RL framework that reframes autonomous practice as scene-conditioned, performance-aware task selection, letting VLA policies improve from their own failures without manual resets.",
+      "llm_tldr_cn": "视觉-语言-动作模型虽为机器人操作提供强先验，却通常作为冻结策略部署，无法从自身失败中改进，而真实世界强化学习又受限于人工环境重置与任务成功监督。本文提出FIND，一个智能体式真实世界强化学习框架，把场景理解、弱点感知练习、自我评估与策略改进闭环衔接，并将自主练习重构为场景条件化、性能感知的任务选择问题。该框架能在持续工作空间中实现策略自主提升，为机器人持续自我改进提供了新路径。",
+      "llm_tldr": "视觉-语言-动作模型虽为机器人操作提供强先验，却通常作为冻结策略部署，无法从自身失败中改进，而真实世界强化学习又受限于人工环境重置与任务成功监督。本文提出FIND，一个智能体式真实世界强化学习框架，把场景理解、弱点感知练习、自我评估与策略改进闭环衔接，并将自主练习重构为场景条件化、性能感知的任务选择问题。该框架能在持续工作空间中实现策略自主提升，为机器人持续自我改进提供了新路径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.33765v1",
+      "source": "arxiv",
+      "title": "Principal Steering Subspaces for Online Adaptation of Frozen Generative Robot Policies",
+      "abstract": "Generative robot policies provide expressive behavior priors, but updating a large diffusion or flow-matching model through online interaction is costly. Latent-space reinforcement learning avoids updating the pretrained generator by controlling its initial sampling noise, yet high-dimensional noise can have strongly anisotropic effects on decoded actions. We introduce Principal Steering Subspaces (PSS), a forward-query interface that constructs a fixed low-dimensional control basis from finite-difference decoder responses. Soft Actor-Critic controls the leading response directions, while the orthogonal complement is independently resampled from the Gaussian prior at each query. On three RoboMimic tasks with diffusion and flow-matching policies, response spectra reveal substantial concentration. Across five matched task-generator pairs, the training curves indicate that PSS generally converges faster and exhibits more stable late-training behavior than full-latent control, while achieving stronger final performance overall. Controlled Diffusion-Square ablations further show that leading-response directions outperform random and least-responsive subspaces of equal dimension. We further integrate PSS with a frozen, closed-source 3B-parameter vision-language-action (VLA) policy in a humanoid learning system with synchronous transition collection, reset-time optimization, and latency-aware asynchronous deployment. In an exploratory screwdriver-placement evaluation, success is observed in 2/10 trials for the frozen VLA policy and 6/10 after SAC+PSS adaptation. These results support decoder-response geometry as a practical basis for online adaptation of frozen generative robot policies.",
+      "authors": [
+        "Jialeng Ni",
+        "Nathan Zhao",
+        "Kunpeng Song"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-27T17:04:16+00:00",
+      "link": "https://arxiv.org/pdf/2609.33765v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "parameter-efficient online adaptation of frozen pretrained generative robot policies",
+      "llm_evidence_cn": "冻结预训练生成式机器人策略的参数高效在线适配",
+      "llm_evidence": "冻结预训练生成式机器人策略的参数高效在线适配",
+      "canonical_evidence": "冻结预训练生成式机器人策略的参数高效在线适配",
+      "llm_tldr_en": "PSS builds a fixed low-dimensional control basis from finite-difference decoder responses so Soft Actor-Critic can adapt frozen generative robot policies in latent space, avoiding costly updates to the pretrained generator.",
+      "llm_tldr_cn": "生成式机器人策略虽提供强行为先验，但通过在线交互更新大型扩散或流匹配模型代价高昂，而直接在潜在空间强化学习又受高维噪声各向异性影响。本文提出主导向子空间PSS，利用有限差分解码响应构造固定低维控制基，由SAC控制主响应方向，正交补则每次从高斯先验重采样，从而在冻结生成器上实现高效在线适配。在三个RoboMimic任务上，PSS以极低开销提升策略性能。该工作为大型预训练生成式策略的参数高效在线适配提供了新接口。",
+      "llm_tldr": "生成式机器人策略虽提供强行为先验，但通过在线交互更新大型扩散或流匹配模型代价高昂，而直接在潜在空间强化学习又受高维噪声各向异性影响。本文提出主导向子空间PSS，利用有限差分解码响应构造固定低维控制基，由SAC控制主响应方向，正交补则每次从高斯先验重采样，从而在冻结生成器上实现高效在线适配。在三个RoboMimic任务上，PSS以极低开销提升策略性能。该工作为大型预训练生成式策略的参数高效在线适配提供了新接口。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2609.33832v1",
+      "source": "arxiv",
+      "title": "Achieve What You Imagined: Learning to Align Actions with Visual Plans",
+      "abstract": "World-action models can jointly predict future visual observations and robot actions. However, discrepancies may exist between their visual predictions and the consequences implied by generated actions. We observe that WAMs can often generate visually plausible task-completion outcomes before producing action sequences that reliably achieve them. Consequently, we treat the WAM-generated visual prediction as a goal-conditioned visual proposal rather than a directly executable plan. We use a frozen action-conditioned world model to predict action-conditioned consequences and construct feedback based on consistency between the two future predictions and alignment with the terminal goal. Leveraging this feedback, we employ Flow Policy Optimization (FPO) to optimize the action head of the WAM. This framework avoids online robot interaction and additional training of task-specific reward models. Across four real-world UR5 manipulation tasks, our method increases the mean success rate from 43.4% to 75.1%, compared with 61.4% for $π_{0.5}$. These results show that cross-model prediction discrepancy can provide useful feedback for improving robot policies under the evaluated manipulation tasks. Website: https://imagine-to-achieve.github.io/",
+      "authors": [
+        "Yuheng Qiao",
+        "Ziran Wei",
+        "Xiaohan Wang",
+        "Daqiang Guo",
+        "Yichen Luo",
+        "Zhibo Pang",
+        "Peng Zhou",
+        "Sichao Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI",
+        "cs.LG"
+      ],
+      "published": "2026-09-27T18:32:40+00:00",
+      "link": "https://arxiv.org/pdf/2609.33832v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "world-action model for planning and control in embodied agents",
+      "llm_evidence_cn": "面向具身智能体规划与控制的世界-动作模型",
+      "llm_evidence": "面向具身智能体规划与控制的世界-动作模型",
+      "canonical_evidence": "面向具身智能体规划与控制的世界-动作模型",
+      "llm_tldr_en": "World-action models can predict visually plausible outcomes without producing executable actions. This paper treats generated visual predictions as goal-conditioned proposals, uses a frozen action-conditioned world model to build consistency feedback, and optimizes the policy with Flow Policy Optimization to align actions with visual plans.",
+      "llm_tldr_cn": "针对世界-动作模型虽能预测视觉上合理的任务完成结果、却常生成无法可靠实现该结果的动作序列这一问题，本文将模型生成的视觉预测重新视为目标条件的视觉提案，并利用冻结的动作条件世界模型预测动作后果，构造两类未来预测间的一致性与目标对齐反馈。基于该反馈，作者采用流策略优化FPO调整策略，使生成动作与视觉规划对齐，从而弥合想象与可执行动作之间的差距。",
+      "llm_tldr": "针对世界-动作模型虽能预测视觉上合理的任务完成结果、却常生成无法可靠实现该结果的动作序列这一问题，本文将模型生成的视觉预测重新视为目标条件的视觉提案，并利用冻结的动作条件世界模型预测动作后果，构造两类未来预测间的一致性与目标对齐反馈。基于该反馈，作者采用流策略优化FPO调整策略，使生成动作与视觉规划对齐，从而弥合想象与可执行动作之间的差距。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2609.34010v1",
+      "source": "arxiv",
+      "title": "ZeroBot: Learning from Scratch in Minutes with Generative Real2Sim",
+      "abstract": "We present ZeroBot, a real2sim framework for learning a robot manipulation task from scratch in minutes under challenging conditions: zero human demonstrations, zero policy pre-training, and zero known object models. Given only a single view of an object and a goal pose for that object, ZeroBot uses image-to-3D generative models to obtain a complete object mesh, which is used in simulation for large-scale parallel reinforcement learning. To accelerate training, we introduce an action space which leverages the generated geometry and learned value function to sample states involving robot-object contact. When evaluated on real-world tasks including grasping, pushing, articulated object interaction, and multi-stage manipulation, ZeroBot achieves an 87% success rate with an average training time of 119 seconds. These results show the value of using image-to-3D models in a real2sim framework for rapid, autonomous robot learning.",
+      "authors": [
+        "Ivan Kapelyukh",
+        "Xiaohan Zhang",
+        "Stephen James",
+        "Laura Herlant",
+        "Edward Johns"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.CV"
+      ],
+      "published": "2026-09-27T23:09:11+00:00",
+      "link": "https://arxiv.org/pdf/2609.34010v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "real2sim data generation with zero demos to overcome data scarcity in robot learning",
+      "llm_evidence_cn": "用真实到仿真生成数据、零演示克服机器人学习数据稀缺",
+      "llm_evidence": "用真实到仿真生成数据、零演示克服机器人学习数据稀缺",
+      "canonical_evidence": "用真实到仿真生成数据、零演示克服机器人学习数据稀缺",
+      "llm_tldr_en": "ZeroBot learns robot manipulation from scratch in minutes without human demos or pretrained policies, using image-to-3D generative models to build object meshes for large-scale parallel RL in simulation, reaching 87% success on real-world tasks.",
+      "llm_tldr_cn": "针对机器人操作学习中人类演示、策略预训练与物体模型均缺失的难题，本文提出ZeroBot真实到仿真框架。它仅凭单视角图像与目标位姿，用图像到三维生成模型重建物体网格，并在仿真中开展大规模并行强化学习，同时设计利用几何与价值函数的动作空间加速接触状态采样。在抓取、推动、关节物体交互等真实任务上取得87%成功率，显著降低了机器人技能学习的数据与先验依赖。",
+      "llm_tldr": "针对机器人操作学习中人类演示、策略预训练与物体模型均缺失的难题，本文提出ZeroBot真实到仿真框架。它仅凭单视角图像与目标位姿，用图像到三维生成模型重建物体网格，并在仿真中开展大规模并行强化学习，同时设计利用几何与价值函数的动作空间加速接触状态采样。在抓取、推动、关节物体交互等真实任务上取得87%成功率，显著降低了机器人技能学习的数据与先验依赖。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.33546v1",
+      "source": "arxiv",
+      "title": "Steer2Grasp: Inference-Time Embodiment-Aware Steering for Diverse Physically Feasible Grasp Diffusion",
+      "abstract": "Current grasp diffusion models provide rich priors for generation, yet their object-centric approach can violate the kinematic and collision constraints imposed by the embodiment and the environment. Existing embodiment-aware methods primarily perform local corrections around generated grasps through gradient guidance or optimization, making it difficult to recover from fundamentally infeasible modes. We present Steer2Grasp, a training-free, embodiment-agnostic framework for inference-time grasp steering that adapts a frozen Cartesian grasp diffusion model using deployment-specific rewards. Through Feynman-Kac (FK) inspired particle reweighting and resampling, the method reallocates population mass from infeasible to high-reward grasp modes, enabling population-level mode transitions without modifying the pretrained diffusion model or requiring differentiable constraints. The framework enables a unified treatment for single and dual arm grasping through reachability and collision aware rewards, followed by gradient free gripper level local refinement. Across diverse objects, robot embodiments, and constrained environments, our method substantially improves feasible grasp generation while maintaining proximity to the underlying grasp prior.",
+      "authors": [
+        "Vignesh Vembar",
+        "Ayush Kaura",
+        "A Padmaprabhan",
+        "Siddharth Sinha",
+        "Kailash Nagarajan",
+        "Keshab Patra",
+        "Md Faizal Karim",
+        "K Madhava Krishna"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-27T13:13:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.33546v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "training-free inference-time adaptation of a frozen grasp diffusion model to new embodiments",
+      "llm_evidence_cn": "免训练地在推理时把冻结抓取扩散模型适配到新具身",
+      "llm_evidence": "免训练地在推理时把冻结抓取扩散模型适配到新具身",
+      "canonical_evidence": "免训练地在推理时把冻结抓取扩散模型适配到新具身",
+      "llm_tldr_en": "Steer2Grasp is a training-free, embodiment-agnostic framework that steers a frozen Cartesian grasp diffusion model at inference time using deployment rewards and Feynman-Kac particle reweighting to satisfy embodiment constraints.",
+      "llm_tldr_cn": "抓取扩散模型提供丰富先验，但其以物体为中心的方式会违反具体具身与环境的运动学与碰撞约束，现有具身感知方法仅在生成抓取附近做局部修正，难以从根本不可行的模式中恢复。本文提出Steer2Grasp，一种免训练、具身无关的推理时抓取引导框架，用部署特定奖励并借助Feynman-Kac粒子重加权与重采样，将概率质量从不可行抓取转移到高可行性抓取。",
+      "llm_tldr": "抓取扩散模型提供丰富先验，但其以物体为中心的方式会违反具体具身与环境的运动学与碰撞约束，现有具身感知方法仅在生成抓取附近做局部修正，难以从根本不可行的模式中恢复。本文提出Steer2Grasp，一种免训练、具身无关的推理时抓取引导框架，用部署特定奖励并借助Feynman-Kac粒子重加权与重采样，将概率质量从不可行抓取转移到高可行性抓取。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.31855v1",
+      "source": "arxiv",
+      "title": "PHIRL: Aligning Learned Rewards with Task Progress for Inverse Reinforcement Learning",
+      "abstract": "Human demonstrations provide dense policy-level information but sometimes lack local precision. Human feedback presents accurate local critiques, but offers sparse evaluations rather than direct policy guidance. We propose Progress-Heuristicized Inverse Reinforcement Learning (PHIRL), a data-efficient framework that learns robust reward functions by jointly leveraging demonstrations and feedback. Specifically, we use progress, a feedback modality that describes cumulative task completion. PHIRL iteratively infers a reward function from demonstrations via inverse reinforcement learning, calculates the learned rewards over the progress-annotated demonstrations, and aligns the rewards with progress annotations over four dimensions. We evaluate PHIRL on real and simulated robot tasks, with additional exploration using a fine-tuned vision-language model to provide progress feedback. Results demonstrate that PHIRL significantly outperforms the baselines, achieving substantially higher environmental return rewards and task success with only twenty percent of demonstrations annotated. Analysis of reward-hacking scenarios demonstrates that PHIRL learned reward functions are reliable against exploitation.",
+      "authors": [
+        "Hang Yu",
+        "James Staley",
+        "Cheng Xi Tsou",
+        "Xiujin Liu",
+        "Wenchang Gao",
+        "Jindan Huang",
+        "Shijie Fang",
+        "Zhegong Shangguan",
+        "Angelo Cangelosi",
+        "Reuben Aronson",
+        "Elaine Short"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-25T18:03:59+00:00",
+      "link": "https://arxiv.org/pdf/2609.31855v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "data-efficient inverse RL framework jointly leveraging demonstrations and progress feedback",
+      "llm_evidence_cn": "联合示范与进度反馈的数据高效逆强化学习框架",
+      "llm_evidence": "联合示范与进度反馈的数据高效逆强化学习框架",
+      "canonical_evidence": "联合示范与进度反馈的数据高效逆强化学习框架",
+      "llm_tldr_en": "PHIRL is a data-efficient inverse reinforcement learning framework that learns robust reward functions by jointly leveraging demonstrations and cumulative-progress feedback, aligning learned rewards with task progress.",
+      "llm_tldr_cn": "人类示范提供密集策略信息但局部精度不足，人类反馈评价准确却稀疏且缺乏直接策略指导。作者提出进度启发式逆强化学习PHIRL，利用描述累积任务完成度的进度反馈，联合示范数据迭代推断奖励函数。方法在四个维度上将学习到的奖励与进度标注对齐，从而获得更鲁棒的奖励。实验显示该框架在数据高效性上具有优势，为缓解具身学习中数据稀缺、奖励设计困难提供了新解法。",
+      "llm_tldr": "人类示范提供密集策略信息但局部精度不足，人类反馈评价准确却稀疏且缺乏直接策略指导。作者提出进度启发式逆强化学习PHIRL，利用描述累积任务完成度的进度反馈，联合示范数据迭代推断奖励函数。方法在四个维度上将学习到的奖励与进度标注对齐，从而获得更鲁棒的奖励。实验显示该框架在数据高效性上具有优势，为缓解具身学习中数据稀缺、奖励设计困难提供了新解法。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.34199v1",
+      "source": "arxiv",
+      "title": "WB-WAM: Heterogeneous Body-Hand Pre-training for Humanoid Loco-Manipulation",
+      "abstract": "Humanoid loco-manipulation demands coordinated body and hand behavior, while conventional robot pre-training data provide limited coverage of such whole-body motion. We present WB-WAM, a World Action Model that incorporates explicit whole-body action supervision into generative video pre-training. A shared physical action space integrates body, root, and dexterous hand annotations from heterogeneous sources, enabling joint video and action learning from 1880.2 hours of partially annotated video and motion data. The resulting priors are refined through PICO mid-training and adapted to robot tasks with auxiliary forward kinematics supervision. We construct WB-Datasets to support these stages with retargeted egocentric human demonstrations and robot trajectories, allowing task-aligned human motion to supplement limited robot data. Evaluations in simulation demonstrate strong whole-body task performance with 81.9% in HumanoidArena, while real-world experiments further validate WB-WAM with 84.0% mean success across five tasks. Moreover, task-aligned PICO mid-training improves downstream task performance while reducing the need for real-robot demonstrations. These results support heterogeneous whole-body pre-training and human motion transfer as a practical route to data-efficient humanoid loco-manipulation.",
+      "authors": [
+        "Chuan Qin",
+        "Shaoting Zhu",
+        "Siyuan Luo",
+        "Siqiao Huang",
+        "Hongyu Zhao",
+        "Hang Zhao"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-28T03:11:19+00:00",
+      "link": "https://arxiv.org/pdf/2609.34199v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "world action model pre-training on heterogeneous data with mid-training and task adaptation",
+      "llm_evidence_cn": "异构数据上的世界动作模型预训练与中训练任务适配",
+      "llm_evidence": "异构数据上的世界动作模型预训练与中训练任务适配",
+      "canonical_evidence": "异构数据上的世界动作模型预训练与中训练任务适配",
+      "llm_tldr_en": "Humanoid loco-manipulation needs whole-body data rarely covered by robot pre-training. WB-WAM injects whole-body action supervision into generative video pre-training using a shared physical action space, then refines priors via PICO mid-training and adapts to robot tasks with forward-kinematics supervision.",
+      "llm_tldr_cn": "人形机器人的全身移动操作需要协调身体与手部行为，但常规机器人预训练数据难以覆盖此类全身运动。本文提出WB-WAM世界动作模型，将显式全身动作监督引入生成式视频预训练，通过共享物理动作空间整合来自异构数据的身体、根节点与灵巧手标注，并利用1880.2小时部分标注视频与运动数据联合学习。所得先验经PICO中训练和辅助前向运动学监督适配到机器人任务，为跨异构数据的大模型适配提供了范式。",
+      "llm_tldr": "人形机器人的全身移动操作需要协调身体与手部行为，但常规机器人预训练数据难以覆盖此类全身运动。本文提出WB-WAM世界动作模型，将显式全身动作监督引入生成式视频预训练，通过共享物理动作空间整合来自异构数据的身体、根节点与灵巧手标注，并利用1880.2小时部分标注视频与运动数据联合学习。所得先验经PICO中训练和辅助前向运动学监督适配到机器人任务，为跨异构数据的大模型适配提供了范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.34018v1",
+      "source": "arxiv",
+      "title": "Estimate, Don't Imitate: Reusing Differentiable State-Based Policies for Visuomotor Control",
+      "abstract": "Simulation-trained manipulation policies can exploit privileged state information to learn effective contact-rich behaviours, but deployment requires acting from partial observations such as noisy camera images. A common solution is teacher-student distillation, in which a visuomotor policy is trained to reproduce the actions of the privileged expert. This requires the student to jointly infer the task-relevant state and relearn the expert's action mapping that is already available. An alternative is to reuse the state-based expert and learn only a perceptual interface that reconstructs its missing state inputs. However, minimising the state estimate error alone does not necessarily minimise the downstream control error induced by these estimates. To bridge this gap, we train a visual state estimator using both direct state supervision and an action-consistency loss backpropagated through the frozen, differentiable expert. A scheduled objective first establishes a physically meaningful state estimate and progressively emphasises errors that affect the expert's actions. Across five goal-conditioned manipulation tasks, retaining the expert consistently outperforms direct pixel-to-action imitation from the same expert demonstration corpus. We further demonstrate sim-to-real transfer on a physical Panda robot, achieving 76% success without retraining the underlying expert.",
+      "authors": [
+        "Denis Shcherba",
+        "Adrian Abel",
+        "Eckart Cobo-Briesewitz",
+        "Paul Mattes",
+        "Wojciech Samek",
+        "Marc Toussaint"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-27T23:26:13+00:00",
+      "link": "https://arxiv.org/pdf/2609.34018v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "reusing simulation-trained state-based policies for visuomotor deployment via a learned perceptual interface",
+      "llm_evidence_cn": "通过感知接口复用仿真训练的状态策略实现视觉运动迁移",
+      "llm_evidence": "通过感知接口复用仿真训练的状态策略实现视觉运动迁移",
+      "canonical_evidence": "通过感知接口复用仿真训练的状态策略实现视觉运动迁移",
+      "llm_tldr_en": "The paper argues that instead of distilling a privileged state expert into a visuomotor student, one should reuse the expert and learn only a perceptual interface, directly minimizing downstream control error rather than state estimation error.",
+      "llm_tldr_cn": "仿真训练的机械臂策略依赖特权状态信息，部署时却只能从含噪图像等部分观测行动，常用师生蒸馏需学生同时推断状态并重学动作映射。作者提出复用状态专家、只学习一个感知接口来重建缺失状态输入，并直接优化下游控制误差而非单纯的状态估计误差。在接触丰富的操作任务上，该估计式方法优于模仿式蒸馏，表明关注控制目标比关注状态重建更有效。该工作为仿真到真实的视觉运动策略迁移提供了更高效的对齐思路。",
+      "llm_tldr": "仿真训练的机械臂策略依赖特权状态信息，部署时却只能从含噪图像等部分观测行动，常用师生蒸馏需学生同时推断状态并重学动作映射。作者提出复用状态专家、只学习一个感知接口来重建缺失状态输入，并直接优化下游控制误差而非单纯的状态估计误差。在接触丰富的操作任务上，该估计式方法优于模仿式蒸馏，表明关注控制目标比关注状态重建更有效。该工作为仿真到真实的视觉运动策略迁移提供了更高效的对齐思路。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning for robot policy learning across domains and embodiments",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.33157v1",
+      "source": "arxiv",
+      "title": "TimelyDAgger: Timing-Aware Expert Querying for VLA Policy Improvement",
+      "abstract": "DAgger improves robot policies by aggregating expert supervision from states visited during policy execution. Robot-gated DAgger automates expert queries, allowing the robot to decide when to request expert takeover. While existing gates emphasize detecting the need for assistance, takeover timing also shapes the content of these demonstrations and their value for policy learning. We propose TimelyDAgger, combining Bridge-PCA monitoring of internal vision-language-action (VLA) features with Feedback-guided Threshold Adaptation based on expert behavior to improve takeover timing. We introduce an evaluation framework linking failure detection, takeover timing, and policy improvement, including Target-Aligned Supervision Ratio (TASR) for assessing supervision quality without retraining. Experiments show that takeover timing affects policy learning, with TimelyDAgger achieving competitive failure detection and higher post-training success in most evaluated settings under matched expert-action budgets.",
+      "authors": [
+        "Zhixuan Zhao",
+        "Peiyan Li",
+        "Enhao Zhang",
+        "Yueran Tao",
+        "Hao Wang",
+        "Chenghao Yue",
+        "Lei Lv",
+        "Wentao Zhao",
+        "Jiahao Chen",
+        "Xin Liu",
+        "Kangyao Huang",
+        "Yu Luo",
+        "Huaping Liu"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-27T03:31:08+00:00",
+      "link": "https://arxiv.org/pdf/2609.33157v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "timing-aware expert querying improves the value of collected supervision for VLA policy learning",
+      "llm_evidence_cn": "时机感知专家查询提升所采集监督数据的价值，服务VLA策略改进",
+      "llm_evidence": "时机感知专家查询提升所采集监督数据的价值，服务VLA策略改进",
+      "canonical_evidence": "时机感知专家查询提升所采集监督数据的价值，服务VLA策略改进",
+      "llm_tldr_en": "TimelyDAgger combines Bridge-PCA monitoring of VLA features with feedback-guided threshold adaptation to improve expert takeover timing in robot-gated DAgger, plus a TASR evaluation metric.",
+      "llm_tldr_cn": "DAgger通过聚合策略执行中访问状态的专家监督来改进机器人策略，机器人门控DAgger可自动决定何时请求专家接管，但接管时机同样决定演示质量。本文提出TimelyDAgger，结合对VLA内部特征的Bridge-PCA监控与基于专家行为的反馈式阈值自适应，优化接管时机。作者还提出链接失败检测、接管时机与策略改进的评估框架及目标对齐监督比TASR指标。实验表明更优的接管时机能显著提升监督数据价值与策略改进效果。",
+      "llm_tldr": "DAgger通过聚合策略执行中访问状态的专家监督来改进机器人策略，机器人门控DAgger可自动决定何时请求专家接管，但接管时机同样决定演示质量。本文提出TimelyDAgger，结合对VLA内部特征的Bridge-PCA监控与基于专家行为的反馈式阈值自适应，优化接管时机。作者还提出链接失败检测、接管时机与策略改进的评估框架及目标对齐监督比TASR指标。实验表明更优的接管时机能显著提升监督数据价值与策略改进效果。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "data efficiency techniques and data generation methods to overcome data scarcity in embodied robot learning",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.34250v1",
+      "source": "arxiv",
+      "title": "WAM-OPD: Sharpening World Action Models via On-Policy Distillation",
+      "abstract": "Pretrained world action models (WAMs) provide generalist capabilities across diverse robotic manipulation tasks, yet improving target-task performance to an expert level without degrading pretrained skills remains challenging. We explore on-policy distillation (OPD) for WAMs and introduce WAM-OPD. WAM-OPD inherits the advantage of OPD methods that transfer task-specific teacher knowledge under the student's own induced distribution, rather than directly fitting the student to a narrow task-specific data distribution. However, in closed-loop manipulation, the observation histories change as the student policy evolves, requiring fresh environment rollouts to remain on-policy. Applying OPD to WAMs entails repeated data collection, which is costly even in simulation and often impractical on real robots. To avoid repeated environment rollouts during distillation, we introduce prefix-weighted trajectory replay (PWTR). PWTR uses a fixed trajectory pool composed primarily of initial-student rollouts, supplemented with task-specific teacher rollouts to broaden trajectory coverage. For each trajectory replayed from this pool, PWTR conditions the current policy on successive stored histories to generate fresh denoising paths, along which the task-specific teacher provides supervision. Although these denoising paths are refreshed as the policy evolves, the replayed environment trajectories remain fixed. PWTR therefore reweights per-decision distillation losses using proxy importance weights derived from path scores accumulated over the trajectory prefix preceding each decision to mitigate the resulting shift in the history distribution. Simulated and real-world experiments demonstrate task adaptation without additional environment interaction during distillation. In both settings, WAM-OPD improves target-task performance while retaining near-initial performance on tasks excluded from adaptation.",
+      "authors": [
+        "Panjun Liu",
+        "Xiaohan Lei",
+        "Shiqi Zhang",
+        "Yikun Wang",
+        "Yongxin Zhang",
+        "Mingyi Hu",
+        "Shida Sun",
+        "Jiateng Shou",
+        "Wengang Zhou",
+        "Jiajun Deng",
+        "Zhiwei Xiong"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-28T03:56:23+00:00",
+      "link": "https://arxiv.org/pdf/2609.34250v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "on-policy distillation to sharpen pretrained world action models for manipulation",
+      "llm_evidence_cn": "用同策略蒸馏强化预训练世界动作模型以提升操作性能",
+      "llm_evidence": "用同策略蒸馏强化预训练世界动作模型以提升操作性能",
+      "canonical_evidence": "用同策略蒸馏强化预训练世界动作模型以提升操作性能",
+      "llm_tldr_en": "WAM-OPD applies on-policy distillation to world action models, transferring task-specific teacher knowledge under the student's own induced distribution while handling the costly rollouts required by closed-loop manipulation.",
+      "llm_tldr_cn": "预训练世界动作模型具备跨任务的通用操作能力，但要在不损害预训练技能的前提下把目标任务提升到专家水平仍很困难。作者提出WAM-OPD，将同策略蒸馏引入世界动作模型，在学生学习自身诱导的分布下迁移特定任务教师知识，而非直接拟合狭窄任务数据。针对闭环操作中观测历史随策略演化、需反复环境交互的问题，方法设计了相应的数据采集与蒸馏机制。该工作为世界模型式机器人策略的专家级微调与技能保持提供了新范式。",
+      "llm_tldr": "预训练世界动作模型具备跨任务的通用操作能力，但要在不损害预训练技能的前提下把目标任务提升到专家水平仍很困难。作者提出WAM-OPD，将同策略蒸馏引入世界动作模型，在学生学习自身诱导的分布下迁移特定任务教师知识，而非直接拟合狭窄任务数据。针对闭环操作中观测历史随策略演化、需反复环境交互的问题，方法设计了相应的数据采集与蒸馏机制。该工作为世界模型式机器人策略的专家级微调与技能保持提供了新范式。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "world model for planning and control in embodied agents",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.34261v1",
+      "source": "arxiv",
+      "title": "RoboICL: Embodied In-Context Learning with GPT-6 Astra",
+      "abstract": "General-purpose vision-language models offer a promising way to zero-shot robot control: \\gptastra{} excels at open-ended and language- or image-conditioned manipulation but remains substantially weaker on high-precision and long-horizon tasks. We introduce \\emph{RoboICL}, an in-context robot-control framework that narrows these gaps without robot-specific parameter updates or a learned VLA. RoboICL separates \\emph{demonstration context}, which provides recorded examples when available, from \\emph{interaction memory}, which accumulates the model's own actions and observed outcomes. Both use a shared observation--action--receipt--observation grammar. To preserve experience across task stages, RoboICL combines sampled demonstration blocks with bounded anchored memory. Fixed anchors keep earlier rollout interactions available for in-context learning, while the latest interaction supports immediate error correction. Across 30 RoboDojo tasks, using zero shot for Open and one demonstration elsewhere, RoboICL improves on official zero-shot \\gptastra{} by 20--27 progress-score points in every category. It leads the leaderboard baselines on Memory and Open, achieves comparable performance to the strongest Precision baseline, and remains competitive on Long-Horizon. Its 30-task Overall score is 50.64, versus 33.68 for the strongest baseline. On a separate ten-task subset, RoboICL scores 60.60, within 2.00 points of the $π_{0.5}$ + \\gptastra{} hybrid approach. On three real-robot tasks, mean progress rises from 14.45 at zero shot to 63.33 at one shot and 78.89 at three shots. On two development tasks, optional Jev-gated action reuse reduces \\gptastra{} calls by 33--48\\%. Code is available at \\href{https://github.com/Mosi-AI/RoboICL}{https://github.com/Mosi-AI/RoboICL}.",
+      "authors": [
+        "Fangcheng Liu",
+        "Yeqing Shen",
+        "Anda Cheng",
+        "Weishi Mi",
+        "Chao Tang",
+        "Chenyuan Liu",
+        "Yushun Xiang",
+        "Tingguang Li",
+        "Yong-Lu Li",
+        "Yehui Tang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.LG"
+      ],
+      "published": "2026-09-28T04:07:36+00:00",
+      "link": "https://arxiv.org/pdf/2609.34261v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "in-context robot control without robot-specific parameter updates",
+      "llm_evidence_cn": "无需机器人特定参数更新的上下文机器人控制",
+      "llm_evidence": "无需机器人特定参数更新的上下文机器人控制",
+      "canonical_evidence": "无需机器人特定参数更新的上下文机器人控制",
+      "llm_tldr_en": "RoboICL is an in-context robot-control framework that separates demonstration context from interaction memory, letting a general VLM control robots without robot-specific parameter updates.",
+      "llm_tldr_cn": "针对通用视觉-语言模型在零样本机器人控制中高精度与长时程任务表现较弱的问题，本文提出RoboICL。该框架无需机器人特定参数更新或学习专用VLA，将演示上下文与交互记忆分离，二者共享观察-动作-回执-观察语法，并结合采样演示块与有界锚定记忆保留跨阶段经验。该工作以上下文学习替代参数微调，为大规模预训练模型向机器人控制的高效适配提供了新途径。",
+      "llm_tldr": "针对通用视觉-语言模型在零样本机器人控制中高精度与长时程任务表现较弱的问题，本文提出RoboICL。该框架无需机器人特定参数更新或学习专用VLA，将演示上下文与交互记忆分离，二者共享观察-动作-回执-观察语法，并结合采样演示块与有界锚定记忆保留跨阶段经验。该工作以上下文学习替代参数微调，为大规模预训练模型向机器人控制的高效适配提供了新途径。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2609.33807v1",
+      "source": "arxiv",
+      "title": "CodeActionBench: Evaluating Agentic Code-as-Policy for Embodied Manipulation",
+      "abstract": "How well can general-purpose multimodal models turn visual understanding and reasoning into embodied manipulation via executable code? We introduce CodeActionBench, a benchmark of 25 manipulation tasks that evaluates this capability through agentic Code-as-Policy. Without task-specific fine-tuning, demonstrations, external specialist perception or grasp modules, privileged scene state, or predefined task policies, agents should select visual evidence, form task-relevant 3D estimates, construct manipulation targets, and iteratively execute and revise their policies. A shared robot API provides RGB observations, calibrated geometric operations, robot feedback, and bounded motion, leaving task-dependent decisions to the evaluated agent. Fixed task instances, resource budgets, and a hidden physical-outcome verifier support controlled comparisons across models and harness configurations. Extensive evaluations across nine configurations and 675 attempts achieve success rates ranging from 2.7% to 73.3%. The strongest configuration, GPT-6 Astra with Codex CLI, solves 22 of 25 tasks at least once in three attempts, demonstrating the best performance while still leaving substantial room for improvement. Trajectory analyses reveal difficulties in spatial alignment, object retention, and completion judgment, including task failures despite successfully completed motions. CodeActionBench provides a controlled testbed for measuring how general-purpose models translate their capabilities into manipulation behavior and for examining typical failure scenarios in that process.",
+      "authors": [
+        "Yiheng Lyu",
+        "Xueying Jiang",
+        "Wenhao Li",
+        "Shijian Lu",
+        "Gongjie Zhang"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO",
+        "cs.AI"
+      ],
+      "published": "2026-09-27T17:59:31+00:00",
+      "link": "https://arxiv.org/pdf/2609.33807v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "benchmark for agentic code-as-policy embodied manipulation",
+      "llm_evidence_cn": "面向智能体代码即策略具身操作的基准",
+      "llm_evidence": "面向智能体代码即策略具身操作的基准",
+      "canonical_evidence": "面向智能体代码即策略具身操作的基准",
+      "llm_tldr_en": "CodeActionBench is a benchmark of 25 manipulation tasks that evaluates whether general-purpose multimodal models can turn visual reasoning into embodied manipulation via agentic Code-as-Policy, without fine-tuning or privileged state.",
+      "llm_tldr_cn": "通用多模态模型能否把视觉理解与推理转化为可执行的具身操作，仍缺乏系统评估。本文提出CodeActionBench，包含25个操作任务的基准，考察智能体以代码即策略的方式完成操作的能力：无需任务微调、演示、专用感知抓取模块或特权场景状态，智能体需自行选择视觉证据、估计三维信息、构造操作目标并迭代修正策略。该基准为具身代码策略研究提供了统一评测平台。",
+      "llm_tldr": "通用多模态模型能否把视觉理解与推理转化为可执行的具身操作，仍缺乏系统评估。本文提出CodeActionBench，包含25个操作任务的基准，考察智能体以代码即策略的方式完成操作的能力：无需任务微调、演示、专用感知抓取模块或特权场景状态，智能体需自行选择视觉证据、估计三维信息、构造操作目标并迭代修正策略。该基准为具身代码策略研究提供了统一评测平台。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "embodied artificial intelligence with robot agents in real-world environments",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2609.34467v1",
+      "source": "arxiv",
+      "title": "Alignment-Guided Flow Transformer for Efficient Vision-Language-Action Policy Learning",
+      "abstract": "Recent advances in Vision-Language-Action (VLA) models point toward general-purpose robotic intelligence by unifying perception, instruction, and control. Despite impressive progress, existing VLA models often adapt poorly due to \\emph{tri-modal misalignment} among vision, language, and action, which weakens action grounding and hurts generalization and fine-tuning efficiency. In this work, we present Alignment-Guided Flow Transformer (AGFT), a novel framework that explicitly enforces tri-modal alignment through a dedicated alignment loss, bridging the representational gap across modalities and enhancing task adaptation. While prior research has predominantly emphasized bi-modal vision--language alignment, we systematically formalize and study tri-modal alignment in VLA models, and provide both ablations and analysis to isolate its role in improving adaptation and robustness. To further accelerate deployment, we adopt a flow-matching objective, enabling substantially fewer inference steps than diffusion-based policies while maintaining accuracy. Theoretically, we establish a quantitative connection between the tri-modal alignment gap and the optimization tightness of flow matching; empirically, experiments on the extensive benchmark show that AGFT achieves superior success rates and lower inference latency compared to SOTA baselines, underscoring tri-modal alignment as a key ingredient for scaling robust VLA manipulation.",
+      "authors": [
+        "Shengchao Hu",
+        "Peng Wang",
+        "Qiyang Zhou",
+        "Guodong Zheng",
+        "Yuqi Huang",
+        "Li Shen",
+        "Ya Zhang",
+        "Dacheng Tao"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-09-28T07:24:48+00:00",
+      "link": "https://arxiv.org/pdf/2609.34467v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "alignment loss improves VLA fine-tuning and task adaptation",
+      "llm_evidence_cn": "对齐损失提升VLA微调与任务适应效率",
+      "llm_evidence": "对齐损失提升VLA微调与任务适应效率",
+      "canonical_evidence": "对齐损失提升VLA微调与任务适应效率",
+      "llm_tldr_en": "AGFT tackles tri-modal misalignment among vision, language and action in VLA models with a dedicated alignment loss, improving action grounding, generalization and fine-tuning efficiency.",
+      "llm_tldr_cn": "针对视觉-语言-动作模型中视觉、语言与动作三模态错位导致动作接地弱、泛化差和微调效率低的问题，本文提出对齐引导流Transformer（AGFT）。该框架通过专门的对齐损失显式约束三模态对齐，弥合跨模态表示鸿沟。实验表明该设计增强了任务适应能力与微调效率，为大规模预训练VLA模型向机器人控制的高效迁移提供了新方法。",
+      "llm_tldr": "针对视觉-语言-动作模型中视觉、语言与动作三模态错位导致动作接地弱、泛化差和微调效率低的问题，本文提出对齐引导流Transformer（AGFT）。该框架通过专门的对齐损失显式约束三模态对齐，弥合跨模态表示鸿沟。实验表明该设计增强了任务适应能力与微调效率，为大规模预训练VLA模型向机器人控制的高效迁移提供了新方法。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "transfer learning and parameter efficient adaptation of large pretrained models to robot control",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2609.35231v1",
+      "source": "arxiv",
+      "title": "Zero-Shot Reactive Obstacle Avoidance for Generative Robot Policies",
+      "abstract": "We propose NUDGE (Nudge Update via Differentiable GEometry), a training-free obstacle-avoidance procedure that can be incorporated in any robot policy based on diffusion or flow matching, including diffusion policies and vision-language-action models. Our work injects gradients from a signed distance field, a function returning each point's distance to the nearest obstacle, into the policy at inference time to steer it away from obstacles. It supports any common action parameterization, from absolute or relative joint poses to end-effector poses, through a differentiable joint-trajectory decoder. Experiments show that NUDGE preserves the policy's task distribution and runs reactively in real time.",
+      "authors": [
+        "Weihang Guo",
+        "Lydia E. Kavraki"
+      ],
+      "primary_category": "cs.RO",
+      "categories": [
+        "cs.RO"
+      ],
+      "published": "2026-09-28T14:10:15+00:00",
+      "link": "https://arxiv.org/pdf/2609.35231v1",
+      "tags": [
+        "keyword:embodied-ai",
+        "query:embodied-ai"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "training-free inference-time steering that runs reactively in real time for robot policies",
+      "llm_evidence_cn": "免训练的推理时引导可实时反应式运行于机器人策略",
+      "llm_evidence": "免训练的推理时引导可实时反应式运行于机器人策略",
+      "canonical_evidence": "免训练的推理时引导可实时反应式运行于机器人策略",
+      "llm_tldr_en": "NUDGE is a training-free obstacle-avoidance procedure for diffusion and flow-matching robot policies that injects signed-distance-field gradients at inference time to steer actions away from obstacles in real time.",
+      "llm_tldr_cn": "生成式机器人策略（如扩散策略与视觉语言动作模型）在部署时缺乏对障碍物的反应式规避能力。本文提出NUDGE，一种免训练的避障方法，可在推理阶段向任意基于扩散或流匹配的策略注入有符号距离场的梯度，通过可微关节轨迹解码器支持从关节位姿到末端位姿的多种动作参数化。实验表明该方法在保持原策略任务分布的同时实现实时反应式避障。",
+      "llm_tldr": "生成式机器人策略（如扩散策略与视觉语言动作模型）在部署时缺乏对障碍物的反应式规避能力。本文提出NUDGE，一种免训练的避障方法，可在推理阶段向任意基于扩散或流匹配的策略注入有符号距离场的梯度，通过可微关节轨迹解码器支持从关节位姿到末端位姿的多种动作参数化。实验表明该方法在保持原策略任务分布的同时实现实时反应式避障。",
+      "llm_tags": [
+        "query:embodied-ai"
+      ],
+      "matched_query_tag": "query:embodied-ai",
+      "matched_query_text": "fast inference and model acceleration for real-time robot control",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

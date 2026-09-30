@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-29</span>
+      <span class="dpr-home-dashboard-kicker">2026-09-30</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 19 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>8</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-29 23:29:05 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-09-30 22:50:37 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 19 篇推荐（精读 8 篇，速读 11 篇）</p>
-<p>精读：《Copper-Policy: Focus on the Representation for Robust Robot Manipulation》（9.0/10）, 《Adaptive Latent Capacity for World Models》（9.0/10）</p>
-<p>速读：《DRAM: Delta-rule Recurrent Associative Memory for Robot Manipulation Policies》（8.0/10）, 《Think Fast, Plan Selectively: Adaptive Deliberation for Efficient Data-Driven MPC》（8.0/10）, 《VIDEAS: Distilling Explicit Action Semantics from Demonstration Videos for World Models via Prior-Guided Simulation》（8.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>今日扫完17篇，精读6篇、速读11篇，9分双星锁定“动作条件世界模型”与“高效世界动作模型推理”。最值得看：Hamiltonian JEPA 把控制状态继承进世界模型，Efficient World Action Model Inference 用自适应中间状态加速推理，两篇均9.0/10。普通读者可先读这两篇精读建立主线，再从8分的 ZeroBot、WB-WAM、WAM-OPD 中按兴趣选速读。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,12 +78,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">8 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Copper-Policy: Focus on the Representation for Robust Robot Manipulation">Copper-Policy: Focus on the Representation for Robust Robot Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Adaptive Latent Capacity for World Models">Adaptive Latent Capacity for World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="MA-JEPA: Joint-Embedding World Models for Multi-Agent Reinforcement Learning">MA-JEPA: Joint-Embedding World Models for Multi-Agent Reinforcement Learning</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Hamiltonian JEPA: Action-Conditioned World Models with an Inherited Control State">Hamiltonian JEPA: Action-Conditioned World Models with an Inherited Control State</span></li><li><span class="dpr-home-dashboard-paper-title" title="Efficient World Action Model Inference with Adaptive Intermediate States">Efficient World Action Model Inference with Adaptive Intermediate States</span></li><li><span class="dpr-home-dashboard-paper-title" title="FlexiWorld: Learning and Planning via Flexible Action Chunks Across Multiple Time Scales">FlexiWorld: Learning and Planning via Flexible Action Chunks Across Multiple Time Scales</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>8</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -97,7 +94,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="DRAM: Delta-rule Recurrent Associative Memory for Robot Manipulation Policies">DRAM: Delta-rule Recurrent Associative Memory for Robot Manipulation Policies</span></li><li><span class="dpr-home-dashboard-paper-title" title="Think Fast, Plan Selectively: Adaptive Deliberation for Efficient Data-Driven MPC">Think Fast, Plan Selectively: Adaptive Deliberation for Efficient Data-Driven MPC</span></li><li><span class="dpr-home-dashboard-paper-title" title="VIDEAS: Distilling Explicit Action Semantics from Demonstration Videos for World Models via Prior-Guided Simulation">VIDEAS: Distilling Explicit Action Semantics from Demonstration Videos for World Models via Prior-Guided Simulation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="ZeroBot: Learning from Scratch in Minutes with Generative Real2Sim">ZeroBot: Learning from Scratch in Minutes with Generative Real2Sim</span></li><li><span class="dpr-home-dashboard-paper-title" title="WB-WAM: Heterogeneous Body-Hand Pre-training for Humanoid Loco-Manipulation">WB-WAM: Heterogeneous Body-Hand Pre-training for Humanoid Loco-Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="WAM-OPD: Sharpening World Action Models via On-Policy Distillation">WAM-OPD: Sharpening World Action Models via On-Policy Distillation</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
