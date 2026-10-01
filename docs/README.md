@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-09-30</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-01</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 17 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-09-30 22:50:37 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-01 23:54:35 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,10 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日扫完17篇，精读6篇、速读11篇，9分双星锁定“动作条件世界模型”与“高效世界动作模型推理”。最值得看：Hamiltonian JEPA 把控制状态继承进世界模型，Efficient World Action Model Inference 用自适应中间状态加速推理，两篇均9.0/10。普通读者可先读这两篇精读建立主线，再从8分的 ZeroBot、WB-WAM、WAM-OPD 中按兴趣选速读。</p>
+<p>今日共生成 17 篇推荐（精读 6 篇，速读 11 篇）</p>
+<p>精读：《Don&#x27;t Throw Away the Tail: Action Upcycling for Policy Acceleration》（9.0/10）, 《Beyond Conservatism: Recoverability-Conditioned Exploration for Model-Based Imitation Learning》（8.0/10）</p>
+<p>速读：《JRDB-AVR: An Active Visual Reasoning Benchmark for Embodied Agents in Real-World Environments》（8.0/10）, 《From Pixel to Poses: Object-centric Tool Manipulation Learning from Human Demonstrations》（8.0/10）, 《X-Reset: Scaling Object-Centric Reinforcement Learning via Cross-Embodiment Resets》（8.0/10）</p>
+<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,7 +84,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Hamiltonian JEPA: Action-Conditioned World Models with an Inherited Control State">Hamiltonian JEPA: Action-Conditioned World Models with an Inherited Control State</span></li><li><span class="dpr-home-dashboard-paper-title" title="Efficient World Action Model Inference with Adaptive Intermediate States">Efficient World Action Model Inference with Adaptive Intermediate States</span></li><li><span class="dpr-home-dashboard-paper-title" title="FlexiWorld: Learning and Planning via Flexible Action Chunks Across Multiple Time Scales">FlexiWorld: Learning and Planning via Flexible Action Chunks Across Multiple Time Scales</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Don&#x27;t Throw Away the Tail: Action Upcycling for Policy Acceleration">Don&#x27;t Throw Away the Tail: Action Upcycling for Policy Acceleration</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Conservatism: Recoverability-Conditioned Exploration for Model-Based Imitation Learning">Beyond Conservatism: Recoverability-Conditioned Exploration for Model-Based Imitation Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="FutureDuet: Decoupling Observation Access from Future Supervision in World Action Models">FutureDuet: Decoupling Observation Access from Future Supervision in World Action Models</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -94,7 +97,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="ZeroBot: Learning from Scratch in Minutes with Generative Real2Sim">ZeroBot: Learning from Scratch in Minutes with Generative Real2Sim</span></li><li><span class="dpr-home-dashboard-paper-title" title="WB-WAM: Heterogeneous Body-Hand Pre-training for Humanoid Loco-Manipulation">WB-WAM: Heterogeneous Body-Hand Pre-training for Humanoid Loco-Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="WAM-OPD: Sharpening World Action Models via On-Policy Distillation">WAM-OPD: Sharpening World Action Models via On-Policy Distillation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="JRDB-AVR: An Active Visual Reasoning Benchmark for Embodied Agents in Real-World Environments">JRDB-AVR: An Active Visual Reasoning Benchmark for Embodied Agents in Real-World Environments</span></li><li><span class="dpr-home-dashboard-paper-title" title="From Pixel to Poses: Object-centric Tool Manipulation Learning from Human Demonstrations">From Pixel to Poses: Object-centric Tool Manipulation Learning from Human Demonstrations</span></li><li><span class="dpr-home-dashboard-paper-title" title="X-Reset: Scaling Object-Centric Reinforcement Learning via Cross-Embodiment Resets">X-Reset: Scaling Object-Centric Reinforcement Learning via Cross-Embodiment Resets</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>

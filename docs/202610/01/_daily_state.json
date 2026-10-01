@@ -1,0 +1,281 @@
+{
+  "date": "20261001",
+  "date_label": "",
+  "generated_at": "2026-10-01 23:54:35 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.34911v2",
+      "route": "202610/01/2609.34911v2-dont-throw-away-the-tail-action-upcycling-for-policy-acceleration",
+      "title": "Don't Throw Away the Tail: Action Upcycling for Policy Acceleration",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "免训练复用被丢弃动作块实现策略加速",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.33336v1",
+      "route": "202610/01/2609.33336v1-beyond-conservatism-recoverability-conditioned-exploration-for-model-based-imitation-learning",
+      "title": "Beyond Conservatism: Recoverability-Conditioned Exploration for Model-Based Imitation Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于学得世界模型的模仿学习策略优化",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.34362v1",
+      "route": "202610/01/2609.34362v1-futureduet-decoupling-observation-access-from-future-supervision-in-world-action-models",
+      "title": "FutureDuet: Decoupling Observation Access from Future Supervision in World Action Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "世界动作模型解耦未来监督以增强机器人动作生成",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.34604v1",
+      "route": "202610/01/2609.34604v1-shaping-persistent-representations-from-independent-interactions",
+      "title": "Shaping Persistent Representations from Independent Interactions",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "塑造世界模型持久上下文的自监督训练原则",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.34724v1",
+      "route": "202610/01/2609.34724v1-dexweave-learning-dexterous-humanoid-loco-manipulation-from-human-demonstrations",
+      "title": "DexWeave: Learning Dexterous Humanoid Loco-Manipulation from Human Demonstrations",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "通过重定向将人类演示跨具身迁移到人形移动操作",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.34792v1",
+      "route": "202610/01/2609.34792v1-d2-vla-dual-memory-dual-frequency-vision-language-action-model-for-long-dynamic-manipulation",
+      "title": "D$^2$-VLA: Dual-Memory Dual-Frequency Vision-Language-Action Model For Long Dynamic Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "双频VLA与KV缓存加速推理",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.35032v1",
+      "route": "202610/01/2609.35032v1-jrdb-avr-an-active-visual-reasoning-benchmark-for-embodied-agents-in-real-world-environments",
+      "title": "JRDB-AVR: An Active Visual Reasoning Benchmark for Embodied Agents in Real-World Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "真实环境具身智能体基准",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.35375v1",
+      "route": "202610/01/2609.35375v1-from-pixel-to-poses-object-centric-tool-manipulation-learning-from-human-demonstrations",
+      "title": "From Pixel to Poses: Object-centric Tool Manipulation Learning from Human Demonstrations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "数据高效的人类示范学习以缓解机器人数据稀缺",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.35715v1",
+      "route": "202610/01/2609.35715v1-x-reset-scaling-object-centric-reinforcement-learning-via-cross-embodiment-resets",
+      "title": "X-Reset: Scaling Object-Centric Reinforcement Learning via Cross-Embodiment Resets",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "跨具身将人类演示重定向为机器人状态",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.33165v1",
+      "route": "202610/01/2609.33165v1-beyond-tasks-a-vision-for-reproducing-an-animal-like-behavioral-substrate-using-modern-robot-learning-techniques",
+      "title": "Beyond Tasks: A Vision for Reproducing an Animal-like Behavioral Substrate Using Modern Robot Learning Techniques",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "研究具身机器人智能体在动态环境中的行为胜任力",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.33256v1",
+      "route": "202610/01/2609.33256v1-actionground-training-free-runtime-refinement-of-frozen-vla-policies",
+      "title": "ActionGround: Training-Free Runtime Refinement of Frozen VLA Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "亚毫秒级运行时精修冻结VLA策略",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.34674v1",
+      "route": "202610/01/2609.34674v1-hoi-retarget-contact-centric-retargeting-for-human-object-interaction",
+      "title": "HOI-Retarget: Contact-Centric Retargeting for Human-Object Interaction",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "以接触为中心的重定向为人物交互生成大规模机器人运动数据",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.29194v1",
+      "route": "202610/01/2609.29194v1-continuous-online-fault-detection-for-mobile-robots-via-adaptive-edge-models",
+      "title": "Continuous Online Fault Detection for Mobile Robots via Adaptive Edge Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "蒸馏实现移动机器人机载实时推理加速",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.33982v1",
+      "route": "202610/01/2609.33982v1-test-time-spatial-reasoning-for-robot-manipulation-using-generative-real-to-sim",
+      "title": "Test-Time Spatial Reasoning for Robot Manipulation Using Generative Real-to-Sim",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向真实机器人操作的免训练测试时空间推理与生成式实到仿",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.34159v1",
+      "route": "202610/01/2609.34159v1-worldgraph-graph-native-world-modeling",
+      "title": "WorldGraph: Graph-Native World Modeling",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "在潜在图状态与转移上的世界建模",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.34484v1",
+      "route": "202610/01/2609.34484v1-ars-agentic-reward-system-for-robot-learning",
+      "title": "ARS: Agentic Reward System for Robot Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "免训练VLM奖励建模用于机器人学习",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    },
+    {
+      "paper_id": "2609.35432v1",
+      "route": "202610/01/2609.35432v1-self-evolving-coding-agents-from-digital-programs-to-physical-world-intelligence",
+      "title": "Self-Evolving Coding Agents: From Digital Programs to Physical-World Intelligence",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "以可修订显式表征作为具身新范式",
+      "first_seen_at": "2026-10-01 23:54:35 UTC",
+      "updated_at": "2026-10-01 23:54:35 UTC"
+    }
+  ]
+}
