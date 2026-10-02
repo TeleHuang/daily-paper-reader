@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-10-01</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-02</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 23 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>12</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-01 23:54:35 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-02 23:32:15 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 17 篇推荐（精读 6 篇，速读 11 篇）</p>
-<p>精读：《Don&#x27;t Throw Away the Tail: Action Upcycling for Policy Acceleration》（9.0/10）, 《Beyond Conservatism: Recoverability-Conditioned Exploration for Model-Based Imitation Learning》（8.0/10）</p>
-<p>速读：《JRDB-AVR: An Active Visual Reasoning Benchmark for Embodied Agents in Real-World Environments》（8.0/10）, 《From Pixel to Poses: Object-centric Tool Manipulation Learning from Human Demonstrations》（8.0/10）, 《X-Reset: Scaling Object-Centric Reinforcement Learning via Cross-Embodiment Resets》（8.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>2026-10-02日报完成23篇，精读12、速读11，主线聚焦世界模型驱动机器人动作与策略推理。</p>
+<p>最值得看两篇9分精读：《One from Infinity》把预训练世界模型落地为机器人动作，《Staircase Policy》用流式推理处理大动作块。</p>
+<p>普通读者可先读这两篇，再顺速读中的实时流策略、世界模型经验优化与机器人数据生成扩展。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -81,12 +80,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">6 篇</strong>
+    <strong class="dpr-home-dashboard-count">12 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Don&#x27;t Throw Away the Tail: Action Upcycling for Policy Acceleration">Don&#x27;t Throw Away the Tail: Action Upcycling for Policy Acceleration</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Conservatism: Recoverability-Conditioned Exploration for Model-Based Imitation Learning">Beyond Conservatism: Recoverability-Conditioned Exploration for Model-Based Imitation Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="FutureDuet: Decoupling Observation Access from Future Supervision in World Action Models">FutureDuet: Decoupling Observation Access from Future Supervision in World Action Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="One from Infinity: Actualizing Futures from Pretrained World Models into Robot Actions">One from Infinity: Actualizing Futures from Pretrained World Models into Robot Actions</span></li><li><span class="dpr-home-dashboard-paper-title" title="Staircase Policy: Streaming Inference for World-Action Models with Large Action Chunks">Staircase Policy: Streaming Inference for World-Action Models with Large Action Chunks</span></li><li><span class="dpr-home-dashboard-paper-title" title="EgoHumanoid-V2: Human-to-Humanoid Transfer of Coordinated Whole-Body Skills for Loco-Manipulation">EgoHumanoid-V2: Human-to-Humanoid Transfer of Coordinated Whole-Body Skills for Loco-Manipulation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>12</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -97,7 +96,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="JRDB-AVR: An Active Visual Reasoning Benchmark for Embodied Agents in Real-World Environments">JRDB-AVR: An Active Visual Reasoning Benchmark for Embodied Agents in Real-World Environments</span></li><li><span class="dpr-home-dashboard-paper-title" title="From Pixel to Poses: Object-centric Tool Manipulation Learning from Human Demonstrations">From Pixel to Poses: Object-centric Tool Manipulation Learning from Human Demonstrations</span></li><li><span class="dpr-home-dashboard-paper-title" title="X-Reset: Scaling Object-Centric Reinforcement Learning via Cross-Embodiment Resets">X-Reset: Scaling Object-Centric Reinforcement Learning via Cross-Embodiment Resets</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="SkillWeaver: Agentic Exploration over Neural Interaction Skills for Scalable Robot Data Generation">SkillWeaver: Agentic Exploration over Neural Interaction Skills for Scalable Robot Data Generation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Reactive Real-Time Flow Policies via Asynchronous Distribution Alignment">Reactive Real-Time Flow Policies via Asynchronous Distribution Alignment</span></li><li><span class="dpr-home-dashboard-paper-title" title="Direct Experience World-Model Optimization: Learning the World Beyond Action Imitation">Direct Experience World-Model Optimization: Learning the World Beyond Action Imitation</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
