@@ -1,0 +1,281 @@
+{
+  "date": "20261004",
+  "date_label": "",
+  "generated_at": "2026-10-04 22:40:11 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.34170v1",
+      "route": "202610/04/2609.34170v1-ravel-asynchronous-rolling-inference-for-flow-based-vision-language-action-models",
+      "title": "RAVEL: Asynchronous Rolling Inference for Flow-Based Vision-Language-Action Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "异步滚动推理降低VLA延迟以实现实时机器人控制",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2609.33218v1",
+      "route": "202610/04/2609.33218v1-scope-wm-scoped-computation-for-efficient-visual-world-models",
+      "title": "Scope-WM: Scoped Computation for Efficient Visual World Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "范围化计算的高效视觉世界模型支持实时机器人规划",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2609.37922v1",
+      "route": "202610/04/2609.37922v1-wayfinder-hierarchical-visual-language-action-for-zero-shot-waypoint-generation-and-low-level-kinematic-control",
+      "title": "WayFinder: Hierarchical Visual-Language-Action for Zero-Shot Waypoint Generation and Low-Level Kinematic Control",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "分层VLA用离线多模态大模型加轻量在机策略实现低成本实时部署",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2609.39403v1",
+      "route": "202610/04/2609.39403v1-ironmind-scaling-humanoid-dexterous-manipulation-via-camera-space-ego-centric-pretraining",
+      "title": "IronMind: Scaling Humanoid Dexterous Manipulation via Camera-Space Ego-Centric Pretraining",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "以相机空间第一人称预训练弥合人机具身差距",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2610.00438v1",
+      "route": "202610/04/2610.00438v1-towards-a-general-humanoid-loco-manipulation-model-via-egocentric-whole-body-human-data-pretraining",
+      "title": "Towards a General Humanoid Loco-Manipulation Model via Egocentric Whole-Body Human Data Pretraining",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "以第一人称全身人类视频预训练实现可扩展人形移动操作",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2610.01171v1",
+      "route": "202610/04/2610.01171v1-experience-based-feasibility-aware-generative-adversarial-imitation-from-observation-under-embodiment-mismatch",
+      "title": "Experience-Based Feasibility-Aware Generative Adversarial Imitation from Observation under Embodiment Mismatch",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "跨本体失配下的观察模仿",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2610.01939v1",
+      "route": "202610/04/2610.01939v1-fewer-tokens-better-action-gpt-6-astra-robot-agents-with-14-higher-success-rate-but-65-fewer-tokens",
+      "title": "Fewer Tokens, Better Action: GPT-6 Astra Robot Agents with 14% Higher Success Rate but 65% Fewer Tokens",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向机器人控制的Token高效VLM智能体，降低推理开销",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2610.02054v1",
+      "route": "202610/04/2610.02054v1-uniwam-unified-world-action-model",
+      "title": "UniWAM: Unified World-Action Model",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "统一世界-动作模型联合学习物理推理、视觉生成与动作预测",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2609.34794v1",
+      "route": "202610/04/2609.34794v1-where-do-embodied-decisions-come-from-rethinking-latent-and-explicit-reasoning",
+      "title": "Where Do Embodied Decisions Come From? Rethinking Latent and Explicit Reasoning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "具身VLA智能体中潜在决策计算与显式思维链推理的对比",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2609.39665v1",
+      "route": "202610/04/2609.39665v1-chronograph-functional-4d-scene-graphs-with-vision-language-models-for-interaction-understanding-and-grounded-planning",
+      "title": "ChronoGraph: Functional 4D Scene Graphs with Vision-Language Models for Interaction Understanding and Grounded Planning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "连接动作与场景变化的功能性4D场景图用于具身规划",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2610.00899v1",
+      "route": "202610/04/2610.00899v1-toast-stochastic-robot-action-tokenization-for-autoregressive-vision-language-action-models",
+      "title": "TOAST: Stochastic Robot Action Tokenization for Autoregressive Vision-Language-Action Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "随机动作分词以提升VLA策略数据效率",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2610.01742v1",
+      "route": "202610/04/2610.01742v1-world-motion-models-flexible-sequence-modeling-of-se3-trajectories",
+      "title": "World Motion Models: Flexible Sequence Modeling of SE(3) Trajectories",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "以SE(3)位姿轨迹的生成式世界模型刻画动态三维场景",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2609.36872v1",
+      "route": "202610/04/2609.36872v1-preferenceflow-test-time-guidance-of-flow-matching-robot-policies-from-human-interventions",
+      "title": "PreferenceFlow: Test-Time Guidance of Flow-Matching Robot Policies from Human Interventions",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "无需更新基础策略的预训练流策略测试时适配",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2609.39207v1",
+      "route": "202610/04/2609.39207v1-asena-self-evolving-agents-for-embodied-navigation",
+      "title": "ASENA: Self-evolving Agents for Embodied Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向真实机器人导航的自演化具身智能体",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2609.39915v1",
+      "route": "202610/04/2609.39915v1-navharness-adaptive-goals-for-agentic-vision-language-navigation",
+      "title": "NavHarness: Adaptive Goals for Agentic Vision-Language Navigation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向视觉语言导航的具身智能体并降低推理开销",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2609.40165v1",
+      "route": "202610/04/2609.40165v1-prefpi-preference-guided-steering-into-out-of-distribution-behaviors",
+      "title": "PrefPI: Preference-Guided Steering into Out-of-Distribution Behaviors",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "用偏好引导预训练生成式机器人策略走向分布外行为",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    },
+    {
+      "paper_id": "2610.01288v1",
+      "route": "202610/04/2610.01288v1-interaction-stiffness-guided-basis-allocation-in-dynamic-movement-primitives-for-efficient-skill-transfer",
+      "title": "Interaction-Stiffness-Guided Basis Allocation in Dynamic Movement Primitives for Efficient Skill Transfer",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向高效机器人技能迁移的自适应基函数分配",
+      "first_seen_at": "2026-10-04 22:40:11 UTC",
+      "updated_at": "2026-10-04 22:40:11 UTC"
+    }
+  ]
+}

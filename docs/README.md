@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-10-03</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-04</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 17 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-03 22:38:08 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-04 22:40:11 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,10 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日共生成 17 篇推荐（精读 6 篇，速读 11 篇）</p>
-<p>精读：《Rethinking Representations for World-Action Modeling》（9.0/10）, 《Rho: A Foundation for Efficiently Adaptable VLA Models》（9.0/10）</p>
-<p>速读：《EWAM: Emergent Depth-Wise Specialization in a Unified Embodied Model -- From Semantic Understanding through Visual Foresight to Action》（8.0/10）, 《Social-WM: Safety-Aware Latent World Models for Robot Social Navigation》（8.0/10）, 《TacDyn-WAM: Learning Implicit Tactile Dynamics in a Heterogeneous Visuo-Tactile World Action Model》（8.0/10）</p>
-<p>这些结果覆盖了当下较热的方向，建议先看精读区论文的关键问题与方法。</p>
+<p>2026-10-04日报：共筛17篇，精读6篇、速读11篇，主线聚焦具身智能、VLA与世界模型效率。</p>
+<p>最值得看的是精读双星——RAVEL（9.0）用异步滚动推理加速流式视觉-语言-动作模型，Scope-WM（8.0）用作用域计算提效视觉世界模型；速读可顺带关注UniWAM（8.0）与经验可行性模仿（8.0）。</p>
+<p>普通读者建议先读RAVEL和Scope-WM的摘要，抓住“推理提速”和“世界模型省算力”两条线，再按兴趣挑速读。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -84,7 +83,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Rethinking Representations for World-Action Modeling">Rethinking Representations for World-Action Modeling</span></li><li><span class="dpr-home-dashboard-paper-title" title="Rho: A Foundation for Efficiently Adaptable VLA Models">Rho: A Foundation for Efficiently Adaptable VLA Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="EVO-WAM: Evolving World Action Models through Video-Action Verification">EVO-WAM: Evolving World Action Models through Video-Action Verification</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RAVEL: Asynchronous Rolling Inference for Flow-Based Vision-Language-Action Models">RAVEL: Asynchronous Rolling Inference for Flow-Based Vision-Language-Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Scope-WM: Scoped Computation for Efficient Visual World Models">Scope-WM: Scoped Computation for Efficient Visual World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="WayFinder: Hierarchical Visual-Language-Action for Zero-Shot Waypoint Generation and Low-Level Kinematic Control">WayFinder: Hierarchical Visual-Language-Action for Zero-Shot Waypoint Generation and Low-Level Kinematic Control</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -97,7 +96,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="EWAM: Emergent Depth-Wise Specialization in a Unified Embodied Model -- From Semantic Understanding through Visual Foresight to Action">EWAM: Emergent Depth-Wise Specialization in a Unified Embodied Model -- From Semantic Understanding through Visual Foresight to Action</span></li><li><span class="dpr-home-dashboard-paper-title" title="Social-WM: Safety-Aware Latent World Models for Robot Social Navigation">Social-WM: Safety-Aware Latent World Models for Robot Social Navigation</span></li><li><span class="dpr-home-dashboard-paper-title" title="TacDyn-WAM: Learning Implicit Tactile Dynamics in a Heterogeneous Visuo-Tactile World Action Model">TacDyn-WAM: Learning Implicit Tactile Dynamics in a Heterogeneous Visuo-Tactile World Action Model</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Experience-Based Feasibility-Aware Generative Adversarial Imitation from Observation under Embodiment Mismatch">Experience-Based Feasibility-Aware Generative Adversarial Imitation from Observation under Embodiment Mismatch</span></li><li><span class="dpr-home-dashboard-paper-title" title="UniWAM: Unified World-Action Model">UniWAM: Unified World-Action Model</span></li><li><span class="dpr-home-dashboard-paper-title" title="Where Do Embodied Decisions Come From? Rethinking Latent and Explicit Reasoning">Where Do Embodied Decisions Come From? Rethinking Latent and Explicit Reasoning</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>

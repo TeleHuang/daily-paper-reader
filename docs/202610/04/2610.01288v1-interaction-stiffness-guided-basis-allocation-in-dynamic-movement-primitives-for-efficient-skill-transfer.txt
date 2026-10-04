@@ -1,0 +1,1054 @@
+Title: Interaction-Stiffness-Guided Basis Allocation in Dynamic Movement Primitives for Efficient Skill Transfer
+
+URL Source: https://arxiv.org/pdf/2610.01288v1
+
+Published Time: Fri, 02 Oct 2026 01:15:52 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+ACCEPTED FOR PUBLICATION IN IEEE TRANSACTIONS ON INDUSTRIAL INFORMATICS . 1
+
+# Interaction-Stiffness-Guided Basis Allocation in Dynamic Movement Primitives for Efficient Skill Transfer 
+
+Chan Xu, Silu Chen, Senior Member, IEEE , Dehao Wang, Xiyu Chen, Dexin Jiang, Chi Zhang, Senior Member, IEEE , Guilin Yang, Member, IEEE ,Chenguang Yang, Fellow, IEEE , and Zaojun Fang 
+
+Abstract — Dynamic Movement Primitives (DMPs) pro-vide a compact and stable formulation for trajectory rep-resentation and generalization in robot skill learning. How-ever, their predefined basis layout limits the allocation of approximation capacity according to stage-dependent precision requirements. To address this issue, this arti-cle proposes Stage-Criticality-Guided Dynamic Movement Primitives (SC-DMPs) with adaptive basis allocation for precision-critical skill learning. Operator-robot interaction stiffness and a trajectory-consistency cue derived from cross-demonstration task-space variability are integrated to construct a stage-criticality index. Guided by this index, basis centers are redistributed in normalized time through inverse cumulative criticality and mapped to the canonical phase domain, while their bandwidths are refined to adjust local approximation support. This enables denser and more flexible representation at high-criticality stages while re-taining sparser allocation elsewhere. Experiments on hand-writing trajectories and three real-robot tasks show that the inferred criticality is concentrated in geometrically demand-ing and task-constrained regions. Comparisons with DMPs, ProMPs, ProDMP, GP-MP, and KMP demonstrate improved trajectory reproduction, endpoint generalization, and task-critical accuracy while retaining a compact model and the stable structure of classical DMPs. 
+
+Index Terms — Interaction stiffness, basis allocation, dy-namic movement primitives, learning from demonstration. 
+
+This article has been accepted for publication in IEEE Trans-actions on Industrial Informatics. DOI: 10.1109/TII.2026.3738846. 
+
+(Corresponding authors: Silu Chen; Zaojun Fang ). Chan Xu, Xiyu Chen, and Dexin Jiang are with the Zhejiang Key Labo-ratory of Precision Actuation and Intelligent Robotics, Ningbo Institute of Materials Technology and Engineering, Chinese Academy of Sciences, Ningbo 315201, China, and also with the University of Chinese Academy of Sciences, Beijing 100049, China (e-mail: xuchan@nimte.ac.cn; chenxiyu@nimte.ac.cn; jiangdexin@nimte.ac.cn). Silu Chen, Dehao Wang, Chi Zhang, Guilin Yang, and Zaojun Fang are with the Zhejiang Key Laboratory of Precision Actuation and In-telligent Robotics, Ningbo Institute of Materials Technology and Engi-neering, Chinese Academy of Sciences, Ningbo 315201, China (e-mail: chensilu@nimte.ac.cn; wangdeh@nimte.ac.cn; zhangchi@nimte.ac.cn; glyang@nimte.ac.cn; fangzaojun@nimte.ac.cn). Chenguang Yang is with the Department of Computing, The Hong Kong Polytechnic University, HKSAR, China (e-mail: cyang@ieee.org). © 2026 IEEE. Personal use of this material is permitted. Permission from IEEE must be obtained for all other uses, in any current or future media, including reprinting/republishing this material for advertising or promotional purposes, creating new collective works, for resale or redistribution to servers or lists, or reuse of any copyrighted component of this work in other works. 
+
+I. I NTRODUCTION 
+
+# LEARNING from Demonstration (LfD) has emerged as an effective paradigm for transferring dexterous human motion skills to robots, especially in settings where explicit programming is difficult or costly [1]. Representative applica-tions include fine insertion, tight-clearance assembly, and other operations with stringent precision requirements [2]. In such tasks, the robot must not only reproduce the overall shape of the demonstrated trajectory, but also maintain high geometric accuracy at critical local stages, which are often less tolerant to error than other segments [3]. Accordingly, achieving global fidelity and local accuracy at task-critical stages is central to precision-oriented trajectory learning [4]. Dynamic Movement Primitives (DMPs) are one of the most representative trajectory-encoding frameworks in LfD, owing to their compact dynamical formulation, stability guaran-tees, and convenient spatiotemporal modulation [5]. Classical DMPs represent demonstrated motions through stable dy-namical systems, where nonlinear forcing terms encode task-specific trajectory profiles [6]. In particular, the forcing term is approximated by basis functions preset along the canonical phase variable, where the basis layout is associated with the resulting reproduction performance [7]. Although this design is generally effective, it provides limited stage-wise adaptability for precision-critical skill representation [8]. Trajectory adapt-ability and tracking accuracy can be improved by integrating DMPs with model predictive control, reinforcement learning, and adaptive or neural feedback [9]–[11]. However, such approaches may require additional environmental information or interaction, online computation, or specialized controller design, while local approximation errors introduced during trajectory encoding are not directly addressed [12]. By contrast, representation-level methods modify movement primitives to improve trajectory reproduction and general-ization, primarily through probabilistic or kernel-based for-mulations and parameter refinement. The former represents demonstrated trajectories and their uncertainty through prob-ability distributions or kernel mappings, as in ProMPs [13], ProDMP [14], GP-MP [15], and KMP [16]. However, local reproduction fidelity is typically regulated through covari-ance structures, kernel design, or hyperparameter settings, arXiv:2610.01288v1 [cs.RO] 1 Oct 2026 2 ACCEPTED FOR PUBLICATION IN IEEE TRANSACTIONS ON INDUSTRIAL INFORMATICS .
+
+without explicitly allocating approximation support according to stage-dependent precision requirements. The latter refines movement-primitive parameterization by adjusting the number, locations, widths, or forms of basis functions, providing more explicit control over local approximation support [17], [18]. Among these refinements, basis-center redistribution relocates approximation support without increasing the basis number or altering the stable DMP dynamics, making it an efficient strategy for precision-critical skill learning [19]. Existing methods refine trajectory representations based on curvature, variance, recovered temporal structure, or mutual-information-based timestep weights [20]–[22]. These criteria characterize trajectory structure or informativeness but do not necessarily indicate task-imposed motion tolerances. For example, peg-in-hole insertion may follow a geometrically simple path yet require high positioning accuracy under tight clearances [23]. In precision-oriented physical interaction, increased stiffness may accompany stronger regulation of positional deviations, providing task information that is not evident from trajectory geometry alone [24], [25]. Robot-environment contact stiffness can reveal such constraints during sustained contact, but its force-displacement-based estimation may be unreliable in non-contact, weak-contact, or contact-transition stages [26], [27]. Operator-robot interaction stiffness can instead be estimated from muscle activation and upper-limb configuration with-out requiring robot-environment contact-force measurements, making it available across different stages of kinesthetic teach-ing [28], [29]. Existing stiffness-aware skill learning methods primarily incorporate stiffness or compliance into task execu-tion through variable-impedance profiles, compliant dynami-cal systems, or programmed interaction behaviors [30]–[32]. Alternatively, operator-robot interaction stiffness can serve as a task-informed cue for trajectory representation. Although informative, it may not fully characterize task criticality on its own, since some dynamic or periodic manipulation tasks may instead depend on compliant behavior [33], [34]. Accordingly, operator-robot interaction stiffness and cross-demonstration trajectory consistency may offer complementary cues for char-acterizing stage-dependent reproduction requirements. In this work, operator-robot interaction stiffness and atrajectory-consistency cue derived from cross-demonstration variability are integrated to construct a stage-criticality in-dex. Based on this index, Stage-Criticality-Guided Dynamic Movement Primitives (SC-DMPs) redistribute basis centers and adapt their bandwidths to allocate approximation support according to stage-dependent reproduction requirements. The main contributions are as follows. 1) A physically motivated stage-criticality index is formu-lated by integrating operator-robot interaction stiffness and cross-demonstration task-space variability, provid-ing an interpretable estimate of stage-wise reproduction-fidelity requirements. 2) A criticality-guided basis allocation strategy is devel-oped by redistributing centers through inverse cumula-tive criticality and adapting bandwidths to refine local support in high-criticality stages. 3) Comprehensive experiments on handwriting trajectories and real-robot tasks compare SC-DMPs with DMPs,                                                  
+
+> TABLE I SUMMARY OF MAIN SYMBOLS .
+> Symbol Description
+> M,T,DNumber of demonstrations, number of aligned time steps, and task-space dimension, respectively.
+> tiNormalized time at the i-th aligned time step.
+> Pi,m ,Ki,m ,Qi,m Task-space position, axis-wise interaction stiffness, and their concatenated motion-state vector.
+> NG,πj,μj,ΛjNumber of Gaussian components and the weight, mean, and covariance of the j-th component.
+> γj(t),ΛQt,j ,ΛQQ,j Posterior responsibility and covariance blocks used in GMR conditioning.
+> ¯P(t),¯K(t),σ2
+> P(t)GMR reference trajectory, stiffness profile, and task-space variability.
+> ˜Ki,˜vi,β1,β2Normalized stiffness and variability descriptors and their fusion weights.
+> pi,ri,CiDimension-wise prior, temporally refined score, and scalar stage-criticality index.
+> si,NCanonical phase variable and number of DMP basis functions.
+> Ψn(s),cn,hn,wnGaussian basis function and its center, bandwidth, and weight vector.
+> FiCumulative stage criticality used for basis-center redistribution.
+> h(0)
+> n,bn,BReference bandwidth, bandwidth scaling factor, and candidate scaling set.
+> b,J(b)Bandwidth-scaling vector and forcing-term reconstruction objective.
+
+ProMPs, ProDMP, GP-MP, and KMP, demonstrating improved trajectory reproduction, generalization, and task-critical accuracy while retaining a compact model. The rest of this article is organized as follows. Section II formulates a probabilistic model of multiple demonstrations. Section III develops the stage-criticality index and SC-DMPs method. Section IV validates the effectiveness of the proposed method. Finally, Section V concludes this article. 
+
+II. P ROBABILISTIC MODELING OF DEMONSTRATIONS 
+
+For a given task, M demonstrations are collected, each con-sisting of a sequence of time stamps and corresponding motion observations. Dynamic Time Warping (DTW) is applied to temporally align these demonstrations to a common length T .The aligned time axis is then normalized to [0 , 1] , and the resulting dataset is represented as 
+
+D =
+
+n
+
+{(ti, Qi,m )}Ti=1 
+
+oMm=1 
+
+, ti = i − 1
+
+T − 1 , (1) where ti ∈ [0 , 1] is the normalized time at the i-th aligned time step, and Qi,m ∈ R2D is the motion-state vector defined as 
+
+Qi,m = P ⊤ 
+
+> i,m
+
+K⊤
+
+> i,m
+
+⊤ . (2) Here, Pi,m ∈ RD is the task-space position, Ki,m ∈ RD
+
+is the axis-wise interaction stiffness formed by the diagonal entries of the estimated endpoint stiffness matrix, and D is the task-space dimension. The augmented vector is defined as 
+
+ξ = [ t, Q⊤]⊤ ∈ R1+2 D , (3) which serves as the basis for probabilistic encoding. For ease of reference, the main symbols used in the probabilistic mod-eling and SC-DMPs formulation are summarized in Table I. DOI: 10.1109/TII.2026.3738846. 3…
+
+Probabilistic Modeling Multiple Demonstrations  Stage-Criticality Temporal Refinement Network (STR-Net)  Stage Criticality 
+
+> Embedding
+> block
+> Convolution
+> block
+> Attention block
+> Output
+> block
+> Concat
+> Physically motivated prior
+> Concat
+
+Stage-Criticality-Guided Dynamic Movement Primitives (SC-DMPs)    
+
+> 0.7 0.75 0.8 0.85
+
+Interaction stiffness 
+
+Task-space trajectory 
+
+> Cumulative criticality
+> Normalized time
+
+Basis-Center Redistribution via Inverse Cumulative Criticality Execution of Precision-Critical Skill 
+
+> Canonical phase  …
+> Normalized time
+> Canonical-phase mapping
+
+Basis-Center Mapping to the Canonical Phase Domain 
+
+> …
+
+…
+
+Stage-Criticality-Guided 
+
+Adaptive Basis Allocation 
+
+> Basis with adaptive bandwidth
+> Motion generation
+> sEMG sensors
+> motion capture system
+> Dip into Tube 1
+> Dip into Tube 2
+> Free-Space Motion
+
+Fig. 1. Overall framework of the proposed SC-DMPs. Operator-robot interaction stiffness and cross-demonstration task-space variability are used to estimate a stage-criticality index, which guides basis-center redistribution and adaptive bandwidth design for precision-critical skill reproduction. 
+
+To capture the correlations among temporal evolution, task-space motion, and interaction stiffness, a Gaussian mixture model (GMM) is adopted to represent the joint distribution 
+
+p(ξ) = 
+
+> NG
+
+X
+
+> j=1
+
+πj N (ξ; μj , Λj ) , (4) where NG is the number of Gaussian components, and πj
+
+is the corresponding mixture weight satisfying PNG 
+
+> j=1
+
+πj = 1 .The mean vector and covariance matrix of the j-th component are partitioned as 
+
+μj =
+
+ μt,j 
+
+μP,j 
+
+μK,j 
+
+ , (5) and 
+
+Λj =
+
+
+
+λtt,j ΛtP,j ΛtK,j 
+
+ΛP t,j ΛP P,j ΛP K,j 
+
+ΛKt,j ΛKP,j ΛKK,j 
+
+ , (6) where λtt,j ∈ R is the time variance of the j-th component. Gaussian mixture regression (GMR) is then employed to infer the conditional distribution of Q given t:
+
+p(Q | t) = 
+
+> NG
+
+X
+
+> j=1
+
+γj (t) N  Q; μQ|t,j (t), ΛQ|t,j 
+
+ , (7) where the posterior responsibility of the j-th component is 
+
+γj (t) = πj N (t; μt,j , λ tt,j )
+
+PNG 
+
+> p=1
+
+πp N (t; μt,p , λ tt,p ) . (8) For compactness, define 
+
+ΛQt,j =
+
+ΛP t,j 
+
+ΛKt,j 
+
+
+
+, ΛQQ,j =
+
+ΛP P,j ΛP K,j 
+
+ΛKP,j ΛKK,j 
+
+
+
+, (9) and 
+
+μQ,j =
+
+μP,j 
+
+μK,j 
+
+
+
+. (10) Then the conditional mean μQ|t,j (t) and conditional covari-ance ΛQ|t,j of the j-th component are given by 
+
+μQ|t,j (t) = μQ,j + ΛQt,j λ−1 
+
+> tt,j
+
+(t − μt,j ), (11) and 
+
+ΛQ|t,j = ΛQQ,j − ΛQt,j λ−1 
+
+> tt,j
+
+ΛtQ,j . (12) By further partitioning 
+
+μQ|t,j (t) = 
+
+μP |t,j (t)
+
+μK|t,j (t)
+
+
+
+, (13) the reference task-space trajectory and stiffness profile are obtained from the mixture expectation as 
+
+¯P (t) = 
+
+> NG
+
+X
+
+> j=1
+
+γj (t)μP |t,j (t), ¯K(t) = 
+
+> NG
+
+X
+
+> j=1
+
+γj (t)μK|t,j (t). (14) To characterize the task-space trajectory variability across demonstrations, let ΛP |t,j denote the position block of ΛQ|t,j ,and let λP,d |t,j denote its d-th diagonal entry, where d =1, 2, . . . , D . The variance of d-th dimension is computed as 
+
+σ2
+
+> P,d
+
+(t) = 
+
+> NG
+
+X
+
+> j=1
+
+γj (t)
+
+
+
+λP,d |t,j + μ2 
+
+> P,d |t,j
+
+(t)
+
+
+
+− ¯P 2 
+
+> d
+
+(t), (15) where μP,d |t,j (t) and ¯Pd(t) denote the d-th entries of μP |t,j (t)
+
+and ¯P (t), respectively. The corresponding variance vector is 
+
+σ2 
+
+> P
+
+(t) = σ2
+
+> P, 1
+
+(t), σ 2
+
+> P, 2
+
+(t), . . . , σ 2
+
+> P,D
+
+(t)⊤∈ RD . (16) In (14), larger interaction-stiffness values indicate stronger active regulation of motion deviations, whereas smaller vari-ances in (15)-(16) indicate stronger cross-demonstration con-sistency. These quantities are therefore adopted as complemen-tary task-informed cues for estimating stage-dependent repro-duction requirements and guiding adaptive basis allocation. 4 ACCEPTED FOR PUBLICATION IN IEEE TRANSACTIONS ON INDUSTRIAL INFORMATICS .
+
+III. S TAGE -C RITICALITY -G UIDED ADAPTIVE DMP S
+
+This section constructs a stage-criticality index from inter-action stiffness and task-space trajectory variability to guide adaptive basis allocation in the canonical phase domain. The overall framework of SC-DMPs is shown in Fig. 1. 
+
+A. Physically Motivated Stage Criticality 
+
+At the i-th aligned time step, define the interaction stiffness and task-space variability descriptors as 
+
+¯Ki = ¯K(ti) ∈ RD , vi = σ2 
+
+> P
+
+(ti) ∈ RD . (17) To ensure numerical consistency, both descriptors are normal-ized to [0 , 1] , yielding ˜Ki and ˜vi. Based on the physical intuition that task-critical phases are typically characterized by high interaction stiffness and low task-space variability, a dimension-wise stage-criticality prior is defined as 
+
+pi = Sigmoid 
+
+
+
+β1 ˜Ki + β2(1 − ˜vi)
+
+
+
+∈ (0 , 1) D , (18) where 1 ∈ RD is a vector of ones, and β1, β 2 ≥ 0 weight the contributions of interaction stiffness and inverse task-space variability. The prior pi provides a physically interpretable initial estimate of dimension-wise stage criticality. Since (18) is evaluated independently at each aligned time step, local stiffness-estimation errors, misalignment, and mea-surement noise may lead to criticality fluctuations. To miti-gate these isolated variations, a lightweight Stage-Criticality Temporal Refinement Network (STR-Net) is introduced to refine the physically motivated prior by incorporating temporal context. First, the input feature at step i is defined as 
+
+χi =
+
+h ˜K⊤ 
+
+> i
+
+˜v⊤ 
+
+> i
+
+p⊤
+
+> i
+
+i⊤
+
+∈ R3D . (19) The input is projected into a latent space through 
+
+ei = φ(Wemb χi + θemb ) ∈ Rdmodel , (20) where Wemb ∈ Rdmodel ×3D and θemb ∈ Rdmodel are learnable parameters, and φ(·) denotes an element-wise nonlinear acti-vation function. To capture short-range temporal dependencies, the embedding sequence {ei}Ti=1 is processed by a convolu-tional layer 
+
+ui = Conv  [e1, . . . , eT ] 
+
+> i
+
+∈ Rdmodel . (21) A lightweight attention mechanism is then used to emphasize globally critical time steps 
+
+αatt  
+
+> i
+
+= exp  a⊤ 
+
+> att
+
+tanh( Watt ui)PTp=1 exp  a⊤ 
+
+> att
+
+tanh( Watt up) , (22) where Watt and aatt are learnable attention parameters. The context-enhanced latent feature is then written as 
+
+˜ui = (1 + αatt  
+
+> i
+
+)ui. (23) To keep the refinement anchored to the original physical cues, the output layer uses the fused representation 
+
+ηi =
+
+h
+
+˜u⊤ 
+
+> i
+
+˜K⊤ 
+
+> i
+
+˜v⊤ 
+
+> i
+
+p⊤
+
+> i
+
+i⊤
+
+∈ Rdmodel +3 D , (24) and predicts refined stage-criticality scores 
+
+ri = Sigmoid  W ⊤
+
+> out
+
+ηi + θout 
+
+ ∈ (0 , 1) D , (25) where Wout ∈ R(dmodel +3 D)×D and θout ∈ RD .The STR-Net is trained to refine the initial physically mo-tivated estimate under consistency and temporal-smoothness 
+
+L = 1
+
+T
+
+> T
+
+X
+
+> i=1
+> D
+
+X
+
+> d=1
+
+ℓHuber (ri,d −pi,d )+ ζT −1
+
+> T−1
+
+X
+
+> i=1
+
+∥ri+1 −ri∥22 ,
+
+(26) where ℓHuber (·) is the Huber loss, and ζ > 0 controls the strength of smoothness. Notably, STR-Net does not replace the physically motivated prior, but regularizes it in the temporal domain to suppress isolated fluctuations while preserving coherent criticality intervals. Then, the dimension-wise scores refined by STR-Net are aggregated into a scalar stage-criticality index. 
+
+Definition 1 (Stage-Criticality Index): For the refined score vector ri ∈ (0 , 1) D at the i-th aligned time step, the stage-criticality index is defined as 
+
+Ci = 1
+
+D
+
+> D
+
+X
+
+> d=1
+
+ri,d . (27) Since ri ∈ (0 , 1) D , the averaged index satisfies Ci ∈ (0 , 1) 
+
+and provides a discrete stage-criticality estimate at the i-th aligned time step. A larger Ci suggests a stronger stage-wise reproduction-fidelity requirement. 
+
+B. Stage-Criticality-Guided Basis Allocation 
+
+For a D-dimensional task-space trajectory, the classical discrete-time DMP formulation is given by 
+
+zi+1 = zi + ∆tτ [αz (βz (g − Pi) − zi) + f (si)] , (28a) 
+
+Pi+1 = Pi + ∆tτ zi+1 , (28b) 
+
+si+1 = si − ∆tτ αssi, (28c) where P , z, g ∈ RD denote the task-space position, velocity-related auxiliary state, and goal position, respectively; s is the canonical phase variable; τ is the temporal scaling factor; ∆t is the physical sampling interval; and αz , β z , α s > 0 are positive constants. The nonlinear forcing term is defined as a function of the canonical phase variable 
+
+f (s) = 
+
+PNn=1 wnΨn(s)
+
+PNn=1 Ψn(s)
+
+!
+
+s, (29) with Gaussian basis functions 
+
+Ψn(s) = exp  −hn(s − cn)2 , n = 1 , . . . , N, (30) where cn, hn, and wn ∈ RD denote the center, bandwidth, and weight vector of the n-th basis function, respectively. Instead of uniformly placing basis centers in normalized time, SC-DMPs redistribute them according to accumulated stage criticality. By assigning equal accumulated criticality to adjacent center intervals, regions with larger Ci receive denser basis support. The following cumulative profile is introduced. DOI: 10.1109/TII.2026.3738846. 5
+
+Definition 2 (Cumulative Criticality): The cumulative crit-icality on the aligned normalized-time grid is defined as 
+
+F1 = 0 , Fi+1 = Fi + Ci, i = 1 , 2, . . . , T − 1. (31) Since Ci ∈ (0 , 1) , the sequence {Fi}Ti=1 is strictly increasing. Moreover, recursively applying (31) yields 
+
+FT = F1 + 
+
+> T−1
+
+X
+
+> i=1
+
+Ci = 
+
+> T−1
+
+X
+
+> i=1
+
+Ci. (32) Thus, Fi provides a monotonic cumulative profile of stage criticality for subsequent basis-center redistribution. To determine the basis centers, the cumulative-criticality range [0 , F T ] is uniformly partitioned into N − 1 subintervals. The target cumulative-criticality level associated with the n-th basis center is defined as 
+
+qn = n − 1
+
+N − 1 FT , n = 1 , 2, . . . , N. (33) For each qn, let kn ∈ { 1, 2, . . . , T − 1} be the index satisfying 
+
+Fkn ≤ qn ≤ Fkn+1 . (34) The relative position of qn within this interval is measured by 
+
+ηn = qn − Fkn
+
+Fkn+1 − Fkn
+
+, n = 1 , 2, . . . , N. (35) The corresponding basis center in normalized time is then obtained by linear interpolation 
+
+tcn = (1 − ηn)tkn + ηntkn+1 , n = 1 , 2, . . . , N. (36) Since the target cumulative-criticality levels {qn}Nn=1 are uniformly spaced, adjacent basis-center intervals carry equal accumulated criticality. Consequently, regions with larger Ci
+
+receive denser basis support in normalized time. The basis centers are then mapped to the canonical phase domain according to the discrete canonical dynamics in (28c). Let 
+
+ρs = 1 − ∆tτ αs, 0 < ρ s < 1. (37) Starting from s1 = 1 , the phase sequence induced by (28c) is 
+
+si = ρi−1 
+
+> s
+
+= ρ(T −1) ti 
+
+> s
+
+, i = 1 , 2, . . . , T. (38) Each criticality-guided center tcn in normalized time is mapped to the corresponding canonical phase center as 
+
+cn = ρ(T −1) tcn  
+
+> s
+
+, n = 1 , 2, . . . , N. (39) Since 0 < ρ s < 1, this mapping is strictly decreasing with respect to normalized time. Hence, the resulting centers satisfy 
+
+1 = c1 > c 2 > · · · > c N = sT , (40) where 
+
+sT = ρT −1 
+
+> s
+
+. (41) This mapping preserves the criticality-guided allocation ob-tained in normalized time while making the basis centers consistent with the canonical phase evolution of DMPs. The proposed allocation reduces to the standard center placement of classical DMPs under constant stage criticality. 
+
+Corollary 1 (Reduction to Standard Center Placement): If the stage-criticality sequence is constant, i.e., Ci ≡ C0 > 0
+
+for i = 1 , 2, . . . , T − 1, then the criticality-guided centers in normalized time reduce to the uniformly spaced centers 
+
+tcn = n − 1
+
+N − 1 , n = 1 , 2, . . . , N. (42) The corresponding centers in the canonical phase domain are 
+
+cn = ρ(T −1) n−1  
+
+> N−1
+> s
+
+, n = 1 , 2, . . . , N. (43) 
+
+Proof: When Ci ≡ C0, the cumulative criticality be-comes 
+
+Fi = ( i − 1) C0 = FT ti, FT = ( T − 1) C0. (44) Thus, the cumulative criticality is linear with respect to the normalized time. For the target cumulative-criticality level qn
+
+in (33), the inverse cumulative mapping gives 
+
+tcn = qn
+
+FT
+
+= n − 1
+
+N − 1 , n = 1 , 2, . . . , N. (45) This proves (42). Substituting (45) into the phase mapping in (39) yields (43). This completes the proof. 
+
+C. Adaptive Bandwidth Design 
+
+After the stage-criticality-guided centers are determined, the bandwidths are adapted to refine the local support and overlap of the basis functions. Here, the adjacent-center spacing pro-vides a reference bandwidth, while additional scaling factors are introduced to improve local approximation flexibility. For centers {cn}Nn=1 ordered in descending canonical phase, the reference bandwidth is defined as 
+
+h(0)  
+
+> n
+
+= 2(cn+1 − cn)2 , n = 1 , 2, . . . , N − 1. (46) For n = N , the reference bandwidth is set equal to that of the preceding basis function 
+
+h(0)  
+
+> N
+
+= h(0)  
+
+> N−1
+
+. (47) The effective bandwidth is then parameterized as 
+
+hn = bnh(0)  
+
+> n
+
+, (48) where each scaling factor bn is selected from a predefined candidate set B. Let 
+
+b = [ b1, b 2, . . . , b N ]⊤ (49) collect all bandwidth scaling factors. To evaluate a bandwidth configuration b, the target forcing term is first extracted from the reference trajectory. For the 
+
+d-th task-space dimension, rearranging (28a) gives 
+
+ˆfd(si) = τ
+
+∆t (zd,i +1 − zd,i )−αz [βz (gd −Pd,i )−zd,i ] , (50) where Pd,i and zd,i are obtained from the reference trajectory and its associated velocity-related state. For a given b, the bandwidths are determined by (48), and the corresponding basis functions are denoted by Ψn(si; b). The reconstructed forcing term is written as 
+
+˜fd(si; b) = 
+
+PNn=1 wn,d (b)Ψ n(si; b)
+
+PNn=1 Ψn(si; b)
+
+!
+
+si, (51) 6 ACCEPTED FOR PUBLICATION IN IEEE TRANSACTIONS ON INDUSTRIAL INFORMATICS .
+
+where wn,d (b) denotes the fitted weight associated with the 
+
+n-th basis function under the bandwidth configuration b. The reconstruction cost is then defined as 
+
+J (b) = 1
+
+D(T − 1) 
+
+> D
+
+X 
+
+> d=1
+> T−1
+
+X
+
+> i=1
+
+ˆfd(si) − ˜fd(si; b) 2
+
+. (52) Because overlapping Gaussian basis functions couple J (b)
+
+across the scaling factors, exhaustive evaluation of all joint candidates is costly. Therefore, b is optimized by cyclic coordinate descent. Let ¯b = [ ¯b1, . . . , ¯bN ]⊤ denote the current scaling vector; when updating its n-th entry, all other entries are fixed and each candidate b ∈ B is evaluated by defining 
+
+b(n)(b) = [ ¯b1, . . . , ¯bn−1, b, ¯bn+1 , . . . , ¯bN ]⊤. (53) The coordinate-wise optimal candidate is selected by 
+
+b⋆n = arg min  
+
+> b∈B
+
+J
+
+
+
+b(n)(b)
+
+
+
+. (54) The candidate b⋆n is accepted only if it reduces the current objective by more than δ. Otherwise, ¯bn remains unchanged. The coordinate-wise updates are performed cyclically for n =1, 2, . . . , N , with each complete cycle constituting one sweep. The procedure terminates when a full sweep accepts no update or when the maximum number of sweeps Γ is reached. For bandwidth optimization, the finite candidate set yields 
+
+|B| N feasible scaling vectors. Each accepted update decreases 
+
+J by more than δ. This strict decrease prevents the algorithm from revisiting a previous scaling vector and bounds the total number of updates. If a sweep with no accepted update triggers termination before reaching the maximum sweep count Γ, the result is a coordinate-wise local minimum within tolerance δ,although global optimality is not guaranteed. 
+
+IV. E XPERIMENTS 
+
+A. Experimental Setup 
+
+The system for identifying operator-robot interaction stiff-ness is shown in Fig. 2. Before data collection, four sEMG sensors are placed over the muscle bellies of the biceps brachii, triceps brachii, brachioradialis, and flexor carpi ul-naris, parallel to the muscle fibers and away from tendons and joints. During demonstrations, the operator guides a KUKA iiwa robot through predefined tasks. Robot joint positions and shoulder, elbow, and wrist positions are recorded nominally at approximately 100 Hz, while the sEMG signals are acquired at 2000 Hz. The end-effector trajectory is reconstructed through forward kinematics, the motion-capture data are smoothed using a 50-sample moving average, and each sEMG signal is demeaned, band-pass filtered at 20-350 Hz, full-wave rectified, and low-pass filtered at 5 Hz. The processed signals are then timestamp-aligned with the robot timeline and used to estimate the interaction stiffness according to [28]. For STR-Net, we set β1 = β2 = 1 , dmodel = 64 , and the convolutional kernel size to 5. The model is trained for 300 epochs using AdamW with a learning rate of 1 × 10 −3. The loss combines a Huber-based prior-consistency term with a temporal smoothness term weighted by ζ = 1 .Moreover, five evaluation metrics are employed to assess trajectory learning and generalization performance. Motion capture cameras     
+
+> Optical markers
+> sEMG sensors
+> KUKA iiwa robot
+> ATI F/T sensor
+> Platform
+> PC
+> Fig. 2. Experimental platform for interaction stiffness identification.
+> •
+
+Root Mean Square Error (RMSE): RMSE measures the overall average pointwise deviation RMSE =
+
+vuut 1
+
+T
+
+> T
+
+X
+
+> i=1
+
+∥P (ti) − P ref (ti)∥22. (55)  
+
+> •
+
+Weighted RMSE (W-RMSE): W-RMSE uses the inferred stage-criticality profile C(t) as weights and is therefore used as an auxiliary criticality-weighted metric W-RMSE =
+
+vuut TX
+
+> i=1
+
+Ci
+
+PTk=1 Ck
+
+∥P (ti)−P ref (ti)∥22. (56)  
+
+> •
+
+RMSE in Geometry-critical regions (RMSE-Geo): RMSE-Geo independently evaluates local errors over geometry-critical regions defined by the top 20% curva-ture indices of the reference trajectory rather than C(t):RMSE-Geo =
+
+vuut 1
+
+|I geo |
+
+X
+
+> i∈I geo
+
+∥P (ti)−P ref (ti)∥22. (57)  
+
+> •
+
+Maximum Error (MaxE): MaxE captures the worst-case deviation by MaxE = max  
+
+> i=1 ,2,...,T
+
+∥P (ti) − P ref (ti)∥2. (58)  
+
+> •
+
+Normalized Shape Error (NSE): For generalization eval-uation under varying start or target configurations, both the reproduced trajectory P (ti) and the target trajectory 
+
+P tar (ti) are normalized by 
+
+˜P (ti) = P (ti)−Pstart 
+
+∥Pend −Pstart ∥ , ˜P tar (ti) = P tar (ti)−P tar start 
+
+∥P tar end −P tar start ∥ . (59) Then, NSE is defined as NSE = 1
+
+T
+
+> T
+
+X
+
+> i=1
+
+˜P (ti) − ˜P tar (ti) 2
+
+. (60) 
+
+B. Handwriting Letter Experiment 
+
+Two hollow templates shaped as the letters “Z” and “M” are used, as shown in Fig. 3(a) and (d), respectively. During each demonstration, a marker attached to the robot end-effector is manually guided along the letter path while remaining DOI: 10.1109/TII.2026.3738846. 7(a) 
+
+> 200 mm
+> 200 mm
+> 200 mm
+> 8 mm
+> 8 mm
+
+(d) 
+
+(b) 
+
+> X (mm)
+> 200 mm
+> Y (mm)
+> Y (mm)
+> X (mm)
+
+(e) 
+
+(c) 
+
+(f) 
+
+> X (mm)
+> Y (mm)
+> X (mm)
+> Y (mm)
+
+Fig. 3. Handwriting letter data acquisition. (a)-(c) present the template, the trajectory with stiffness ellipsoids, and the visualized stage-criticality index for letter “Z”. (d)-(f) show the corresponding results for letter “M”. DMPs SC-DMPs 10 010 1Errors 
+
+> 510 15 20 25 30
+
+(a) DMPs SC-DMPs 10 010 1
+
+> 510 15 20 25 30
+
+(b) DMPs SC-DMPs 10 010 1
+
+> 510 15 20 25 30
+
+(c) DMPs SC-DMPs 10 1
+
+> 510 15 20 25 30
+
+(d)     
+
+> DMPs SC-DMPs RMSE W-RMSE RMSE-Geo MaxE
+
+Fig. 4. Learning errors of SC-DMPs and DMPs for “Z” under 5, 10, 15, 20, 25, and 30 basis functions on a logarithmic scale. (a) RMSE (mm). (b) W-RMSE (mm). (c) RMSE-Geo (mm). (d) MaxE (mm). 
+
+inside the template without touching its boundaries. Twelve demonstrations are collected for each letter, with the marker trajectory recorded and the corresponding interaction stiffness estimated, as shown in Fig. 3(b) and (e). The GMR reference trajectories obtained from (14) and the corresponding stage-criticality profiles are presented in Fig. 3(c) and (f). For both letters, criticality peaks around turning regions, where small deviations can noticeably distort the letter shape. 
+
+1) Learning Performance and Basis-Allocation Analysis: SC-DMPs are compared with DMPs using 5, 10, 15, 20, 25, and 30 basis functions. RMSE, W-RMSE, RMSE-Geo, and MaxE are used as evaluation metrics. The results are reported in Figs. 4 and 5, with logarithmically scaled vertical axes and brown DMPs SC-DMPs 10 010 1Errors 
+
+> 510 15 20 25 30
+
+(a) DMPs SC-DMPs 10 010 1
+
+> 510 15 20 25 30
+
+(b) DMPs SC-DMPs 10 010 1
+
+> 510 15 20 25 30
+
+(c) DMPs SC-DMPs 10 1
+
+> 510 15 20 25 30
+
+(d)     
+
+> DMPs SC-DMPs RMSE W-RMSE RMSE-Geo MaxE
+
+Fig. 5. Learning errors of SC-DMPs and DMPs for “M” under 5, 10, 15, 20, 25, and 30 basis functions on a logarithmic scale. (a) RMSE (mm). (b) W-RMSE (mm). (c) RMSE-Geo (mm). (d) MaxE (mm). TABLE II STATISTICAL ANALYSIS OF SC-DMP S VERSUS DMP S ACROSS DIFFERENT BASIS -FUNCTION SETTINGS .                
+
+> Errors Mean reduction 95% confidence interval Adjusted p
+> RMSE 21.42% ± 10.11% [13.99%, 25.65%] 0.0103 W-RMSE 21.92% ± 10.27% [13.99%, 26.08%] 0.0103 RMSE-Geo 32.50% ± 13.89% [23.55%, 38.91%] 0.0020 MaxE 24.67% ± 20.16% [8.57%, 32.56%] 0.0122
+
+Fig. 6. Center distributions under 15 and 30 basis functions, where color intensity increases with density. (a) and (c) correspond to “Z”. (b) and (d) correspond to “M”. 
+
+annotations indicating the numbers of basis functions. SC-DMPs achieve lower errors in 45 of the 48 letter-basis-metric comparisons. The lower RMSE indicates im-proved overall reproduction accuracy, while reductions in W-RMSE and RMSE-Geo reflect better fitting in stage-critical and geometrically demanding regions, respectively. The lower MaxE further demonstrates reduced worst-case local devia-tions. These improvements are most pronounced with fewer basis functions, indicating more efficient use of representa-tional capacity. As the number increases, the performance gap narrows because the additional capacity partially compensates for the uniform center placement of conventional DMPs. Table II summarizes the paired statistical analysis across the 12 letter-basis settings for each metric. SC-DMPs reduce the mean errors by 21.42%-32.50% relative to DMPs. All 95% confidence intervals exclude zero, and all Wilcoxon signed-rank tests remain significant after Holm adjustment. To illustrate basis allocation and learned trajectories under limited and relatively sufficient representational capacities, 15 and 30 basis functions are selected for visualization. As shown in Figs. 6 and 7, SC-DMPs allocate denser centers to high-criticality regions and sparser ones elsewhere, thereby increas-ing local approximation support around bends and turning regions. Consequently, the reproduced trajectories better match the reference in these demanding segments. 
+
+2) Ablation Analysis: This subsection presents ablation stud-ies of the basis-allocation mechanism and stage-criticality formulation using 20 basis functions, a moderate capacity that preserves distinguishable component-level effects without excessive redundancy. The basis-allocation components are analyzed by comparing classical DMPs, DMPs with bandwidth refinement (DMPs-BW), SC-DMPs with criticality-guided centers only (SC-DMPs-C), and full SC-DMPs, as shown in Fig. 8. DMPs-BW consistently reduces the reproduction errors compared with 8 ACCEPTED FOR PUBLICATION IN IEEE TRANSACTIONS ON INDUSTRIAL INFORMATICS .-50 0 50 -650 -600 -550 -500 X (mm) -50 0 50 -50 0 50 -50 0 50 -50 0 50 Y (mm) -700 -650 -600 -550 X (mm) -50 0 50 Y (mm) -50 0 50 Y (mm) -50 0 50 Y (mm) Ref. traj. DMPs SC-DMPs 15 Basis Functions 30 Basis Functions DMPs DMPs SC-DMPs SC-DMPs DMPs DMPs SC-DMPs SC-DMPs 
+
+(a) (b)  
+
+> 15 Basis Functions 30 Basis Functions
+
+(c) (d) 
+
+Fig. 7. Comparison of learning performance between SC-DMPs and DMPs. (a) and (b) correspond to “Z” with 15 and 30 basis functions. (c) and (d) correspond to “M” with 15 and 30 basis functions. "Z" "M" 012     
+
+> Errors "Z" "M" 0123
+> "Z" "M" 0246
+> DMPs DMPs-BW SC-DMPs-C SC-DMPs RMSE
+
+(a) 
+
+> RMSE-Geo
+
+(b) 
+
+> MaxE
+
+(c) 
+
+Fig. 8. Ablation results of basis representation with 20 basis functions. (a) RMSE (mm). (b) RMSE-Geo (mm). (c) MaxE (mm). 
+
+DMPs, indicating that bandwidth refinement improves local basis support even with standard centers. SC-DMPs-C also reduces the errors for both letters, confirming the contribution of stage-criticality-guided center redistribution. Full SC-DMPs further improve upon SC-DMPs-C for both letters. For “M”, full SC-DMPs achieve the lowest RMSE, RMSE-Geo, and MaxE, demonstrating the complementary effects of center redistribution and bandwidth refinement. For “Z”, DMPs-BW yields the lowest errors, indicating that the additional benefit of criticality-guided center redistribution depends on the geometric characteristics of the demonstrated motion. The construction of stage criticality is evaluated using "Z" "M" 0123      
+
+> Errors "Z" "M" 0123
+> "Z" "M" 024
+> Stiffness-only Variability-only Prior-only Prior-smoothed STR-Net-refined RMSE
+
+(a) 
+
+> RMSE-Geo
+
+(b) 
+
+> MaxE
+
+(c) 
+
+Fig. 9. Ablation results of stage-criticality construction with 20 basis functions. (a) RMSE (mm). (b) RMSE-Geo (mm). (c) MaxE (mm). TABLE III STAGE -CRITICALITY REFINEMENT CHARACTERISTICS AND CONSTRUCTION TIME .                          
+
+> Letter Refinement method Temporal-variation reduction (%) Critical-stage retention (%) Construction time (s) “Z” Prior-only 0.00 100.00 <0.001
+> Prior-smoothed 3.24 99.00 0.008 STR-Net-refined 20.91 91.50 1.258 “M” Prior-only 0.00 100.00 <0.001
+> Prior-smoothed 3.21 100.00 <0.001
+> STR-Net-refined 34.92 85.00 1.147 510 15 20 25 30 # of basis functions 10 -2 Errors
+> 510 15 20 25 30 # of basis functions 10 0
+> 510 15 20 25 30 # of basis functions 10 0
+> DMPs SC-DMPs NSE
+
+(a) 
+
+> W-RMSE
+
+(b) 
+
+> RMSE-Geo
+
+(c) 
+
+Fig. 10. Endpoint-generalization errors for “Z” under varying numbers of basis functions. (a) NSE. (b) W-RMSE (mm). (c) RMSE-Geo (mm). 5 10 15 20 25 30 # of basis functions 10 -2 Errors    
+
+> 510 15 20 25 30 # of basis functions 10 0
+> 510 15 20 25 30 # of basis functions 10 0
+> DMPs SC-DMPs NSE
+
+(a) 
+
+> W-RMSE
+
+(b) 
+
+> RMSE-Geo
+
+(c) 
+
+Fig. 11. Endpoint-generalization errors for “M” under varying numbers of basis functions. (a) NSE. (b) W-RMSE (mm). (c) RMSE-Geo (mm). 
+
+stiffness-only, variability-only, prior-only, prior-smoothed, and STR-Net-refined variants. As shown in Fig. 9, stiffness-only performs better on “Z”, whereas variability-only is more effective on “M”, indicating that neither cue is consistently reliable across trajectories. Their fusion in the prior-only variant provides more balanced performance. Prior smooth-ing changes the reproduction errors only marginally, while STR-Net achieves comparable results on “Z” and reduces RMSE-Geo and MaxE on “M”, with a slight increase in RMSE. Table III further compares temporal-variation (TV) reduction, critical-stage preservation, and construction time. Prior smoothing reduces TV by about 3.2% while retaining at least 99% of the prior-defined critical stages. In contrast, STR-Net reduces TV by 20.91% and 34.92% for “Z” and “M”, while retaining 91.50% and 85.00% of their critical stages, respectively. Thus, STR-Net provides stronger temporal refinement and partially reorganizes the stage-wise allocation priority, thereby improving reproduction accuracy for “M”, whereas simple smoothing is sufficient for “Z”. STR-Net requires approximately 1.2 s for offline training and less than 1 ms for inference. This one-time preprocessing cost does not affect subsequent DMP rollout or online control frequency. 
+
+3) Generalization Performance Analysis: The generalization performance under endpoint variations and spatial scaling is further evaluated. For each letter, the model parameters are first learned and then kept fixed throughout the generalization tests, without additional demonstrations or retraining. Four endpoint-variation cases are evaluated, with all dis-placement magnitudes defined relative to the original start-goal distance: i) Translation , with both endpoints shifted normally by 50%; ii)-iii) Start-point and Goal-point changes , with the corresponding endpoint shifted backward or forward by 10%; and iv) Start-goal change , combining a 50% normal shift with symmetric 6% outward endpoint displacements. Figs. 10 and 11 report the mean errors and min-max ranges over these cases. SC-DMPs achieve lower average errors in 34 of the 36 comparisons; the only exceptions are small increases in NSE and W-RMSE for “Z” with 10 basis functions. With only 5 basis functions, the error reductions range from 21.86% to DOI: 10.1109/TII.2026.3738846. 9-100 0-700 -600 -500 -400 X (mm) 0 100 -100 -50 0-650 -600 -550 -500 -50 0 50 -100 -50 0Y (mm) -700 -650 -600 -550 -500 X (mm) -50 0 50 Y (mm) -100 0Y (mm) -700 -600 -500 -400 0 100 Y (mm) Ref. traj. Target traj. Gen. start Gen. end DMPs SC-DMPs 
+
+(a) (b) (c) (d) 
+
+> DMPs DMPs SC-DMPs SC-DMPs DMPs DMPs SC-DMPs SC-DMPs
+
+Fig. 12. Endpoint-generalization of DMPs and SC-DMPs on “Z” with 20 basis functions. (a) Translation. (b) Start-point change. (c) Goal-point change. (d) Start-point and goal-point changes. -100 -50 0-650 -600 -550 -500 X (mm) -50 0 50 -100 0-700 -600 -500 -400 0 100 -200 0Y (mm) -800 -600 -400 X (mm) 0 200 Y (mm) -400 0 200 Y (mm) -1000 -800 -600 -400 -200 -200 0 400 Y (mm) Ref. traj. Target traj. Gen. start Gen. end DMPs SC-DMPs 
+
+(a) (b) (c) (d) 
+
+> DMPs DMPs SC-DMPs SC-DMPs DMPs DMPs SC-DMPs SC-DMPs
+
+Fig. 13. Spatial-scaling generalization of DMPs and SC-DMPs on “Z” with 20 basis functions. (a) 0.5 ×. (b) 2 ×. (c) 3 ×. (d) 5 ×.
+
+35.22%. The advantage remains evident when 20 or more basis functions are used, with RMSE-Geo reductions of 23.74%-47.32%. Fig. 12 visualizes the generalized trajectories of “Z” with 20 basis functions, where the enlarged local regions show that SC-DMPs more closely follow the target trajectory in locally demanding segments, consistent with their lower W-RMSE and RMSE-Geo. To further examine spatial generalization, the models learned with 20 basis functions are kept fixed and uniformly scaled about the trajectory bounding-box center by 0.5×, 2×,
+
+3×, and 5×. Fig. 13 visualizes the generalized trajectories of “Z”, showing that SC-DMPs follow the scaled target more closely in locally demanding segments. Table IV reports the NSE, W-RMSE, and RMSE-Geo for both letters. As expected under uniform scaling, NSE remains unchanged, whereas the W-RMSE and RMSE-Geo increase proportionally with trajectory size. Nevertheless, the relative improvements of SC-DMPs are preserved across all scale factors. Compared with DMPs, SC-DMPs reduce NSE, W-RMSE, and RMSE-Geo by 12.99%, 17.64%, and 24.07% for “Z”, and by 18.74%, 25.01%, and 26.80% for “M”, respectively. These results confirm that the accuracy advantage of SC-DMPs is retained from one-half to five times the demonstrated scale. 
+
+4) Comparison with Recent Methods: Classical DMPs and four representative movement-primitive methods, including 
+
+TABLE IV ERRORS UNDER SPATIAL -SCALING GENERALIZATION .                                                              
+
+> Letter Scale NSE W-RMSE (mm) RMSE-Geo (mm) DMPs SC-DMPs DMPs SC-DMPs DMPs SC-DMPs “Z”
+> 0.5×0.0055 0.0048 0.9063 0.7465 1.3508 1.0256
+> 2×0.0055 0.0048 3.6251 2.9858 5.4032 4.1025
+> 3×0.0055 0.0048 5.4377 4.4787 8.1048 6.1537
+> 5×0.0055 0.0048 9.0628 7.4645 13.5080 10.2562 Reduction 12.99% 17.64% 24.07% “M”
+> 0.5×0.0053 0.0043 0.6678 0.5008 0.9511 0.6962
+> 2×0.0053 0.0043 2.6712 2.0032 3.8044 2.7847
+> 3×0.0053 0.0043 4.0068 3.0048 5.7066 4.1770
+> 5×0.0053 0.0043 6.6780 5.0080 9.5110 6.9617 Reduction 18.74% 25.01% 26.80%
+
+ProMPs [13], ProDMP [14], GP-MP [15], and KMP [16], are compared with SC-DMPs. All four baselines are implemented using their official codebases. For a controlled comparison among the explicit-basis methods, DMPs, ProMPs, ProDMP, and SC-DMPs all use 30 basis functions, while the remaining settings of ProMPs and ProDMP are kept at their defaults. Since GP-MP and KMP are kernel-based methods without explicit basis functions, they retain their native default con-figurations. The comparison evaluates learning performance, endpoint generalization without retraining, and computational efficiency. Table V reports RMSE and RMSE-Geo for trajec-tory reproduction, together with the mean NSE and RMSE-Geo over the four endpoint-generalization cases defined above. The online model size and endpoint-adaptation time are also reported. Model size counts the double-precision parameters and support states required after training, excluding original demonstrations, recomputable matrices, and offline-only vari-ables. Adaptation time covers endpoint updating and trajectory generation, excluding training and file loading. As shown in Table V, SC-DMPs achieve the lowest learning and endpoint-generalization errors for both letters. Relative to the best competing result in each column, SC-DMPs reduce the learning RMSE by 3.4% and 1.6%, the learning RMSE-Geo by 17.9% and 2.7%, the endpoint-generalization NSE by 11.9% and 20.4%, and the endpoint-generalization RMSE-Geo by 46.1% and 23.9% for “Z” and “M”, respectively. These results indicate that criticality-guided allocation improves both trajectory reproduction and geometric fidelity under endpoint changes. SC-DMPs require only approximately 1 kB of online model storage, comparable to DMPs and ProDMP and sub-stantially smaller than ProMPs, GP-MP, and KMP. Although ProMPs and ProDMP achieve shorter adaptation times, SC-DMPs remain close to classical DMPs and are considerably faster than GP-MP and KMP. Overall, SC-DMPs achieve a favorable balance between accuracy and model complexity among the evaluated methods. 
+
+5) Sensitivity and Stability Analysis: To assess the robustness of SC-DMPs to parameter variations, sensitivity and stability analyses are conducted. Table VI summarizes the tested set-tings together with the default values adopted in the preceding experiments. Fig. 14 reports the RMSE-Geo reduction relative to DMPs, where the boxes summarize the results over the candidate settings and the diamonds indicate the defaults. All tested settings retain positive error reductions for both letters, demonstrating that the advantage of SC-DMPs is not restricted 10 ACCEPTED FOR PUBLICATION IN IEEE TRANSACTIONS ON INDUSTRIAL INFORMATICS .
+
+TABLE V COMPARISON OF LEARNING PERFORMANCE , ENDPOINT GENERALIZATION , AND COMPUTATIONAL EFFICIENCY ON LETTER TRAJECTORIES .                                                                                 
+
+> Letter Method Learning performance Endpoint generalization Computational efficiency RMSE (mm) RMSE-Geo (mm) NSE RMSE-Geo (mm) Model size (kB) Adaptation time (ms) “Z” DMPs 0.7936 1.2318 0.0027 1.3303 1.00 4.77 ProMPs 0.6136 0.8083 0.8927 68.3981 29.08 0.75
+> ProDMP 0.6396 0.9263 0.1004 32.1902 0.99 1.66 GP-MP 1.1117 1.3649 0.2599 68.2537 9.65 89.86 KMP 20.6595 16.8022 0.1696 63.0821 65.64 938.29
+> SC-DMPs 0.5927 0.6637 0.0023 0.7168 1.00 4.71 “M” DMPs 0.6622 1.0638 0.0027 1.1489 1.00 4.81 ProMPs 0.5478 0.8846 0.5002 55.3787 29.08 0.75
+> ProDMP 0.5124 0.8321 0.1362 39.1928 0.99 1.56 GP-MP 1.0058 1.1008 0.2885 56.1967 9.65 82.52 KMP 12.0098 6.5052 0.1559 42.1927 65.64 965.69
+> SC-DMPs 0.5041 0.8094 0.0021 0.8741 1.00 4.86
+
+TABLE VI TESTED HYPERPARAMETER SETTINGS AND DEFAULT VALUES .                        
+
+> Parameter Tested settings Default
+> β1/β 20.50/1.50, 0.75/1.25, 1.00/1.00, 1.25/0.75, 1.50/0.50 1.00/1.00 GMM components 14, 18, 22, 26, 30 22 Latent dimension (LD) 32, 64, 128 64 Kernel size (KS) 3, 5, 7 5Bandwidth candidate (BW) Narrow: {0.75:0.05:1.25 }
+> Normal: {0.50:0.10:1.50 }
+> Wide: {0.25:0.15:1.75 }
+> Normal 010 20 30 40 50 60 RMSE-Geo reduction (%) 1/2 GMM LD KS BW Candidate setting Default setting Default SC-DMPs DMPs 010 20 30 40 50 60 1/2 GMM LD KS BW
+
+(a) (b) 
+
+Fig. 14. Hyperparameter sensitivity of SC-DMPs. (a) “Z”. (b) “M”. 
+
+to a particular parameter combination. The kernel-size settings exhibit the smallest variations, with standard deviations of only 0.22 and 0.25 percentage points for “Z” and “M”. Greater variations are observed for the stiffness-variability ratio and the number of GMM components, but their reductions remain positive. The default settings achieve reductions of 45.64% and 24.32% for the two letters and provide a consistent configuration rather than a letter-specific optimum. The stability of bandwidth optimization is evaluated using the narrow, normal, and wide candidate sets. A coordinate update is accepted only when it decreases the forcing-term residual objective by more than 10 −8, with a maximum of 10 sweeps. Since the candidate space is finite and every accepted update strictly decreases the objective, the procedure terminates at a coordinate-wise solution over the discrete candidate set, although global optimality is not guaranteed. As shown in Fig. 15, all 18 runs exhibit monotonic objective reduction and terminate before reaching the maximum-sweep limit. Convergence requires 3-6 sweeps and approximately 0.42-0.65 s, while reducing the objective by 6.26%-35.24%. These results verify stable finite termination under the tested configurations with a small offline computational cost. The effect of demonstration number is evaluated using 2, 4, 6, 8, 10, and 12 demonstrations. For each setting from 2 to 10, ten fixed random subsets are tested, with 0 1 2 3 4 5 678910 Sweep Objective, J (  10 7)Narrow Normal Wide 0 0.4 0.8 0.46 0.42 0.65 Time (s) 0 1 2 3 434567Sweep 0 0.4 0.8 0.42 0.45 0.47 Time (s) 
+
+(a) (b) 
+
+Fig. 15. Convergence and computational time of bandwidth optimiza-tion. (a) “Z”. (b) “M”. 246810 12 Number of demonstrations 0.4 0.6 0.8 11.2 1.4 1.6 30.9% 42.2% 43.1% 42.4% 42.5% 45.7% RMSE-Geo (mm) DMPs SC-DMPs RMSE-Geo reduction 246810 12 Number of demonstrations 0.4 0.6 0.8 11.2 1.4 1.6 25.6% 23.6% 28.2% 29.4% 25.0% 23.7% 
+
+(a) (b) 
+
+Fig. 16. Effect of demonstration number on the RMSE-Geo of DMPs and SC-DMPs. (a) “Z”. (b) “M”. 
+
+the GMR reference, stage criticality, and movement-primitive models reconstructed independently; the complete dataset is used once for the 12-demonstration case. Fig. 16 reports the mean RMSE-Geo and standard deviation, while the shaded regions and annotations indicate the mean paired reductions achieved by SC-DMPs. SC-DMPs consistently obtain lower errors across all tested demonstration numbers. Even with only two demonstrations, the reductions remain 30.86% ±8.87% for “Z” and 25.62% ±9.75% for “M”. With 4-12 demonstrations, the mean reductions remain within 42.16%-45.70% for “Z” and 23.60%-29.36% for “M”. Although different subsets cause some error fluctuations, SC-DMPs consistently outperform DMPs across all tested demonstration numbers. 
+
+C. Real-Robot Experiments 
+
+To evaluate the proposed method under different geometric and contact constraints, three real-robot tasks are considered, as shown in Fig. 17: i) plug insertion and removal under tight positional constraints; ii) sequential dipping involving two tube insertion-withdrawal stages; and iii) curved-surface wiping under continuous contact. Each task is demonstrated four times via kinesthetic teaching, with the Cartesian trajectory and estimated interaction stiffness synchronously recorded. After uniform resampling to 1000 points, the demonstrations are used to construct the GMR reference trajectory. The variance and stiffness profiles shown in Fig. 17(c) and (d) DOI: 10.1109/TII.2026.3738846. 11 (a) Platform  (b) Demonstration 
+
+> Plug
+> Socket
+> panel
+> Gripper Task 1
+> Handle
+> Swab
+> Tube 1 Tube 2
+> Task 2
+> Sponge
+> Curved
+> plate
+> Handle
+> Trace
+> Task 3
+
+(c) Normalized variance  (d) Normalized stiffness  (e) Stage criticality index 
+
+Fig. 17. Experimental setups and data visualizations for plug insertion and removal, sequential dipping, and curved-surface wiping. (a) Platform. (b) Demonstrated trajectory and stiffness ellipsoids. (c) Normalized variance. (d) Normalized stiffness. (e) Stage criticality index. 10 -1 10 010 1RMSE Task 1 Task 2 Task 3 
+
+(a)        
+
+> DMPs ProMPs ProDMP GP-MP KMP SC-DMPs 10 -1 10 010 1RMSE-TCR Task 1 Task 2 Task 3
+
+(b)   
+
+> 10 010 1MaxE-TCR Task 1 Task 2 Task 3
+
+(c) 
+
+Fig. 18. Trajectory-learning error comparison on three robotic tasks. (a) RMSE (mm). (b) RMSE-TCR (mm). (c) MaxE-TCR (mm). 
+
+are independently normalized and fused to obtain the stage-criticality index in Fig. 17(e). High criticality is concentrated around the plug-socket interaction, tube insertion-withdrawal stages, and surface-contact portion of the wiping trajectory, where geometric and contact constraints impose stricter local reproduction requirements. In contrast, less constrained trans-fer segments receive lower criticality. The resulting profiles therefore provide a physically interpretable correspondence between the demonstrated interaction characteristics and task-dependent accuracy requirements. For the trajectory-learning comparison, all methods learn the same GMR reference. DMPs, ProMPs, ProDMP, and SC-DMPs use 50 basis functions, whereas GP-MP and KMP retain their native default configurations. RMSE evaluates the overall trajectory error, while RMSE-TCR and MaxE-TCR measure the root-mean-square and worst-case errors within the task-critical regions, respectively. These regions cover the plug insertion-removal stages in Task 1, the tube insertion-withdrawal stages in Task 2, and the surface-contact stage 
+
+TABLE VII STR-N ET ABLATION ON ROBOT TASKS . A LL ERRORS ARE IN MM                                      
+
+> Task Refinement RMSE RMSE-TCR MaxE-TCR Task 1 Prior-only 0.2709 0.7714 2.0715 Prior-smoothed 0.2709 0.7716 2.0719 STR-Net-refined 0.2666 0.7409 1.9526
+> Task 2 Prior-only 0.6737 0.9580 2.5812 Prior-smoothed 0.6736 0.9578 2.5807
+> STR-Net-refined 0.6709 0.9743 2.6242 Task 3 Prior-only 1.0183 1.1171 5.3894 Prior-smoothed 1.0186 1.1177 5.3926 STR-Net-refined 0.9982 1.0621 4.9892
+> Average reduction vs. prior-only 1.38% 2.43% 4.74% Average reduction vs. prior-smoothed 1.40% 2.45% 4.77%
+
+in Task 3. As shown in Fig. 18, SC-DMPs produce lower RMSE and RMSE-TCR than classical DMPs on all three tasks. The corresponding reductions range from 5.83% to 17.51% for RMSE and from 19.93% to 23.86% for RMSE-TCR. SC-DMPs also achieve the lowest MaxE-TCR among all six methods, with reductions of 6.56%-42.01% relative to DMPs. Although ProMPs attains lower mean trajectory errors in several comparisons, its MaxE-TCR remains higher in every task. These results highlight the suppression of large deviations in task-critical stages. To further assess the role of STR-Net under real-robot geometric and contact constraints, Table VII compares the stiffness-variability prior (prior-only), its moving-average re-finement (prior-smoothed), and the STR-Net-refined variant, with all other settings unchanged. Prior smoothing produces nearly unchanged errors and no consistent improvement. Rel-ative to prior-only, STR-Net reduces the across-task mean RMSE, RMSE-TCR, and MaxE-TCR by 1.38%, 2.43%, and 4.74%, respectively, with similar gains over prior smoothing. It achieves the lowest errors in Tasks 1 and 3, while slightly 12 ACCEPTED FOR PUBLICATION IN IEEE TRANSACTIONS ON INDUSTRIAL INFORMATICS .
+
+lowering RMSE but producing marginally higher critical-
+
+V. C ONCLUSION 
+
+This article proposes SC-DMPs, which integrate operator-robot interaction stiffness and cross-demonstration trajectory variability into a stage-criticality index for adaptive basis allocation. Guided by this index, basis centers are redistributed through inverse cumulative criticality, while bandwidth refine-ment adjusts local support to provide denser representation at high-criticality stages. Experiments on handwriting trajectories and three real-robot tasks demonstrate improved trajectory reproduction, generalization, and task-critical accuracy while retaining the compact and stable DMP formulation. The current formulation targets precision-oriented skills whose critical stages are reflected in interaction stiffness and trajectory consistency. Extending it to low-stiffness critical stages associated with compliant behavior, task dynamics, or environmental context may require complementary force, vision, object-dynamics, and contextual cues. 
+
+REFERENCES 
+
+[1] X. Yu, H. Liu, W. He, D. Zhang, Y. Wu, and C. Yang, “Human robot pouring skill transfer in material synthesis using vision-based DMPs,” 
+
+IEEE Trans. Ind. Inf. , vol. 21, no. 12, pp. 9263–9273, 2025. [2] H. Hu, H. Yan, X. Yang, and Y. Lou, “Robot learning from demon-stration for assembly with sequential assembly movement primitives,” 
+
+IEEE/ASME Trans. Mechatron. , vol. 29, no. 4, pp. 2685–2696, 2024. [3] G.-B. Bian, Z. Chen, Z. Li, B.-T. Wei, W.-P. Liu, D. S. da Silva, W.-Q. Wu, and V. H. C. de Albuquerque, “Learning surgical skills under the RCM constraint from demonstrations in robot-assisted minimally invasive surgery,” Expert Syst. Appl. , vol. 225, p. 120134, 2023. [4] K. Huang, X. Ji, J. Su, and X. Qu, “Task-parameterized dynamic movement primitives with reinforcement learning for improved motion planning,” IEEE Robot. Autom. Lett. , vol. 10, no. 6, pp. 5457–5464, 2025. [5] D. Sun, Q. Liao, and A. Loutfi, “Type-2 fuzzy model-based movement primitives for imitation learning,” IEEE Trans. Rob. , vol. 38, no. 4, pp. 2462–2480, 2022. [6] A. J. Ijspeert, J. Nakanishi, H. Hoffmann, P. Pastor, and S. Schaal, “Dynamical movement primitives: Learning attractor models for motor behaviors,” Neural Comput. , vol. 25, no. 2, pp. 328–373, 2013. [7] Y. Wang, C. Chen, Y. Hong, Z. Zheng, Z. Gao, F. Peng, R. Yan, and X. Tang, “PI2-BDMPs in combination with contact force model: A robotic polishing skill learning and generalization approach,” 
+
+IEEE/ASME Trans. Mechatron. , 2025. [8] W. Zhang, W. Gao, and A. Liu, “Robot skill learning based on dynamic motion primitives and adaptive control,” J. Shanghai Jiao Tong Univ. ,vol. 57, no. 3, pp. 354–365, 2023. [9] K. Li, H. Zhang, B. Chen, Y. Jiang, C. Yang, and Y. Wang, “Modified dynamic movement primitives with control: A novel trajectory planning framework for dual-arm asynchronous tasks,” IEEE Trans. Ind. Elec-tron. , vol. 72, no. 10, pp. 10 401–10 410, 2025. [10] T. Ma and B. Corves, “Model predictive control-based dynamic move-ment primitives for trajectory learning and obstacle avoidance,” Robot. Auton. Syst. , vol. 192, p. 105027, 2025. [11] C. Yang, C. Chen, W. He, R. Cui, and Z. Li, “Robot learning system based on adaptive neural control and dynamic movement primitives,” 
+
+IEEE Trans. Neural Netw. Learn. Syst. , vol. 30, no. 3, pp. 777–787, 2019. [12] Z. Zhang, J. Hong, A. M. S. Enayati, and H. Najjaran, “Using im-plicit behavior cloning and dynamic movement primitive to facilitate reinforcement learning for robot motion planning,” IEEE Trans. Rob. ,vol. 40, pp. 4733–4749, 2024. [13] A. Paraschos, C. Daniel, J. R. Peters, and G. Neumann, “Probabilistic movement primitives,” Adv. Neur. In. , vol. 26, 2013. 
+
+region errors in Task 2. These results suggest that STR-Net can provide additional temporal refinement over the tested smoothing baseline. 
+
+[14] G. Li, Z. Jin, M. Volpp, F. Otto, R. Lioutikov, and G. Neumann, “ProDMP: A unified perspective on dynamic and probabilistic move-ment primitives,” IEEE Robot. Autom. Lett. , vol. 8, no. 4, pp. 2325– 2332, 2023. [15] Z. Jin, A. Liu, W. Zhang, L. Yu, and C. Yang, “Gaussian process movement primitive,” Automatica , vol. 155, p. 111120, 2023. [16] Y. Huang, L. Rozo, J. Silv´ erio, and D. G. Caldwell, “Kernelized movement primitives,” Int. J. Rob. Res. , vol. 38, no. 7, pp. 833–852, 2019. [17] G. Braglia, D. Tebaldi, and L. Biagiotti, “Phase-independent dynamic movement primitives with applications to human-robot co-manipulation and time optimal planning,” Robot. Auton. Syst. , p. 105120, 2025. [18] F. Stulp, A. Colom´ e, and C. Torras, “Fitting parameters of linear dynamical systems to regularize forcing terms in dynamical movement primitives,” in Int. Conf. Robot. Autom. IEEE, 2024, pp. 15 024–15 030. [19] D. Shi, S. Jin, C. Yang, Z. Lu, and Q. Li, “Exploring the synergistic effects of teleoperation scaling ratio and learning from demonstration,” 
+
+IEEE Trans. Autom. Sci. Eng. , vol. 22, pp. 15 106–15 115, 2025. [20] L. Rozo and V. Dave, “Orientation probabilistic movement primitives on riemannian manifolds,” in Conf. Robot Learn. PMLR, 2022, pp. 373–383. [21] J. Jankowski, M. Racca, and S. Calinon, “From key positions to optimal basis functions for probabilistic adaptive control,” IEEE Robot. Autom. Lett. , vol. 7, no. 2, pp. 3242–3249, 2022. [22] A. Colom´ e and C. Torras, “Mutual information weighing for probabilis-tic movement primitives,” in Artif. Intell. Res. Dev. IOS Press, 2022, pp. 365–368. [23] V. H. Moreno, S. Jansing, M. Polikarpov, M. G. Carmichael, and J. Deuse, “Obstacles and opportunities for learning from demonstration in practical industrial assembly: A systematic literature review,” Robot. Comput.-Integr. Manuf. , vol. 86, p. 102658, 2024. [24] J. Wen, G. Wang, J. Jia, W. Li, C. Zhang, and X. Wang, “Compli-ance control method for robot joint with variable stiffness,” Int. J. Hydromechatronics , vol. 6, no. 1, pp. 45–58, 2023. [25] L. Biagiotti, R. Meattini, D. Chiaravalli, G. Palli, and C. Melchiorri, “Robot programming by demonstration: Trajectory learning enhanced by sEMG-based user hand stiffness estimation,” IEEE Trans. Rob. , vol. 39, no. 4, pp. 3259–3278, 2023. [26] C. Zeng, C. Yang, Z. Jin, and J. Zhang, “Hierarchical impedance, force, and manipulability control for robot learning of skills,” IEEE/ASME Trans. Mechatron. , vol. 30, no. 3, pp. 1807–1818, 2025. [27] X. Xing, K. Maqsood, C. Zeng, C. Yang, S. Yuan, and Y. Li, “Dynamic motion primitives-based trajectory learning for physical human–robot interaction force control,” IEEE Trans. Ind. Inf. , vol. 20, no. 2, pp. 1675– 1686, 2024. [28] D. Wang, S. Chen, C. Xu, J. Li, C. Zhang, and G. Yang, “An upper-limb endpoint stiffness estimation method for high-load tasks,” in Int. Conf. Mech. Autom. Electron. Inf. Eng. IEEE, 2025, pp. 41–47. [29] C. Xu, S. Chen, D. Wang, X. Kong, C. Zhang, G. Yang, C. Yang, and Z. Fang, “Extreme value theory-driven robust feature selection with application to estimation of interaction stiffness,” IEEE Trans. Ind. Electron. , 2026. [30] R. Meattini, A. Govoni, K. Galassi, D. Chiaravalli, G. Palli, and C. Mel-chiorri, “Programming robot interaction behavior during kinesthetic teaching exploiting sEMG-based interfacing and vibrotactile feedback,” 
+
+IEEE/ASME Trans. Mechatron. , vol. 30, no. 5, pp. 4011–4022, 2025. [31] D. Ge, H. Zhao, Y. Wang, D. Li, X. Li, and H. Ding, “Learning compliant dynamical system from human demonstrations for stable force control in unknown environments,” Robot. Comput.-Integr. Manuf. ,vol. 86, p. 102669, 2024. [32] R. Wu, H. Zhang, Y. Zhu, X. Zang, and J. Zhao, “Impedance adjustment for learning human variable impedance skill,” Mechatronics , vol. 95, p. 103036, 2023. [33] M. C. Nah, A. Krotov, M. Russo, D. Sternad, and N. Hogan, “Learning to manipulate a whip with simple primitive actions–a simulation study,” 
+
+iscience , vol. 26, no. 8, 2023. [34] Z. Liu, H. Luo, X. Liang, and Y. Fang, “LAMPS: A novel robot generalization framework for learning adaptive multi-periodic skills,” in 
+
+IEEE/RSJ Int. Conf. Intell. Robots Syst. IEEE, 2025, pp. 9948–9955.
