@@ -1,0 +1,281 @@
+{
+  "date": "20261006",
+  "date_label": "",
+  "generated_at": "2026-10-06 01:08:00 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2610.02368v1",
+      "route": "202610/06/2610.02368v1-rethinking-world-action-model-for-compositional-and-in-context-robotic-manipulation",
+      "title": "Rethinking World-Action Model for Compositional and In-Context Robotic Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向长程组合操作的世界-动作模型",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.02922v1",
+      "route": "202610/06/2610.02922v1-twinjepa-action-preferred-predictive-representations-for-goal-conditioned-control",
+      "title": "TwinJEPA: Action-Preferred Predictive Representations for Goal-Conditioned Control",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于JEPA潜在预测并引入动作偏好用于控制",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.03587v1",
+      "route": "202610/06/2610.03587v1-avl-jepa-preventing-causal-dynamics-information-collapse-in-joint-embedding-predictive-architecture-world-models",
+      "title": "AVL-JEPA: Preventing Causal Dynamics Information Collapse In Joint Embedding Predictive Architecture World Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "防止JEPA世界模型的因果动态信息坍缩",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2609.39514v1",
+      "route": "202610/06/2609.39514v1-spike-driven-vision-language-action-model",
+      "title": "Spike-driven Vision-Language-Action Model",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "脉冲驱动VLA框架，面向低延迟低能耗机器人控制",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.02717v1",
+      "route": "202610/06/2610.02717v1-robobridge-a-self-evolving-embodied-agent-framework-for-sim-to-real-transfer",
+      "title": "RoboBridge: A Self-Evolving Embodied Agent Framework for Sim-to-Real Transfer",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向仿真到现实迁移与持续域自适应的自演化具身智能体框架",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.02788v1",
+      "route": "202610/06/2610.02788v1-skill2real-agentic-skill-learning-for-zero-shot-sim-to-real-robot-manipulation",
+      "title": "Skill2Real: Agentic Skill Learning for Zero-Shot Sim-to-Real Robot Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "零样本仿真到真机技能迁移，适应感知、动力学与本体差异",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.02840v1",
+      "route": "202610/06/2610.02840v1-pointwam-3d-world-action-modeling-for-dexterous-robotic-manipulation",
+      "title": "PointWAM: 3D World Action Modeling for Dexterous Robotic Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向灵巧操作的3D世界动作模型",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.03374v1",
+      "route": "202610/06/2610.03374v1-eveworld-physical-evolution-supervision-for-embodied-world-models",
+      "title": "EVEWorld: Physical Evolution Supervision for Embodied World Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向机器人学习的具身世界模型物理演化监督",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.03391v1",
+      "route": "202610/06/2610.03391v1-native-action-prior-learning-from-videos-for-world-action-models",
+      "title": "Native Action-Prior Learning from Videos for World Action Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向世界动作模型的纯观测视频原生动作先验学习",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.03516v1",
+      "route": "202610/06/2610.03516v1-xgenact-geometry-enhanced-world-action-models-through-cross-task-generation",
+      "title": "XGenAct: Geometry-Enhanced World Action Models through Cross-Task Generation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向机器人控制规划的几何增强世界动作模型与跨任务生成",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2609.39970v1",
+      "route": "202610/06/2609.39970v1-phaseplan-ordered-future-phase-planning-for-robot-brain-models",
+      "title": "PhasePlan: Ordered Future-Phase Planning for Robot Brain Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向机器人脑模型的未来阶段有序规划，保持动作时序对齐",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.02505v1",
+      "route": "202610/06/2610.02505v1-multi-fidelity-policy-gradients-stabilize-data-scarce-reinforcement-learning",
+      "title": "Multi-Fidelity Policy Gradients Stabilize Data-Scarce Reinforcement Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "利用低保真数据提升数据稀缺强化学习效率",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.03079v1",
+      "route": "202610/06/2610.03079v1-rifar-reliability-and-forgetting-aware-replay-for-continual-robot-learning",
+      "title": "RIFAR: Reliability and Forgetting-Aware Replay for Continual Robot Learning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "世界-动作生成式回放用于持续机器人学习",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.03333v1",
+      "route": "202610/06/2610.03333v1-equivariant-visual-tactile-diffusion-policy-for-contact-rich-manipulation",
+      "title": "Equivariant Visual-Tactile Diffusion Policy for Contact-Rich Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "等变视觉-触觉策略实现数据高效模仿学习",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2609.38616v1",
+      "route": "202610/06/2609.38616v1-correcting-where-preserving-how-compositional-generalization-for-vision-language-action-models-via-referential-guidance",
+      "title": "Correcting WHERE, Preserving HOW: Compositional Generalization for Vision-Language-Action Models via Referential Guidance",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "缓解训练数据多样性不足以提升VLA组合泛化",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2609.39820v1",
+      "route": "202610/06/2609.39820v1-learning-from-runtime-feedback-through-failure-bank-self-evolution-for-vision-language-action-models",
+      "title": "Learning from Runtime Feedback through Failure-Bank Self-Evolution for Vision-Language-Action Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "失败库自演化，将运行时反馈转化为持续的策略提升",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    },
+    {
+      "paper_id": "2610.00437v1",
+      "route": "202610/06/2610.00437v1-jevspawn-adaptive-agentic-inference-through-compositional-action-spaces",
+      "title": "JevSpawn: Adaptive Agentic Inference through Compositional Action Spaces",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "通过组合动作空间实现自适应智能体推理以降低延迟",
+      "first_seen_at": "2026-10-06 01:08:00 UTC",
+      "updated_at": "2026-10-06 01:08:00 UTC"
+    }
+  ]
+}

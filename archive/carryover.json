@@ -1,12 +1,97 @@
 {
-  "generated_at": "2026-10-04T22:32:04.187567+00:00",
-  "updated_date": "20261004",
+  "generated_at": "2026-10-06T00:51:12.489226+00:00",
+  "updated_date": "20261006",
   "carryover_days": 9,
   "tag_states": {
     "embodied-ai": {
-      "updated_date": "20261004",
+      "updated_date": "20261006",
       "carryover_days": 9,
-      "items": []
+      "items": [
+        {
+          "id": "2610.03607v1",
+          "source": "arxiv",
+          "title": "World Action Learning via Interaction-Centric Spectral Latent Guidance",
+          "abstract": "Learning general-purpose robot policies requires large-scale real-world interaction data, yet collecting robot demonstrations remains expensive and difficult to scale. Egocentric videos offer abundant human interaction experience with task-relevant semantics for robotic manipulation, but direct transfer is challenging for two reasons: latent actions inferred from frame reconstruction can be dominated by nuisance variation such as ego-camera motion, and human and robot behaviors often exhibit different temporal dynamics. We propose WING (World Action Learning via INteraction-Centric Spectral Latent Guidance), a framework for transferring interaction knowledge from egocentric videos to robot policies. WING first separates observer-induced motion from hand-object interaction and distills the interaction-centric component into latent actions. It then exploits the observation that cross-embodiment task semantics are concentrated in slowly varying temporal structures, identifying shared low-frequency components between egocentric latent actions and robot behaviors in the spectral domain and using them to guide action generation. WING achieves average success rates of 99.20% on LIBERO, 93.80% on RoboTwin 2.0, and 57.7% on RoboCasa-GR1, and also performs strongly across four real-world manipulation tasks under diverse generalization settings. These results show that interaction-centric spectral guidance provides an effective and scalable way to transfer physical interaction knowledge from human egocentric video to robot control. Project page: https://mikuz12.github.io/wing/",
+          "authors": [
+            "Zhiming Liu",
+            "Yikun Miao",
+            "Ying Chen",
+            "Hongrui Yin",
+            "Fangqi Zhu",
+            "Xiaoyi Pang",
+            "Quanxin Shou",
+            "Zhengyang Yan",
+            "Haodong Wang",
+            "Song Guo"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-10-02T17:08:12+00:00",
+          "link": "https://arxiv.org/pdf/2610.03607v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Transfers interaction knowledge from egocentric videos to robot policies via spectral latent guidance",
+          "llm_evidence_cn": "通过谱潜引导将自我中心视频中的交互知识迁移到机器人策略",
+          "llm_evidence": "通过谱潜引导将自我中心视频中的交互知识迁移到机器人策略",
+          "canonical_evidence": "通过谱潜引导将自我中心视频中的交互知识迁移到机器人策略",
+          "llm_tldr_en": "Transferring knowledge from egocentric human videos to robot policies is hard due to nuisance motion and differing temporal dynamics. WING separates observer motion from hand motion and uses spectral latent guidance for world-action learning.",
+          "llm_tldr_cn": "学习通用机器人策略需要大规模交互数据，而机器人示范采集昂贵难扩展；自我中心视频蕴含丰富人类交互经验，但直接迁移受困于相机自运动等干扰以及人机时序动力学差异。本文提出WING框架，先分离观测者引起的运动与手部动作，再通过交互中心谱潜引导实现世界-动作学习。该工作为从人类视频向机器人策略的高效知识迁移提供了新范式，缓解了具身学习的数据瓶颈。",
+          "llm_tldr": "学习通用机器人策略需要大规模交互数据，而机器人示范采集昂贵难扩展；自我中心视频蕴含丰富人类交互经验，但直接迁移受困于相机自运动等干扰以及人机时序动力学差异。本文提出WING框架，先分离观测者引起的运动与手部动作，再通过交互中心谱潜引导实现世界-动作学习。该工作为从人类视频向机器人策略的高效知识迁移提供了新范式，缓解了具身学习的数据瓶颈。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "transfer learning for robot policy learning across domains and embodiments",
+          "matched_requirement_id": "req-4",
+          "selection_source": "carryover_cache",
+          "paper_id": "2610.03607v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2610.03615v1",
+          "source": "arxiv",
+          "title": "Bridging Frontier Reasoning and Robot Execution: From Autonomous Demonstration Generation to Dense Language Supervision",
+          "abstract": "Recent advances in frontier models enable robot manipulation from only a few demonstrations, but high inference latency limits their use for real-time robot control. To bridge this gap, we study two complementary approaches that connect frontier reasoning with low-latency local execution. First, we use a frontier model to autonomously generate demonstrations that supplement human demonstrations for training a fast local policy. We augment its in-context examples with corrective demonstration segments that show how to recover from physical errors, improving generation reliability. Generation time and cost decrease as successful examples accumulate in context, suggesting a path toward more efficient data collection. At deployment, a harness combines frontier-generated instructions with a fast local policy, enabling efficient execution while preserving the frontier model's ability to guide and correct actions. With low-latency execution delegated to the local policy, the bottleneck shifts to its capacity to reliably follow the frontier model's diverse instructions. Our second bridge introduces dense language supervision across three nested granularities---primitive, atomic, and composite---with multi-aspect descriptions at each level. Across long-horizon tasks in RoboCasa 365 and BEHAVIOR-1K, where instructions change as execution progresses, the combined supervision achieves the highest performance under both oracle and frontier-model instructors, demonstrating more reliable instruction following through the policy's language interface. Finally, we evaluate both bridges together on a crossword task that combines semantic planning and manipulation within a fixed time budget. These results support autonomous demonstration generation and dense language supervision as complementary components for connecting frontier reasoning to low-latency local execution.",
+          "authors": [
+            "Bosung Kim",
+            "Alexander Trevithick",
+            "Ruiyi Wang",
+            "Prithviraj Ammanabrolu"
+          ],
+          "primary_category": "cs.RO",
+          "categories": [
+            "cs.RO"
+          ],
+          "published": "2026-10-02T17:12:29+00:00",
+          "link": "https://arxiv.org/pdf/2610.03615v1",
+          "tags": [
+            "keyword:embodied-ai",
+            "query:embodied-ai"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Bridges high-latency frontier reasoning with low-latency local robot execution",
+          "llm_evidence_cn": "弥合高延迟前沿推理与低延迟本地机器人执行",
+          "llm_evidence": "弥合高延迟前沿推理与低延迟本地机器人执行",
+          "canonical_evidence": "弥合高延迟前沿推理与低延迟本地机器人执行",
+          "llm_tldr_en": "Frontier models enable manipulation from few demonstrations but their high inference latency blocks real-time control. The paper uses a frontier model to generate demonstrations for a fast local policy and adds dense language supervision for low-latency execution.",
+          "llm_tldr_cn": "前沿大模型能从少量示范实现机器人操作，但其高推理延迟阻碍了实时机器人控制。本文研究两条互补路径以连接前沿推理与低延迟本地执行：一是用前沿模型自主生成示范来补充人类示范并训练快速本地策略，二是通过稠密语言监督连接推理与执行。工作还加入纠错示范段提升生成可靠性，为实时机器人策略部署缓解推理延迟瓶颈提供了可行方案。",
+          "llm_tldr": "前沿大模型能从少量示范实现机器人操作，但其高推理延迟阻碍了实时机器人控制。本文研究两条互补路径以连接前沿推理与低延迟本地执行：一是用前沿模型自主生成示范来补充人类示范并训练快速本地策略，二是通过稠密语言监督连接推理与执行。工作还加入纠错示范段提升生成可靠性，为实时机器人策略部署缓解推理延迟瓶颈提供了可行方案。",
+          "llm_tags": [
+            "query:embodied-ai"
+          ],
+          "matched_query_tag": "query:embodied-ai",
+          "matched_query_text": "fast inference and model acceleration for real-time robot control",
+          "matched_requirement_id": "req-6",
+          "selection_source": "carryover_cache",
+          "paper_id": "2610.03615v1",
+          "carry_days": 1
+        }
+      ]
     }
   }
 }

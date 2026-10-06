@@ -1,0 +1,3576 @@
+Preprint
+EVEWORLD: PHYSICAL EVOLUTION SUPERVISION
+FOR EMBODIED WORLD MODELS
+Kaiqi Wang1, Songxin Zhang1, Zejian Xie1, Xiao Xiong1, Zhuoyang Song1,
+Ziwei Wu1, Jun Yu Lu1, Yitan Teng1, Ziying Song2,†, Jiaxing Zhang1,†
+1China Merchants Group, 2Nanyang Technological University
+†Corresponding authors: Ziying Song (ziying.song@ntu.edu.sg), Jiaxing Zhang (zhangjiaxing@cmhk.com)
+https://behappya.github.io/EVEWorld/
+Task A: Use the right hand to pick up green apple from bottom shelf to top shelf.
+Task B: Place the white boxdrink with sturdy lid on the light gray streaked wooden coaster.
+Figure 1: Embodied world models face the challenge of Model Laziness, where instance consistency
+is violated by spurious duplication or disappearance during interaction. Red denotes Standard SFT,
+which exhibits such failures, while Green denotes EVEWORLD, which better maintains physical
+consistency throughout the interaction. Dashed arrows trace target evolution over time.
+ABSTRACT
+Embodied world models enable scalable simulation of embodied interactions for
+robot learning. However, existing models are prone to Model Laziness, as they
+focus on visual fidelity at the expense of physical reasoning and lack process-
+level supervision over the temporal dynamics of manipulated objects. In this
+work, we propose EVEWORLD, a physical evolution-supervision framework for
+physically consistent target evolution. EVEWORLD consists of two components:
+Instance-Guided Restoration (IGR) and Temporal Instance Alignment (TIA). First,
+IGR promotes instance consistency through restoration supervision. Second, TIA
+promotes cross-frame consistency by aligning target instances across adjacent
+frames. We further introduce the Model Laziness Rate (MLR), a metric that
+measures persistent violations of instance consistency in generated trajectories.
+Extensive experiments on DreamGenBench, EWMBench, and PBench demonstrate
+the effectiveness of EVEWORLD, notably achieving an 87.5% reduction in MLR
+compared with GigaWorld-0. On the WorldArena 2.0 Track 1 leaderboard, our
+model ranks 6th in JEPA Similarity and 17th overall, which further validates the
+performance of our evolution supervision strategy.
+1
+arXiv:2610.03374v1  [cs.CV]  2 Oct 2026
+
+
+Preprint
+TIA
+(a) Standard Supervised Fine-Tuning (SFT)
+(c) EVEWorld (Ours)
+11.1%
+1.6%
+Model Laziness
+−85.7% ↓
+53.6%
+60.9%
+Overall 
++13.6% ↑
+51.9%
+（a）
+（b）
+（c）
+（a）
+（b）
+（c）
+World Model
+World Model
+IGR
+     Duplicates
++
++
+      Repaired
+4.8%
+IGR
+(b) IGR (Ours): A Direct Approach
+World Model
+     Distort
++
+Figure 2:
+Comparison of Standard SFT, IGR, and EVEWORLD. (a) Existing video world
+models (GigaWorld Team et al., 2025; Yang et al., 2025; Team Wan et al., 2025; NVIDIA et al.,
+2025), including our Standard SFT baseline, may exhibit instance-consistency failures, such as
+target duplication at the goal. (b) Our IGR variant improves instance consistency, but cross-frame
+consistency failures such as target distortion may remain. (c) Our full EVEWORLD model combines
+IGR and TIA to maintain physically consistent target evolution throughout the interaction. Relative
+to Standard SFT, EVEWORLD reduces MLR by 85.7% and improves overall Gemini-IF by 13.6%.
+Additionally, the inputs consist of an initial image and an instruction c.
+1
+INTRODUCTION
+Embodied world models and related policy-learning methods are emerging as scalable predictive
+engines for embodied intelligence, modeling diverse interaction dynamics to support robot learning,
+planning, and simulation (Yang et al., 2024a; Bruce et al., 2024; Zhou et al., 2024; Jang et al., 2025;
+Li et al., 2025b; Du et al., 2023; Schmidt & Jiang, 2024; Ye et al., 2025; Zitkovich et al., 2023;
+Kim et al., 2025; Black et al., 2025; Physical Intelligence et al., 2025). Recent work (Huang et al.,
+2025a; 2026; Guo et al., 2026; GigaWorld Team et al., 2026; Xiao et al., 2025a; Pang et al., 2025;
+Dou et al., 2026; Duan et al., 2026; Zheng et al., 2026; Bardhan et al., 2026; Li et al., 2025c; 2026;
+Quevedo et al., 2026) has further advanced embodied world modeling and its evaluation through high-
+fidelity generation, multiview and long-context modeling, action conditioning, persistent memory,
+and task-oriented evaluation.
+Recent embodied world models further strengthen structural faithfulness through explicit 4D RGB–
+depth–normal prediction, geometry-aware action conditioning, and disentangled dynamics and visual
+synthesis, with related physical-evaluation benchmarks (Zhen et al., 2025; DreamX Team et al.,
+2026; Shan et al., 2026; Liu et al., 2026; Li et al., 2025a; Bansal et al., 2026; Meng et al., 2025; Qin
+et al., 2025; Shang et al., 2026a; Motamed et al., 2026; Garrido et al., 2025). Nevertheless, stronger
+visual and structural modeling does not necessarily ensure physically consistent target evolution: a
+rollout may exhibit target-instance consistency failures, such as duplication or disappearance, and
+cross-frame consistency failures, such as deformation and identity drift (Yuan et al., 2026; Foo
+et al., 2026). Figure 1 shows a representative instance consistency failure after standard supervised
+fine-tuning (SFT). We refer to such instance consistency failures as Model Laziness: frame-level
+reconstruction can admit a shortcut that satisfies appearance or endpoint cues without maintaining
+instance consistency throughout the interaction.
+In this work, we propose EVEWORLD, an evolution-supervision framework that promotes physically
+consistent target evolution and mitigates Model Laziness in embodied world models, as shown in
+Figure 2. EVEWORLD comprises two complementary components: Instance-Guided Restoration
+(IGR), which promotes instance consistency by restoring count-perturbed videos, and Temporal
+Instance Alignment (TIA), which promotes cross-frame consistency by aligning target instances
+across adjacent frames. To quantify Model Laziness, we introduce the Model Laziness Rate
+(MLR), a metric that measures persistent violations of target-instance consistency over a rollout.
+Extensive evaluations on DreamGenBench, WorldArena 2.0, EWMBench, and PBench demonstrate
+the effectiveness of EVEWORLD in promoting physically consistent target evolution. Notably, on
+the WorldArena 2.0 Track 1 leaderboard, EVEWORLD achieves an EWMScore-P of 70.17, ranking
+17th overall and 6th in JEPA Similarity. These results further support the effectiveness of evolution
+supervision under large-scale world-model evaluation.
+2
+
+
+Preprint
+2
+RELATED WORK
+Video Generation Models for Robotics.
+Large-scale video models provide strong priors for
+embodied prediction and scalable robot-data generation (Blattmann et al., 2023; Brooks et al., 2024;
+Team Wan et al., 2025; Kong et al., 2024), enabling world models for robot learning, planning, and
+simulation (Yang et al., 2024a; Zhou et al., 2024; Jang et al., 2025; Lu et al., 2025; Gao et al., 2025;
+GigaWorld Team et al., 2025). Recent work (Zhen et al., 2025; DreamX Team et al., 2026; Shan
+et al., 2026; Fu et al., 2026) further strengthens structural modeling through richer representations
+and conditioning: TesserAct jointly predicts RGB, depth, and normals, DreamX-Phi incorporates
+geometric action conditioning and depth supervision, and DVG-WM disentangles dynamics from
+visual synthesis, and RoboMaster improves multi-object interaction modeling. In contrast, our
+EVEWORLD retains the host model’s native representation and introduces evolution supervision
+during post-training to promote physically consistent target evolution.
+Physical Reasoning in Embodied World Models.
+Prior works (Yang et al., 2024b; Traub et al.,
+2024; Jeong et al., 2025; Chen et al., 2025; Wu et al., 2026; Xiao et al., 2025a; Dou et al., 2026)
+improve object-centric and temporally consistent modeling through correspondence, tracking, object
+permanence, and persistent memory, while other studies (Deng et al., 2026; Sun et al., 2025; Khose
+et al., 2026) examine object dynamics, quantity behavior, and broader aspects of physical reasoning
+from different perspectives. However, despite these advances and evaluations (Yang et al., 2024b;
+Traub et al., 2024; Jeong et al., 2025; Xiao et al., 2025a; Dou et al., 2026; Deng et al., 2026; Sun
+et al., 2025; Khose et al., 2026), physically consistent target evolution remains challenging, with
+manipulated objects exhibiting failures in both instance consistency and cross-frame consistency.
+In contrast, our EVEWORLD introduces evolution supervision to explicitly promote physically
+consistent target evolution.
+3
+WHY EMBODIED WORLD MODELS BECOME LAZY
+3.1
+PROBLEM STATEMENT
+Given an initial observation I0 and an instruction c, an embodied video world model predicts future
+frames x1:T . We focus on manipulation scenarios that require instance consistency, where the
+target-instance count is expected to remain unchanged throughout the interaction.
+Let Nt(I0, xt, c) denote the number of instances of the target specified by c, with N0(I0, c) denoting
+its initial count. We define Model Laziness as
+ML(I0, x1:T , c) = I[∃t ∈{1, . . . , T} : Nt(I0, xt, c)̸ = N0(I0, c)] .
+(1)
+This captures instance consistency failures caused by unsupported target duplication or disappearance.
+Interactions that intentionally change the target-instance count, such as cutting or assembly, are
+outside the scope of the current formulation and MLR protocol. Robot-induced occlusion is handled
+separately through an occlusion-aware check during MLR evaluation.
+3.2
+CAUSES OF MODEL LAZINESS
+Standard training emphasizes visual reconstruction while providing limited process-level supervision
+for physically consistent target evolution (Denton & Fergus, 2018; Bengio et al., 2015; Jeong et al.,
+2025). This leaves two key gaps: instance consistency and cross-frame consistency.
+Missing Instance-Consistency Supervision. Experimental results show that Standard SFT retains
+92%–99% of the injected target area across different perturbation settings (Appendix Figure 10,
+Appendix C.2). Because the perturbed region is small relative to the full frame, its reconstruction
+error can be diluted by the surrounding scene, providing insufficient supervision for recovering the
+correct target-instance count. IGR (Section 4.1) addresses this gap by providing a direct restoration
+target and assigning greater spatial weight to the perturbed region.
+Missing Cross-frame Consistency Supervision. IGR improves instance consistency, but a correct
+target-instance count alone does not ensure cross-frame consistency; the target may still become
+distorted, fade, or shift abruptly across adjacent frames, as shown in Figure 2(b). This stems from
+3
+
+
+Preprint
+Instance-
+Guided 
+Restoration
+Temporal 
+Instance 
+Alignment
+Video
+Diffusion
+Transformer
+Output Video 
+"Use right hand 
+to pick up apple 
+from bottom 
+shelf to top shelf"
+Input
+low loss
+high loss
+to layer ℓ⋆+1 
+Selected Layer ℓ⋆  
+ΔHℓ⋆t 
+Hℓ⋆
+Video Diffusion
+Transformer Layers
+Cross-frame
+Instance Matching
+Cross-frame
+Instance Residual
+ΔHℓ⋆t 
+video frame t-1
+frame t  features
+video frame t 
+count-edited frame
+original frame
+Training Videos
++ Instruction
+Embodied 
+Entities
+Step 1
+Step 2
+Restoration Weight Map
+GroundingDINO
+TIA Adapter
+frame t-1  features
+Embodied 
+Regions
+Count-Edited Training Videos
+Figure 3: Overall architecture of EVEWORLD. Given a clean demonstration x and instruction c
+during training, IGR constructs a count-edited video ˜x, which is processed by the video diffusion
+transformer to restore x. Within the transformer, TIA operates at the selected layer ℓ⋆to perform
+cross-frame instance matching and residual refinement, after which the refined features pass through
+the remaining layers to produce the final output.
+the lack of explicit supervision linking the same target across frames, allowing locally plausible
+predictions to evolve inconsistently over time. TIA (Section 4.2) addresses this gap by aligning target
+instances across adjacent frames.
+4
+METHOD
+Framework Overview.
+Given a clean demonstration video x and its instruction c, EVEWORLD
+uses IGR (Section 4.1) to construct a count-edited video ˜x and trains the model to restore x, assigning
+higher weights to restoration-related regions to promote instance consistency. TIA (Section 4.2)
+operates within the video diffusion transformer to align target features across adjacent frames
+and promote cross-frame consistency. Together, IGR and TIA enable physically consistent target
+evolution in the final video output. Notably, the demonstration video is used for training supervision;
+at inference, EVEWORLD takes only the initial image and instruction as input.
+4.1
+INSTANCE-GUIDED RESTORATION
+To address failures in physically consistent target evolution, we introduce Instance-Guided Restoration
+(IGR) to promote instance consistency. IGR inserts an extra target instance into clean demonstrations
+to form count-edited samples, then trains the model to restore the corresponding clean latent repre-
+sentation encoded by a pretrained VAE. A language model and GroundingDINO (Liu et al., 2024a)
+localize the target trajectory to sample a target patch p and valid paste region Ω:
+˜x = Paste(x, p, Ω),
+z = VAE(x),
+˜z = VAE(˜x).
+(2)
+Training the model to map the count-edited latent ˜z back to the clean latent z encourages recovery
+of the correct target-instance count. To prevent this local instance-consistency signal from being
+diluted by global reconstruction, we assign restoration-related regions three times the reconstruction
+weight of ordinary regions and normalize the resulting spatial weight map to unit mean. We denote
+the normalized map by ˆW; its exact construction is given in Appendix B.1. Using the EDM-style
+noise weighting λ(σ) (Karras et al., 2022), the restoration objective is
+LIGR = E
+
+λ(σ)
+1
+CTHW
+ ˆW 1/2 ⊙(Dθ(˜z + σϵ, c, σ) −z)
+
+2
+2
+
+.
+(3)
+4
+
+
+Preprint
+Minimizing LIGR provides explicit instance-consistency supervision by recovering the correct target-
+instance state from count-perturbed inputs; details are provided in Appendix B.1.
+4.2
+TEMPORAL INSTANCE ALIGNMENT
+IGR improves instance consistency, but a correct target-instance count alone does not guarantee
+cross-frame consistency. Failures such as identity drift, distortion, fading, or abrupt motion may
+still occur across adjacent frames. We therefore introduce Temporal Instance Alignment (TIA) to
+explicitly promote cross-frame consistency by aligning target instances across adjacent frames.
+We select the attachment layer using an offline layer-wise matching probe. For each candidate layer ℓ,
+the frame-(t −1) target feature retrieves its best match over all token cells of frame t, and we select
+the layer with the lowest endpoint error (EPE):
+ˆuℓ
+t = arg max
+v
+f ℓ
+t−1(ut−1)⊤f ℓ
+t (v),
+ℓ⋆= arg min
+ℓ∈B
+1
+|V|
+X
+t∈V
+ˆuℓ
+t −ut
+
+2 .
+(4)
+where V contains adjacent-frame pairs with the target visible in both frames and detector confidence
+above a threshold. At layer ℓ⋆, TIA has two stages (Figure 3, right). Local instance locating
+matches target features within a local neighborhood, while cross-frame instance transport converts
+pre-transport cosine similarities into softmax transport weights, splats projected previous-frame
+features into frame t, normalizes by transport mass, and writes them back through a zero-initialized
+bounded residual.
+H′
+t = Hℓ⋆
+t
++ γ tanh
+
+Wout
+  ¯Ht −WinHℓ⋆
+t
+
+.
+(5)
+Here, ¯Ht denotes the transported feature field. GroundingDINO and target locations ut provide
+offline alignment supervision during training only; at inference, dense matching and transport operate
+directly on the model’s hidden features and require neither target localization nor an external tracker.
+The transported features are further supervised to favor the true next-frame target location over nearby
+candidates:
+LTIA = −1
+|V|
+X
+t∈V
+log
+exp(st,ut/τ)
+P
+v∈Ct exp(st,v/τ),
+st,v = ¯f ℓ⋆
+t−1(ut−1)⊤¯f ℓ⋆
+t (v),
+(6)
+where ¯f ℓ⋆is the normalized feature after transport. The locating, transport, and alignment components
+jointly constrain target identity across frames. Further details are provided in Appendix B.2.
+5
+EXPERIMENTS
+5.1
+EXPERIMENTAL SETUP AND METRICS
+Benchmarks and Data Splits.
+We use the official DreamGen GR1 fine-tuning split, which contains
+92 robot-manipulation videos paired with instructions, and primarily evaluate on DreamGenBench,
+comprising 126 manipulation tasks across unseen environments, objects, and behaviors (Jang et al.,
+2025). We further evaluate cross-domain generalization on WorldArena 1.0, cross-trial robustness on
+PBench, cross-distribution generalization on AgiBot–EWMBench, and cross-backbone generalization
+using FlowWAM on WorldArena 2.0 and held-out RoboTwin actions (Shang et al., 2026a;b; AgiBot-
+World-Contributors et al., 2025; Hu et al., 2025; Mu et al., 2025; NVIDIA, 2025b; Huang et al., 2024;
+Liu et al., 2024b; Unterthiner et al., 2018; Chen et al., 2026a).
+Evaluation Metrics.
+We evaluate instruction following with Qwen-IF and Gemini-IF (Bai et al.,
+2025; Gemini Team et al., 2023); WorldArena 1.0/2.0, EWMBench, PBench, and RoboTwin assess
+complementary aspects of perceptual quality, motion, semantics, consistency, and task fidelity.
+Related evaluations (Deng et al., 2026; Khose et al., 2026; Sun et al., 2025), including RBench,
+WFM-Eval, and video numeracy benchmarks, provide indirect signals related to object quantity
+and persistence. In contrast, we propose the Model Laziness Rate (MLR), a metric that explicitly
+measures target-instance consistency at the rollout level using the observed initial count N0 as its
+reference, without requiring a prompt-specified count or reference future. We exclude under-counts
+attributable to robot-induced occlusion while retaining all over-counts, and denote the resulting
+5
+
+
+Preprint
+Table 1:
+Overall comparison on DreamGenBench. MLR denotes Model Laziness Rate, and
+Qwen-IF/Gemini-IF measure instruction-following accuracy. General video models are evaluated
+zero-shot, whereas Standard SFT and EVEWORLD are post-trained on DreamGen. MLR is computed
+on a shared set of 63 eligible items across all models.
+Metric
+CogVideoX Wan-TI2V Wan-A14B Cosmos GigaWorld-0 Standard SFT EVEWorld
+MLR (%) ↓
+28.57
+17.46
+11.11
+14.29
+12.70
+11.11
+1.59
+Qwen-IF (%) ↑
+38.89
+38.89
+64.29
+62.70
+79.37
+73.81
+80.16
+Gemini-IF (%) ↑
+5.56
+10.32
+15.87
+24.60
+60.19
+53.57
+60.85
+Table 2:
+Fine-grained comparison on DreamGenBench. GR1-Env, GR1-Object, and GR1-
+Behavior denote generalization to unseen environments, objects, and behaviors, respectively. Qwen-
+IF and Gemini-IF measure instruction-following accuracy. General video models are evaluated
+zero-shot, whereas Standard SFT and EVEWORLD share the same DreamGen post-training setting.
+Method
+Param.
+GR1-Env IF (%)
+GR1-Object IF (%)
+GR1-Behavior IF (%)
+Qwen ↑
+Gemini ↑
+Qwen ↑
+Gemini ↑
+Qwen ↑
+Gemini ↑
+General video models (zero-shot)
+CogVideoX1.5-5B-I2V
+5B
+48.28
+15.52
+24.00
+1.00
+48.94
+4.26
+Wan2.2-TI2V-5B
+5B
+51.72
+17.24
+24.00
+5.00
+46.81
+11.70
+Wan2.2-I2V-A14B
+A14B
+58.62
+20.69
+66.00
+13.00
+65.96
+15.96
+Cosmos-Predict2-2B
+2B
+68.97
+31.03
+60.00
+28.00
+61.70
+17.02
+GigaWorld-based models
+GigaWorld-0
+2B
+79.31
+54.60
+82.00
+54.33
+76.60
+69.86
+Standard SFT
+2B
+79.31
+51.72
+76.00
+42.00
+68.09
+67.02
+EVEWorld
+2B
+82.76
+72.41
+82.00
+50.33
+76.60
+64.89
+evaluation count by e
+Nt(x). MLR implements Eq. 1 with a two-frame persistence criterion to suppress
+isolated detection errors. We define
+MLR = 100
+|D+|
+X
+x∈D+
+I
+h
+∃t ∈{1, . . . , T −1} : e
+Nt(x)̸ = N0(x) ∧e
+Nt+1(x)̸ = N0(x)
+i
+,
+(7)
+where D+ = {x ∈D : N0(x) > 0}. Further details are provided in Appendix A.
+Model and Training Setup.
+For the main experiments, we initialize EVEWORLD from the 2B-
+parameter GigaWorld-0 Video-Pretrain-2B (GigaWorld Team et al., 2025) and compare against
+CogVideoX1.5, Wan2.2, and Cosmos-Predict2 as zero-shot baselines (Yang et al., 2025; Team
+Wan et al., 2025; NVIDIA, 2025a). Standard SFT, EVEWORLD, and all ablations share the same
+initialization, training data, and 250-step optimization budget. We fine-tune all transformer parameters
+on eight NVIDIA H20Z GPUs with an effective batch size of 64 and a learning rate of 4.32 × 10−5.
+For cross-distribution and cross-backbone experiments, we apply the same evolution-supervision
+method to the corresponding data and backbone. Details are provided in the appendix.
+5.2
+MAIN RESULTS
+Overall Results.
+As shown in Table 1, EVEWORLD substantially mitigates Model Laziness while
+improving instruction following. Compared with Standard SFT, EVEWORLD reduces MLR from
+11.11% to 1.59% (85.7% relative reduction), while Qwen-IF increases from 73.81% to 80.16%
+and Gemini-IF from 53.57% to 60.85%. Appendix A (Appendix Figure 8) further shows that the
+remaining violations under EVEWORLD are transient, indicating that evolution supervision improves
+physical consistency without sacrificing instruction following.
+Fine-grained Analysis.
+Table 2 reports instruction-following performance across the Environment,
+Object, and Behavior splits. Compared with Standard SFT, EVEWORLD improves Qwen-IF on
+all three splits, with the largest gain on Behavior (68.09% to 76.60%), while Gemini-IF improves
+notably on Environment (51.72% to 72.41%) and Object (42.00% to 50.33%). Overall, these results
+show that evolution supervision yields broad gains across different generalization dimensions.
+6
+
+
+Preprint
+Table 3: Zero-shot comparison on WorldArena 1.0. All metrics follow the released evaluation
+protocol. IQ, AQ, DD, Flow, MS, SC, BC, and PC denote Image Quality, Aesthetic Quality,
+Dynamic Degree, Flow Score, Motion Smoothness, Subject Consistency, Background Consistency,
+and Photometric Consistency; Overall is their equal-weight mean. MLR is computed on 157 shared
+eligible items, and bold marks the best GigaWorld-based result.
+Method
+Appearance
+Motion
+Consistency
+Main Metrics
+IQ ↑
+AQ ↑
+DD ↑
+Flow ↑
+MS ↑
+SC ↑
+BC ↑
+PC ↑
+Overall ↑MLR (%) ↓
+General I2V models (zero-shot)
+CogVideoX
+24.51 34.80 20.71
+7.24
+50.78 54.96 66.35 10.20
+33.69
+2.55
+Wan-TI2V
+33.48 37.90 33.00
+11.38
+61.86 68.88 77.17 18.19
+42.73
+17.20
+Wan-A14B
+51.93 43.37 42.29
+8.04
+64.13 67.69 75.37 33.61
+48.30
+29.94
+Cosmos
+57.88 38.83 50.46
+16.69
+71.61 64.14 73.71 21.42
+49.34
+8.28
+GigaWorld-based models
+GigaWorld-0
+58.53 38.79 44.36
+7.74
+61.67 77.90 88.13 48.32
+53.18
+27.39
+Standard SFT 60.71 38.36 48.49
+7.82
+64.04 79.34 88.67 44.17
+53.95
+27.39
+EVEWorld
+59.82 37.35 62.90
+10.98
+67.82 78.72 88.91 47.58
+56.76
+13.38
+Table 4: Comparison on EWMBench after AgiBot post-training. Standard SFT and EVEWORLD
+use the same AgiBot data and optimization budget. Motion, Semantics, and Overall are the official
+EWMBench aggregate scores, and DYN, HSD, nDTW, and Scene are component metrics. Complete
+results are provided in Appendix E.1.
+Method
+Motion ↑
+Semantics ↑
+DYN ↑
+HSD ↑
+nDTW ↑
+Scene ↑
+Overall ↑
+GigaWorld-0
+50.30
+2.2497
+7.19
+23.29
+19.83
+89.58
+3.6486
+Standard SFT
+61.51
+2.2477
+14.88
+24.35
+22.28
+84.38
+3.7066
+EVEWorld
+63.65
+2.2524
+17.55
+24.12
+21.97
+86.37
+3.7525
+Table 5:
+Cross-backbone evaluation and ablation on RoboTwin. PSNR, SSIM, and LPIPS
+measure frame-level visual fidelity against aligned RGB ground truth, and Flow-EPE denotes optical-
+flow endpoint error.
+Variant
+IGR
+TIA
+PSNR (dB) ↑
+SSIM ↑
+LPIPS ↓
+Flow-EPE ↓
+MLR (%) ↓
+FlowWAM
+12.218
+0.748
+0.383
+3.033
+52.05
+Standard SFT
+11.687
+0.735
+0.414
+2.828
+47.89
++ IGR
+✓
+12.544
+0.770
+0.380
+2.487
+40.03
++ TIA
+✓
+13.445
+0.776
+0.333
+1.850
+22.54
+EVEWorld
+✓
+✓
+12.765
+0.769
+0.365
+2.207
+35.21
+5.3
+GENERALIZATION EVALUATION
+Zero-Shot Domain Generalization.
+On WorldArena 1.0 (Shang et al., 2026a), which includes
+unseen scenes and robot embodiments, EVEWORLD improves EWMScore-local-8 from 53.95
+to 56.76 (+5.21%) over Standard SFT while reducing MLR from 27.39% to 13.38% (−51.15%)
+(Table 3). These results demonstrate improved cross-domain generalization in both motion quality
+and target-instance consistency.
+Generalization Across Training Distributions.
+On EWMBench (Hu et al., 2025), EVEWORLD
+trained on the same AgiBot data (AgiBot-World-Contributors et al., 2025) and optimization budget
+as Standard SFT improves Motion and Overall by 3.48% and 1.24%, respectively (Table 4). These
+results show that the gains of EVEWORLD extend beyond the DreamGen training distribution,
+particularly in motion modeling.
+Cross-Backbone Generalization.
+We replace the GigaWorld image-text-conditioned IT2V back-
+bone with FlowWAM’s flow-conditioned WAM architecture (Table 5). On FlowWAM, IGR improves
+all reported metrics over Standard SFT on held-out RoboTwin actions, but TIA yields consistently
+larger gains. The full model continues to outperform Standard SFT, suggesting that the contributions
+of IGR and TIA are backbone-dependent. The resulting FlowWAM-based EVEWorld model, Super-
+7
+
+
+Preprint
+Table 6: Component ablation on DreamGenBench. All variants share the same initialization,
+training data, and optimization budget. Gemini-IF measures instruction-following accuracy.
+Variant
+Component
+Gemini-IF (%)
+MLR (%) ↓
+IGR
+TIA
+Env ↑
+Object ↑
+Behavior ↑
+Overall ↑
+Standard SFT
+51.72
+42.00
+67.02
+53.57
+11.11
+IGR only
+✓
+49.43
+36.67
+69.50
+51.85
+4.76
+TIA only
+✓
+55.17
+42.67
+68.79
+55.29
+7.94
+EVEWorld
+✓
+✓
+72.41
+50.33
+64.89
+60.85
+1.59
+Table 7: Exploration of Alternative Approaches. PhysicsLatent uses weakly supervised process
+tokens; EAG uses energy-guided denoising; LAD-LoRA uses energy-regularized LoRA; Causal
+Frontier uses causal block-wise generation; ICH-D uses learned duplicate removal; and EVEWORLD
+combines instance restoration with temporal alignment. Each route is evaluated against its matched
+control; for EVEWORLD, the matched control is Standard SFT. Dyn., Train, Test, Causal, and Repair
+denote explicit dynamics/evolution modeling, training-time intervention, test-time intervention, causal
+generation, and learned repair, respectively. ∆denotes relative change from the matched control.
+Further details are provided in Appendix D.
+Route
+Design elements
+Relative change
+Dyn.
+Train
+Test
+Causal
+Repair
+∆MLR (%) ↓
+∆Gemini-IF (%) ↑
+PhysicsLatent
+✓
+✓
+↓7.0
+↓11.9
+EAG sampling guidance
+✓
+✓
+↑150.0
+↑10.0
+LAD-LoRA
+✓
+✓
+0.0
+↓6.1
+Causal Frontier
+✓
+✓
+↑35.4
+↓53.8
+ICH-D
+✓
+✓
+✓
+✓
+↑16.6
+↓30.6
+EVEWORLD (ours)
+✓
+✓
+✓
+↓85.7
+↑13.6
+Table 8:
+Cross-trial robustness on PBench. Each SFT250–EVEWORLD pair uses the same
+inference seed, and the three trials use different seeds under otherwise identical settings. Scores
+denote the overall PBench Robot score, judged by Gemini-3.8-Flash. ∆denotes the gain over SFT250,
+and Mean ∆averages the three paired gains.
+Horizon
+Trial 1
+Trial 2
+Trial 3
+Mean ∆
+SFT250 EVEWORLD
+∆
+SFT250 EVEWORLD
+∆
+SFT250 EVEWORLD
+∆
+3.8 s
+57.37
+59.27
++1.90
+53.40
+55.07
++1.67
+59.57
+60.61
++1.04
++1.54
+5.8 s
+59.42
+60.02
++0.60
+60.36
+63.02
++2.66
+60.79
+62.21
++1.42
++1.56
+visionWM, achieves an EWMScore-P of 70.17 on the official WorldArena 2.0 Track 1 leaderboard,
+ranking 17th overall and 6th in JEPA Similarity. These results support the cross-backbone generaliza-
+tion of our evolution-supervision framework, while the optimal component configuration may depend
+on the model architecture.
+5.4
+ABLATION STUDIES AND ANALYSIS
+Component Contributions of IGR and TIA.
+Table 6 shows that IGR primarily improves instance
+consistency, reducing MLR from 11.11% to 4.76%; TIA improves cross-frame consistency and Over-
+all Gemini-IF. Combining both yields 1.59% MLR and a Gemini-IF score of 60.85, demonstrating
+complementary effects under the GigaWorld-0 image-text-conditioned IT2V architecture.
+Cross-Trial Robustness.
+We further evaluate EVEWORLD on PBench Robot across multiple
+stochastic inference trials under a matched-budget setting, with evolution supervision as the only
+methodological difference from SFT250. As shown in Table 8, EVEWORLD improves all six paired
+trials across 3.8 s and 5.8 s rollouts, with mean gains of +1.54 and +1.56, respectively, demonstrating
+consistent robustness across inference seeds and rollout horizons.
+Exploration of Alternative Approaches.
+We explored five alternative approaches to mitigate
+Model Laziness while improving instruction fidelity: PhysicsLatent, EAG, LAD-LoRA, Causal
+8
+
+
+Preprint
+1
+2
+3
+4
+5
+6
+7
+CFG weight w
+30
+40
+50
+60
+Gemini-IF (\%)
+(a) Gemini-IF ↑
+1
+2
+3
+4
+5
+6
+7
+CFG weight w
+2
+5
+8
+11
+MLR (\%)
+(b) MLR ↓
+Train step 100
+Train step 150
+Train step 200
+Train step 250
+Figure 4: CFG sensitivity across training stages on DreamGenBench. Gemini-IF and MLR are
+evaluated under different classifier-free guidance weights w, with each curve denoting a training
+checkpoint.
+Table 9: Sequence-length scaling and inference cost. We report latency (p50/p95: median/95th
+percentile), throughput, memory, and GPU cost across output durations.
+Output
+Latency (s) ↓
+Throughput
+Memory
+Cost
+Dur. (s)
+Frames
+p50
+p95
+Frames/min ↑
+Peak/GPU (GiB) ↓
+GPU-h/1k ↓
+3.8
+61
+8.166
+8.403
+442.1
+38.19
+18.40
+5.8
+93
+10.932
+11.352
+502.2
+38.33
+24.69
+9.8
+157
+18.323
+19.249
+504.8
+38.99
+41.46
+15.8
+253
+31.503
+33.523
+469.5
+41.47
+71.85
+19.8
+317
+41.737
+45.007
+443.3
+40.70
+95.34
+Frontier, and ICH-D (Table 7). However, none achieved both objectives simultaneously. For example,
+PhysicsLatent reduces Model Laziness at an 11.9% cost in instruction fidelity, whereas EAG gains
+10.0% in instruction fidelity at a 150.0% increase in Model Laziness. We share these trade-offs to
+provide practical insights for future research, with further details in Appendix D.
+CFG Sensitivity Analysis.
+Figure 4 shows that Gemini-IF generally increases with higher CFG
+weights, but MLR varies non-monotonically across guidance weights and training stages. Thus, CFG
+does not reliably improve instruction fidelity and reduce Model Laziness simultaneously, indicating
+the importance of explicit supervision for target evolution.
+Sequence-Length Scaling and Inference Cost.
+Table 9 shows that increasing output duration from
+3.8 to 19.8 s raises p50/p95 latency from 8.17/8.40 to 41.74/45.01 s and GPU-hour cost per 1,000
+videos from 18.40 to 95.34, with relatively stable throughput and peak memory. Thus, longer rollouts
+mainly increase computation with limited additional memory overhead.
+6
+CONCLUSION
+We presented EVEWORLD, a physical evolution supervision framework for embodied world models,
+and proposed the Model Laziness Rate (MLR), a metric to quantify target-instance consistency
+failures, which we term Model Laziness. EVEWORLD combines IGR for instance consistency and
+TIA for cross-frame consistency to promote physically consistent target evolution. Experiments show
+an 85.7% MLR reduction on DreamGenBench with improved instruction following, 17th overall and
+6th in JEPA Similarity on the WorldArena 2.0 Track 1 leaderboard, and generalization gains across
+training distributions and model backbones.
+Limitations and Future Works.
+The limitations of our current formulation mainly arise from its
+local, pairwise supervision, which does not explicitly capture long-horizon state dependencies or
+complex multi-object interactions. Future work will further expand the EVEWorld framework with
+broader forms of evolution supervision for longer-horizon and relational dynamics.
+9
+
+
+Preprint
+REPRODUCIBILITY STATEMENT
+The appendices document the training and evaluation settings. The supplementary material and
+the public repository provide code, data indices, configurations, evaluation prompts, and item-level
+results. The repository is available at https://github.com/behappya/EVEWorld.
+AI USE STATEMENT
+During the preparation of this manuscript, the authors used generative AI tools solely for writing
+assistance, including language polishing, grammar checking, and improving clarity of presentation.
+The AI tools were not used for developing the method, conducting experiments, generating results, or
+making scientific decisions. All AI-assisted edits were reviewed and verified by the authors, who
+take full responsibility for the final content of this manuscript.
+REFERENCES
+AgiBot-World-Contributors, Qingwen Bu, Jisong Cai, Li Chen, Xiuqi Cui, et al. AgiBot World
+colosseo: A large-scale manipulation platform for scalable and intelligent embodied systems. arXiv
+preprint arXiv:2503.06669, 2025. doi: 10.48550/arXiv.2503.06669. URL https://arxiv.
+org/abs/2503.06669.
+Shuai Bai, Yuxuan Cai, Ruizhe Chen, Keqin Chen, et al. Qwen3-VL technical report. arXiv preprint
+arXiv:2511.21631, 2025.
+Hritik Bansal, Clark Peng, Yonatan Bitton, Roman Goldenberg, Aditya Grover, and Kai-Wei Chang.
+VideoPhy-2: A challenging action-centric physical commonsense evaluation in video generation.
+In International Conference on Learning Representations, 2026.
+Jai Bardhan, Patrik Drozdik, Josef Sivic, and Vladimir Petrik. Persistent robot world models:
+Stabilizing multi-step rollouts via reinforcement learning. arXiv preprint arXiv:2603.25685, 2026.
+doi: 10.48550/arXiv.2603.25685. URL https://arxiv.org/abs/2603.25685.
+Samy Bengio, Oriol Vinyals, Navdeep Jaitly, and Noam Shazeer. Scheduled sampling for sequence
+prediction with recurrent neural networks. In Advances in Neural Information Processing Systems,
+2015.
+Kevin Black, Noah Brown, Danny Driess, Adnan Esmail, Michael Robert Equi, Chelsea Finn, Niccolo
+Fusai, Lachy Groom, Karol Hausman, Brian Ichter, Szymon Jakubczak, Tim Jones, Liyiming Ke,
+Sergey Levine, Adrian Li-Bell, Mohith Mothukuri, Suraj Nair, Karl Pertsch, Lucy Xiaoyang Shi,
+Laura Smith, James Tanner, Quan Vuong, Anna Walling, Haohuan Wang, and Ury Zhilinsky. π0:
+A vision-language-action flow model for general robot control. In Robotics: Science and Systems,
+2025.
+Andreas Blattmann, Tim Dockhorn, Sumith Kulal, et al. Stable video diffusion: Scaling latent video
+diffusion models to large datasets. arXiv preprint arXiv:2311.15127, 2023.
+Tim Brooks, Bill Peebles, Connor Holmes, Will DePue, Yufei Guo, Li Jing, David Schnurr,
+Joe Taylor, Troy Luhman, Eric Luhman, Clarence Ng, Ricky Wang, and Aditya Ramesh.
+Video generation models as world simulators, 2024. URL https://openai.com/index/
+video-generation-models-as-world-simulators/.
+Jake Bruce, Michael D. Dennis, Ashley Edwards, Jack Parker-Holder, Yuge Shi, Edward Hughes,
+Matthew Lai, Aditi Mavalankar, Richie Steigerwald, Chris Apps, Yusuf Aytar, Sarah Maria Elis-
+abeth Bechtle, Feryal Behbahani, Stephanie C. Y. Chan, Nicolas Heess, Lucy Gonzalez, Simon
+Osindero, Sherjil Ozair, Scott Reed, Jingwei Zhang, Konrad Zolna, Jeff Clune, Nando de Freitas,
+Satinder Singh, and Tim Rocktäschel. Genie: Generative interactive environments. In International
+Conference on Machine Learning, volume 235, pp. 4603–4623, 2024.
+Boyuan Chen, Diego Martí Monsó, Yilun Du, Max Simchowitz, Russ Tedrake, and Vincent Sitzmann.
+Diffusion forcing: Next-token prediction meets full-sequence diffusion. In Advances in Neural
+Information Processing Systems, 2024.
+10
+
+
+Preprint
+Kaihua Chen, Deva Ramanan, and Tarasha Khurana. Using diffusion priors for video amodal
+segmentation.
+In Proceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition, pp. 22890–22900, 2025.
+URL https://openaccess.thecvf.
+com/content/CVPR2025/html/Chen_Using_Diffusion_Priors_for_Video_
+Amodal_Segmentation_CVPR_2025_paper.html.
+Yixiang Chen, Peiyan Li, Yuan Xu, Qisen Ma, Jiabing Yang, Kai Wang, Jianhua Yang, Dong An,
+He Guan, Gaoteng Liu, Jianlou Si, Jun Huang, Jing Liu, Nianfeng Liu, Yan Huang, and Liang
+Wang. Flowwam: Optical flow as a unified action representation for world action models, 2026a.
+URL https://arxiv.org/abs/2607.13017.
+Yuzhi Chen, Ronghan Chen, Dongjie Huo, Yandan Yang, Dekang Qi, Haoyun Liu, Tong Lin,
+Shuang Zeng, Junjin Xiao, Xinyuan Chang, Feng Xiong, Xing Wei, Zhiheng Ma, and Mu Xu.
+ABot-PhysWorld: Interactive world foundation model for robotic manipulation with physics
+alignment. arXiv preprint arXiv:2603.23376, 2026b. doi: 10.48550/arXiv.2603.23376. URL
+https://arxiv.org/abs/2603.23376.
+Yufan Deng, Zilin Pan, Hongyu Zhang, Xiaojie Li, Ruoqing Hu, Yufei Ding, Yiming Zou, Yan Zeng,
+and Daquan Zhou. Rethinking video generation model for the embodied world. In International
+Conference on Machine Learning, 2026. URL https://arxiv.org/abs/2601.15282.
+Emily Denton and Rob Fergus. Stochastic video generation with a learned prior. In International
+Conference on Machine Learning, 2018.
+Carl Doersch, Yi Yang, Mel Vecerik, Dilara Gokay, et al. TAPIR: Tracking any point with per-frame
+initialization and temporal refinement. In IEEE/CVF International Conference on Computer Vision,
+2023.
+Weijia Dou, Hui Li, Jiahao Cui, Lei Zhou, Jingdong Wang, and Siyu Zhu. SlotMemory: Object-
+centric KV memory for streaming long-video generation. arXiv preprint arXiv:2605.31033, 2026.
+doi: 10.48550/arXiv.2605.31033. URL https://arxiv.org/abs/2605.31033.
+DreamX Team, Rui Chen, Xiangxiang Chu, Geng Li, Jifan Li, Qingfeng Shi, Datao Tang, Jing Tang,
+Jun Wang, and Pengfei Zhang. DreamX-Phi 1.0: Action-conditioned video world model for robotic
+manipulation. arXiv preprint arXiv:2608.13489, 2026. doi: 10.48550/arXiv.2608.13489. URL
+https://arxiv.org/abs/2608.13489.
+Yilun Du, Sherry Yang, Bo Dai, Hanjun Dai, Ofir Nachum, Joshua B. Tenenbaum, Dale Schuurmans,
+and Pieter Abbeel. Learning universal policies via text-guided video generation. In Advances in
+Neural Information Processing Systems, 2023.
+Zicheng Duan, Jiatong Xia, Zeyu Zhang, Wenbo Zhang, Gengze Zhou, Chenhui Gou, Yefei He, Feng
+Chen, Xinyu Zhang, and Lingqiao Liu. LiveWorld: Simulating out-of-sight dynamics in generative
+video world models. arXiv preprint arXiv:2603.07145, 2026. doi: 10.48550/arXiv.2603.07145.
+URL https://arxiv.org/abs/2603.07145.
+Lin Geng Foo, Mark He Huang, Alexandros Lattas, Stylianos Moschoglou, Thabo Beeler, and Chris-
+tian Theobalt. Physical simulator in-the-loop video generation. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition, pp. 4301–4311, 2026. URL https:
+//openaccess.thecvf.com/content/CVPR2026/html/Foo_Physical_
+Simulator_In-the-Loop_Video_Generation_CVPR_2026_paper.html.
+Xiao Fu, Xintao Wang, Xian Liu, Jianhong Bai, Runsen Xu, Pengfei Wan, Di Zhang, and Dahua
+Lin. Learning video generation for robotic manipulation with collaborative trajectory control. In
+International Conference on Learning Representations, 2026. URL https://openreview.
+net/forum?id=OeDwYtp8n1.
+Chongkai
+Gao,
+Haozhuo
+Zhang,
+Zhixuan
+Xu,
+Zhehao
+Cai,
+and
+Lin
+Shao.
+FLIP:
+Flow-centric
+generative
+planning
+as
+general-purpose
+manipulation
+world
+model.
+In International Conference on Learning Representations,
+2025.
+URL
+https://proceedings.iclr.cc/paper_files/paper/2025/hash/
+37bf751554eb05465ed5dc60dced3f38-Abstract-Conference.html.
+11
+
+
+Preprint
+Quentin Garrido, Nicolas Ballas, Mahmoud Assran, Adrien Bardes, et al. Intuitive physics understand-
+ing emerges from self-supervised pretraining on natural videos. arXiv preprint arXiv:2502.11831,
+2025.
+Gemini Team, Rohan Anil, Sebastian Borgeaud, Jean-Baptiste Alayrac, et al. Gemini: A family of
+highly capable multimodal models. arXiv preprint arXiv:2312.11805, 2023. doi: 10.48550/arXiv.
+2312.11805. URL https://arxiv.org/abs/2312.11805.
+Golnaz Ghiasi, Yin Cui, Aravind Srinivas, Rui Qian, et al. Simple copy-paste is a strong data
+augmentation method for instance segmentation. In IEEE/CVF Conference on Computer Vision
+and Pattern Recognition, 2021.
+GigaWorld Team, Angen Ye, Boyuan Wang, et al. GigaWorld-0: World models as data engine to
+empower embodied AI. arXiv preprint arXiv:2511.19861, 2025.
+GigaWorld Team, Angyuan Ma, Boyuan Wang, Bohan Li, et al. GigaWorld-1: A roadmap to build
+world models for robot policy evaluation. arXiv preprint arXiv:2607.02642, 2026.
+Yanjiang Guo, Lucy Xiaoyang Shi, Jianyu Chen, and Chelsea Finn. Ctrl-World: A controllable genera-
+tive world model for robot manipulation. In International Conference on Learning Representations,
+2026.
+Jonathan Ho and Tim Salimans. Classifier-free diffusion guidance. arXiv preprint arXiv:2207.12598,
+2022.
+Edward J. Hu, Yelong Shen, Phillip Wallis, Zeyuan Allen-Zhu, Yuanzhi Li, et al. LoRA: Low-rank
+adaptation of large language models. In International Conference on Learning Representations,
+2022.
+Yue Hu, Siyuan Huang, Yue Liao, Shengcong Chen, Pengfei Zhou, Liliang Chen, Maoqing Yao,
+and Guanghui Ren. EWMBench: Evaluating scene, motion, and semantic quality in embodied
+world models. arXiv preprint arXiv:2505.09694, 2025. doi: 10.48550/arXiv.2505.09694. URL
+https://arxiv.org/abs/2505.09694.
+Siqiao Huang, Jialong Wu, Qixing Zhou, Shangchen Miao, and Mingsheng Long. Vid2World:
+Crafting video diffusion models to interactive world models. In International Conference on
+Learning Representations, 2026.
+Siyuan Huang, Liliang Chen, Pengfei Zhou, Shengcong Chen, Yue Liao, Zhengkai Jiang, Yue Hu,
+Peng Gao, Hongsheng Li, Maoqing Yao, and Guanghui Ren. EnerVerse: Envisioning embodied
+future space for robotics manipulation. In Advances in Neural Information Processing Systems,
+volume 38, 2025a. doi: 10.52202/085713-1263.
+Xun Huang, Zhengqi Li, Guande He, Mingyuan Zhou, and Eli Shechtman. Self forcing: Bridging
+the train-test gap in autoregressive video diffusion. In Advances in Neural Information Processing
+Systems, 2025b.
+Ziqi Huang, Yinan He, Jiashuo Yu, Fan Zhang, et al. VBench: Comprehensive benchmark suite for
+video generative models. In IEEE/CVF Conference on Computer Vision and Pattern Recognition,
+2024.
+Joel Jang, Seonghyeon Ye, Zongyu Lin, et al. DreamGen: Unlocking generalization in robot learning
+through video world models. In Conference on Robot Learning, 2025.
+Hyeonho Jeong, Chun-Hao P. Huang, Jong Chul Ye, Niloy J. Mitra, and Duygu Ceylan. Track4Gen:
+Teaching video diffusion models to track points improves video generation. In Proceedings of the
+IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 7276–7287, 2025. doi:
+10.1109/CVPR52734.2025.00682.
+Feng Jiang, Yang Chen, Kyle Xu, Yuchen Liu, Haifeng Wang, Zhenhao Shen, Jasper Lu, Shengze
+Huang, Yuanfei Wang, Chen Xie, and Ruihai Wu. RoboWM-Bench: A benchmark for evaluating
+world models in robotic manipulation. arXiv preprint arXiv:2604.19092, 2026. doi: 10.48550/
+arXiv.2604.19092.
+12
+
+
+Preprint
+Nikita Karaev, Ignacio Rocco, Benjamin Graham, Natalia Neverova, et al. CoTracker: It is better to
+track together. In European Conference on Computer Vision, 2024.
+Tero Karras, Miika Aittala, Timo Aila, and Samuli Laine. Elucidating the design space of diffusion-
+based generative models. In Advances in Neural Information Processing Systems, 2022.
+Sahil Khose, Mengqi Zhang, Prithvijit Chattopadhyay, and Judy Hoffman. Wfm-eval: Interpretable
+error diagnostics for video world models in robotics. In World Models and FMEA Workshops at
+CVPR, 2026.
+Moo Jin Kim, Karl Pertsch, Siddharth Karamcheti, Ted Xiao, Ashwin Balakrishna, Suraj Nair, Rafael
+Rafailov, Ethan P. Foster, Pannag R. Sanketi, Quan Vuong, Thomas Kollar, Benjamin Burchfiel,
+Russ Tedrake, Dorsa Sadigh, Sergey Levine, Percy Liang, and Chelsea Finn. OpenVLA: An
+open-source vision-language-action model. In Conference on Robot Learning, volume 270, pp.
+2679–2713, 2025.
+Weijie Kong, Qi Tian, Zijian Zhang, Rox Min, et al. Hunyuanvideo: A systematic framework for
+large video generative models. arXiv preprint arXiv:2412.03603, 2024.
+Dacheng Li, Yunhao Fang, Yukang Chen, Shuo Yang, Shiyi Cao, Justin Wong, Michael Luo, Xiaolong
+Wang, Hongxu Yin, Joseph E. Gonzalez, Ion Stoica, Song Han, and Yao Lu. WorldModelBench:
+Judging video generation models as world models. In Advances in Neural Information Processing
+Systems, Datasets and Benchmarks Track, volume 38, pp. 61064–61088, 2025a. doi: 10.52202/
+085713-1834.
+Xinqing Li, Xin He, Le Zhang, Min Wu, Xiaoli Li, and Yun Liu. A comprehensive survey on world
+models for embodied AI. arXiv preprint arXiv:2510.16732, 2025b. doi: 10.48550/arXiv.2510.
+16732. URL https://arxiv.org/abs/2510.16732.
+Yaxuan Li, Yichen Zhu, Junjie Wen, Chaomin Shen, and Yi Xu. WorldEval: World model as
+real-world robot policies evaluator. arXiv preprint arXiv:2505.19017, 2025c.
+Yaxuan Li, Zhongyi Zhou, Yefei Chen, Yaokai Xue, and Yichen Zhu. dWorldEval: Scalable robotic
+policy evaluation via discrete diffusion world model. In International Conference on Machine
+Learning, 2026. URL https://arxiv.org/abs/2604.22152.
+Shilong Liu, Zhaoyang Zeng, Tianhe Ren, Feng Li, Hao Zhang, Jie Yang, Qing Jiang, Chunyuan
+Li, Jianwei Yang, Hang Su, Jun Zhu, and Lei Zhang. Grounding DINO: Marrying DINO with
+grounded pre-training for open-set object detection. In European Conference on Computer Vision,
+2024a. doi: 10.1007/978-3-031-72970-6_3.
+Yaofang Liu, Xiaodong Cun, Xuebo Liu, Xintao Wang, et al. EvalCrafter: Benchmarking and
+evaluating large video generation models. In IEEE/CVF Conference on Computer Vision and
+Pattern Recognition, 2024b.
+Zeyi Liu, Shuang Li, Eric Cousineau, Siyuan Feng, Benjamin Burchfiel, and Shuran Song. Geometry-
+aware 4d video generation for robot manipulation. In International Conference on Learning
+Representations, 2026. URL https://openreview.net/forum?id=KoXY5e7bVW.
+Ilya Loshchilov and Frank Hutter. Decoupled weight decay regularization. In International Confer-
+ence on Learning Representations, 2019.
+Guanxing Lu, Baoxiong Jia, Puhao Li, Yixin Chen, Ziwei Wang, Yansong Tang, and Siyuan Huang.
+GWM: Towards scalable gaussian world models for robotic manipulation.
+In Proceedings
+of the IEEE/CVF International Conference on Computer Vision, pp. 9263–9274, 2025. doi:
+10.1109/ICCV51701.2025.00865. URL https://openaccess.thecvf.com/content/
+ICCV2025/html/Lu_GWM_Towards_Scalable_Gaussian_World_Models_for_
+Robotic_Manipulation_ICCV_2025_paper.html.
+Yang Luo, Xiaozhe Ren, Zangwei Zheng, Zhuo Jiang, Xin Jiang, and Yang You. CAME: Confidence-
+guided adaptive memory efficient optimization. In Annual Meeting of the Association for Compu-
+tational Linguistics, pp. 4442–4453, 2023. doi: 10.18653/v1/2023.acl-long.243.
+13
+
+
+Preprint
+Fanqing Meng, Jiaqi Liao, Xinyu Tan, et al.
+Towards world simulator: Crafting physical
+commonsense-based benchmark for video generation. In International Conference on Machine
+Learning, 2025.
+Chenxuan Miao, Yutong Feng, Jianshu Zeng, Zixiang Gao, Hantang Liu, Yunfeng Yan, Donglian Qi,
+Xi Chen, Bin Wang, and Hengshuang Zhao. ROSE: Remove objects with side effects in videos. In
+Advances in Neural Information Processing Systems, volume 38, pp. 165601–165623, 2025. doi:
+10.52202/085713-4988.
+Saman Motamed, Laura Culp, Kevin Swersky, Priyank Jaini, and Robert Geirhos. Do generative
+video models understand physical principles? In Proceedings of the IEEE/CVF Winter Conference
+on Applications of Computer Vision, pp. 948–958, 2026. doi: 10.1109/WACV61042.2026.00099.
+Yao Mu, Tianxing Chen, Zanxin Chen, Shijia Peng, Zhiqian Lan, Zeyu Gao, Zhixuan Liang, Qiaojun
+Yu, Yude Zou, Mingkun Xu, Lunkai Lin, Zhiqiang Xie, Mingyu Ding, and Ping Luo. RoboTwin:
+Dual-arm robot benchmark with generative digital twins. In Proceedings of the IEEE/CVF
+Conference on Computer Vision and Pattern Recognition, pp. 27649–27660, 2025.
+NVIDIA. Cosmos-Predict2: World simulation model for physical AI, 2025a. URL https://
+github.com/nvidia-cosmos/cosmos-predict2.
+NVIDIA.
+PBench: A physical AI benchmark for world models, 2025b.
+URL https://
+huggingface.co/datasets/nvidia/PBench.
+NVIDIA, Niket Agarwal, Arslan Ali, et al. Cosmos world foundation model platform for physical AI.
+arXiv preprint arXiv:2501.03575, 2025.
+Maxime Oquab, Timothée Darcet, Théo Moutakanni, Huy Vo, et al. DINOv2: Learning robust visual
+features without supervision. Transactions on Machine Learning Research, 2024.
+Jing-Cheng Pang, Nan Tang, Kaiyuan Li, Yuting Tang, Xin-Qiang Cai, Zhen-Yu Zhang,
+Gang Niu, Masashi Sugiyama, and Yang Yu.
+Learning view-invariant world models for
+visual robotic manipulation.
+In International Conference on Learning Representations,
+2025. URL https://proceedings.iclr.cc/paper_files/paper/2025/hash/
+8882d370cdafec9885b918a8cfac642e-Abstract-Conference.html.
+Physical Intelligence, Kevin Black, Noah Brown, James Darpinian, Karan Dhabalia, Danny Driess,
+Adnan Esmail, Michael Equi, Chelsea Finn, Niccolo Fusai, Manuel Y. Galliker, Dibya Ghosh,
+Lachy Groom, Karol Hausman, Brian Ichter, Szymon Jakubczak, Tim Jones, Liyiming Ke, Devin
+LeBlanc, Sergey Levine, Adrian Li-Bell, Mohith Mothukuri, Suraj Nair, Karl Pertsch, Allen Z.
+Ren, Lucy Xiaoyang Shi, Laura Smith, Jost Tobias Springenberg, Kyle Stachowicz, James Tanner,
+Quan Vuong, Homer Walke, Anna Walling, Haohuan Wang, Lili Yu, and Ury Zhilinsky. π0.5: A
+vision-language-action model with open-world generalization. arXiv preprint arXiv:2504.16054,
+2025. doi: 10.48550/arXiv.2504.16054. URL https://arxiv.org/abs/2504.16054.
+Yiran Qin, Zhelun Shi, Jiwen Yu, et al. WorldSimBench: Towards video generation models as world
+simulators. In International Conference on Machine Learning, 2025.
+Julian Quevedo, Ansh Kumar Sharma, Yixiang Sun, Varad Suryavanshi, Percy Liang, and Sherry
+Yang. WorldGym: World model as an environment for policy evaluation. In International
+Conference on Learning Representations, 2026.
+Nikhila Ravi, Valentin Gabeur, Yuan-Ting Hu, Ronghang Hu, Chaitanya Ryali, Tengyu Ma, Haitham
+Khedr, Roman Rädle, Chloe Rolland, Laura Gustafson, Eric Mintun, Junting Pan, Kalyan Vasudev
+Alwala, Nicolas Carion, Chao-Yuan Wu, Ross Girshick, Piotr Dollár, and Christoph Feichtenhofer.
+SAM 2: Segment anything in images and videos. In International Conference on Learning
+Representations, 2025.
+Dominik Schmidt and Minqi Jiang. Learning to act without actions. In International Conference on
+Learning Representations, 2024.
+Ziyu Shan, Zhenyu Wu, Xiaofeng Wang, Zheng Zhu, and Ziwei Wang. DVG-WM: Disentangled
+video generation enables efficient embodied world model for robotic manipulation. In European
+Conference on Computer Vision, 2026. URL https://arxiv.org/abs/2606.32028.
+14
+
+
+Preprint
+Yu Shang, Zhuohang Li, Yiding Ma, Weikang Su, Xin Jin, Ziyou Wang, Lei Jin, Xin Zhang, Yinzhou
+Tang, Haisheng Su, Chen Gao, Wei Wu, Xihui Liu, Dhruv Shah, Zhaoxiang Zhang, Zhibo Chen,
+Jun Zhu, Yonghong Tian, Tat-Seng Chua, Wenwu Zhu, and Yong Li. WorldArena: A unified
+benchmark for evaluating perception and functional utility of embodied world models. AI Open, 7:
+208–226, 2026a. doi: 10.1016/j.aiopen.2026.07.002.
+Yu Shang, Yinzhou Tang, Yiding Ma, Zhuohang Li, Lei Jin, Weikang Su, Xin Jin, Zhaolu Wang,
+Ziyou Wang, Xin Zhang, Haisheng Su, Weizhen He, Wei Wu, Haoyi Duan, Gordon Wetzstein,
+Xihui Liu, Dhruv Shah, Zhaoxiang Zhang, Zhibo Chen, Jun Zhu, Yonghong Tian, Tat-Seng
+Chua, Wenwu Zhu, Chen Gao, and Yong Li. WorldArena 2.0: Extending embodied world model
+benchmarking on modality, functionality and platform, 2026b. URL https://arxiv.org/
+abs/2605.17912.
+Kaiyue Sun, Kaiyi Huang, Xian Liu, Yue Wu, Zihan Xu, Zhenguo Li, and Xihui Liu.
+T2V-
+CompBench: A comprehensive benchmark for compositional text-to-video generation. In Proceed-
+ings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 8406–8416,
+2025. doi: 10.1109/CVPR52734.2025.00787.
+Luming Tang, Menglin Jia, Qianqian Wang, Cheng Perng Phoo, and Bharath Hariharan. Emergent
+correspondence from image diffusion. In Advances in Neural Information Processing Systems,
+2023.
+Team Wan, Ang Wang, Baole Ai, et al. Wan: Open and advanced large-scale video generative
+models. arXiv preprint arXiv:2503.20314, 2025. doi: 10.48550/arXiv.2503.20314. URL https:
+//arxiv.org/abs/2503.20314.
+Zachary Teed and Jia Deng. RAFT: Recurrent all-pairs field transforms for optical flow. In European
+Conference on Computer Vision, 2020.
+Manuel Traub, Frederic Becker, Sebastian Otte, and Martin V. Butz. Learning object permanence
+from videos via latent imaginations. In International Conference on Artificial Neural Networks,
+pp. 223–240, 2024. doi: 10.1007/978-3-031-72338-4_16.
+Thomas Unterthiner, Sjoerd van Steenkiste, Karol Kurach, Raphaël Marinier, et al. Towards accurate
+generative models of video: A new metric & challenges. arXiv preprint arXiv:1812.01717, 2018.
+Aaron van den Oord, Yazhe Li, and Oriol Vinyals. Representation learning with contrastive predictive
+coding. arXiv preprint arXiv:1807.03748, 2018.
+Kentaro Wada, Shingo Kitagawa, Kei Okada, and Masayuki Inaba.
+Instance segmentation of
+visible and occluded regions for finding and picking target from a pile of objects. In 2018
+IEEE/RSJ International Conference on Intelligent Robots and Systems, pp. 2048–2055, 2018. doi:
+10.1109/IROS.2018.8593690.
+Junyi Wu, Van Nguyen Nguyen, Benjamin Planche, Jiachen Tao, Changchang Sun, Zhongpai Gao,
+Zhenghao Zhao, Anwesa Choudhuri, Gengyu Zhang, Meng Zheng, Feiran Wang, Terrence Chen,
+Yan Yan, and Ziyan Wu. Consistent instance field for dynamic scene understanding. In Proceedings
+of the IEEE/CVF Conference on Computer Vision and Pattern Recognition, pp. 3783–3793,
+2026.
+URL https://openaccess.thecvf.com/content/CVPR2026/html/Wu_
+Consistent_Instance_Field_for_Dynamic_Scene_Understanding_CVPR_
+2026_paper.html.
+Yuting Xiao, Yanyu Xu, Ziming Zhong, Weixin Luo, Jiawei Li, and Shenghua Gao. Amodal
+segmentation based on visible region segmentation and shape prior. Proceedings of the AAAI
+Conference on Artificial Intelligence, 35(4):2995–3003, 2021. doi: 10.1609/aaai.v35i4.16407.
+Zeqi Xiao, Yushi Lan, Yifan Zhou, Wenqi Ouyang, Shuai Yang, Yanhong Zeng, and Xingang
+Pan. WorldMem: Long-term consistent world simulation with memory. In Advances in Neural
+Information Processing Systems, volume 38, 2025a. doi: 10.52202/085713-1659.
+Zhihan Xiao, Lin Liu, Yixin Gao, Xiaopeng Zhang, Haoxuan Che, Songping Mai, and Qi Tian.
+LoVoRA: Text-guided and mask-free video object removal and addition with learnable object-
+aware localization. arXiv preprint arXiv:2512.02933, 2025b. doi: 10.48550/arXiv.2512.02933.
+URL https://arxiv.org/abs/2512.02933.
+15
+
+
+Preprint
+Sherry Yang, Yilun Du, Seyed Ghasemipour, Jonathan Tompson, Leslie Kaelbling, Dale Schuurmans,
+and Pieter Abbeel. Learning interactive real-world simulators. In International Conference on
+Learning Representations, 2024a.
+Shuai Yang, Yifan Zhou, Ziwei Liu, and Chen Change Loy. FRESCO: Spatial-temporal correspon-
+dence for zero-shot video translation. In IEEE/CVF Conference on Computer Vision and Pattern
+Recognition, 2024b.
+Zhuoyi Yang, Jiayan Teng, Wendi Zheng, et al. CogVideoX: Text-to-video diffusion models with an
+expert transformer. In International Conference on Learning Representations, 2025.
+Seonghyeon Ye, Joel Jang, Byeongguk Jeon, Se June Joo, Jianwei Yang, Baolin Peng, Ajay Man-
+dlekar, Reuben Tan, Yu-Wei Chao, Bill Yuchen Lin, Lars Liden, Kimin Lee, Jianfeng Gao, Luke
+Zettlemoyer, Dieter Fox, and Minjoon Seo. Latent action pretraining from videos. In International
+Conference on Learning Representations, 2025.
+Yu Yuan, Xijun Wang, Tharindu Wickremasinghe, Zeeshan Nadir, Bole Ma, and Stan-
+ley H. Chan.
+NewtonGen:
+Physics-consistent and controllable text-to-video generation
+via neural newtonian dynamics.
+In International Conference on Learning Representations,
+2026. URL https://proceedings.iclr.cc/paper_files/paper/2026/hash/
+15a321fbfc19fce9b325ec6e77dfb597-Abstract-Conference.html.
+Xunli Zeng, Xiaoli Liu, and Jianqin Yin. Amodal segmentation just like doing a jigsaw. Applied
+Sciences, 12(8):4061, 2022. doi: 10.3390/app12084061.
+Guanqi Zhan, Chuanxia Zheng, Weidi Xie, and Andrew Zisserman. Amodal ground truth and
+completion in the wild. In Proceedings of the IEEE/CVF Conference on Computer Vision and
+Pattern Recognition, pp. 28003–28013, 2024.
+Junyi Zhang, Charles Herrmann, Junhwa Hur, Luisa Polania Cabrera, et al. A tale of two features:
+Stable diffusion complements DINO for zero-shot semantic correspondence. In Advances in
+Neural Information Processing Systems, 2023.
+Haoyu Zhen, Qiao Sun, Hongxin Zhang, Junyan Li, Siyuan Zhou, Yilun Du, and Chuang Gan.
+Learning 4D embodied world models. In Proceedings of the IEEE/CVF International Conference
+on Computer Vision, pp. 5337–5347, 2025.
+Zirui Zheng, Jiaqian Yu, Xiongfeng Peng, Jun Shi, Mingyi Li, Chao Zhang, Weiming Li, Dong
+Wang, Huchuan Lu, and Xu Jia. Mem-World: Memory-augmented action-conditioned world
+models for persistent robot manipulation. In Conference on Robot Learning, 2026. URL https:
+//arxiv.org/abs/2606.18960.
+Kaichen Zhou, Yuzhen Chen, Fangneng Zhan, Hang Hua, Grace Chen, Xinhai Chang, Ao Qu,
+Yilun Du, Zhuang Liu, Paul Pu Liang, and Mengyu Wang. GEM-4D: Geometry-enhanced video
+world models for robot manipulation. In European Conference on Computer Vision, 2026. URL
+https://arxiv.org/abs/2605.22882.
+Siyuan Zhou, Yilun Du, Jiaben Chen, et al. RoboDreamer: Learning compositional world models for
+robot imagination. In International Conference on Machine Learning, 2024.
+Brianna Zitkovich, Tianhe Yu, Sichun Xu, Peng Xu, Ted Xiao, Fei Xia, Jialin Wu, Paul Wohlhart,
+Stefan Welker, Ayzaan Wahid, et al. RT-2: Vision-language-action models transfer web knowledge
+to robotic control. In Conference on Robot Learning, volume 229, pp. 2165–2183, 2023.
+16
+
+
+Preprint
+APPENDIX OVERVIEW
+This supplementary material provides additional details and results for EVEWORLD, organized as
+follows:
+• Appendix A: Model Laziness and MLR
+A.1 MLR: Comparison with Existing Evaluation Metrics
+A.2 Scope and Limitations of MLR
+A.3 Robustness and Sensitivity Analysis of MLR
+A.4 Cross-Model Evaluation of MLR
+A.5 Cross-Domain Evaluation of MLR
+A.6 Optional VLM Evaluation
+• Appendix B: Method Details
+B.1 IGR Construction
+B.2 TIA Alignment
+B.3 Joint Training and Inference
+• Appendix C: Additional Experiments and Analysis
+C.1 Implementation Details
+C.2 IGR Ablation and Duplicate Restoration
+C.3 Evaluation Stability
+C.4 Training and Long-Horizon Behavior
+• Appendix D: Exploration of Alternative Approaches
+D.1 PhysicsLatent
+D.2 EAG
+D.3 LAD-LoRA
+D.4 Causal Frontier
+D.5 ICH-D
+• Appendix E: Generalization Results
+E.1 Generalization on EWMBench
+E.2 FlowWAM Checkpoint Robustness
+• Appendix F: Qualitative Results
+F.1 Instance Consistency
+F.2 Cross-Frame Consistency
+F.3 Target Evolution Comparison
+• Appendix G: Related Work
+A
+MODEL LAZINESS AND MLR
+MLR detects persistent deviations from the initial target-instance count N0, while under-counts
+supported by robot-induced occlusion are exempted and all over-counts are retained. Appendix C.2
+tests recovery from an injected count error. Appendix A.1 details the evaluation protocol and occlusion
+check; Appendices A.4–A.5 cover model, detector, and domain variation.
+A.1
+MLR: COMPARISON WITH EXISTING EVALUATION METRICS
+Existing evaluations expose signals related to object persistence and quantity, but differ in both their
+evaluation anchors and aggregation units.
+RBench. RBench evaluates spontaneous entity emergence and disappearance as part of Physical-
+Semantic Plausibility (PSS), together with other physical-semantic violations such as floating, pene-
+tration, and non-contact attachment (Deng et al., 2026). After normalization, PSS is combined with
+17
+
+
+Preprint
+Task-Adherence Consistency (TAC) into the Task Completion score:
+TCRBench = PSS + TAC
+2
+.
+(8)
+Thus, appearance and disappearance failures contribute to a broader assessment of physical plausibility
+and task correctness rather than forming an independent rollout-level target-instance consistency
+metric. In contrast, MLR isolates target-instance consistency as a dedicated evaluation unit, making
+instance-consistency failures directly measurable rather than subsuming them into a broader composite
+score.
+WFM-Eval. WFM-Eval explicitly diagnoses object hallucination and temporal inconsistency by
+comparing a generated video ˆV with a ground-truth reference video V ∗(Khose et al., 2026). It
+distinguishes phantom appearance, phantom disappearance, position drift, and frame jump. Let npa,
+npd, ndr, and njp denote the numbers of these detected events over M generated frames and K
+tracked objects. Its Object Hallucination Rate (OHR) and Harm-weighted Severity Score (HSS) are
+OHRWFM = npa + npd
+M
+,
+HSSWFM = min
+
+1,
+P
+e∈E w(e)
+MK
+
+,
+(9)
+where w(e) assigns event-dependent severity weights. These metrics provide fine-grained reference-
+grounded diagnostics. MLR instead anchors evaluation to the observed initial target state and
+therefore requires no ground-truth future, enabling target-instance consistency to be evaluated when
+only the conditioning observation and generated rollout are available.
+T2V-CompBench. Generative numeracy in T2V-CompBench is prompt-anchored (Sun et al., 2025).
+GroundingDINO counts each prompted object class in every evaluated frame; a class receives score 1
+if the detected quantity matches the quantity specified in the text prompt and 0 otherwise. The frame
+score averages over object classes, and the video score averages over frames. This rule can be written
+as
+Snum = 1
+T
+T
+X
+t=1
+1
+J
+J
+X
+j=1
+I
+
+ˆnt,j = nprompt
+j
+
+,
+(10)
+where ˆnt,j is the detected count of object class j at frame t, nprompt
+j
+is its prompt-specified quantity,
+and J is the number of queried object classes. This metric therefore evaluates frame-wise agreement
+with prompt-specified quantities rather than target-instance consistency with the observed target
+population throughout an interaction. MLR instead derives the expected target count from the
+conditioning observation itself, allowing target-instance consistency to be evaluated even when the
+instruction does not explicitly specify a quantity.
+RoboWM-Bench. RoboWM-Bench evaluates a different property: embodied executability (Jiang
+et al., 2026). Predicted human-hand or robotic videos are converted into executable actions through
+human-centric retargeting or a robot-centric inverse dynamics model (IDM), respectively, and the
+resulting actions are executed in simulation. Evaluation combines step-level checks at semantically
+meaningful action nodes with final task-level success. If Cr denotes whether key action node r
+satisfies its required interaction and dynamical constraints and G denotes achievement of the final
+task objective, its stated task-success criterion can be summarized as
+Stask = I
+" R
+^
+r=1
+Cr
+!
+∧G
+#
+.
+(11)
+This protocol measures whether generated behavior can be translated into successful embodied
+execution rather than directly measuring target-instance consistency in the generated rollout. MLR
+provides a complementary model-side diagnostic by directly identifying persistent target-count
+violations in the generated video, without requiring action decoding or simulator execution.
+Positioning and Design Advantages of MLR.
+Taken together, these evaluations address comple-
+mentary aspects of video and embodied-world-model quality but rely on different evaluation anchors.
+RBench embeds appearance and disappearance within broader physical and task-level assessment;
+WFM-Eval evaluates hallucination events relative to a ground-truth future; T2V-CompBench evaluates
+quantities explicitly specified by the prompt; and RoboWM-Bench assesses downstream embodied
+18
+
+
+Preprint
+execution. MLR is designed for the complementary regime in which the conditioning observation
+itself defines the expected target count and no reference future is assumed. It therefore provides
+four properties that are particularly useful for embodied manipulation evaluation: it is initial-state
+anchored, because the observed initial target count N0 is obtained directly from the conditioning
+state; reference-free, because no ground-truth future is required; rollout-level and persistence-aware,
+because sustained violations are distinguished from isolated frame-level fluctuations; and occlusion-
+aware, because robot-supported under-counts are explicitly exempted. Together, these properties
+make MLR a dedicated diagnostic for persistent target-instance consistency failures in embodied
+world-model rollouts.
+We operationalize MLR as follows. For DreamGenBench, eligibility is determined once from the
+fixed conditioning frame with GroundingDINO (Liu et al., 2024a) and the same target query, yielding
+the shared set U63 used for every model. GroundingDINO then counts target instances at T uniformly
+sampled future timestamps in each generated video. Spatially redundant detections are merged; items
+with no detectable target in the conditioning frame are excluded from the shared set. We denote the
+eligible set by
+D+ = {x ∈D : N0(x) > 0}.
+We first identify deviations from the initial target-instance count N0. Over-counts, i.e., Nt > N0, are
+always retained as duplication evidence. For under-counts, i.e., Nt < N0, we further check whether
+the missing target is supported by robot-induced occlusion.
+SAM2 (Ravi et al., 2025) tracks each target instance across the rollout. When the current target mask
+of an instance is unavailable, we use its most recent reliable mask as the reference target region.
+GroundingDINO localizes the robot in the current frame, and SAM2 converts the detected robot
+boxes into an occluder mask M robot
+t
+. For each missing target instance i, we compute the target–robot
+overlap ratio
+rocc
+i,t =
+c
+M target
+i,t
+∩M robot
+t
+
+c
+M target
+i,t
+
+,
+(12)
+where c
+M target
+i,t
+denotes the reliable target reference region used for the occlusion check.
+Motivated by prior amodal-segmentation criteria (Xiao et al., 2021; Zeng et al., 2022; Zhan et al.,
+2024) and target-normalized occlusion reasoning in robotic manipulation (Wada et al., 2018), we set
+τocc = 0.15 and treat an under-count as occlusion-supported only if rocc
+i,t ≥τocc for every missing
+target instance; Appendix A.3 confirms that the comparison is robust to nearby thresholds. Such
+under-counts are excluded from violation evidence, whereas all other under-counts and all over-counts
+are retained. Let ot(x) = 1 indicate an occlusion-supported under-count. We define the resulting
+evaluation count as
+e
+Nt(x) =
+N0(x),
+ot(x) = 1,
+Nt(x),
+otherwise.
+(13)
+For each eligible video, an MLR event is recorded when the adjusted count deviates from N0 at two
+consecutive sampled timestamps:
+e(x) = I
+h
+∃t ∈{1, . . . , T −1} : e
+Nt(x)̸ = N0(x) ∧e
+Nt+1(x)̸ = N0(x)
+i
+,
+MLR = 100
+|D+|
+X
+x∈D+
+e(x).
+(14)
+Unlike frame-wise count agreement, MLR records a violation only when the inconsistency persists at
+the rollout level. An occlusion-supported under-count resets the persistence criterion, whereas a target
+that remains missing after the robot occluder moves away again provides disappearance evidence.
+Requiring two consecutive violating timestamps suppresses isolated detector errors while retaining
+sustained duplication and disappearance as consistency failures. All detector, query, occlusion-
+threshold, and persistence settings are fixed across models.
+Beyond the scalar MLR value, the same event definition localizes each violation in time. For an
+MLR-positive rollout, we record the first persistent violation as its onset and analyze how long the
+19
+
+
+Preprint
+count deviation persists. These diagnostics distinguish short detector fluctuations from sustained
+consistency failures and enable direct inspection of the corresponding generated segment.
+Algorithm 1 Occlusion-aware Model Laziness Rate evaluation. All detector, query, occlusion,
+and persistence settings are fixed across models.
+Input: generated set D, target-entity query q(c), fixed detector G, sampled timestamp set T .
+Output: MLR, detector coverage, and per-video event labels.
+1. For each video x, run G with q(c) at all sampled timestamps, merge spatially redundant target detections,
+and obtain Nt(x). If N0(x) = 0, mark x as ineligible.
+2. If Nt(x) > N0(x), retain the deviation as duplication evidence. If Nt(x) < N0(x), proceed to the
+occlusion check.
+3. Track target instances with SAM2 and obtain the robot occluder mask in the current frame. For each missing
+instance, compute rocc
+i,t using Equation 12.
+4. Exempt an under-count only if every missing target instance satisfies rocc
+i,t ≥0.15. Set e
+Nt(x) = N0(x) for
+such timestamps and e
+Nt(x) = Nt(x) otherwise.
+5. For every eligible video, set e(x) = 1 iff e
+Nt(x)̸ = N0(x) at two consecutive sampled timestamps; otherwise
+set e(x) = 0.
+6. Report MLR = 100 P
+x∈D+ e(x)/|D+| and coverage = 100|D+|/|D|, together with event and eligible
+counts.
+Figure 5:
+Example of occlusion-aware MLR evaluation. The rollout shows target detections
+and robot occlusion across sampled timestamps. Under-counts supported by sufficient target–robot
+overlap are excluded from violation evidence, whereas under-counts that persist without sufficient
+overlap are retained as target-disappearance evidence.
+Occlusion example.
+Figure 5 illustrates how the occlusion check distinguishes temporary robot
+occlusion from target disappearance. During sufficient robot–target overlap, a missing target is
+excluded from violation evidence. Once the robot moves away, a target that remains missing is again
+treated as an under-count and contributes to an MLR event if the deviation persists across consecutive
+sampled timestamps.
+A.2
+SCOPE AND LIMITATIONS OF MLR
+MLR is designed for manipulation scenarios that require instance consistency, including grasping,
+transport, placement, and rearrangement, where the observed initial target count N0 is expected to
+remain unchanged throughout the interaction. The protocol does not assume N0 = 1 and therefore
+applies to scenes containing multiple instances of the manipulated target.
+20
+
+
+Preprint
+ Model Laziness 
+Success
+Task: Bring large block, medium block, and small block to the center using the left arm, the right arm, and the left arm.
+Figure 6: Examples of MLR counting. Red marks a persistent count violation retained by MLR.
+Green marks an under-count excluded by the occlusion-aware evaluation. A disappearance is counted
+only when under-count evidence persists outside occlusion-supported timestamps.
+Interactions that intentionally change the target-instance count, such as cutting, splitting, assembly,
+or disassembly, fall outside the current formulation because the expected target count can change as
+part of successful task execution. Evaluating such tasks would require an instruction-conditioned
+expected count rather than a fixed initial-state reference.
+MLR is also deliberately specific to target-instance consistency. Count-preserving failures, such as
+identity drift, deformation, or other changes that preserve the number of detected target instances, are
+not captured by MLR. These failures constitute a complementary form of temporal inconsistency and
+motivate the cross-frame supervision introduced by TIA.
+Task:Place the rectangular black eraser for whiteboards on the tray with rounded corners, then 
+set the mouse the rounded gray mouse next to the smooth black typing keyboard.
+EVEWorld (ours)
+Standard SFT  |   Model Laziness 
+Figure 7: Count-preserving cross-frame distortion. Red marks Standard SFT, where the target
+deforms despite preserving its instance count. Green marks EVEWORLD, which preserves target
+shape and temporal consistency.
+A.3
+ROBUSTNESS AND SENSITIVITY ANALYSIS OF MLR
+Because MLR is derived from automatic target counts, we examine its robustness to evaluation-time
+detection errors, robot-induced occlusion, and the temporal-persistence criterion. The final protocol
+combines spatial merging, occlusion-aware handling of under-counts, and temporal persistence, with
+all detector, query, and evaluation settings fixed across models.
+Detector and occlusion robustness.
+Spatial merging suppresses redundant detections of the same
+target, while the occlusion check prevents robot-induced under-counts from being misclassified
+21
+
+
+Preprint
+as target disappearance. Only under-counts are eligible for the occlusion exemption; over-counts
+are always retained as duplication evidence. An occlusion-supported under-count is treated as
+non-violating and resets temporal persistence, whereas a target that remains missing after the robot
+occluder moves away again provides disappearance evidence.
+Table 10 contrasts the raw count-deviation rate with the final MLR protocol. The substantial difference
+between raw detector deviations and the final event rate illustrates the importance of spatial merging,
+occlusion-aware filtering, and temporal persistence rather than treating every frame-level count
+mismatch as a physical-consistency failure.
+Table 10: Detector calibration for MLR. Detector v1 denotes the raw count-deviation rate before
+spatial merging, occlusion-aware under-count handling, and temporal persistence. Peak dev. denotes
+the mean maximum raw count deviation, maxt |Nt −N0|, over eligible videos. MLR and Events /
+elig. are computed using the final occlusion-aware protocol.
+Model / config.
+Detector v1 (%)
+MLR (%) ↓
+Events / elig.
+Peak dev.
+GigaWorld-0 (Pretrained)
+62.1
+12.70
+8 / 63
+0.23
+Official GR1 Fine-tune
+68.8
+7.94
+5 / 63
+0.14
+Standard SFT
+63.2
+11.11
+7 / 63
+0.27
+EVEWorld (step 100)
+70.4
+4.76
+3 / 63
+0.17
+EVEWorld (seed 6666, step 250)
+66.7
+3.17
+2 / 63
+0.15
+EVEWorld (u3, step 300)
+68.0
+3.17
+2 / 63
+0.03
+EVEWorld (step 250, main)
+70.4
+1.59
+1 / 63
+0.11
+Temporal persistence.
+For each eligible video, we record whether an adjusted count deviation
+e
+Nt(x)̸ = N0(x) persists for at least k consecutive sampled timestamps; k=2 is the default MLR rule.
+This persistence requirement suppresses isolated detector fluctuations while retaining sustained target
+duplication or disappearance.
+Figure 8 reports the persistence length and cumulative onset of occlusion-aware target-instance
+consistency violations across models. The sole violation under EVEWORLD is confined to short
+persistence lengths, whereas violations in the general I2V baselines extend to larger k.
+1
+2
+3
+4
+5
+6
+7
+8
+Duplicate persists ≥k sampled frames
+0
+10
+20
+30
+40
+% videos
+(a) Duplication persistence ↓
+Sampled frame t
+0
+10
+20
+30
+40
+% videos ever duplicated
+(b) Duplication onset over time ↓
+CogVideoX
+Wan-TI2V
+Wan-A14B
+Cosmos
+GigaWorld-0
+Standard SFT
+EVEWorld
+CogVideoX
+Wan-TI2V
+Wan-A14B
+Cosmos
+GigaWorld-0
+Standard SFT
+EVEWorld
+0
+3
+6
+9
+12
+15
+18
+21
+Figure 8: Persistence of instance consistency violations across models. (a) Fraction of detector-
+eligible DreamGenBench videos with occlusion-aware count violations lasting at least k consecutive
+sampled timestamps; (b) cumulative fraction of videos that have exhibited such a violation by each
+sampled timestamp.
+Sensitivity to occlusion and persistence thresholds.
+The main protocol sets τocc = 0.15, moti-
+vated by prior amodal-segmentation protocols that use approximately 15–17% occluded-area criteria
+to identify nontrivial occlusion (Xiao et al., 2021; Zeng et al., 2022; Zhan et al., 2024), and by
+target-normalized inter-instance occlusion reasoning in robotic manipulation (Wada et al., 2018).
+We recompute MLR on the same shared set U63 with τocc ∈{0.10, 0.15, 0.20, 0.25} and k ∈
+{1, 2, 3}, while keeping all generated videos, detections, tracks, masks, queries, and eligible items
+22
+
+
+Preprint
+fixed. Across all configurations, EVEWORLD maintains a lower MLR than Standard SFT, with
+relative reductions ranging from 70.0% to 88.9%. Under the main setting, MLR decreases from 7/63
+(11.11%) to 1/63 (1.59%), corresponding to an 85.7% relative reduction.
+Lower τocc exempts more under-counts as robot-supported occlusions, whereas larger τocc retains
+more under-counts as MLR candidates; increasing k removes short-lived deviations. Neither change
+reverses the comparison between Standard SFT and EVEWORLD.
+Table 11: Sensitivity of MLR to the occlusion-overlap threshold τocc and persistence require-
+ment k. Each cell reports events / 63 (MLR in %). All settings use the same eligible set U63. The
+main setting, τocc = 0.15 and k = 2, is shaded.
+Standard SFT
+EVEWorld
+τocc
+k = 1
+k = 2
+k = 3
+k = 1
+k = 2
+k = 3
+0.10
+11 / 63 (17.46)
+5 / 63 (7.94)
+4 / 63 (6.35)
+2 / 63 (3.17)
+1 / 63 (1.59)
+1 / 63 (1.59)
+0.15
+14 / 63 (22.22)
+7 / 63 (11.11)
+5 / 63 (7.94)
+3 / 63 (4.76)
+1 / 63 (1.59)
+1 / 63 (1.59)
+0.20
+17 / 63 (26.98)
+9 / 63 (14.29)
+6 / 63 (9.52)
+3 / 63 (4.76)
+1 / 63 (1.59)
+1 / 63 (1.59)
+0.25
+20 / 63 (31.75)
+10 / 63 (15.87)
+7 / 63 (11.11)
+4 / 63 (6.35)
+3 / 63 (4.76)
+1 / 63 (1.59)
+A.4
+CROSS-MODEL EVALUATION OF MLR
+We apply the same occlusion-aware MLR protocol across model families on DreamGenBench. For
+the controlled cross-model comparison, all event labels are evaluated on the same shared set of
+63 detector-eligible items. Table 12 reports event counts, eligible counts, 95% Wilson confidence
+intervals, and coverage.
+Across the evaluated model families, MLR ranges from 7.94–28.57%; CogVideoX1.5, Wan2.2-
+TI2V, Cosmos-Predict2, and pretrained GigaWorld-0 reach 28.57%, 17.46%, 14.29%, and 12.70%,
+respectively. These results show that persistent target-instance consistency failures occur across
+multiple video-generation and embodied-world-model families rather than being specific to Standard
+SFT or the GigaWorld backbone. On the same shared evaluation set, EVEWORLD attains an MLR
+of 1.59%.
+Table 12: Cross-model MLR on DreamGenBench. Events / eligible denotes the number of Model
+Laziness cases over the shared 63-item set. 95% Wilson CI denotes the confidence interval of MLR,
+and Coverage denotes the fraction of detector-eligible prompts.
+Model
+Events / eligible
+MLR (%) ↓
+95% Wilson CI
+Coverage (%)
+GigaWorld-0 (Pretrained)
+8 / 63
+12.70
+[6.58, 23.11]
+50.00
+Official GR1 Fine-tune
+5 / 63
+7.94
+[3.44, 17.27]
+50.00
+Standard SFT
+7 / 63
+11.11
+[5.49, 21.20]
+50.00
+Wan2.2-TI2V-5B
+11 / 63
+17.46
+[10.04, 28.62]
+50.00
+Wan2.2-I2V-A14B
+7 / 63
+11.11
+[5.49, 21.20]
+50.00
+CogVideoX1.5-5B-I2V
+18 / 63
+28.57
+[18.90, 40.70]
+50.00
+Cosmos-Predict2-2B
+9 / 63
+14.29
+[7.70, 24.97]
+50.00
+EVEWorld
+1 / 63
+1.59
+[0.28, 8.46]
+50.00
+A.5
+CROSS-DOMAIN EVALUATION OF MLR
+We further evaluate the same occlusion-aware MLR protocol on WorldArena 1.0 (Shang et al.,
+2026a) using the officially released evaluation code locally. An instruction-only parser first selects
+manipulation prompts with an identifiable target (817 of 1,000), after which we apply the same
+initial-frame eligibility rule and MLR protocol used on DreamGenBench.
+Table 13 reports the same cross-domain comparison as main-text Table 3, on the shared set of 157
+detector-eligible videos and with 95% Wilson confidence intervals for every MLR value. MLR
+decreases from 27.39% under Standard SFT to 13.38% under EVEWORLD, showing that the
+23
+
+
+Preprint
+reduction in persistent target-instance consistency failures extends beyond the DreamGen domain.
+On this shared set the two baselines coincide at 27.39% while violating on different videos.
+Table 13: Cross-domain MLR on WorldArena 1.0. Results use the same occlusion-aware protocol
+and the same shared set of 157 detector-eligible videos as main-text Table 3, with 95% Wilson
+confidence intervals.
+Model
+Events / eligible
+MLR (%) ↓
+95% Wilson CI
+Coverage (%)
+GigaWorld-0 (Pretrained)
+43 / 157
+27.39
+[21.02, 34.84]
+19.22
+Standard SFT
+43 / 157
+27.39
+[21.02, 34.84]
+19.22
+EVEWorld
+21 / 157
+13.38
+[8.92, 19.58]
+19.22
+A.6
+OPTIONAL VLM EVALUATION
+For settings where a capable multimodal model is available, VLM-based temporal reasoning can
+provide an optional review of detector-based MLR events. This review is auxiliary: it neither
+replaces nor modifies the frozen detector-based MLR protocol, nor does it change the MLR labels
+or values reported in this paper. Because VLMs differ in visual and temporal reasoning capability,
+their judgments are treated as supporting evidence rather than ground truth, with manual review for
+ambiguous cases. Our qualitative distortion analysis uses the same framework with additional manual
+verification; examples are provided in Appendix F.3.
+VLM Inputs and Outputs.
+When reviewing the same evaluation set, the eligible set D+, target
+query q(c), and initial target count N0 are inherited from the frozen primary MLR protocol. The
+VLM can be provided with the conditioning frame, instruction, target query, N0, frames aligned with
+the MLR sampling timeline, and a denser temporal view of the rollout. A JSON schema can constrain
+the output, including event type, interval, supporting frames, visibility explanation, and confidence.
+MLR Judgment.
+For each candidate event, the VLM reviews the temporal evidence and returns
+the structured judgment above. Duplication and disappearance are mapped back to the fixed MLR
+sampling timeline and counted only when they satisfy the original persistence rule. Benign visibility
+loss, including supported robot or non-robot occlusion, temporary out-of-view motion, cropping, or
+other temporally supported visibility changes, is flagged as potential false positives of the primary
+detector-based MLR protocol and reported separately; they do not alter the primary MLR values.
+Distortion is excluded from MLR because the target count is preserved, but retained as a separate
+cross-frame consistency failure. Uncertain cases can be passed to manual review, with repeated
+judgments or a refutation query optionally used to check decision stability.
+B
+METHOD DETAILS
+B.1
+IGR CONSTRUCTION
+IGR constructs a corrupted–clean training pair from each valid target trajectory. An offline language
+parser extracts the target, source, and destination from the instruction. GroundingDINO (Liu et al.,
+2024a) localizes the target in sampled frames, and temporal association links valid detections into a
+trajectory. IGR then extracts an instance patch p and pastes one additional target instance (Ghiasi
+et al., 2021) at a location Ωthat stays inside the frame, does not overlap the tracked target, and passes
+the occupancy and collision gates. If no valid paste region exists, we use the clean video as both input
+and target. With x the clean video, the corrupted input and the restoration target are
+˜x = Paste(x, p, Ω),
+z = VAE(x),
+˜z = VAE(˜x).
+(15)
+The model receives ˜z and reconstructs z. We use the final v4 restoration-region annotation shown
+in Figure 9 to define a binary spatial emphasis mask Mrest. The mask covers the target trajectory
+and task-relevant interaction regions around the source, destination, robot arm, and gripper, and
+additionally includes the actual pasted-instance region. Let
+M(p) = I[p ∈Rv4 ∪Rpaste] ,
+(16)
+24
+
+
+Preprint
+where p indexes a spatiotemporal latent location. Before normalization, we define
+W(p) = 1 + 2M(p),
+(17)
+so that restoration-related locations receive three times the reconstruction weight of ordinary locations.
+We then normalize the map to unit mean,
+ˆW(p) =
+W(p)
+1
+|Ωlat|
+P
+q∈Ωlat W(q),
+(18)
+where Ωlat denotes all spatiotemporal locations in the latent grid. This normalization preserves the
+3:1 relative weighting while keeping the global loss scale unchanged.
+For DreamGen training, we propose copy–paste corruption with probability pdup = 0.5. A proposal is
+applied only when the target trajectory and paste region pass the localization, occupancy, and collision
+gates; otherwise the sample falls back to the clean input. Consequently, the realized corrupted-sample
+fraction is lower than the proposal probability and is determined jointly by pdup and the feasibility
+gates.
+Algorithm 2 Offline construction of an IGR supervision pair. Invalid or unselected corruptions
+fall back to the clean training example.
+Input: clean video x, instruction c, corruption probability pdup, offline parser P, grounder G.
+Output: corrupted input ˜x, clean target x, and normalized regional weight map ˆ
+W.
+1. Parse (target, source, destination) ←P(c); return the clean example if the parse is invalid.
+2. Ground the target on sampled frames with G and temporally associate valid detections into a trajectory T ;
+return the clean example if the confidence or continuity gate fails.
+3. Draw the corruption decision with probability pdup; return the clean example if corruption is not selected,
+otherwise extract a target patch from a reliable trajectory observation.
+4. Enumerate paste regions that remain in-frame, do not overlap the tracked target, and satisfy the occupancy
+and collision gates; return the clean example if this set is empty.
+5. Sample a valid region Ω, paste the additional instance into a copy of the video to obtain ˜x, and retain the
+original video x as the restoration target.
+6. Assign weight 3 to the corrupted interaction region and weight 1 elsewhere, then normalize the resulting
+map to unit mean to obtain ˆ
+W.
+Figure 9:
+Regional weighting in IGR. The final v4 restoration region and the actual pasted-
+instance region receive three times the reconstruction weight of ordinary regions before unit-mean
+normalization.
+Spatial-Weight Design Selection.
+We compared several spatial-emphasis designs before fixing the
+final IGR weighting. First, we tested a multi-level map that assigned different relative weights to the
+25
+
+
+Preprint
+Table 14:
+Comparison of spatial-weight designs for IGR. We vary both the spatial support
+of restoration supervision and its relative weighting strength. Legacy uses the original five-level
+weighting, while the remaining variants use binary weighting. Path+Loc restricts supervision to the
+target trajectory and source/destination regions; Interaction additionally covers robot-arm, gripper,
+and other manipulation-relevant regions. Coverage denotes the fraction of spatiotemporal latent
+locations assigned an emphasized restoration weight. MLR and IF are both reported in percentages,
+where lower MLR and higher IF are better. The Development columns compare candidate designs
+under a shared internal development protocol and are not directly comparable to the final results
+reported in the main text.
+Spatial Support
+Relative Weight
+Coverage
+Development
+Design
+Path/Loc.
+Arm/Grip.
+Paste
+Base
+Emph.
+Median
+MLR ↓
+IF ↑
+Legacy multi-level
+✓
+✓
+✓
+0.5
+2/3/4/6
+0.2679
+2.18
+60.31
+Binary-3
+✓
+✓
+✓
+1
+3
+0.2685
+2.21
+60.26
+Path+Loc-2x
+✓
+✓
+1
+2
+0.2380
+3.34
+59.82
+Path+Loc-3x
+✓
+✓
+1
+3
+0.2147
+3.08
+59.96
+Interaction-2x
+✓
+✓
+✓
+1
+2
+0.5361
+2.06
+60.42
+Interaction-3x
+✓
+✓
+✓
+1
+3
+0.5361
+1.94
+60.57
+target path, destination, vacated foreground, gripper, distractors, and pasted instance, using levels of
+0.5/2/3/4/6. We also tested a simpler 3× mask restricted to the target path and locations. The latter
+was more sensitive to incomplete localization because restoration errors are not confined to these two
+geometric regions: they can also occur near the gripper, along the robot-arm motion corridor, and
+around the source and destination regions.
+We therefore refined a broader binary restoration mask while keeping a single emphasis factor. The
+v1 annotation covers the arm–object interaction region broadly; v2 removes irrelevant background-
+person regions and tightens the foreground support; and v4 corrects the remaining missed arm regions
+identified during annotation inspection. Table 14 reports the resulting coverage statistics. In our
+development comparisons, the multi-level weighting and the binary 3× design yielded comparable
+average performance. We therefore adopt the simpler v4 binary weighting in the final model: ordinary
+locations receive relative weight 1, restoration-related locations receive relative weight 3, and the
+actual pasted-instance region uses the same relative weight 3. This design avoids excessively large
+local weights while retaining coverage of the regions in which duplicate-restoration errors can arise.
+B.2
+TIA ALIGNMENT
+TIA consists of local cross-frame alignment and feature transport at a selected backbone layer ℓ⋆.
+We first describe the alignment mechanism and then the offline consistency probe used to select ℓ⋆
+across different domains and backbones. Throughout this section, f −
+t = norm(WinHℓ⋆
+t ) denotes
+the projected and ℓ2-normalized feature used for locating and transport, and f +
+t the ℓ2-normalized
+refined feature after transport, written ¯f ℓ⋆in the main text. The two stages use different windows:
+transport scores are computed over the dense window Ctr
+t centered at the same coordinate for every
+cell, whereas the consistency loss is supervised over the window Ct centered at the true next-frame
+location ut.
+Cross-frame alignment and feature transport.
+At the selected layer ℓ⋆, TIA establishes local
+target consistency between each pair of adjacent frames (Tang et al., 2023; Zhang et al., 2023; Oquab
+et al., 2024; Doersch et al., 2023; Karaev et al., 2024). A shared linear layer projects features from
+both frames into a normalized d-dimensional space. The feature at the previous target location
+ut−1 then queries the local window Ctr
+t centered at the same coordinate in frame t, which yields the
+pre-transport similarity:
+s−
+t,v = f −
+t−1(ut−1)⊤f −
+t (v).
+(19)
+For feature transport, we apply the local matcher densely. Each cell in frame t−1 queries a local
+window centered at the same coordinate in frame t; a softmax with temperature τ converts the
+similarities into transport weights (van den Oord et al., 2018). The projected frame-(t−1) features are
+26
+
+
+Preprint
+splatted into frame t using these weights, normalized per cell by the accumulated mass, and written
+back through a bounded residual update:
+H′
+t = Hℓ⋆
+t
++ γ tanh
+ Wout
+  ¯Ht −WinHℓ⋆
+t
+
+,
+(20)
+where ¯Ht is the transported feature field, γ controls the residual magnitude, and Wout is a bias-free
+linear layer initialized to zero. The first frame is left unchanged. The consistency loss is computed on
+the refined features after this update: we re-normalize H′
+t to obtain f +
+t = norm(H′
+t), recompute the
+similarities s+
+t,v = f +
+t−1(ut−1)⊤f +
+t (v) over the window Ct centered at the true next-frame location
+ut, treat ut as the positive target and the remaining candidates as negatives, and optimize these
+correspondences with the temperature-scaled consistency loss LTIA defined in the main text. The
+transport weights and the consistency loss share the temperature τ but are computed in separate
+passes.
+Algorithm 3 TIA training-time consistency and feature transport.
+Input: adjacent-frame hidden features (Hℓ⋆
+t−1, Hℓ⋆
+t ), target locations (ut−1, ut), shared down-projection Win,
+zero-initialized output projection Wout, transport window Ctr
+t , supervision window Ct centered at ut, temperature
+τ, residual scale γ.
+Output: updated current-frame features H′
+t, consistency loss LTIA.
+1. Project both frames with Win and normalize the resulting features to obtain f −. Each cell in frame t−1
+forms a query, and the local window around the corresponding coordinate in frame t forms its candidate set
+Ctr
+t .
+2. Compute the pre-transport similarities s−
+t,v within each local window and convert them into transport weights
+using a softmax with temperature τ.
+3. Splat the projected frame-(t−1) features into frame t according to these weights, normalize each destination
+cell by its accumulated mass, and apply the residual update in Equation (20). The first frame is left
+unchanged.
+4. Normalize the updated features H′
+t to obtain f +, recompute the similarities s+
+t,v within the supervision
+window Ct, treat ut as the positive target and the remaining candidates as negatives, and compute the
+temperature-scaled consistency loss LTIA.
+5. Back-propagate LTIA through the TIA sidecar and the trainable backbone.
+Layer selection via consistency probing.
+We select the TIA attachment layer using an offline
+consistency probe rather than fixing it heuristically. For each candidate layer, the target feature
+in the previous frame retrieves its nearest match over the full token grid of the next frame, using
+the raw ℓ2-normalized block features rather than the Win-projected features used inside TIA, and
+endpoint error (EPE) (Teed & Deng, 2020) is measured against the localized target position. Because
+feature reliability can differ across domains and backbone architectures, we additionally report a
+setting-specific consistency-reliability measure. Table 15 summarizes the probe results and the
+resulting layer choices for GigaWorld-0/DreamGen, AgiBot, and FlowWAM.
+27
+
+
+Preprint
+Table 15: Layer-wise consistency probe across domains and backbones. EPE denotes the mean
+endpoint error of adjacent-frame target matching in token cells. Reliab. is the setting-specific
+consistency-reliability score: object–background separation for DreamGen, static-feature stability for
+AgiBot, or moving-pair top-1 hit rate for FlowWAM. Block 23 is selected for GigaWorld-0/DreamGen
+and AgiBot, and block 12 is selected for FlowWAM.
+GigaWorld-0 / DreamGen
+AgiBot
+FlowWAM
+Block
+EPE ↓
+Reliab. ↑
+EPE ↓
+Reliab. ↑
+EPE ↓
+Reliab. ↑
+8
+0.80
+−0.09
+9.24
+0.72
+3.50
+0.172
+9
+0.80
+−0.07
+8.88
+0.74
+3.56
+0.171
+10
+0.93
+−0.09
+8.00
+0.73
+3.46
+0.178
+11
+0.93
+−0.09
+7.52
+0.74
+3.45
+0.176
+12
+0.98
+−0.08
+6.82
+0.74
+3.42
+0.182
+13
+0.68
+−0.07
+6.56
+0.75
+3.46
+0.177
+14
+0.98
+−0.05
+6.48
+0.78
+3.51
+0.174
+15
+0.98
+−0.10
+6.39
+0.81
+3.49
+0.172
+16
+0.73
+−0.06
+6.44
+0.81
+3.59
+0.165
+17
+0.78
+−0.06
+6.62
+0.85
+3.64
+0.158
+18
+0.98
+−0.07
+6.54
+0.83
+3.51
+0.158
+19
+0.91
+−0.07
+6.64
+0.83
+3.56
+0.155
+20
+0.78
+−0.07
+6.22
+0.83
+3.60
+0.154
+21
+0.75
+−0.10
+6.44
+0.80
+3.65
+0.146
+22
+0.63
+−0.16
+6.98
+0.83
+3.69
+0.135
+23
+0.55
+−0.10
+5.72
+0.76
+3.68
+0.144
+24
+1.08
+−0.19
+9.81
+0.81
+3.71
+0.139
+25
+0.96
+−0.20
+7.53
+0.71
+3.89
+0.126
+26
+1.28
+−0.24
+9.79
+0.65
+3.87
+0.124
+B.3
+JOINT TRAINING AND INFERENCE
+The full training objective combines the IGR restoration loss with the TIA consistency loss:
+L = LIGR + λTIA LTIA.
+(21)
+For samples with an applied IGR corruption, LIGR restores the clean latent from the count-perturbed
+input; otherwise, it reduces to the base clean-video training objective. The consistency term is
+computed on the post-transport features. Its weight and optional noise gate are set per backbone in
+Appendix C.1.
+At inference, the model receives the first frame, the instruction, and the benchmark-specific control
+input; the parser, the grounder, and the corruption generator are training-time only.
+C
+ADDITIONAL EXPERIMENTS AND ANALYSIS
+C.1
+IMPLEMENTATION DETAILS
+Within each evaluation arm, EVEWORLD and its control use the same initialization, training set, and
+optimization budget. The DreamGenBench and EWMBench experiments initialize from GigaWorld-0
+Video-Pretrain-2B and update the full transformer with CAME-8bit (Luo et al., 2023), a learning rate
+of 4.32 × 10−5, and an effective batch size of 64. For DreamGenBench, we train on 92 GR1 videos
+for 250 steps at 480 × 768 resolution using 93-frame clips at 16 FPS, and evaluate the raw step-250
+checkpoint. For EWMBench, we train on 777 AgiBot clips for 50 steps at 480 × 640 resolution with
+the same frame count and frame rate, and evaluate the raw step-50 checkpoint.
+For RoboTwin, both models initialize from the released FlowWAM Stage-1 checkpoint and train a
+rank-32 LoRA (Hu et al., 2022) on 2,250 episodes for 1,128 optimization steps. We use AdamW
+(Loshchilov & Hutter, 2019) with a learning rate of 10−4, weight decay 0.01, and batch size 8.
+Training clips contain 29 frames at 24 FPS with a resolution of 480 × 640; evaluation uses the
+final-epoch checkpoint.
+28
+
+
+Preprint
+In the evaluated instantiations, TIA uses a 64-dimensional projection, 7×7 local windows, temperature
+τ = 0.07, and residual scale γ = 0.1. It attaches to block 23 on GigaWorld-0 and AgiBot, and block
+12 on FlowWAM. On GigaWorld-0, λTIA warms from 0 to 0.5 over the first 20 steps and applies at
+σ ∈[0.2, 0.5]; FlowWAM uses λTIA = 0.1 without noise gating.
+DreamGenBench and WorldArena use the raw step-250 checkpoint, 30 denoising steps, and CFG 7.0
+at 480 × 768 resolution with 93 frames at 16 FPS. EWMBench uses the raw step-50 checkpoint, the
+three benchmark seeds, 30 steps, and CFG 7.0 at 480 × 640 with the same clip length and frame rate.
+RoboTwin uses the final-epoch checkpoint and CFG 5.0 at 480 × 640, generating the full trajectory
+at 24 FPS. All settings condition on the first frame and instruction; RoboTwin additionally uses
+robot-only optical flow. Appendix C.4 studies CFG and denoising choices separately.
+C.2
+IGR ABLATION AND DUPLICATE RESTORATION
+Restoration-objective ablation.
+Table 16 isolates the effects of duplicate-restoration supervision
+and spatial weighting. Removing spatial emphasis from the restoration objective still reduces MLR
+relative to Standard SFT, but leaves substantially more violations than the complete EVEWORLD.
+Conversely, applying spatial emphasis without the duplicate-restoration target does not improve
+instance consistency. IGR alone reduces MLR to 4.76%, while the complete EVEWORLD further
+reduces it to 1.59%. Notably, removing spatial emphasis yields a slightly higher Overall instruction-
+following score than the complete model (61.11% vs. 60.85%) but increases MLR from 1.59% to
+6.35%, supporting the use of the complete objective.
+Table 16:
+IGR restoration controls on DreamGenBench. The first two variants isolate spatial
+weighting and duplicate-restoration supervision. IGR w/o spatial emphasis removes the spatial
+weighting, and Spatial emphasis only applies the weighting without the duplicate-restoration target.
+Env, Object, Behavior, and Overall report Gemini-IF instruction-following accuracy in percentages.
+Variant
+MLR (%) ↓
+Env ↑
+Object ↑
+Behavior ↑
+Overall ↑
+IGR w/o spatial emphasis
+6.35
+56.32
+44.00
+82.27
+61.11
+Spatial emphasis only
+14.29
+34.48
+34.67
+62.41
+44.97
+IGR only
+4.76
+49.43
+36.67
+69.50
+51.85
+EVEWORLD
+1.59
+72.41
+50.33
+64.89
+60.85
+Controlled duplicate-restoration evaluation.
+We further test whether IGR learns to actively
+correct a corrupted target count rather than merely preserving the input appearance. We construct an
+independent corruption set by inserting one additional target instance into clean demonstrations and
+reconstruct the resulting videos under six combinations of paste opacity α and diffusion noise level
+σ. Starting from the Standard SFT checkpoint, the model preserves 92–99% of the injected area,
+indicating that the spurious instance is largely retained. After 50 IGR fine-tuning steps, retention
+decreases to 23–42% across all six settings (Table 17). The directional cosine decreases together
+with retention, showing that the residual reconstruction error becomes not only smaller but also less
+aligned with the injected duplicate. Figure 10 summarizes both effects across corruption strengths.
+Table 17: Robustness of duplicate removal across corruption strengths. Retention is the fraction of
+injected duplicate area preserved by the reconstruction. Dir. cos. measures the alignment between the
+residual error and the injected duplicate. Before and after denote the Standard SFT checkpoint and
+the model after 50 IGR fine-tuning steps, respectively.
+Opacity α
+σ
+Ret. before ↓
+Ret. after ↓
+Rel. reduction (%) ↑
+Dir. cos. before / after
+0.5
+0.3
+0.992
+0.421
+57.5
+0.983 / 0.627
+0.5
+0.8
+0.955
+0.325
+66.0
+0.950 / 0.378
+0.5
+1.5
+0.922
+0.275
+70.2
+0.907 / 0.263
+1.0
+0.3
+0.986
+0.419
+57.5
+0.993 / 0.695
+1.0
+0.8
+0.968
+0.268
+72.3
+0.980 / 0.406
+1.0
+1.5
+0.935
+0.229
+75.5
+0.961 / 0.295
+29
+
+
+Preprint
+0.3
+0.8
+1.5
+Corruption noise σ
+0.0
+0.2
+0.4
+0.6
+0.8
+(a) Instance consistenc ↑
+Standard SFT (α = 0.5)
+Standard SFT (α = 1.0)
+w/ IGR (α = 0.5)
+w/ IGR (α = 1.0)
+0.3
+0.8
+1.5
+Corruption noise σ
+0.4
+0.6
+0.8
+1.0
+Directional cosine
+(b) Residual alignment ↓
+Standard SFT (α =0.5 )
+Standard SFT (α =1.0 )
+w/ IGR (α =0.5 )
+w/ IGR (α =1.0 )
+Instance consistency rate
+y
+Figure 10: Controlled restoration analysis of IGR. Injected duplicates probe restoration behavior
+under different corruption-noise levels σ and paste opacities α. (a) Standard SFT largely retains the
+injected duplicate, whereas IGR substantially improves duplicate removal across corruption strengths.
+(b) Residual errors under Standard SFT remain strongly aligned with the injected duplicate, while
+IGR reduces this alignment after restoration training.
+Feature diagnostics.
+Two additional diagnostics use the same feature-probe family as Appendix B.2.
+Blocks 25–26 best separate changed from unchanged regions, with score gaps of 0.43–0.45, while
+blocks 10–16 provide the strongest detection of injected duplicates, with AUC values of 0.79–0.80.
+C.3
+EVALUATION STABILITY
+We quantify variability from repeated instruction-following judgments and inference seeds. Table 18
+reruns Gemini-IF on fixed videos and reports every repeat underlying each mean; the main ordering
+remains unchanged. Table 19 further compares Standard SFT and EVEWORLD under matched
+inference seeds, explicitly controlling for sampling stochasticity. The consistent advantage of
+EVEWORLD indicates that the observed gains are not attributable to favorable seed selection.
+Table 18: Gemini-IF judge variance across models on DreamGenBench. Overall reports mean ±
+SD over repeated Gemini-IF evaluations of the same generated videos. Env, Object, and Behavior
+report the corresponding mean scores on each split. Repeats denotes the number of independent
+Gemini-IF evaluations.
+Gemini-IF (%) ↑
+Model
+Repeats
+Overall
+Env
+Object Behavior
+CogVideoX1.5-5B-I2V (Yang et al., 2025)
+2
+5.56 ± 1.12
+15.52
+1.00
+4.26
+Wan2.2-TI2V-5B (Team Wan et al., 2025)
+2
+10.32 ± 1.12 17.24
+5.00
+11.70
+Wan2.2-I2V-A14B (Team Wan et al., 2025)
+2
+15.87 ± 3.37 20.69
+13.00
+15.96
+Cosmos-Predict2-2B (NVIDIA et al., 2025)
+2
+24.60 ± 1.12 31.03
+28.00
+17.02
+GigaWorld-0 (GigaWorld Team et al., 2025)
+6
+60.19 ± 2.90 54.60
+54.33
+69.86
+Official GR1 Fine-tune (Jang et al., 2025)
+2
+63.10 ± 6.17 55.17
+46.00
+86.17
+Standard SFT
+6
+53.57 ± 2.92 51.72
+42.00
+67.02
+EVEWorld
+6
+60.85 ± 1.79 72.41
+50.33
+64.89
+Table 19: Matched inference-seed comparison of Standard SFT and EVEWORLD on DreamGen-
+Bench. Gemini-IF reports mean ± SD over repeated judge evaluations at each inference seed. ∆
+denotes the improvement of EVEWORLD over Standard SFT in percentage points.
+Seed
+Judge repeats
+Standard SFT (%)
+EVEWORLD (%)
+∆(pp)
+004
+6
+53.57 ± 2.92
+60.85 ± 1.79
++7.28
+061
+3
+57.41 ± 2.79
+58.73 ± 1.37
++1.32
+30
+
+
+Preprint
+Under the transfer protocol, five complete FlowWAM generations from the same checkpoint differ
+by at most 0.68 Local-11 points (Table 20), indicating stable overall performance across inference
+seeds. We further examine per-component variation across five inference seeds on a 50-prompt probe
+set (Table 21). Motion-related metrics show larger variation than appearance-related metrics, but
+the aggregate Local-11 score remains relatively stable. Local-11 denotes the project-local 11-metric
+evaluator.
+Table 20: Inference-seed variance under the full-1000 transfer protocol. Local-11 is evaluated from
+the same FlowWAM checkpoint across five inference seeds. Mean ± SD reports variation across
+seeds.
+Seed
+6
+12
+20
+42
+70
+Mean ± SD
+Local-11
+57.12
+56.89
+57.57
+57.37
+57.46
+57.28 ± 0.28
+Table 21: Per-component inference-seed variance under the transfer protocol. Component scores
+are evaluated across five inference seeds on a 50-prompt probe set. Mean ± SD reports variation
+across seeds.
+Component
+Seed 0
+Seed 17
+Seed 35
+Seed 42
+Seed 70
+Mean ± SD
+Image Quality
+58.95
+59.41
+59.35
+59.37
+57.46
+58.91 ± 0.83
+Aesthetic
+44.30
+44.18
+44.56
+44.38
+44.35
+44.35 ± 0.14
+Dynamic Degree
+29.59
+31.44
+29.79
+27.88
+33.17
+30.37 ± 2.01
+Flow Score
+18.65
+20.57
+17.97
+15.67
+20.11
+18.59 ± 1.95
+Motion Smoothness
+68.64
+68.79
+68.14
+68.15
+71.28
+69.00 ± 1.31
+Subject Consistency
+73.84
+76.67
+73.22
+80.08
+75.56
+75.87 ± 2.72
+Background Consistency
+80.25
+82.59
+79.25
+86.17
+82.36
+82.12 ± 2.67
+Photometric
+24.71
+28.02
+24.61
+30.75
+24.45
+26.51 ± 2.80
+Interaction
+54.40
+56.00
+57.60
+58.40
+58.80
+57.04 ± 1.82
+Perspectivity
+87.60
+86.00
+89.20
+88.00
+85.20
+87.20 ± 1.60
+Instruction Following
+47.20
+47.20
+50.80
+53.20
+54.80
+50.64 ± 3.45
+Local-11
+53.47
+54.63
+54.05
+55.64
+55.23
+54.60 ± 0.88
+C.4
+TRAINING AND LONG-HORIZON BEHAVIOR
+Training dynamics.
+We first examine how instance consistency and instruction following evolve
+during post-training. As training proceeds toward the selected step-250 checkpoint, MLR generally
+decreases while Qwen-IF improves, indicating that the reduction in Model Laziness is accompanied
+by better task fidelity rather than obtained at its expense.
+Guidance sensitivity.
+We further evaluate classifier-free guidance (CFG) (Ho & Salimans, 2022)
+across multiple post-training checkpoints and guidance weights. Table 22 shows that stronger guid-
+ance generally raises Gemini-IF, but MLR is substantially less monotonic. For example, increasing
+w can improve instruction following while leaving MLR unchanged or even increasing it at the
+same checkpoint. Conversely, the lowest MLR values occur only for particular combinations of
+training stage and guidance weight rather than systematically at the strongest guidance setting. These
+results show that CFG primarily controls inference-time instruction fidelity, whereas target-instance
+consistency remains dependent on the learned post-training behavior.
+Long-horizon behavior.
+Finally, we examine whether longer rollouts introduce broader physical
+and process-level degradation. On PBench (NVIDIA, 2025b), overall physical-QA performance
+decreases as the output duration grows from 3.8 s to 19.8 s, with temporal reasoning degrading
+most strongly (Table 23). Averaged over all five durations, Standard SFT improves all four PBench
+dimensions over the pretrained backbone. The advantage becomes more pronounced at longer
+horizons: over durations of at least 9.8 s, it improves Domain, Phys, and Time by 1.65, 1.95, and 4.24
+points on average, respectively. These results indicate that post-training improves broader physical
+reasoning even as long-horizon generation remains increasingly challenging.
+31
+
+
+Preprint
+Table 22: CFG sensitivity across training stages on DreamGenBench. Each cell reports Gemini-IF ↑
+/ MLR ↓in percentages under different CFG weights w and training steps. w=1.0 denotes inference
+without classifier-free guidance. The shaded column marks the step-250 checkpoint used in the
+main experiments. The shaded entry at step 250 and w=7.0 corresponds to the main EVEWorld
+configuration reported in main-text Table 1.
+CFG weight w
+Train step
+50
+100
+150
+200
+250
+300
+1.0
+26.08 / 9.52 39.32 / 6.35 26.91 / 4.76 26.08 / 9.52 28.98 / 9.52 31.87 / 6.35
+2.5
+45.95 / 4.76 54.23 / 11.11 61.68 / 4.76 47.19 / 3.17 50.91 / 4.76 55.06 / 4.76
+5.0
+50.91 / 7.94 57.53 / 9.52 57.53 / 3.17 51.32 / 1.59 58.78 / 6.35 48.85 / 4.76
+7.0
+52.15 / 4.76 66.23 / 9.52 60.43 / 6.35 53.40 / 1.59 60.85 / 1.59 45.95 / 3.17
+Table 23:
+PBench physical-QA accuracy across output durations. Domain reports the overall
+PBench Robot score, judged by Qwen3.6-VL. Phys, Space, and Time report accuracy on physical,
+spatial, and temporal reasoning. Mean averages the five durations, and Mean (≥9.8 s) averages the
+three longest horizons.
+GigaWorld-0 (Pretrained)
+Standard SFT
+Dur. (s)
+Domain
+Phys.
+Space
+Time
+Domain
+Phys.
+Space
+Time
+3.8
+82.43
+85.71
+84.24
+82.18
+80.98
+86.69
+83.33
+79.64
+5.8
+79.87
+84.42
+82.12
+74.18
+79.89
+85.71
+83.94
+74.91
+9.8
+74.32
+83.77
+76.06
+65.09
+78.90
+87.99
+79.70
+74.55
+15.8
+67.54
+79.22
+73.03
+49.82
+68.12
+79.55
+70.61
+53.82
+19.8
+66.97
+76.95
+74.55
+50.18
+66.76
+78.25
+73.94
+49.45
+Mean
+74.23
+82.01
+78.00
+64.29
+74.93
+83.64
+78.30
+66.47
+Mean (≥9.8 s)
+69.61
+79.98
+74.55
+55.03
+71.26
+81.93
+74.75
+59.27
+Longer horizons also expose failures that are not captured by target-instance count alone. On 92
+matched prompts, both GigaWorld-0 variants exhibit substantially higher shortcut severity, shortcut
+frequency, and missing-stage frequency at 7.8 s than at 3.8 s (Table 24). At the shared 3.8 s horizon,
+Wan2.2-TI2V-5B exhibits still larger process errors than either GigaWorld-0 variant. These diagnos-
+tics complement MLR by measuring broader failures of process completeness rather than instance
+consistency alone.
+Table 24:
+Long-horizon process evaluation across models and output durations. Qwen-based
+evaluation is performed on 92 matched prompts. Severity measures shortcut severity. Any shortcut
+and Missing stage report the fractions of generations containing a shortcut or a missing stage.
+Model / horizon
+Severity ↓
+Any shortcut ↓
+Missing stage ↓
+n
+GigaWorld-0 SFT, 3.8s
+0.94
+0.32
+0.30
+92
+GigaWorld-0 SFT, 7.8s
+1.79
+0.63
+0.60
+92
+GigaWorld-0 Pretrained, 3.8s
+1.17
+0.39
+0.38
+92
+GigaWorld-0 Pretrained, 7.8s
+1.97
+0.67
+0.66
+92
+Wan2.2-TI2V-5B, 3.8s
+2.30
+0.82
+0.72
+92
+D
+EXPLORATION OF ALTERNATIVE APPROACHES
+We evaluate five alternative designs spanning training to inference: PhysicsLatent, EAG, LAD-LoRA,
+Causal Frontier, and ICH-D. Because their training budgets and generation protocols differ, each
+route is compared with its own control using the same prompts, conditioning frames, and inference
+seeds. Table 25 reports MLR and Gemini-IF, with 95% confidence intervals computed by paired
+bootstrap over the matched pairs.
+32
+
+
+Preprint
+No alternative jointly reduces MLR and improves instruction following. PhysicsLatent slightly
+reduces MLR but lowers Gemini-IF, EAG improves Gemini-IF but increases MLR, and the remaining
+routes show no joint gain.
+Table 25: Comparison with alternative designs. Each route is evaluated against its matched control
+using the same prompts, conditioning frames, and inference seeds. Panel (a) reports MLR for each
+route and its matched control. Panel (b) reports Gemini-IF as mean ± SD over three judge repeats.
+Rel. ∆denotes the relative change from the matched control, and 95% CIs are computed by paired
+bootstrap. MLR values are reported to one decimal place; Rel. ∆and the CIs are computed from
+unrounded values.
+(a) Model Laziness Rate (MLR)
+Route
+Matched control
+MLR (%) ↓
+Rel. ∆
+95% CI
+Control
+Route
+PhysicsLatent
+Pretrain 5.8s
+17.4
+16.2
+−7.0
+[−51.5, +69.1]
+EAG
+weight 0
+15.4
+38.5
++150.0
+[0.0, +500.0]
+LAD-LoRA
+LoRA control
+3.8
+3.8
+0.0
+[0.0, 0.0]
+Causal Frontier
+control50
+30.8
+41.7
++35.4
+[−42.9, +300.0]
+ICH-D
+Pretrain (4 seeds)
+11.2
+13.1
++16.6
+[−19.4, +70.8]
+(b) Gemini-IF
+Route
+Control
+Route
+Rel. ∆
+95% CI
+PhysicsLatent
+45.65 ± 3.92
+40.22 ± 3.26
+−11.9
+[−29.8, +7.9]
+EAG
+41.67 ± 3.61
+45.83 ± 9.55
++10.0
+[−15.8, +54.5]
+LAD-LoRA
+51.04 ± 1.80
+47.92 ± 4.77
+−6.1
+[−24.1, +13.3]
+Causal Frontier
+27.08 ± 3.61
+12.50 ± 6.25
+−53.8
+[−100.0, +85.7]
+ICH-D
+45.83 ± 1.55
+31.79 ± 0.47
+−30.6
+[−40.1, −20.2]
+D.1
+PHYSICSLATENT
+PhysicsLatent augments the conditioning sequence with eight learned process tokens. The tokens
+are computed from the pooled reference-frame latent and prompt embedding and are read by every
+cross-attention layer. Weak-label heads predict the target’s start and goal boxes, contact events, a
+coarse 2D trajectory, and the manipulation phase, using pseudo-labels parsed from the instruction
+together with color and motion heuristics. Against the pretrained 5.8 s control (92 matched pairs),
+MLR moves from 17.4% to 16.2% while Gemini-IF drops from 45.65 to 40.22, leaving no joint gain.
+Algorithm 4 PhysicsLatent training-sample construction. Pseudo-labels come from instruction
+parsing and color/motion heuristics; low-confidence labels are masked out.
+Input: training video x, instruction c, frozen VAE and text encoder, process-token encoder Eψ, weak-label
+heads {hk}.
+Output: process-token-augmented input and auxiliary training targets.
+1. Encode the reference frame with the VAE and pool it to a 15×24 grid; embed the instruction with the text
+encoder.
+2. Produce K=8 process tokens (1024-dimensional) from both with Eψ and append them after the text tokens;
+every cross-attention layer reads them, and the two CFG branches share the same tokens.
+3. Predict the weak labels from the process tokens: start and goal boxes, contact events, an 8-keyframe 2D
+trajectory, the manipulation phase, and completion flags.
+4. Obtain pseudo-labels by parsing the instruction (target, source, destination) and applying color- and motion-
+based heuristics on the frames; mask out low-confidence labels.
+5. Train with Lvideo + P
+k wkLk, where each wk is small (0.03–0.08) so the auxiliary terms do not dominate
+reconstruction.
+33
+
+
+Preprint
+D.2
+EAG
+EAG modifies sampling without retraining the video model. After each CFG update, a frozen
+latent-action model (Schmidt & Jiang, 2024; Ye et al., 2025) assigns a transition energy E(ˆz0) to the
+predicted clean latent ˆz0 using a soft top-3 aggregation of per-transition reconstruction errors. The
+sampler then takes one normalized step along the negative energy gradient:
+ˆz0 ←ˆz0 −w(σ) ∥ˆz0∥∇ˆz0E(ˆz0)
+∥∇ˆz0E(ˆz0)∥,
+w(σ) =
+w0
+1 + σ ,
+(22)
+where w0 is the guidance weight and w0=0 recovers the unmodified sampler. Against the weight-0
+control, Gemini-IF rises from 41.67 to 45.83, while MLR rises from 15.4% to 38.5% (16 prompt–seed
+pairs, 13 detector-eligible). This small comparison is reported as a development result.
+Algorithm 5 EAG-guided denoising step. Only the sampler changes; the model and the energy
+model stay frozen.
+Input: denoiser Dθ, frozen transition-energy model E, scheduler, guidance weight w0.
+Output: the guided denoising update at the current step.
+1. Run the usual CFG update and form the clean-latent prediction ˆz0 from the model output.
+2. Score ˆz0 with the frozen transition energy E(ˆz0).
+3. Take one normalized step down the energy (Eq. (22)); the step length scales with ∥ˆz0∥, so the update is
+bounded.
+4. Convert the change back into the model output space, ∆noise = ∆ˆz0/cout(σ), and let the scheduler proceed
+as usual.
+D.3
+LAD-LORA
+LAD-LoRA moves the transition-energy signal from sampling to parameter updates. We train a
+rank-64 attention LoRA (Hu et al., 2022), with the backbone frozen, by adding the energy of the
+model’s denoised output as a regularizer:
+L = LEDM +
+˜w
+1 + σ E(ˆz0,θ),
+(23)
+where ˜w is recomputed at every step so that the energy gradient stays at a fixed fraction of the
+denoising gradient on the shared prediction ˆz0 (target ratio 0.1, capped at 1.0). Against a plain LoRA
+control under the same protocol (32 matched pairs), LAD-LoRA has the same MLR (3.8%) and
+reduces Gemini-IF from 51.04 to 47.92.
+Algorithm 6 LAD-LoRA training step. The backbone is frozen; only the rank-64 attention LoRA
+receives gradients.
+Input: frozen backbone with LoRA adapters, frozen transition-energy model E, target gradient ratio wlad=0.1.
+Output: LoRA parameter update.
+1. Denoise the batch and form the model’s own clean prediction ˆz0,θ.
+2. Score ˆz0,θ with the frozen energy E (the same soft top-3 transition energy as EAG).
+3. Measure the gradient norms of the denoising loss and of E on the shared ˆz0, set the energy weight to hit the
+target gradient ratio, and gate by 1/(1 + σ).
+4. Back-propagate Eq. (23) into the LoRA parameters only.
+D.4
+CAUSAL FRONTIER
+Causal Frontier generates a video autoregressively in blocks of four latent frames. At each step, the
+model sees only the clean latents of previously committed blocks, which a near-zero noise level and
+a mask channel mark as history. The denoising loss applies only to the active block. Generation
+commits each block irreversibly before denoising the next. At the current budget, prediction errors
+compound over the rollout (Bengio et al., 2015; Chen et al., 2024; Huang et al., 2025b): against
+control50 (16 matched pairs), MLR rises from 30.8% to 41.7% and Gemini-IF falls from 27.08 to
+12.50.
+34
+
+
+Preprint
+Algorithm 7 Causal Frontier training and generation. Future blocks never enter the input;
+generation commits each block irreversibly.
+Input: video of 24 latent frames split into blocks of 4; the first latent frame is the condition.
+Training. (i) Sample one frontier uniformly per step. (ii) Feed the committed prefix as clean, detached
+latents with a near-zero noise level (σh=10−4) and a mask channel set to 1. (iii) Corrupt the active block
+at noise σ and concatenate prefix and active block as the input; future blocks are excluded. (iv) Apply the
+denoising loss on the active block only, normalized by the number of active tokens.
+Generation. (i) Denoise the next block (30 steps, CFG 7.0) conditioned on the clean prefix. (ii) Commit the
+block: detach and append it to the prefix. (iii) Repeat until all blocks are generated; there is no overlap or
+refinement pass.
+D.5
+ICH-D
+ICH-D applies a learned deletion residual during inference. A frozen linear probe estimates the
+duplicate probability of each latent cell from novelty and consistency features (16-dimensional
+statistics collected from several Transformer blocks). A gated residual, whose output projection is
+initialized to zero and trained before inference, then removes the flagged content from the block-22
+representation:
+M = sigmoid
+ β⊤ϕ(h)
+
+,
+h22 ←h22 −sigmoid(g) · M ⊙Wout(h22),
+(24)
+after which the denoising loop proceeds normally. Over 368 matched pairs against the pretrained
+model (four seeds), MLR rises from 11.2% to 13.1% and Gemini-IF falls from 45.83 to 31.79; the
+deletion path introduces its own errors.
+Algorithm 8 ICH-D inference-time deletion. The probe β is frozen after offline fitting; Wout is
+initialized to zero, trained beforehand, and frozen at inference.
+Input: frozen per-cell probe β, trained gate g, and trained output projection Wout.
+Output: corrected block-22 representation at each denoising step.
+1. At the block-22 output of every denoising forward pass (both CFG branches), compute the per-cell novelty
+and consistency features ϕ.
+2. Score each cell with the frozen probe, M = sigmoid(β⊤ϕ), giving a duplication-probability map over the
+latent grid.
+3. Erase the flagged content inside the representation via Eq. (24).
+4. Continue the denoising loop normally; there is no re-noising or repair pass.
+Across the matched comparisons, the five alternatives trade off MLR and instruction following,
+motivating direct restoration and consistency supervision in the backbone.
+E
+GENERALIZATION RESULTS
+E.1
+GENERALIZATION ON EWMBENCH
+Table 26 reports all EWMBench components and the official Motion, Semantics, and Overall scores.
+Relative to Standard SFT, EVEWORLD improves Motion by 3.48% and Overall by 1.24%, with a
+17.94% gain in DYN. Other components remain close to the matched baseline, with Standard SFT
+higher on BLEU, Diversity, HSD, and nDTW, and GigaWorld-0 higher on CLIP and Scene. Logic is
+identical across all three models. The gains of EVEWORLD are concentrated in motion-related and
+aggregate scores rather than uniformly across all EWMBench components.
+E.2
+FLOWWAM CHECKPOINT ROBUSTNESS
+We evaluate six FlowWAM checkpoints on a fixed RoboTwin slice consisting of episode 45 from
+each of 50 tasks (Mu et al., 2025). EVEWORLD improves PSNR by 2.20–6.22 dB and increases
+SSIM at every checkpoint (Table 27), showing consistent reference-fidelity gains across checkpoints.
+35
+
+
+Preprint
+Table 26: Complete EWMBench results. Panel (a) reports semantic and scene components. Panel
+(b) reports motion components and the official Motion, Semantics, and Overall scores. Scores are
+rescaled for readability: component and Motion scores are multiplied by 100, and Semantics and
+Overall by 10.
+(a) Semantic and scene components
+Method
+BLEU ↑
+CLIP ↑
+Diversity ↑
+Logic ↑
+Scene ↑
+GigaWorld-0
+33.12
+89.09
+2.77
+100.00
+89.58
+Standard SFT
+34.44
+86.86
+3.47
+100.00
+84.38
+EVEWORLD
+34.23
+87.74
+3.26
+100.00
+86.37
+(b) Motion components and aggregate scores
+Method
+DYN ↑
+HSD ↑
+nDTW ↑
+Motion ↑
+Semantics ↑
+Overall ↑
+GigaWorld-0
+7.19
+23.29
+19.83
+50.30
+22.50
+36.49
+Standard SFT
+14.88
+24.35
+22.28
+61.51
+22.48
+37.07
+EVEWORLD
+17.55
+24.12
+21.97
+63.65
+22.52
+37.53
+Table 27: FlowWAM fidelity across checkpoints on a fixed RoboTwin slice. Each checkpoint
+is evaluated on episode 45 from each of 50 tasks. Core-8 denotes the mean of eight no-reference
+metrics from the same evaluator. ∆PSNR reports the gain of EVEWORLD over the control.
+Control
+EVEWORLD
+Epoch
+PSNR (dB) ↑
+SSIM ↑
+Core-8 ↑
+PSNR (dB) ↑
+SSIM ↑
+Core-8 ↑
+∆PSNR (dB)
+0
+16.79
+0.807
+47.8
+18.99
+0.857
+43.3
++2.20
+1
+15.38
+0.785
+47.0
+20.23
+0.871
+48.0
++4.85
+2
+14.92
+0.757
+50.5
+21.14
+0.885
+45.9
++6.22
+3
+15.76
+0.785
+50.1
+18.44
+0.839
+48.7
++2.68
+4
+15.02
+0.770
+48.2
+18.02
+0.834
+47.9
++3.00
+5
+15.18
+0.767
+48.5
+18.45
+0.843
+47.8
++3.27
+F
+QUALITATIVE RESULTS
+F.1
+INSTANCE CONSISTENCY
+Figures 11 and 12 provide qualitative examples of target-instance consistency during manipula-
+tion. Standard SFT may introduce surplus or missing target instances over the rollout, whereas
+EVEWORLD better maintains target-instance consistency throughout the interaction.
+F.2
+CROSS-FRAME CONSISTENCY
+Figures 13 and 14 compare Standard SFT, IGR-only, and the full EVEWORLD at matched stages of
+the same manipulation. Standard SFT exhibits target duplication during the rollout, and IGR-only
+can still retain such cross-frame inconsistencies despite directly supervising instance restoration.
+With TIA added, the full EVEWORLD maintains a single coherent target across the corresponding
+interaction stages. These examples illustrate the complementary roles of IGR and TIA in preserving
+target consistency over time.
+F.3
+TARGET EVOLUTION COMPARISON
+MLR intentionally measures changes in target-instance count and therefore does not capture failures
+that preserve N0 while corrupting the target itself. For qualitative analysis, we assess such distortion
+separately using the same VLM-assisted temporal review framework described in Appendix A.6,
+supplemented by manual review for a subset of cases. A distortion is marked when the target count
+remains unchanged but the target undergoes an unsupported change in shape, appearance, or identity
+that is inconsistent with its preceding temporal state. Figures 15 to 20 show two representative tasks
+using the same 24 timestamps for all models. In both examples, Standard SFT loses the target and
+36
+
+
+Preprint
+thus produces an MLR count violation, whereas IGR-only preserves the count but progressively
+distorts the target. EVEWORLD preserves both the target count and its cross-frame consistency.
+Figure 11: Target-instance consistency under Model Laziness. Red marks Standard SFT, where
+Model Laziness violates target-instance consistency during manipulation. Green marks EVEWORLD,
+which maintains target-instance consistency throughout the interaction.
+37
+
+
+Preprint
+Task: Use the right hand to pick up long-reach lighter to light the candle
+EVEWorld (ours)
+Standard SFT  |   Model Laziness 
+Task: Use the left hand to pick up blue clock from bottom wooden shelf to center of teal plate.
+Standard SFT  |   Model Laziness 
+EVEWorld (ours)
+Standard SFT  |   Model Laziness 
+EVEWorld (ours)
+Task: Use the right hand to pick up plate and place it onto the dish rack
+Figure 12:
+Additional Model Laziness cases. Red marks Standard SFT, where target-instance
+consistency is violated during manipulation. Green marks EVEWORLD, which maintains target-
+instance consistency throughout the interaction.
+38
+
+
+Preprint
+EVEWorld (ours)
+Standard SFT  |   Model Laziness 
+Task: Use the right hand to pick up pink peach from top level of the shelf to bottom level of the 
+shelf.
+IGR (Ours): A Direct Approach
+Figure 13: Cross-frame target consistency. Standard SFT and IGR-only show target duplication,
+appearance drift, or deformation (red), while the full EVEWORLD preserves target identity and
+appearance across matched interaction stages (green).
+IGR (Ours): A Direct Approach
+Standard SFT  |   Model Laziness 
+EVEWorld (ours)
+Task: Use the right hand to pick up the bread slice from the toaster and place it on the blue plate.
+Figure 14: Cross-frame target consistency. Standard SFT and IGR-only show target duplication,
+appearance drift, or deformation (red), while the full EVEWORLD preserves target identity and
+appearance across matched interaction stages (green).
+39
+
+
+Preprint
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+Task: Move the boxed drink the drink box with brown circular print onto the coaster the coaster made of
+smooth wood.
+Figure 15: Instance inconsistency. The 24 fixed MLR timestamps are shown in temporal order.
+Check marks denote count-consistent states, while crosses denote count deviations. The first cross
+marks the onset; an MLR event is counted only after two consecutive violating timestamps to suppress
+isolated detection errors.
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+Task: Move the boxed drink the drink box with brown circular print onto the coaster the coaster made of
+smooth wood.
+Figure 16:
+Cross-frame inconsistency. The 24 fixed timestamps are shown in temporal order.
+Check marks denote consistent target states, while crosses mark persistent appearance, geometry, or
+identity changes. The target count is preserved, so these failures are recorded separately from MLR.
+40
+
+
+Preprint
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+Task: Move the boxed drink the drink box with brown circular print onto the coaster the coaster made of
+smooth wood.
+Figure 17: Physical consistency. The 24 fixed timestamps are shown in temporal order. Check
+marks indicate consistent target states throughout the rollout. The target preserves both its instance
+count and cross-frame appearance, with no persistent count violation or distortion.
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+mlr×
+Task: Put the drink container with tapered shape squarely on top of the smooth round palm-sized coaster.
+Figure 18: Instance inconsistency. The 24 fixed MLR timestamps are shown in temporal order.
+Check marks denote count-consistent states, while crosses denote count deviations. The first cross
+marks the onset; an MLR event is counted only after two consecutive violating timestamps to suppress
+isolated detection errors.
+41
+
+
+Preprint
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+distortion×
+Task: Put the drink container with tapered shape squarely on top of the smooth round palm-sized coaster.
+Figure 19:
+Cross-frame inconsistency. The 24 fixed timestamps are shown in temporal order.
+Check marks denote consistent target states, while crosses mark persistent appearance, geometry, or
+identity changes. The target count is preserved, so these failures are recorded separately from MLR.
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+✓
+Task: Put the drink container with tapered shape squarely on top of the smooth round palm-sized coaster.
+Figure 20: Physical consistency. The 24 fixed timestamps are shown in temporal order. Check
+marks indicate consistent target states throughout the rollout. The target preserves both its instance
+count and cross-frame appearance, with no persistent count violation or distortion.
+42
+
+
+Preprint
+G
+RELATED WORK
+We group related work into structured embodied world models and physical alignment, object editing,
+and approaches based on correspondence, tracking, or memory.
+Structured embodied world models and physical alignment.
+• 4D scene representations. TesserAct extends video generation to jointly predict RGB, depth,
+and surface normals for 4D scene reconstruction (Zhen et al., 2025). While its richer outputs
+improve geometric modeling, EVEWORLD retains the host model’s native representation and
+adds post-training restoration supervision for target-instance consistency.
+• Disentangled dynamics. DVG-WM separates a low-resolution dynamics preview from high-
+fidelity video refinement and evaluates whether the robot acts on the intended object (Shan
+et al., 2026). Correct target selection, however, does not ensure that the target remains a single
+consistent instance throughout the interaction; IGR explicitly trains recovery from count-perturbed
+demonstrations.
+• Object-aware training. DreamX-Phi combines action conditioning and depth prediction with
+target-mask-weighted reconstruction and relational supervision from a frozen V-JEPA teacher
+(DreamX Team et al., 2026). TIA adds layer-selected local matching and feature transport for the
+manipulated target across adjacent frames, while IGR supplies an explicit restoration target when
+instance consistency is violated.
+• Physics-preference learning. ABot-PhysWorld uses vision-language discriminators to select
+preferences for physically plausible interaction videos, including contact behavior (Chen et al.,
+2026b). Its video-level preference signal does not explicitly pair a duplicated target with a clean
+future; IGR uses that pairing to directly supervise instance-consistent target evolution.
+Object editing and corrective supervision.
+• Mask-free video editing. LoVoRA uses learnable localization to add or remove objects in a
+supplied video from text, without an external mask at inference (Xiao et al., 2025b). IGR instead
+uses object insertion as a training perturbation; EVEWORLD predicts the future from an initial
+image and instruction without an edit request identifying a spurious target.
+• Effect-aware removal. ROSE removes a specified object and its effects on the scene, including
+shadows and reflections, from an existing video (Miao et al., 2025). IGR uses the inserted target
+for a different purpose: restoring the clean manipulation demonstration during post-training, so
+the world model learns instance consistency before generating future interactions.
+Correspondence, tracking, and persistent memory.
+• Joint generation and tracking. Track4Gen jointly learns video generation and point tracking to
+reduce appearance drift (Jeong et al., 2025). TIA instead selects a layer using target-matching
+error and locally matches and transports the manipulated target’s features between adjacent
+frames, directly supervising its cross-frame consistency during generation.
+• Geometry-distilled correspondence. GEM-4D distills dense 4D correspondence from a geome-
+try model into the video backbone, improving geometric consistency without an auxiliary branch
+at inference (Zhou et al., 2026). TIA focuses its matching and transport on the manipulated target,
+while IGR adds restoration supervision for instance errors that geometric correspondence alone
+does not explicitly correct.
+• Scene-revisitation memory. WorldMem stores observations indexed by poses and timestamps to
+preserve spatial and temporal consistency when a simulated agent revisits a scene (Xiao et al.,
+2025a). Our evolution supervision instead addresses errors in how the manipulated target changes
+during an interaction, including unsupported duplication and cross-frame drift.
+• Object-centric memory. SlotMemory organizes key-value features around reusable object slots,
+improving long-video entity persistence and showing qualitative object-count stability (Dou et al.,
+2026). IGR complements such persistence by explicitly restoring count-perturbed manipulation
+videos to supervise instance consistency, rather than relying on stored entity features alone.
+• Manipulation history retrieval. Mem-World uses a 4D surfel memory and action-conditioned
+history retrieval to maintain scene information under wrist-camera motion and occlusion (Zheng
+43
+
+
+Preprint
+et al., 2026). This historical context complements our direct supervision of the manipulated target:
+IGR promotes instance consistency, and TIA promotes cross-frame consistency during video
+prediction.
+44

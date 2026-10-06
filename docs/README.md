@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-10-04</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-06</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 17 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-04 22:40:11 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-06 01:08:00 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-10-04日报：共筛17篇，精读6篇、速读11篇，主线聚焦具身智能、VLA与世界模型效率。</p>
-<p>最值得看的是精读双星——RAVEL（9.0）用异步滚动推理加速流式视觉-语言-动作模型，Scope-WM（8.0）用作用域计算提效视觉世界模型；速读可顺带关注UniWAM（8.0）与经验可行性模仿（8.0）。</p>
-<p>普通读者建议先读RAVEL和Scope-WM的摘要，抓住“推理提速”和“世界模型省算力”两条线，再按兴趣挑速读。</p>
+<p>2026-10-06 日报精选17篇机器人世界模型研究，精读6篇、速读11篇。最值得看的是两篇9.0分工作：Rethinking World-Action Model 主攻组合式与上下文机器人操作，TwinJEPA 用动作偏好预测表征做目标条件控制；速读中 PointWAM、EVEWorld、Native Action-Prior 也聚焦3D世界动作建模与视频先验。普通读者可先读这两篇精读摘要，再按兴趣跟进速读中的3D建模方向。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -83,7 +81,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RAVEL: Asynchronous Rolling Inference for Flow-Based Vision-Language-Action Models">RAVEL: Asynchronous Rolling Inference for Flow-Based Vision-Language-Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Scope-WM: Scoped Computation for Efficient Visual World Models">Scope-WM: Scoped Computation for Efficient Visual World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="WayFinder: Hierarchical Visual-Language-Action for Zero-Shot Waypoint Generation and Low-Level Kinematic Control">WayFinder: Hierarchical Visual-Language-Action for Zero-Shot Waypoint Generation and Low-Level Kinematic Control</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Rethinking World-Action Model for Compositional and In-Context Robotic Manipulation">Rethinking World-Action Model for Compositional and In-Context Robotic Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="TwinJEPA: Action-Preferred Predictive Representations for Goal-Conditioned Control">TwinJEPA: Action-Preferred Predictive Representations for Goal-Conditioned Control</span></li><li><span class="dpr-home-dashboard-paper-title" title="AVL-JEPA: Preventing Causal Dynamics Information Collapse In Joint Embedding Predictive Architecture World Models">AVL-JEPA: Preventing Causal Dynamics Information Collapse In Joint Embedding Predictive Architecture World Models</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -96,7 +94,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Experience-Based Feasibility-Aware Generative Adversarial Imitation from Observation under Embodiment Mismatch">Experience-Based Feasibility-Aware Generative Adversarial Imitation from Observation under Embodiment Mismatch</span></li><li><span class="dpr-home-dashboard-paper-title" title="UniWAM: Unified World-Action Model">UniWAM: Unified World-Action Model</span></li><li><span class="dpr-home-dashboard-paper-title" title="Where Do Embodied Decisions Come From? Rethinking Latent and Explicit Reasoning">Where Do Embodied Decisions Come From? Rethinking Latent and Explicit Reasoning</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="PointWAM: 3D World Action Modeling for Dexterous Robotic Manipulation">PointWAM: 3D World Action Modeling for Dexterous Robotic Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="EVEWorld: Physical Evolution Supervision for Embodied World Models">EVEWorld: Physical Evolution Supervision for Embodied World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Native Action-Prior Learning from Videos for World Action Models">Native Action-Prior Learning from Videos for World Action Models</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
