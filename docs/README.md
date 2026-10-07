@@ -48,17 +48,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-10-06</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-07</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 26 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 17 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
-    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>2 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>9</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>17</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-06 23:17:52 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-07 23:39:15 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,7 +69,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>2026-10-06 日报完成：从26篇中精读9篇、速读17篇，聚焦机器人操作与世界动作模型。最值得看的是两篇9分工作——Rethinking World-Action Model 主攻组合式与上下文机器人操作，TwinJEPA 用动作偏好预测表征做目标条件控制。普通读者可先读这两篇，再顺着速读里的 RIFAR、Native Action-Prior 和 PointWAM 了解持续学习、视频先验与3D建模方向。</p>
+<p>10月7日日报：17篇新论文中精读6篇、速读11篇，重点盯住JEPA世界模型与多模态动作生成两条线。</p>
+<p>最值得看的是两篇9.0分精读——《Preserving Unstable Modes Through Inverse Dynamics in JEPA World Models》和《ESP: Energy-Score Policy for One-Step Multimodal Action Generation》，速读中R²-WAM、双系统VLA不确定性触发、VLA工作负载分析也均为8.0分。</p>
+<p>普通读者可先读这两篇精读的摘要与结论，再按兴趣跟进速读里的世界动作模型后训练和具身AI系统设计。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -78,12 +80,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">9 篇</strong>
+    <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Rethinking World-Action Model for Compositional and In-Context Robotic Manipulation">Rethinking World-Action Model for Compositional and In-Context Robotic Manipulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="TwinJEPA: Action-Preferred Predictive Representations for Goal-Conditioned Control">TwinJEPA: Action-Preferred Predictive Representations for Goal-Conditioned Control</span></li><li><span class="dpr-home-dashboard-paper-title" title="AVL-JEPA: Preventing Causal Dynamics Information Collapse In Joint Embedding Predictive Architecture World Models">AVL-JEPA: Preventing Causal Dynamics Information Collapse In Joint Embedding Predictive Architecture World Models</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Preserving Unstable Modes Through Inverse Dynamics in JEPA World Models">Preserving Unstable Modes Through Inverse Dynamics in JEPA World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="ESP: Energy-Score Policy for One-Step Multimodal Action Generation">ESP: Energy-Score Policy for One-Step Multimodal Action Generation</span></li><li><span class="dpr-home-dashboard-paper-title" title="XGenAct: Geometry-Enhanced World Action Models through Cross-Task Generation">XGenAct: Geometry-Enhanced World Action Models through Cross-Task Generation</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>9</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -91,12 +93,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">17 篇</strong>
+    <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="RIFAR: Reliability and Forgetting-Aware Replay for Continual Robot Learning">RIFAR: Reliability and Forgetting-Aware Replay for Continual Robot Learning</span></li><li><span class="dpr-home-dashboard-paper-title" title="Native Action-Prior Learning from Videos for World Action Models">Native Action-Prior Learning from Videos for World Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="PointWAM: 3D World Action Modeling for Dexterous Robotic Manipulation">PointWAM: 3D World Action Modeling for Dexterous Robotic Manipulation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="$R^2$-WAM: Repair-and-Reject Post-Training for World Action Models">$R^2$-WAM: Repair-and-Reject Post-Training for World Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Triggering Generalist Reasoning via Predictive Uncertainty for Dual-System VLA">Triggering Generalist Reasoning via Predictive Uncertainty for Dual-System VLA</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond LLM Serving: Characterizing Vision-Language-Action Workloads for Embodied AI System Design">Beyond LLM Serving: Characterizing Vision-Language-Action Workloads for Embodied AI System Design</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>17</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>
 </div>
 
