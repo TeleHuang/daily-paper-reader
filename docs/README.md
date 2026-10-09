@@ -48,7 +48,7 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-10-07</span>
+      <span class="dpr-home-dashboard-kicker">2026-10-09</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
     <strong class="dpr-home-dashboard-count">共 17 篇</strong>
@@ -58,7 +58,7 @@
     <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>6</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-10-07 23:39:15 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-10-09 00:18:19 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -69,9 +69,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>10月7日日报：17篇新论文中精读6篇、速读11篇，重点盯住JEPA世界模型与多模态动作生成两条线。</p>
-<p>最值得看的是两篇9.0分精读——《Preserving Unstable Modes Through Inverse Dynamics in JEPA World Models》和《ESP: Energy-Score Policy for One-Step Multimodal Action Generation》，速读中R²-WAM、双系统VLA不确定性触发、VLA工作负载分析也均为8.0分。</p>
-<p>普通读者可先读这两篇精读的摘要与结论，再按兴趣跟进速读里的世界动作模型后训练和具身AI系统设计。</p>
+<p>2026-10-09 日报完成 17 篇筛选，精读 6 篇、速读 11 篇，重点覆盖具身智能数据扩展与视觉-语言-动作模型两大方向。最值得关注的是精读双 9 分工作：EmbodiedSmith 用仿真中递归自改进飞轮扩展具身数据，Juno 则专攻 VLA 模型的预测潜变量驯服，速读中 Vela、KineWorld、SimForcing 也集中在 VLA 扩展与仿真到真实的机器人世界模型。普通读者可先读这两篇 9 分精读，再顺着速读里的 VLA 参数化和仿真蒸馏思路理解具身智能如何降本增效。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -83,7 +81,7 @@
     <strong class="dpr-home-dashboard-count">6 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Preserving Unstable Modes Through Inverse Dynamics in JEPA World Models">Preserving Unstable Modes Through Inverse Dynamics in JEPA World Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="ESP: Energy-Score Policy for One-Step Multimodal Action Generation">ESP: Energy-Score Policy for One-Step Multimodal Action Generation</span></li><li><span class="dpr-home-dashboard-paper-title" title="XGenAct: Geometry-Enhanced World Action Models through Cross-Task Generation">XGenAct: Geometry-Enhanced World Action Models through Cross-Task Generation</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="EmbodiedSmith: Scaling Embodied Data through Recursive Self-Improvement Flywheel in Simulation">EmbodiedSmith: Scaling Embodied Data through Recursive Self-Improvement Flywheel in Simulation</span></li><li><span class="dpr-home-dashboard-paper-title" title="Juno: Taming Predictive Latents for Vision-Language-Action Models">Juno: Taming Predictive Latents for Vision-Language-Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Multi-Fidelity Policy Gradients Stabilize Data-Scarce Reinforcement Learning">Multi-Fidelity Policy Gradients Stabilize Data-Scarce Reinforcement Learning</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>6</strong></span></div>
 </section>
@@ -96,7 +94,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="$R^2$-WAM: Repair-and-Reject Post-Training for World Action Models">$R^2$-WAM: Repair-and-Reject Post-Training for World Action Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Triggering Generalist Reasoning via Predictive Uncertainty for Dual-System VLA">Triggering Generalist Reasoning via Predictive Uncertainty for Dual-System VLA</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond LLM Serving: Characterizing Vision-Language-Action Workloads for Embodied AI System Design">Beyond LLM Serving: Characterizing Vision-Language-Action Workloads for Embodied AI System Design</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Vela: Scaling Vision-Language-Action Models with Adaptive Action Curve Parametrization">Vela: Scaling Vision-Language-Action Models with Adaptive Action Curve Parametrization</span></li><li><span class="dpr-home-dashboard-paper-title" title="KineWorld: Action-Induced Transport Fields for Embodied World Modeling">KineWorld: Action-Induced Transport Fields for Embodied World Modeling</span></li><li><span class="dpr-home-dashboard-paper-title" title="SimForcing: Distilling Simulation Motion Priors into Real-Domain Robot World Models">SimForcing: Distilling Simulation Motion Priors into Real-Domain Robot World Models</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">embodied-ai <strong>11</strong></span></div>
 </section>

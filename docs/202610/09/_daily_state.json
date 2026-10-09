@@ -1,0 +1,281 @@
+{
+  "date": "20261009",
+  "date_label": "",
+  "generated_at": "2026-10-09 00:18:19 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2610.07969v1",
+      "route": "202610/09/2610.07969v1-embodiedsmith-scaling-embodied-data-through-recursive-self-improvement-flywheel-in-simulation",
+      "title": "EmbodiedSmith: Scaling Embodied Data through Recursive Self-Improvement Flywheel in Simulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "通过递归自我改进在仿真中扩展具身数据生成",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.09940v1",
+      "route": "202610/09/2610.09940v1-juno-taming-predictive-latents-for-vision-language-action-models",
+      "title": "Juno: Taming Predictive Latents for Vision-Language-Action Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "单一动作条件化JEPA充当控制对齐表征骨干与预测教师",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.02505v1",
+      "route": "202610/09/2610.02505v1-multi-fidelity-policy-gradients-stabilize-data-scarce-reinforcement-learning",
+      "title": "Multi-Fidelity Policy Gradients Stabilize Data-Scarce Reinforcement Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "多保真度策略梯度在稀缺目标域数据下提升数据效率",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.02840v1",
+      "route": "202610/09/2610.02840v1-pointwam-3d-world-action-modeling-for-dexterous-robotic-manipulation",
+      "title": "PointWAM: 3D World Action Modeling for Dexterous Robotic Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向灵巧操作的3D世界动作模型联合预测场景与手部",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.04540v1",
+      "route": "202610/09/2610.04540v1-dreamformer-dream-imitation-with-a-transformer-world-model-for-language-conditioned-robotic-manipulation",
+      "title": "DreamFormer: Dream Imitation with a Transformer World Model for Language-Conditioned Robotic Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "在所学Transformer世界模型的潜空间想象中模仿",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.05230v1",
+      "route": "202610/09/2610.05230v1-vela-scaling-vision-language-action-models-with-adaptive-action-curve-parametrization",
+      "title": "Vela: Scaling Vision-Language-Action Models with Adaptive Action Curve Parametrization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向异构本体的共享动作接口与跨本体迁移",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.06349v1",
+      "route": "202610/09/2610.06349v1-kineworld-action-induced-transport-fields-for-embodied-world-modeling",
+      "title": "KineWorld: Action-Induced Transport Fields for Embodied World Modeling",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向具身世界建模的动作诱导传输场",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.06598v1",
+      "route": "202610/09/2610.06598v1-simforcing-distilling-simulation-motion-priors-into-real-domain-robot-world-models",
+      "title": "SimForcing: Distilling Simulation Motion Priors into Real-Domain Robot World Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "将仿真运动先验蒸馏进机器人世界模型",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.06999v1",
+      "route": "202610/09/2610.06999v1-proactivevla-augmenting-embodied-memory-through-proactive-environment-exploration",
+      "title": "ProactiveVLA: Augmenting Embodied Memory through Proactive Environment Exploration",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向真实环境的VLA机器人主动探索与具身记忆增强",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.08444v1",
+      "route": "202610/09/2610.08444v1-acttune-action-aware-precision-and-gpu-operating-point-adaptation-for-energy-efficient-vision-language-action-inference",
+      "title": "ActTune: Action-Aware Precision and GPU Operating-Point Adaptation for Energy-Efficient Vision-Language-Action Inference",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向高效VLA推理的动作感知精度与GPU工作点调优",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2609.39038v1",
+      "route": "202610/09/2609.39038v1-looking-back-to-move-forward-temporal-verification-for-generative-robot-policies",
+      "title": "Looking Back to Move Forward: Temporal Verification for Generative Robot Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "生成式机器人策略的测试时动作验证",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2609.39820v1",
+      "route": "202610/09/2609.39820v1-learning-from-runtime-feedback-through-failure-bank-self-evolution-for-vision-language-action-models",
+      "title": "Learning from Runtime Feedback through Failure-Bank Self-Evolution for Vision-Language-Action Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于运行时反馈的VLA策略自演化改进",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2609.39970v1",
+      "route": "202610/09/2609.39970v1-phaseplan-ordered-future-phase-planning-for-robot-brain-models",
+      "title": "PhasePlan: Ordered Future-Phase Planning for Robot Brain Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "为机器人大脑模型做有序未来阶段规划以生成动作",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.02542v1",
+      "route": "202610/09/2610.02542v1-how-to-train-your-world-model-fine-tuning-vs-rag-for-lm-based-world-modeling",
+      "title": "How To Train Your World Model: Fine-tuning vs RAG for LM-based World Modeling",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于语言模型的世界模型用于智能体规划",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.02706v1",
+      "route": "202610/09/2610.02706v1-adatempo-learning-shared-relative-tempo-from-demonstrations-for-faster-robot-manipulation",
+      "title": "AdaTempo: Learning Shared Relative Tempo from Demonstrations for Faster Robot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "视觉运动机器人策略的自监督加速",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.05734v1",
+      "route": "202610/09/2610.05734v1-freespeed-training-free-speed-control-for-generative-robot-policies",
+      "title": "FreeSpeed: Training-Free Speed Control for Generative Robot Policies",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向机器人策略实时部署的免训练速度控制",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    },
+    {
+      "paper_id": "2610.06100v1",
+      "route": "202610/09/2610.06100v1-from-traces-to-agentic-worlds-agentic-language-world-models-for-interactive-environment-simulation",
+      "title": "From Traces to Agentic Worlds: Agentic Language World Models for Interactive Environment Simulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "以世界模型智能体作为环境进行有状态仿真",
+      "first_seen_at": "2026-10-09 00:18:19 UTC",
+      "updated_at": "2026-10-09 00:18:19 UTC"
+    }
+  ]
+}

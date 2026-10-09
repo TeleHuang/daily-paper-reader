@@ -1,0 +1,610 @@
+Title: DreamFormer: Dream Imitation with a Transformer World Model for Language-Conditioned Robotic Manipulation
+
+URL Source: https://arxiv.org/pdf/2610.04540v1
+
+Published Time: Tue, 06 Oct 2026 00:55:25 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+> 1
+
+# DreamFormer: Dream Imitation with a Transformer World Model for Language-Conditioned Robotic Manipulation 
+
+Mostafa Kotb 1,2,∗, Cornelius Weber 1, Muhammad Burhan Hafez 3, and Stefan Wermter 1
+
+Abstract —We introduce DreamFormer , a model-based agent that acquires language-conditioned, multi-task skills by imitating expert demonstrations within the latent imagination of a learned world model. DreamFormer first learns a task-agnostic Trans-former world model from unstructured play data, then acquires task-specific behaviors by optimizing an intrinsic reward that aligns agent-generated rollouts with expert demonstrations in latent space. Since the policy is trained on-policy inside imagi-nation, it is exposed to its own errors during training, mitigating the covariate shift inherent to offline behavioral cloning. To make long-horizon imagination affordable, DreamFormer encodes a high-resolution multi-view robotic observation into a single input token, avoiding both spatial downsampling and the multi-token representations used by prior Transformer world models. On the long-horizon CALVIN benchmark, DreamFormer outper-forms LUMOS, the comparable model-based agent, on single-environment evaluation (2.52 vs 2.34 average tasks completed per chain of five) while keeping imagination rollouts tractable. Against HULC, the behavior cloning baseline, it nearly doubles performance on zero-shot transfer to an unseen environment (1.30 vs 0.67), indicating that dynamics learned by the world model transfer more readily than a directly cloned policy. This is consistent with the role attributed to internal models in biological agents, where a model of environment dynamics supports behavior in situations not previously encountered. 
+
+Index Terms —World models, learning in imagination, long-horizon imitation learning, language-conditioned manipulation. 
+
+I. I NTRODUCTION 
+
+# AFoundational hallmark of human and animal intelligence is the ability to construct rich internal representations of external reality—referred to as world models —that enable biological agents to mentally simulate alternative scenarios, predict future dynamics, and formulate optimal decisions prior to physical execution [1]. Inspired by this mechanism, world models [2] have emerged as a promising framework for enhancing the decision-making and predictive capabilities of embodied agents, offering a pathway toward more general and robust intelligent behavior [3]. Such models are used either to learn behavior inside their own imagination [4], [5] or to plan at runtime [6], [7]. Despite recent advances, learning world models that transfer across diverse downstream tasks remains an open challenge.               
+
+> ∗Corresponding author: Mostafa Kotb
+> 1Mostafa Kotb, Cornelius Weber and Stefan Wermter are with the Knowl-edge Technology Group, Department of Informatics, University of Hamburg, 20146 Hamburg, Germany {mostafa.kotb, cornelius.weber, stefan.wermter }@uni-hamburg.de
+> 2Mostafa Kotb is also with Mathematics Department, Faculty of Science, Aswan University, 81528 Aswan, Egypt m.kotb@sci.aswu.edu.eg
+> 3Muhammad Burhan Hafez is with School of Electronics and Com-puter Science, University of Southampton, Southampton SO17 1BJ, UK
+> burhan.hafez@soton.ac.uk
+
+The difficulty in learning broad-purpose world models stems primarily from two methodological bottlenecks. First, in online learning paradigms, the model is continuously updated using data collected by an active policy. This creates a closed-loop exploration bias that inextricably entangles the learned transi-tion dynamics with the specific task being solved. Second, 
+
+joint reward modeling forces the dynamics model to learn representations optimized for a singular, task-specific reward signal. This tightly couples the latent space to one objective, restricting the model’s utility for downstream policy learning or real-time planning. Consequently, these paradigms inher-ently yield task-specific world models, significantly hindering knowledge transfer across diverse tasks. We argue that constructing broad-purpose world models necessitates a shift toward offline learning from diverse offline datasets and task-agnostic (i.e., reward-free) training [8]. Once established, these models can serve as versatile foundations, used either to learn downstream task-specific behaviors or to optimize plans to reach a specified goal at runtime. Motivated by this principle, we introduce DreamFormer , a model-based agent that first learns a task-agnostic world model from unstructured play data, and subsequently acquires task-specific behaviors entirely in the imagination of the learned latent space. DreamFormer builds upon the Dream Imitation 
+
+paradigm (Section II-A) introduced in DITTO [9], which defines an intrinsic reward encouraging the alignment between imagined policy rollouts and expert trajectories directly in the model’s latent space; optimizing this reward by reinforce-ment learning induces imitation without requiring access to expert actions. DITTO, however, validates the paradigm only in single-task settings, training a separate world model for each task without evaluating transfer across tasks. LUMOS [10] extends it to language-conditioned multi-task robotic manipulation, but adopts the DreamerV2 [4] world model in its standard configuration, which was developed for 64 × 64 
+
+resolution inputs and therefore requires aggressive spatial downsampling of high-resolution robotic observations. At the architectural level, DreamFormer employs an autore-gressive, GPT-style Transformer [11], motivated by the proven superiority of Transformers over traditional recurrent dynamics models [7]. However, a critical bottleneck in deploying these architectures for visual control is tokenizing image observa-tions. Conventional tokenizers, such as ViT [12] or VQ-VAE [13], encode a single image into tens or hundreds of tokens. Over extended imagined rollouts, this growth in sequence length inflates both the memory footprint of the key–value cache and the cost of self-attention, which scales quadratically in the number of tokens attended over. To mitigate this, prior approaches [14], [15] have utilized a arXiv:2610.04540v1 [cs.RO] 3 Oct 2026 2
+
+categorical variational autoencoder (VAE) [4] to encode each image into a single discrete token. However, this configuration was developed for low-resolution inputs such as Atari and does not extend to high-resolution robotics without downsampling [10]. DreamFormer alleviates this constraint by scaling the categorical VAE: replacing the shallow convolutional encoder with a ResNet-18 backbone and expanding the capacity of the categorical latent space. It encodes full-resolution multi-view observations into a single input token, so that sequence length grows only with the imagination horizon and is independent of input resolution, keeping the memory and attention cost of imagination rollouts bounded by the horizon alone. The primary contributions of this work are as follows: 1) A Broad-Purpose World Modeling Framework: We introduce DreamFormer , a model-based robotic agent that leverages offline datasets to learn a task-agnostic Transformer world model. By decoupling dynamics learning from singular reward objectives, the model builds versatile representations suitable for transfer across downstream tasks. 2) Low-Cost Long-Horizon Rollouts: We scale the cat-egorical VAE with a ResNet-18 backbone and an ex-panded latent space, encoding full-resolution multi-view observations at one Transformer token per timestep. The sequence length of an imagined rollout therefore depends only on the horizon, bounding both the key– value cache and the quadratic cost of self-attention. 3) Language-Conditioned Multi-Task Transfer: We ex-tend the Dream Imitation paradigm to train a language-conditioned multi-task policy entirely within the model’s latent space. On the CALVIN benchmark, DreamFormer 
+
+nearly doubles the performance of the model-free base-line on zero-shot transfer to an unseen environment and outperforms the model-based baseline on single-environment evaluation. II. B ACKGROUND 
+
+A. Dream Imitation 
+
+Dream Imitation is an imitation learning algorithm pro-posed in DITTO [9] that leverages learned world models to reformulate offline imitation learning as online reinforcement learning within the world model latent space. First, the expert trajectories are mapped into the model latent space; then, an imitation policy is unrolled starting from an arbitrary expert state in the model latent space. Finally, an intrinsic reward rint t
+
+is defined to encourage the alignment of the unrolled policy latent states sπt with expert latent states sEt across multiple time steps: 
+
+rint t (sEt , s πt ) = sEt · sπt
+
+max( ∥sEt ∥, ∥sπt ∥)2 . (1) This specific intrinsic formulation—a modified dot prod-uct—was empirically shown to outperform standard L2 and cosine similarity metrics by encouraging similarity without requiring exact matches [9]. Furthermore, unlike standard be-havioral cloning, optimizing this intrinsic reward via reinforce-ment learning allows the agent to actively explore alternative trajectories within the simulated environment. By learning the policy ’online’ inside the world model’s imagination, Dream Imitation effectively mitigates the compounding errors and covariate shift typically associated with offline methods [16]. DITTO validates this paradigm in single-task settings, training a separate recurrent world model for each Atari game. 
+
+DreamFormer extends it to language-conditioned robotic ma-nipulation, training a task-agnostic Transformer world model. 
+
+B. Unstructured Play Data and Latent Planning 
+
+Learning from Play (LfP) [17] leverages unstructured, ex-ploratory interaction data—often collected as humans freely manipulate the environment without predefined goals. Such data is diverse and unlabeled, capturing a wide range of behaviors. However, imitation learning from unstructured play data faces a multimodality problem [17], where multiple valid high-level behaviors can connect the same current state 
+
+sc and goal state sg . To address this challenge, Play-LMP [17] introduces a planning module that encodes the diverse behaviors linking the same (sc, s g ) pair into a unified latent representation within a latent plan space. The planning module comprises two stochastic encoders: (1) a plan recognizer ,which maps an entire sequence into a latent plan, and (2) 
+
+a plan proposer , which infers a latent plan conditioned on the current and goal states. During inference, the policy is conditioned jointly on the current state, the goal state, and the inferred latent plan to resolve behavioral ambiguity. III. R ELATED WORK 
+
+A. Transformer World Models 
+
+Model-based agents aim to learn a world model [2] that serves as an internal simulation of the environment’s dynamics. Then, they leverage the learned model to either train a policy inside the model’s imaginations [5] or perform real-time plan-ning with Model Predictive Control (MPC) [6]. Recently, with the success of the Transformer architecture [11] in sequence modeling across various domains [12], [18], attention has increased on using Transformers as world models. One of the earliest attempts in this direction is Trans-Dreamer [19], which replaces the Recurrent State-Space Model (RSSM) with a Transformer-based State-Space Model (TSSM), achieving comparable performance to DreamerV2 [4]. IRIS [20] employs VQ-VAE [13] to encode visual ob-servations into 16 discrete tokens per frame, utilizing an autoregressive Transformer [11] for sequence modeling. How-ever, because self-attention scales quadratically with sequence length, applying it over a large number of input tokens leads to severe computational overhead and highly inefficient imagined rollouts during policy training. To achieve more efficient imagination, TWM [15] leverages a categorical VAE [4] to encode visual observations into a single discrete token and employs Transformer-XL [18] as its sequence model. How-ever, TWM still applies self-attention across a concatenated sequence of observation, action, and reward tokens. To further improve imagination efficiency, STORM [14] removes the reward token entirely and fuses the observation and action into a single unified token via a multilayer perceptron (MLP). 3
+
+STORM encodes visual observations into a single discrete token similar to TWM and uses an autoregressive Transformer similar to IRIS. In a parallel effort to stabilize long-horizon rollouts, TWISTER [21] follows STORM’s architecture and supplements the training objective with Action-Conditioned Contrastive Predictive Coding (AC-CPC) to learn robust tem-poral representations directly in the latent space. Crucially, however, all the aforementioned Transformer-based agents suffer from two primary limitations. First, they predominantly rely on training task-specific world models (i.e., incorporating explicit reward modeling during training), which entangles the learned latent space with a single objective and restricts downstream policy learning strictly to that task. Second, while most of these methods (with the exception of IRIS) adopt a categorical VAE to encode visual observations into a single discrete token, this configuration was developed for low-resolution, single-view domains such as Atari games [22]. DreamFormer resolves both limitations by combining a task-agnostic world model with a scaled categorical VAE designed for high-resolution, multi-view robotics. 
+
+B. Language-Conditioned Robotic Manipulation 
+
+A key capability of a versatile, broad-purpose agent is the ability to execute diverse tasks specified through natural language, providing an intuitive medium for human-robot communication. Consequently, enabling robots to perform language-conditioned, vision-based multi-task learning has become a critical focus. One prominent approach is MCIL [23], which utilizes a single behavioral cloning (BC) policy conditioned on multi-context goals (e.g., a goal image or a natural language instruction). This conditioning enables MCIL to effectively leverage unstructured robot play data [17], despite the fact that only about 1% of the trajectories are explicitly annotated with language. To alleviate the inherent 
+
+multimodality problem within unstructured play data, MCIL adopts the latent planning module (Section II-B) originally introduced in Play-LMP [17]. Motivated by these prior studies [17], [23], the CALVIN benchmark [24] provides a formal evaluation framework for language-conditioned, long-horizon, multi-task robotic manipulation. It provides a highly chal-lenging offline dataset comprising ∼24 hours of teleoperated, unstructured play data, with approximately 20K language-annotated trajectories. Building upon the foundation of MCIL, HULC [25] establishes a robust baseline on CALVIN by integrating several key innovations into a unified framework. Notable features include the use of contrastive learning to better ground language instructions in robotic actions, and the adoption of discrete categorical latent plans rather than continuous ones. Furthermore, HULC introduces a hierarchical control architecture in which a local policy, operating exclu-sively on gripper-centric observations, is conditioned on global latent plans generated by the planning module. More recently, several advanced architectures have signifi-cantly pushed the state-of-the-art on the CALVIN benchmark. RoboFlamingo [26] adapts large, pre-trained Vision-Language Models (VLMs) by attaching an explicit policy head to a frozen OpenFlamingo backbone [27]. GR-1 [28] leverages large-scale video generative pre-training to predict future frames and actions end-to-end via a GPT-style Transformer. Most importantly, all of these state-of-the-art approaches fundamentally rely on model-free behavioral cloning paradigms. To the best of our knowledge, LUMOS [10] is the only model-based baseline in this domain, applying the Dream Imitation [9] framework with a DreamerV2 [4] world model and downsamples CALVIN’s high-resolution multi-view observations to 64 × 64 before encoding. 
+
+C. Image Tokenization in Transformer World Models 
+
+Transformer world models simulate dynamics over a se-quence of latent tokens, and the cost of self-attention scales quadratically in the length of that sequence. The image tok-enization strategy therefore governs both the memory footprint and the attention cost of imagination rollouts. Conventional tokenizers such as Vision Transformers (ViT) [12] or VQ-VAE [13] successfully preserve spatial resolution by dividing an image into a grid of tokens (e.g., 16 or more tokens per frame), they introduce a severe sequence-length bottleneck. Over extended imagined rollouts, allocating multiple tokens per frame inflates both the key–value cache and the attention cost, as in architectures such as IRIS [20]. Recent efforts have explored various strategies to mitigate this multi-token bottleneck. For instance, CompACT [29] resamples frozen DINOv3 [30] features into 8 discrete tokens through a set of learnable queries and finite scalar quantization (FSQ) [31]. From a different angle, DINO-WM [32] utilizes frozen DINOv2 [33] features and retains the full set of ViT patch tokens. Instead of reducing the token count, it adopts a ViT-based sequence model with a frame-level causal attention mechanism, enabling the prediction of all per-frame tokens in parallel rather than generating them autoregressively token-by-token. While these are complementary optimizations—one reducing tokens per frame, the other reducing decoding steps per frame—both still allocate multiple tokens per observation. Consequently, the memory footprint and sequence length re-main heavily inflated, scaling proportionally with the rollout horizon multiplied by the per-frame token count. To bound sequence length more aggressively, another line of work [14], [15], [21] employs a categorical VAE [4] to encode observations into a single discrete token. However, standard categorical VAEs are architecturally constrained: they rely on shallow CNN encoders with a categorical latent space of 32 categories (each containing 32 classes), and are heavily optimized to operate exclusively on low-resolution images. IV. M ETHODOLOGY 
+
+We introduce DreamFormer , a model-based robotic frame-work designed to acquire language-conditioned, multi-task policy entirely within the latent imagination of a learned world model. The training comprises two stages: First, the world model is trained in a task-agnostic fashion using an unstruc-tured play dataset. Second, an actor-critic agent is trained inside the world model’s imagined latent space via Dream Imitation [9] (see Section II-A) to synthesize a language-conditioned, multi-task policy. This section is organized as 4
+
+follows: Section IV-A formalizes the problem. Section IV-B presents our proposed scaling mechanism for categorical VAE. In Section IV-C details the architecture and training objective of the Transformer world model. Section IV-D describes the architecture and the training of the agent. Finally, Section IV-E provides the agent real-time inference. 
+
+A. Problem Formulation 
+
+We perform goal-conditioned imitation learning using a large, unlabeled, and unstructured fixed play dataset D =
+
+{τi}Ni=1 , where each trajectory τi = {(s0, a 0), . . . , (sk, a k)}
+
+represents a long, unsegmented sequence of state–action pairs. Here, s ∈ S denotes the state–observation space, and a ∈A represents the continuous action space. The dataset is subsequently segmented and relabeled, producing Dplay =
+
+{(τ, s g )i}|D play | 
+
+> i=0
+
+, which pairs each goal state sg with its corresponding demonstration trajectory τ . Following the multi-context imitation learning framework proposed in MCIL [23], goals can be expressed either as goal states sg or free-form language instructions l. Consequently, a small subset of Dplay 
+
+is annotated with hindsight language instructions, resulting in 
+
+D(play,lang ) = {(τ, l )i}|D (play,lang )| 
+
+> i=0
+
+. We aim to learn a goal-conditioned policy πθ (at|st, g ), where g ∈ G represents a goal state sg or a language instruction l.
+
+B. Scaling Categorical VAE 
+
+The standard categorical VAE, initially introduced in DreamerV2 [4], encodes visual observation ot into a latent cat-egorical distribution comprising 32 categories, each containing 32 classes ( 32 × 32 ). To construct a stochastic latent state zt, a single class is sampled from each category, yielding 32 one-hot vectors, each of length 32. Flattening zt yields a sparse binary vector of dimension 1024, containing exactly 32 active bits (ones) while the remaining elements are zeros. This standard (32 × 32 ) categorical VAE is heavily optimized to operate on 
+
+64 ×64 low-resolution, single-view observations, such as those found in Atari environments. To operate on high-resolution, multi-view robotic environments, it requires downsampling to meet the 64 × 64 input constraint, as seen in LUMOS [10]. We propose to scale the categorical VAE to directly op-erate on high-resolution observations without downsampling. First, to extract rich, fine-grained representations, we replace the conventional shallow CNN encoder with an expressive, trainable ResNet-18 backbone, further enhanced with a spatial softmax layer [34]. The spatial softmax layer reduces each feature map to its spatial expectation, explicitly encouraging the extraction of localized, keypoint-like features. This in-ductive bias is particularly suited for robotic manipulation, where precise object and gripper positions matter more than global visual textures. Second, we expand the capacity of the categorical latent space to 64 categories, each with 32 classes (64 × 32 ). The flattened stochastic latent state zt expands to a 2048-dimensional vector with 64 active bits. As a consequence of expanding the categorical capacity, we observed training instability: early in training the categorical posterior becomes near-deterministic, concentrating probability mass on a single class per category and leaving much of the expanded latent Transformer Backbone          
+
+> min KL min KL
+> 64 categories 32 classes each
+> Static Cam Gripper Cam Static Cam Gripper Cam
+> Decoder Encoder
+> Static Cam Gripper Cam
+> Encoder
+> Static Cam Gripper Cam
+> Decoder
+> Fig. 1. Transformer world model is trained by reconstructing the observation
+> otand minimizing the KL divergence between the predicted prior distribution
+> ˆztand the posterior distribution zt. To accommodate high-resolution, multi-view observations, a trainable ResNet-18 is employed as the visual encoder, and the capacity of the categorical latent space is doubled to 64 categories, each with 32 classes (64 ×32) .
+
+space unused. To stabilize training, we introduce an entropy regularizer. In the next section, we explain in detail the overall training objective proposed to effectively train our scaled categorical VAE alongside the Transformer dynamics model. 
+
+C. World Model Learning 
+
+The first training stage involves learning a task-agnostic, latent world model that captures the environment dynamics within a compact latent representation, effectively serving as an internal simulation of the real environment. This internal simulation enables sample-efficient behavior learning, allow-ing the agent to be trained within the learned model without re-quiring direct interaction with the environment. Since learning an accurate world model is crucial for effective downstream behavior learning, we employ a Transformer world model as illustrated in Fig. 1. The sequence model is implemented as a GPT-like Trans-former [11] with masked self-attention to predict the next stochastic state ˆzt+1 conditioned on the previous states z1: t and actions a1: t. The Transformer outputs hidden states ht, which are concatenated with the corresponding stochastic states zt
+
+to form the model state st = {ht, z t}. We utilize the state-action fusion strategy proposed in STORM [14], wherein the latent stochastic states zt and actions at are concatenated and passed through a multilayer perceptron (MLP), yielding a single token per time step t. The world model components are the following: 
+
+Encoder network: zt ∼ qϕ(zt | ot)
+
+Transformer Backbone: ht = fϕ(z1: t−1, a 1: t−1)
+
+Dynamics predictor: ˆzt ∼ pϕ(ˆ zt | ht)
+
+Decoder network: ˆot ∼ pϕ(ˆ ot | zt)
+
+(2) Our world model is trained in a task-agnostic fashion, therefore reward predictor component is not required. The expanded ( 64 × 32 ) latent is more prone to the collapse 5
+
+described in Section IV-B: with twice as many categorical variables, there is more capacity available to go unused, and we observe the posterior concentrating on a single class per category early in training. To counteract this, we add a regularizer that maximizes the normalized entropy of the categorical posterior. Ultimately, the world model is trained end-to-end, optimizing the following total objective: 
+
+L(ϕ) = 1
+
+BT 
+
+> B
+
+X
+
+> b=1
+> T
+
+X
+
+> t=1
+
+h
+
+β1Lrec  
+
+> t
+
+(ϕ) − β2Lent  
+
+> t
+
+(ϕ)+ β3Lrep  
+
+> t
+
+(ϕ) + β4Ldyn  
+
+> t
+
+(ϕ)
+
+i
+
+,
+
+(3) where B is the batch size and T is the sequence length. 
+
+Lrec  
+
+> t
+
+represents the reconstruction loss, computed as the mean squared error (MSE) and weighted by β1. Lent  
+
+> t
+
+represents the entropy regularizer weighted by β2, and computed as follows: 
+
+Lent = H(zt)
+
+Hmax 
+
+, (4) where the absolute entropy H(zt) is normalized by the maxi-mum entropy Hmax = N log K, given N = 64 categories and 
+
+K = 32 classes. The absolute entropy of the latent state zt is defined as: 
+
+H(zt) = −
+
+> N
+
+X
+
+> i=1
+> K
+
+X
+
+> j=1
+
+pi,j log pi,j , (5) where pi,j denote the predicted posterior probability of the j-th class within the i-th category. Both Ldyn  
+
+> t
+
+and Lrep  
+
+> t
+
+losses are expressed as Kullback–Leibler (KL) divergence but differ in weighting and the use of the stop-gradients sg (.) operation: 
+
+Ldyn  
+
+> t
+
+(ϕ) = max 
+
+
+
+1, KL 
+
+h
+
+sg  qϕ(zt | ot) pϕ(ˆ zt | ht)
+
+i 
+
+,
+
+(6a) 
+
+Lrep  
+
+> t
+
+(ϕ) = max 
+
+
+
+1, KL 
+
+h
+
+qϕ(zt | ot) sg  pϕ(ˆ zt | ht)i 
+
+.
+
+(6b) Dreamer (V2 and V3) [4], [5] balances the two KL terms with fixed coefficients tuned for a (32 ×32) latent space. In our 
+
+(64 ×32) space the KL is summed over twice as many categor-ical variables, so the same coefficients impose a proportionally stronger penalty on the posterior and contribute to the collapse described above. We instead ramp both coefficients over the first 250K steps with a cosine schedule: β3 from 0.1 to 0.5 and 
+
+β4 from 1.0 to 2.0. Early training is thus weighted an order of magnitude toward the dynamics term, which constrains the transition model to track the posterior while leaving the encoder comparatively free to fit high-resolution observations; the schedule then settles at a 4:1 ratio, matching Dreamer’s balance at a larger overall scale. Furthermore, to prevent the high-capacity ResNet-18 encoder from memorizing scene appearance and encourage it to learn robust features, we apply random pixel-shift augmentation [35]. Crucially, a single shift is sampled per trajectory and applied uniformly to every frame, rather than independently per frame: this makes the encoder robust to global camera displacement while leaving inter-frame motion (i.e., preserving relative temporal dynamics). Finally, sampling zt from a categorical distribution is not differentiable, so we employ straight-through gradients [36]. 
+
+D. Agent Behavior Learning 
+
+DreamFormer trains an actor-critic agent within the latent space of the learned world by unrolling imagined trajectories starting from an arbitrary expert state and encourages the alignment of the unrolled policy states sπt with the expert states sEt . Specifically, an intrinsic reward rint is defined by Eq. 1 to measure the divergence between the agent rollouts and expert demonstrations. The actor–critic agent is trained to maximize this intrinsic reward using standard reinforcement learning. Here, the state st = {ht, z t} denotes the model state, which is composed of the hidden state ht, encoding historical information from the previous time steps (1 : t − 1) , and the stochastic state zt, capturing information from the current time step t. Following LUMOS, we learn a goal-conditioned policy 
+
+πθ (at | st, g ) and a value function vψ (st | g) from the dataset 
+
+Dplay and D(play,lang ). Fig. 2(a) shows the agent behavior learning process in detail. 
+
+Imagination Rollouts: During policy training, a batch of expert trajectories {τi}Bi=1 is sampled, each of length H,where H denotes the imagination horizon. First, these ex-pert trajectories are mapped into the model’s latent space to obtain the sequence of expert states {sEt+1 , s Et+2 , . . . , s Et+H }
+
+(depicted as pink circles) . Starting from the initial expert state sEt+1 , the imagined trajectories are autoregressively un-rolled using the policy, the prior distribution, and the Trans-former backbone to generate the corresponding policy states 
+
+{sπt+2 , s πt+3 , . . . , s πt+H } (depicted as blue circles) . Since the unrolling process is explicitly conditioned on the initial expert state, there is no corresponding policy state at timestep t + 1 .The imagination process is initialized with a key–value cache computed over the context window C, and the cache grows with each imagined step, so every predicted state attends over the full context and all preceding imagined states without truncation. Finally, the intrinsic reward rint is computed via Eq. 1 to measure the alignment between each corresponding state pair (sEk , s πk ) across k = t + 2 , . . . , t + H.
+
+Latent Goal Module: to learn a goal-conditioned actor–critic agent, we employ a latent goal module (LGM ) (depicted as the green box) that maps the goal into a latent goal representation Rg , where g denotes the dimensionality of the latent goal space. The goal input can be either a language instruction or a latent state corresponding to the final expert state sEt+H . Similar to HULC [25], separate goal encoders are used for each goal modality. In order to embed raw text into a semantically meaningful vector space, we utilize the pre-trained paraphrase-MiniLM-L3-v2 model [37]. 
+
+Latent Plan Module: to address the multimodality chal-lenge (see Section II-B) encountered in learning control from unstructured play data, we employ a latent plan module 
+
+(LPM )(depicted as the orange box) . It consists of two stochastic encoders: (1) a plan recognizer , which maps the entire latent state trajectory {sEt+1 , s Et+2 , . . . , s Et+H } into a latent plan, and (2) a plan proposer , which proposes a latent plan conditioned on the current latent state sEt+1 and a latent goal g. During training, we minimize the KL divergence LKL 
+
+between the two encoders to ensure that the plan proposal accurately captures and reproduces the observed behavior. 6(a) Agent Behavior Learning (b) Agent Inference    
+
+> Key / Value
+> attention Cache
+> of past context
+> actor Plan
+> Proposal Plan Goal Encoder
+> "Pick up pink block"
+> Goal Encoder
+> "Pick up pink block"
+> actor actor critic critic actor critic
+
+Transformer Backbone 
+
+> Key / Value
+> attention Cache
+> of past context
+> Encoder
+> Static Cam  Gripper Cam
+> Encoder
+> Static Cam  Gripper Cam
+> Plan
+> Plan
+> Recognizer
+> min KL
+> Entire trajectory
+> Plan
+> Proposal
+> Current + Goal
+
+Fig. 2. DreamFormer learns goal-conditioned behaviors within the latent space of a learned world model. (a) During training, imagined trajectories are unrolled from an expert state, initialized with a key–value cache over a context window of preceding steps. Goals are encoded by the latent goal module 
+
+(LGM ) from either a language instruction or the final expert latent state, and the latent plan module (LPM ) supplies a high-level behavioral prior: the plan is drawn from the plan recognizer, which sees the entire expert trajectory, while the plan proposal is trained to match it from the current state and goal alone. The actor is trained by maximizing an intrinsic reward that rewards alignment between imagined and expert latent trajectories. (b) During inference, the actor acts based on the current latent state st = {ht, ˆzt}, with ht computed over a sliding context window of recent real observations, guided by a language command. The latent plan comes from the plan proposal rather than the recognizer, conditioning the actor on the intended behavior. 
+
+Similar to HULC, we employ a multimodal transformer en-coder to build a contextualized representation of the latent trajectories, mapping them into categorical latent plans of 32 categories, each with 32 classes and optimizing them using straight-through gradients [36]. 
+
+Semantic Alignment: To enable the agent to follow lan-guage instructions, we must address the symbol grounding problem [38]—the fundamental challenge of mapping abstract linguistic commands to the robot’s perception and actions. Following the approach in LUMOS, we bridge this modality gap by aligning the world model’s latent representations with the extracted language features. This semantic alignment is achieved via a CLIP-style contrastive loss [39], denoted as 
+
+Lcontrast , which leverages in-batch negative sampling to ensure efficient and robust training. 
+
+Actor and Critic models: Both the actor and critic models are conditioned on the latent state st and the latent goal g.The actor samples actions aimed at maximizing the intrinsic reward rint , while the critic predicts value estimates for the same latent state–goal pair, representing the expected future discounted rewards. The models are defined as follows: Actor: at ∼ πθ (at | st, g ),
+
+Critic: vψ (st, g ) ≈ Eπθ ,p ϕ
+
+" HX
+
+> t=0
+
+γtrint 
+
+> t
+
+#
+
+, (7) where γ is a discount factor and H is the imagination horizon. We implement the actor and critic models as two MLPs, and the actor outputs a tanh-transformed Gaussian [40], fa-cilitating reparameterized sampling for backpropagation. The world model remains fixed during behavior learning to prevent agent gradients from modifying its learned representations. We adopt the training objectives from LUMOS, where the critic objective is to regress the computed value estimate to the λ-target [41], denoted by V λ, as follows: 
+
+L(ψ) .
+
+= Eπθ ,p ϕ
+
+"H−1X
+
+> t=1
+
+12
+
+ vψ (st) − sg (V λt )2
+
+#
+
+, (8) where sg (.) is the stop-gradients operation, and a target net-work is employed to provide target values, whose parameters are an exponential moving average (EMA) of the critic net-work. The actor objective leverages backpropagation through the learned dynamics to maximize value estimates while minimizing the KL divergence between plan encoders and the contrastive loss aligning latent trajectories with language: 
+
+L(θ) .
+
+= Eπθ ,p ϕ
+
+"t+HX 
+
+> τ=t
+
+ −V λ(sτ ) + α1LKL + α2Lcontrast 
+
+#
+
+,
+
+(9) where θ represents the parameters of the actor, the latent plan module, and the latent goal module. 
+
+E. Agent Inference 
+
+At inference (Fig. 2(b)), the policy is conditioned solely on the language instruction, while the proposal encoder infers the latent plan from the current state and latent goal. The model does not imagine at execution time: the key–value cache holds a context window C of the most recent real observations and slides forward as the episode proceeds, so it provides history to the sequence model at bounded cost. V. E XPERIMENTS AND RESULTS 
+
+This section evaluates DreamFormer on the CALVIN benchmark [24]. We compare against learning-based compa-rable methods. We then quantify the contribution of individual 7rotate the blue block to    
+
+> the right
+> 1
+> grasp and lift the pink block
+> 2
+> store the grasped block in the sliding cabinet
+> 3
+> push the sliding door to the left
+> 4
+> pull the handle to open
+> the drawer
+> 5
+> Env A Env B
+> Env C Env D
+> Train on 24 hours of play data collected from four environments Long-horizon, language-conditioned evaluation on Env D to complete 5 tasks in a row
+> Fig. 3. CALVIN Benchmark . (Left) the four environments A, B, C, D. (Right) long-horizon, language-conditioned evaluation with 5 tasks in a row.
+
+components through an ablation study. Finally, we analyse imagination rollouts along two axes: the fidelity of the world model’s open-loop predictions, and the computational cost of rollouts compared with other Transformer world models. 
+
+A. Experimental Setup 1) Benchmark: The CALVIN challenge [24] consists of four environments A, B, C, D with similar setup but vary in the desk color and the layouts of items, as shown in Fig. 3 (Left). Each environment contains a 7-DOF Franka Emika Panda robot arm and a desk with a sliding door, a drawer, an LED controlled by a black button, and a light bulb controlled by a switch. Three colored rectangular blocks are also present. The blocks are movable objects and can appear at different positions on the tabletop. The challenge offers a dataset of ∼24 hours of teleoperated unstructured play data with multiple sensor modalities, in which only 1% is annotated with language instructions. All methods are evaluated on the long-horizon benchmark, which consists of 1000 unique sequences of instruction chains. The agent’s goal is to sequentially solve up to five tasks using only onboard sensors, relying exclusively on language instructions to transition between tasks, as shown in Fig. 3 (Right). The benchmark offers three settings of increasing difficulty: D →D trains and evaluates in a single environment, ABCD →D trains on all four environments and evaluates on D, and ABC →D trains on A, B and C and evaluates zero-shot on the unseen environment D. 
+
+2) Baselines: We compare against a range of methods, divided into two categories. 
+
+(1) No visual pretraining: represents comparable methods to our approach where the vision encoder is trained from scratch without any pretraining phase. This category includes:  
+
+> •
+
+LUMOS [10]: The key comparison, and the only model-based baseline that learns a language-conditioned policy inside the imagination of a learned world model via Dream Imitation [9]. It uses a recurrent world model and downsamples observations to 64 × 64 . 
+
+> •
+
+GCBC [17]: Goal-conditioned behavior cloning trains the policy by maximizing the log likelihood of each action taken at each time step and does not use latent plans.  
+
+> •
+
+MCIL [23]: Multi-context imitation learning trains asingle behavioral cloning policy conditioned on multi-context goals and employs latent plans.  
+
+> •
+
+HULC [25]: Hierarchical Universal Language Condi-tioned policy, which learns discrete categorical latent plans, aligns video and language representations with a contrastive loss, and executes actions through a local policy operating in the gripper-camera frame. 
+
+(2) Pretrained visual/vision-language backbone: represents SOTA methods that utilize a pretrained vision encoder or employ vision-language backbone. This category includes:  
+
+> •
+
+GR-1 [28]: leverages large-scale video generative pre-training to predict future frames and actions end-to-end via a GPT-style Transformer.  
+
+> •
+
+RoboFlamingo [26]: utilizes OpenFlamingo [27] vision-language backbone which consists of 3B parameters.  
+
+> •
+
+RT-1 [42]: a decoder-only Transformer policy generates actions in an end-to-end manner. It uses an ImageNet-pretrained convolutional neural network (EfficientNet) conditioned on the language instruction via FiLM layers.  
+
+> •
+
+MT-R3M as reported in [28]: leverages the pretrained vision model R3M [43], and utilizes a GPT-style Trans-former to output actions. All methods in both categories, including ours, use a frozen pretrained sentence encoder for language conditioning; the dis-tinction here concerns visual representations only. Category-1 constitutes our controlled comparison: these methods learn visual representations from CALVIN data alone, so differences in performance are attributable to modelling choices rather than to external data. Category-2 is reported to situate Dream-8   
+
+> TABLE I PERFORMANCE OF ALL METHODS ON CALVIN D →DSPLIT . M ETHODS ARE GROUPED BY MODEL CLASS (MODEL -BASED AND MODEL -FREE ). B OLD MARKS THE BEST RESULT WITHIN EACH GROUP . P ARENTHESES GIVE THE STANDARD DEVIATION OVER THREE SEEDS
+
+Method Downsample Number of Instructions in a Row (1000 chains) 
+
+64 ×64 1 2 3 4 5 Avg. Len. 
+
+Model-Based Methods 
+
+LUMOS [10] ✓ 80.7% (1.0) 59.3% (1.4) 42.6% (1.8) 30.7% (1.2) 21.1% (0.8) 2.34 (0.05) DreamFormer (ours) ✗ 82.3% (1.7) 64.1% (2.2) 47.1% (2.8) 34.2% (2.0) 24.3% (2.0) 2.52 (0.11) 
+
+Model-Free Methods 
+
+GCBC [17] ✗ 64.7% (4.0) 28.4% (6.2) 12.2% (4.1) 4.9% (2.0) 1.3% (0.9) 1.11 (0.3) MCIL [23] ✗ 76.4% (1.5) 48.8% (4.1) 30.1% (4.5) 18.1% (3.0) 9.3% (3.5) 1.82 (0.2) HULC (Local Policy) [25] ✗ 82.7% (0.3) 64.9% (1.7) 50.4% (1.5) 38.5% (1.9) 28.3% (1.8) 2.64 (0.05) HULC (No Local Policy) [25] ✗ 78.4% (1.4) 56.2% (2.0) 40.4% (2.4) 29.5% (1.7) 20.1% (1.3) 2.24 (0.06)        
+
+> TABLE II PERFORMANCE OF ALL METHODS ON CALVIN ABCD →DAND ABC →DSPLITS . M ETHODS ARE GROUPED BY PRETRAINING REGIME (W/OPRETRAINING AND W /PRETRAINING ). B OLD MARKS THE BEST RESULT WITHIN EACH GROUP . P ARENTHESES GIVE THE STANDARD DEVIATION OVER THREE SEEDS ;THE REMAINING BASELINES REPORT SINGLE -RUN VALUES
+
+Method Pretraining Number of Instructions in a Row (1000 chains) 1 2 3 4 5 Avg. Len. 
+
+ABCD →D
+
+MCIL [23] ✗ 37.3% 2.7% 0.2% 0.0% 0.0% 0.40 HULC [25] ✗ 88.9% 73.3% 58.7% 47.5% 38.3% 3.06 (0.07) DreamFormer (ours) ✗ 89.1% 74.0% 60.1% 49.1% 38.4% 3.11 (0.05) RT-1 [42] ImageNet 84.4% 61.7% 43.8% 32.3% 22.7% 2.45 MT-R3M [28] Ego4D (R3M) 75.2% 52.7% 37.5% 25.8% 16.3% 2.08 RoboFlamingo [26] OpenFlamingo 3B 96.4% 89.6% 82.4% 74.0% 66.0% 4.09 GR-1 [28] Video Generative 94.9% 89.6% 84.4% 78.9% 73.1% 4.21 
+
+ABC →D
+
+MCIL [23] ✗ 30.4% 1.3% 0.2% 0.0% 0.0% 0.31 HULC [25] ✗ 41.8% 16.5% 5.7% 1.9% 1.1% 0.67 (0.10) DreamFormer (ours) ✗ 62.3% 35.4% 18.3% 9.4% 4.5% 1.30 (0.06) RT-1 [42] ImageNet 53.3% 22.2% 9.4% 3.8% 1.3% 0.90 MT-R3M [28] Ego4D (R3M) 52.9% 23.4% 10.5% 4.3% 1.8% 0.93 RoboFlamingo [26] OpenFlamingo 3B 82.4% 61.9% 46.6% 33.1% 23.5% 2.48 GR-1 [28] Video Generative 85.4% 71.2% 59.6% 49.7% 40.1% 3.06 
+
+Former within the broader CALVIN literature; these methods inherit visual or vision-language representations trained on corpora orders of magnitude larger than CALVIN, and we therefore treat them as reference points for absolute task performance rather than as matched baselines. 
+
+B. Results 
+
+All DreamFormer results are produced by us; baseline results are taken from published reports. Category-1 results are taken from HULC [25], except LUMOS, which we report from [10]. Category-2 results are taken from GR-1 [28], except RoboFlamingo, which we report from [26]. Methods also dif-fer in how much CALVIN supervision they use: DreamFormer 
+
+and all category-1 baselines train on the full play dataset, whereas the category-2 baselines train only on the language-annotated subset, roughly 1% of the data. Note that the two axes act in opposite directions—category-2 methods benefit from large-scale external pretraining but use far less in-domain data—which is a further reason to compare within categories rather than across them. Columns 1–5 report the success rate of completing that many instructions in a row, and average length is the mean number of instructions completed per chain. A chain terminates at the first failed instruction. 
+
+1) Single-Environment Comparison: Table I reports perfor-mance on the D →D split, the only setting for which LUMOS results are available and therefore the setting in which our contribution is most directly tested. We additionally include the remaining category-1 baselines. All results are averaged over 1000 instruction chains and three random seeds. 
+
+DreamFormer outperforms LUMOS in all chain lengths, improving average length from 2.34 to 2.52, while operating on full-resolution observations rather than the 64 ×64 inputs LUMOS uses—a direct consequence of the scaled categorical VAE. While HULC remains the strongest method in this setting at 2.64 average length, it attributes much of its per-formance to performing control in the gripper-camera frame 9                                                            
+
+> TABLE III ABLATION STUDY ON CALVIN D →DSPLIT . T HE DREAM FORMER CONFIGURATION REPORTED IN TABLES IAND II IS MARKED WITH †.
+> Configuration Number of Instructions in a Row (1000 chains) 12345Avg. Len.
+> pixel-shift augmentation strength (static / gripper)
+> no shift 78.2% (1.5) 56.0% (1.3) 38.3% (1.6) 25.6% (1.3) 17.0% (1.6) 2.15 (0.07) 5 / 2 pixels 81.1% (1.9) 61.2% (1.8) 45.1% (1.5) 33.4% (1.0) 22.7% (1.8) 2.44 (0.08) 10 / 4 pixels †82.3% (1.7) 64.1% (2.2) 47.1% (2.8) 34.2% (2.0) 24.3% (2.0) 2.52 (0.11)
+> Component ablations at (5 / 2 pixels)
+> 5 / 2 pixels (reference) 81.1% (1.9) 61.2% (1.8) 45.1% (1.5) 33.4% (1.0) 22.7% (1.8) 2.44 (0.08) w/o ResNet-18 encoder 78.8% (1.7) 59.2% (2.0) 42.6% (1.9) 30.6% (2.1) 21.0% (1.8) 2.32 (0.09) w/o latent scaling ( 32 ×32 )75.9% (1.9) 53.4% (1.2) 35.6% (0.1) 22.6% (0.4) 14.0% (1.0) 2.02 (0.04) w/o Dream Imitation 70.3% (2.2) 45.2% (1.0) 27.5% (2.0) 17.5% (1.4) 9.9% (1.0) 1.70 (0.05)
+
+with a local policy. A variant of HULC without local policy, in which the policy instead receives both camera views and acts in the base frame, reaches 2.24 average length, below 
+
+DreamFormer ’s 2.52. Since DreamFormer ’s policy necessarily acts on a fused latent of both views, this variant is the closer point of comparison, though the two also differ in control frame. DreamFormer is the best model-based agent reported on this setting and closes much of the gap to HULC, the best-performing baseline in this comparison, while learning its policy within imagination. 
+
+2) Multi-Environment and Zero-shot Comparisons: Table II reports performance on the ABCD →D and ABC →D splits, covering multi-environment training and zero-shot transfer to an environment unseen during training. DreamFormer , HULC and MCIL report results averaged over three random seeds, with standard deviations available for the first two; the re-maining baselines report single-run values. On multi-environment training (ABCD →D), DreamFormer 
+
+achieves comparable performance to HULC among the meth-ods without pretraining (3.11 ± 0.05 vs 3.06 ± 0.07), a difference within the standard deviation of both. Notably, 
+
+DreamFormer also exceeds RT-1 (2.45) and MT-R3M (2.08) despite their pretrained visual backbones, indicating that pre-training alone does not determine performance in this setting. GR-1 remains the strongest method overall at 4.21, which its own ablation attributes to video generative pretraining [28]. On zero-shot transfer (ABC →D), DreamFormer reaches 1.30 average length, nearly double HULC’s 0.67, and again exceeds both RT-1 (0.90) and MT-R3M (0.93) despite their pretrained visual backbones. Compared to HULC, the success rate of completing one to five tasks in a row has increased by 
+
+20 .5% , 18 .9% , 12 .6% , 7.5% , and 3.4% , respectively. Relative to its own ABCD →D performance, DreamFormer retains 42% of its average length in the unseen environment while HULC retains 22%. The zero-shot multi-environment setting demands that the agent solve manipulation tasks in a completely unfa-miliar visual domain. Strong performance here indicates true semantic grounding—the ability to dynamically bind language concepts to novel visual observations, rather than relying on memorized spatial states. DreamFormer improves substantially over HULC in this setting, suggesting that a task-agnostic world model trained on offline data captures dynamics that remain valid when the visual domain changes, whereas a policy cloned directly from demonstrations does not transfer as readily. GR-1 remains the strongest method overall at 3.06 average length. 
+
+3) Ablation Study: Table III reports the ablation study on the D →D split. We first vary the strength of the pixel-shift augmentation: no shift, 5/2 pixels, and 10/4 pixels for the static and gripper cameras respectively. Performance increases monotonically with shift magnitude at every chain length, from 2.15 to 2.44 to 2.52 average length, and we adopt the 10/4 setting in all other experiments. This is consistent with HULC [25], which reports a drop from 2.64 to 1.99 without image augmentation, though the effect is smaller in our setting. Note that HULC applies image augmentation during policy learning, whereas DreamFormer applies it only during world model training. The remaining ablations remove individual components, each evaluated at the 5/2 setting. To determine whether the encoder architecture or the expanded latent ca-pacity contributes more to our world model’s performance, we evaluate two architectural ablations:  
+
+> •
+
+w/o ResNet-18 encoder: replaces the ResNet-18 backbone and its spatial softmax layer with the shallow CNN encoder used in standard categorical VAEs [4], while retaining the ( 64 ×32 ) latent and the full training objective of Section IV-C. This isolates the contribution of the encoder architecture.  
+
+> •
+
+w/o latent scaling ( 32 × 32 ): reverts to the standard ( 32 ×
+
+32 ) latent with the standard DreamerV2 objective—no entropy regularizer and fixed KL coefficients—while re-taining the ResNet-18 encoder. Since the entropy regular-izer and the KL schedule were introduced to stabilize the expanded latent and are not independently motivated at (32 × 32 ), this variant tests the scaled latent as a package rather than isolating capacity from regularization. Finally, to evaluate the efficacy of our policy learning framework, we evaluate the following ablation:  
+
+> •
+
+w/o Dream Imitation: retains the imagined rollouts but replaces the intrinsic-reward optimization with behavioral cloning on the imagined trajectories, regressing the pol-icy’s actions onto the expert actions with an MSE loss. 10 Context Window         
+
+> GT  (static) Model GT  (gripper) Model
+> Fig. 4. Open-loop rollouts of the world model. A trajectory from a held-out validation set. The world model observes the first 8 frames ( t= 0 . . . 7) as context and then autoregressively predicts the remaining 56 latent states ( t= 8 . . . 63 ), conditioned only on the ground-truth action sequence. Rows show the ground truth (GT) and decoded predictions (Model) for the static and gripper views; the vertical rule marks the end of the context window, and frames are subsampled every eight steps. The arm pose and scene layout remain accurate across the full horizon.
+
+Among the architectural components, the scaled latent con-tributes more than the encoder architecture. Replacing the ResNet-18 backbone with a shallow CNN costs 0.12 average length (2.44 to 2.32): at this resolution the shallow encoder still extracts usable features, and encoder capacity is not the binding constraint. Reverting to the standard ( 32 × 32 ) latent with the standard objective costs 0.42 (2.44 to 2.02), and the gap widens with chain length— 14 .0% against 22 .7% at five instructions. The largest effect comes from the policy objective. Training the policy by behavioral cloning on the imagined rollouts, rather than by optimizing the intrinsic reward, drops performance to 1.70 average length, well below every architectural ablation. We attribute it to the distribution mismatch (covariate shift [16]) inherent in behavioral cloning. 
+
+C. Imagination Rollouts Analysis 
+
+We analyse imagination rollouts along two axes: the fidelity of the predicted states, and the computational cost of produc-ing them. These are the two sides of the trade-off—reducing the tokens per observation lowers rollout cost, but only helps if the resulting latent still supports accurate long-horizon prediction. We first examine rollout fidelity qualitatively on held-out trajectories, then compare rollout cost against other Transformer world models using the configurations reported in their respective papers. 
+
+1) Rollout Fidelity: To assess whether encoding a multi-view robotic observation into a single input token retains enough information for long-horizon prediction, we perform open-loop rollouts on held-out validation trajectories; Fig. 4 shows an example. The world model takes the first 8 frames as context and then autoregressively predicts the remaining 56 steps, conditioned only on the ground-truth action sequence and receiving no further observations. The predicted frames are decoded from the prior ˆz, while the context frames are decoded from the posterior z.Across the full horizon, the predicted arm pose and scene layout remain closely aligned with the ground truth, and the manipulated block is tracked through the grasp, with its position drifting slightly toward the end of the sequence. The gripper view is reconstructed less sharply than the static view throughout, including within the context window; since those frames are decoded from the posterior rather than predicted, this blur reflects the reconstruction fidelity of the encoder– decoder rather than error accumulated during the rollout. 
+
+2) Rollout Cost: We next examine how three design choices determine the cost of imagination rollouts:  
+
+> •
+
+Tokenization: the number of tokens each observation occupies, which sets the sequence length ( Tokens/frame ).  
+
+> •
+
+Next-frame prediction: how the sequence model produces the tokens of the next frame—token by token, by iterative unmasking, or in a single pass ( Predict steps/frame ).  
+
+> •
+
+Context management: whether the sequence model at-tends over the full rollout horizon or over a fixed window of recent frames ( KV cache type ). As discussed in Sec. III-C, the sequence length determines the memory footprint and the quadratic cost of self-attention. Rather than timing each method’s rollouts—which would conflate these design choices with differences in model width, depth, and hardware—we derive the cost of a rollout of horizon H directly from the configurations reported in each 11                 
+
+> TABLE IV SEQUENCE -MODEL MEMORY AND ATTENTION COST FOR AN IMAGINATION ROLLOUT OF HORIZON H,DERIVED FROM THE CONFIGURATION REPORTED IN EACH PAPER .Predict steps/frame IS THE NUMBER OF SEQUENCE -MODEL PASSES NEEDED TO PRODUCE ONE IMAGINED FRAME ;Max cached tokens IS THE SIZE OF THE KEY –VALUE CACHE ,WHICH DETERMINES MEMORY ;Attention cost COUNTS QUERY –KEY INTERACTIONS OVER THE ROLLOUT ,
+> ASSUMING KEY –VALUE CACHING AND MATCHED MODEL WIDTH AND DEPTH .CIS THE LENGTH OF THE FIXED CONTEXT WINDOW (3 FRAMES FOR
+> DINO-WM, 4 FOR COMP ACT). C OMP ACT VALUES ARE FOR ITS NAVIGATION CONFIGURATION .
+
+Method Tokenizer Design choices Rollout cost ( H steps) Tokens Predict KV cache Max cached Attention /frame steps/frame type tokens cost DINO-WM [32] ViT patches (DINOv2) 196 1 Fixed ( C) 196 C O(196 2 CH )
+
+CompACT [29] DINOv3 + resampler + FSQ 8 4 Fixed ( C) 8 C O(4 · 82 CH )
+
+IRIS [20] VQ-VAE 16 16 Growing ( H) 16 H O(16 2H2)
+
+DreamFormer (ours) Categorical VAE 1 1 Growing ( H) H O(H2)
+
+paper. This isolates the effect of these three choices from implementation details. Table IV compares DreamFormer with three Transformer world models that differ along these three choices. DINO-WM [32] retains the full grid of frozen DINOv2 [33] patch features (196 tokens per frame) and uses a ViT-based predictor with frame-level causal attention to produce all tokens of the next frame in a single pass, attending over a fixed window of C
+
+past frames. CompACT [29] resamples frozen DINOv3 [30] features into 8 discrete tokens through learnable queries and finite scalar quantization (FSQ); its navigation model produces the next frame’s tokens by masked generative decoding over 4 unmasking steps, again conditioned on a fixed window of 
+
+C past frames. IRIS [20] encodes each frame into 16 discrete tokens with a VQ-VAE [13], and a GPT-style Transformer predicts them one at a time over a growing cache of the full rollout. DreamFormer , by contrast, encodes each frame into a single token, predicts it in one pass, and likewise retains the full rollout in a growing cache. We derive the rollout cost, reported in the last two columns of Table IV, from these three choices, as follows:  
+
+> •
+
+Max cached tokens measures the memory footprint of the sequence model: the largest number of tokens held in the key–value cache during the rollout, equal to To-kens/frame ×H for a growing cache and Tokens/frame ×C
+
+for a fixed window, independent of H. 
+
+> •
+
+Attention cost measures computation: the total number of query–key interactions over the rollout. With a growing cache every token attends over all preceding tokens, giving a cost quadratic in both the tokens per frame and H; with a fixed window each token attends only over the window, giving a cost linear in H. Masked generative prediction re-queries all tokens of a frame at each unmasking pass, which contributes CompACT’s additional factor of 4. A fixed window thus trades memory for context: it bounds the cache and makes attention cost linear in H, but discards every state outside the fixed window, so that once the rollout exceeds C steps no real observation remains in context and the model conditions only on its own predictions. Such bounded context suits short-horizon planning, the setting in which DINO-WM and CompACT’s navigation model are applied through MPC, but limits long-horizon imagination. Linear scaling in H does not, however, make these methods cheaper. As Table IV shows, their cost carries the square of the tokens per frame ( 196 2 for DINO-WM and 4 · 82 for CompACT), a factor that exceeds the horizon itself at any practical rollout length, including our H = 32 . IRIS retains the full rollout, but its 16 tokens per frame multiply its quadratic cost by 16 2
+
+relative to DreamFormer . By representing each observation with a single token, DreamFormer is the only method among those compared that retains the full rollout in context at the lowest attention cost. VI. I MPLEMENTATION AND TRAINING DETAILS 
+
+A. World Model 
+
+The world model consists of the scaled categorical VAE and the Transformer-based sequence model. The static and gripper views are processed by two independent ResNet-18 encoders trained from scratch, each followed by a spatial softmax layer [34]. Their outputs are concatenated and passed through a fully connected layer to obtain visual features, which a second fully connected layer maps to the logits of the posterior: a categorical distribution over 64 categories of 32 classes each. The sampled latent zt is flattened into a 2048-dimensional binary vector with 64 active entries, and gradients are propagated through the sample by straight-through estimation [36]. At each time step, zt and the action 
+
+at are concatenated and mapped by a two-layer MLP to a single input token, so that each time step occupies one position in the sequence. Reconstruction is handled by two separate transposed-convolutional decoders, one per view, each taking the flattened latent zt as its only input and upsampling to the native resolution of that view ( 200 × 200 for the static camera, 
+
+84 × 84 for the gripper camera). Both decoders are used only for the reconstruction objective and for visualization, and are not involved in imagination or policy learning. The sequence model is a GPT-style Transformer [11] with causal attention, whose output ht is mapped by a fully connected layer to the logits of the prior from which the next latent state ˆzt+1 is sampled. The world model has 60M parameters and was trained using a distributed setup of four NVIDIA Quadro RTX 6000 GPUs. The training procedure utilized a sequence length of 64 and a per-GPU batch size of 4, resulting in an effective batch size of 16. All architectural and optimization hyperparameters are detailed in Table V. 12 
+
+TABLE V WORLD MODEL HYPERPARAMETERS .
+
+Parameter Symbol Value 
+
+Batch size B 16 Sequence length T 64 Transformer blocks – 5Transformer heads – 12 Transformer embedding dim. – 768 Stochastic latent state zt 64 × 32 (2048) Model latent state st 2816 Optimizer – AdamW Learning rate – 1 × 10 −4
+
+Adam epsilon ϵ 1 × 10 −5
+
+Weight decay – 5 × 10 −2
+
+Gradient clipping – 100 Reconstruction loss coef. β1 0.05 Entropy regularizer coef. β2 10 Representation KL coef. β3 0.1 → 0.5
+
+Dynamics KL coef. β4 1.0 → 2.0
+
+KL schedule – cosine, first 250K steps Pixel-shift augmentation – 10 / 4 (static / gripper) TABLE VI ACTOR –C RITIC HYPERPARAMETERS .
+
+Parameter Symbol Value 
+
+Batch size B 512 Imagination horizon H 32 Context window C 16 Latent goal dimensions g 32 Latent plan categories – 32 Latent plan classes – 32 KL loss scale α1 0.1 Contrastive loss scale α2 3.0 Discount factor γ 0.995 TD( λ) parameter λ 0.95 Optimizer – Adam Actor learning rate – 2 × 10 −4
+
+Critic learning rate – 3 × 10 −4
+
+Target critic update interval – 100 
+
+B. Actor–Critic Agent 
+
+We follow LUMOS [10] for the architecture and optimiza-tion of the actor–critic agent, so that differences in perfor-mance against it are attributable to the world model rather than to the policy learning setup. The only change is the dimension of the model state st = {ht, z t}: because DreamFormer 
+
+expands the categorical latent to (64 × 32) , its model state is 2816-dimensional against LUMOS’s 2048. The actor–critic agent has 47M parameters and was trained using a single GPU per seed. All architectural and optimization hyperparameters are detailed in Table VI. VII. C ONCLUSION AND FUTURE WORK 
+
+We presented DreamFormer , a model-based robotic agent that learns a task-agnostic Transformer world model from unstructured play data and acquires language-conditioned, multi-task behaviors entirely within its latent imagination. To make long-horizon imagination affordable at full resolution, we scaled the categorical VAE with a ResNet-18 backbone and an expanded categorical latent space, encoding multi-view observations at a single token per timestep. Sequence length therefore grows only with the imagination horizon and is independent of input resolution, keeping the memory and attention cost of a rollout bounded by the horizon alone. On the CALVIN benchmark, DreamFormer outperforms LUMOS, the comparable model-based agent, on single-environment evaluation, and nearly doubles the performance of the behavior cloning baseline on zero-shot transfer to an unseen environment. Notably, this level of transfer is reached with a visual representation learned from CALVIN play data alone, without initialization from externally pretrained models, suggesting that what transfers is the dynamics captured by the world model rather than the breadth of the data its encoder was trained on. Our ablations show that the scaled latent contributes more than the encoder architecture, and that the largest single factor is the policy objective: replacing the intrinsic reward with behavior cloning on the same imagined rollouts costs more than any architectural component. Several points remain for future work. Our evaluation is confined to a simulated benchmark, and whether the same representation transfers to real robots is untested. Encoding an entire multi-view observation at one token bounds how much spatial detail the latent can carry, which our qualitative rollouts suggest is felt most in small manipulated objects rather than in the arm or scene layout. Extending the approach to real-robot data, and to policies that consume gripper-centric detail at higher fidelity than the shared latent provides, are our next steps for future work. VIII. A CKNOWLEDGMENT 
+
+Mostafa Kotb is funded by a scholarship from the Ministry of Higher Education of the Arab Republic of Egypt. REFERENCES [1] K. J. W. Craik, The Nature of Explanation . University Press, Macmillan, 1943. [2] D. Ha and J. Schmidhuber, “Recurrent world models facilitate policy evolution,” Advances in Neural Information Processing Systems , vol. 31, 2018. [3] Y. LeCun, “A path towards autonomous machine intelligence,” 2022, version 0.9.2. [4] D. Hafner, T. P. Lillicrap, M. Norouzi, and J. Ba, “Mastering atari with discrete world models,” in Proceedings of the 9th International Conference on Learning Representations , 2021. [5] D. Hafner, J. Pasukonis, J. Ba, and T. P. Lillicrap, “Mastering diverse domains through world models,” Nature , vol. 640, p. 647–653, 2025. [6] N. Hansen, X. Wang, and H. Su, “Temporal difference learning for model predictive control,” in International Conference on Machine Learning , 2022. [7] M. Kotb, C. Weber, M. B. Hafez, and S. Wermter, “QT-TDM: Planning with transformer dynamics model and autoregressive Q-learning,” IEEE Robotics and Automation Letters , vol. 10, no. 1, pp. 112–119, 2025. [8] U. Sobal, W. Zhang, K. Cho, R. Balestriero, T. G. Rudner, and Y. LeCun, “Learning from reward-free offline data: A case for planning with latent dynamics models,” Advances in Neural Information Processing Systems ,vol. 38, pp. 43 905–43 941, 2026. [9] B. DeMoss, P. Duckworth, J. Foerster, N. Hawes, and I. Posner, “DITTO: Offline imitation learning with world models,” arXiv:2302.03086 , 2023. [10] I. Nematollahi, B. DeMoss, A. L. Chandra, N. Hawes, W. Burgard, and I. Posner, “LUMOS: Language-conditioned imitation learning with world models,” in 2025 IEEE International Conference on Robotics and Automation (ICRA) . IEEE, 2025, pp. 8219–8225. [11] A. Vaswani, N. Shazeer, N. Parmar, J. Uszkoreit, L. Jones, A. N. Gomez, Ł. Kaiser, and I. Polosukhin, “Attention is all you need,” Advances in neural information processing systems , vol. 30, 2017. 13 
+
+[12] A. Dosovitskiy, L. Beyer, A. Kolesnikov, D. Weissenborn, X. Zhai, T. Unterthiner, M. Dehghani, M. Minderer, G. Heigold, S. Gelly, J. Uszkoreit, and N. Houlsby, “An image is worth 16x16 words: Trans-formers for image recognition at scale,” in International Conference on Learning Representations , 2021. [13] A. Van Den Oord, O. Vinyals et al. , “Neural discrete representation learning,” Advances in neural information processing systems , vol. 30, 2017. [14] W. Zhang, G. Wang, J. Sun, Y. Yuan, and G. Huang, “STORM: Efficient stochastic transformer based world models for reinforcement learning,” Advances in Neural Information Processing Systems , vol. 36, pp. 27 147–27 166, 2023. [15] J. Robine, M. H¨ oftmann, T. Uelwer, and S. Harmeling, “Transformer-based world models are happy with 100k interactions,” in The Eleventh International Conference on Learning Representations , 2023. [16] S. Ross and D. Bagnell, “Efficient reductions for imitation learning,” in the thirteenth International Conference on Artificial Intelligence and Statistics , 2010, pp. 661–668. [17] C. Lynch, M. Khansari, T. Xiao, V. Kumar, J. Tompson, S. Levine, and P. Sermanet, “Learning latent plans from play,” in Conference on Robot Learning , 2020, pp. 1113–1132. [18] Z. Dai, Z. Yang, Y. Yang, J. G. Carbonell, Q. V. Le, and R. Salakhut-dinov, “Transformer-XL: Attentive language models beyond a fixed-length context,” in Annual Meeting of the Association for Computational Linguistics , 2019, pp. 2978–2988. [19] C. Chen, Y.-F. Wu, J. Yoon, and S. Ahn, “TransDreamer: Reinforcement learning with transformer world models,” arXiv:2202.09481 , 2022. [20] V. Micheli, E. Alonso, and F. Fleuret, “Transformers are sample-efficient world models,” in the Eleventh International Conference on Learning Representations , 2023. [21] M. Burchi and R. Timofte, “Learning transformer-based world models with contrastive predictive coding,” in The Thirteenth International Conference on Learning Representations , 2025. [22] M. G. Bellemare, Y. Naddaf, J. Veness, and M. Bowling, “The arcade learning environment: An evaluation platform for general agents,” Jour-nal of Artificial Intelligence Research , vol. 47, pp. 253–279, 2013. [23] C. Lynch and P. Sermanet, “Language conditioned imitation learning over unstructured data,” Robotics: Science and Systems , 2021. [24] O. Mees, L. Hermann, E. Rosete-Beas, and W. Burgard, “CALVIN: A benchmark for language-conditioned policy learning for long-horizon robot manipulation tasks,” IEEE Robotics and Automation Letters , vol. 7, no. 3, pp. 7327–7334, 2022. [25] O. Mees, L. Hermann, and W. Burgard, “What matters in language conditioned robotic imitation learning over unstructured data,” IEEE Robotics and Automation Letters , vol. 7, no. 4, pp. 11 205–11 212, 2022. [26] X. Li, M. Liu, H. Zhang, C. Yu, J. Xu, H. Wu, C. Cheang, Y. Jing, W. Zhang, H. Liu et al. , “Vision-language foundation models as effective robot imitators,” in International Conference on Learning Representa-tions , vol. 2024, 2024, pp. 26 703–26 721. [27] A. Awadalla, I. Gao, J. Gardner, J. Hessel, Y. Hanafy, W. Zhu, K. Marathe, Y. Bitton, S. Gadre, S. Sagawa et al. , “Openflamingo: An open-source framework for training large autoregressive vision-language models,” arXiv preprint arXiv:2308.01390 , 2023. [28] H. Wu, Y. Jing, C. Cheang, G. Chen, J. Xu, X. Li, M. Liu, H. Li, and T. Kong, “Unleashing large-scale video generative pre-training for visual robot manipulation,” in International Conference on Learning Representations , 2024. [29] D. Kim, G. Seo, J. Lee, M. Cho, and S. Kwak, “Planning in 8 tokens: A compact discrete tokenizer for latent world model,” in Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2026. [30] O. Sim´ eoni, H. V. Vo, M. Seitzer, F. Baldassarre, M. Oquab, C. Jose, V. Khalidov, M. Szafraniec, S. Yi, M. Ramamonjisoa, F. Massa, D. Haziza, L. Wehrstedt, J. Wang, T. Darcet, T. Moutakanni, L. Sentana, C. Roberts, A. Vedaldi, J. Tolan, J. Brandt, C. Couprie, J. Mairal, H. J´ egou, P. Labatut, and P. Bojanowski, “DINOv3,” 2025. [Online]. Available: https://arxiv.org/abs/2508.10104 [31] F. Mentzer, D. Minnen, E. Agustsson, and M. Tschannen, “Finite scalar quantization: Vq-vae made simple,” in International Conference on Learning Representations , vol. 2024, 2024, pp. 51 772–51 783. [32] G. Zhou, H. Pan, Y. LeCun, and L. Pinto, “DINO-WM: World models on pre-trained visual features enable zero-shot planning,” arXiv preprint arXiv:2411.04983 , 2024. [33] M. Oquab, T. Darcet, T. Moutakanni, H. Vo, M. Szafraniec, V. Khalidov, P. Fernandez, D. Haziza, F. Massa, A. El-Nouby et al. , “Dinov2: Learning robust visual features without supervision,” arXiv preprint arXiv:2304.07193 , 2023. [34] S. Levine, C. Finn, T. Darrell, and P. Abbeel, “End-to-end training of deep visuomotor policies,” Journal of Machine Learning Research ,vol. 17, no. 39, pp. 1–40, 2016. [35] D. Yarats, R. Fergus, A. Lazaric, and L. Pinto, “Mastering visual continuous control: Improved data-augmented reinforcement learning,” 
+
+arXiv preprint arXiv:2107.09645 , 2021. [36] Y. Bengio, N. L´ eonard, and A. Courville, “Estimating or propagating gradients through stochastic neurons for conditional computation,” arXiv preprint arXiv:1308.3432 , 2013. [37] N. Reimers and I. Gurevych, “Sentence-BERT: Sentence embeddings using siamese BERT-networks,” in conference on empirical methods in natural language processing and the 9th international joint conference on natural language processing (EMNLP-IJCNLP) , 2019, pp. 3982– 3992. [38] S. Harnad, “The symbol grounding problem,” Physica D: Nonlinear Phenomena , vol. 42, no. 1-3, pp. 335–346, 1990. [39] A. Radford, J. W. Kim, C. Hallacy, A. Ramesh, G. Goh, S. Agarwal, G. Sastry, A. Askell, P. Mishkin, J. Clark et al. , “Learning transferable visual models from natural language supervision,” in International Conference on Machine Learning , 2021, pp. 8748–8763. [40] T. Haarnoja, A. Zhou, P. Abbeel, and S. Levine, “Soft actor-critic: Off-policy maximum entropy deep reinforcement learning with a stochastic actor,” in International Conference on Machine Learning . PMLR, 2018, pp. 1861–1870. [41] R. S. Sutton, A. G. Barto et al. , Reinforcement learning: An introduction .MIT press Cambridge, 1998, vol. 1, no. 1. [42] A. Brohan, N. Brown, J. Carbajal, Y. Chebotar, J. Dabis, C. Finn, K. Gopalakrishnan, K. Hausman, A. Herzog, J. Hsu et al. , “RT-1: Robotics transformer for real-world control at scale,” arXiv preprint arXiv:2212.06817 , 2022. [43] S. Nair, A. Rajeswaran, V. Kumar, C. Finn, and A. Gupta, “R3M: A universal visual representation for robot manipulation,” in Conference on Robot Learning , 2022.
