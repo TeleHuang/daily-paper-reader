@@ -1,0 +1,225 @@
+Title: AutoRSR: Automated Real-to-Sim-to-Real Data Generation for Scalable Robot Learning
+
+URL Source: https://arxiv.org/pdf/2610.20336v1
+
+Published Time: Thu, 15 Oct 2026 02:06:36 GMT
+
+Number of Pages: 8
+
+Markdown Content:
+# AutoRSR: Automated Real-to-Sim-to-Real Data Generation for Scalable Robot Learning 
+
+Jiawei Zhang, Chang Liu, Litao Deng, Tao Zhang, Qin Jin 
+
+Renmin University of China 
+
+Abstract — Scaling embodied robot learning requires large and diverse manipulation datasets, but collecting real-world demonstrations remains expensive in human effort and robot time. Simulation provides a scalable alternative, yet converting a real workspace into a robot-learning-ready environment still requires substantial manual effort for object extraction, asset processing, coordinate calibration, and trajectory specification. We present AutoRSR, a highly automated real-to-sim-to-real framework that converts scanned real-world workspaces into reusable embodied simulation assets and scalable manipula-tion data. Given multi-view observations, robot states, and open-vocabulary semantic queries, AutoRSR reconstructs the workspace, extracts individual object assets, and automatically registers the reconstructed scene to the robot base frame at met-ric scale. Starting from a small number of reference motions, AutoRSR then generates executable manipulation trajectories and scales them through trajectory interpolation and domain randomization.After workspace scanning and semantic queries, the remaining pipeline requires no manual object annotation, scene-to-robot calibration, or robot teleoperation. Across three real-world manipulation tasks, policies trained on 1K automat-ically generated episodes per task achieve 73.3–86.7% real-world success rates, comparable to π0.5 trained from 150 human teleoperated demonstrations, while reducing the human time required for data generation by an order of magnitude. These results demonstrate that real-world observations can be converted into metrically aligned, executable, and scalable simulation data with substantially reduced human effort. 
+
+I. I NTRODUCTION 
+
+A major bottleneck in embodied robot learning is the lack of scalable and diverse manipulation data. Real-world teleoperation provides high-fidelity demonstrations but re-quires substantial human effort and robot time, whereas simulation can generate large-scale data at much lower cost. The challenge, however, is not simply to create a visually realistic simulation. For simulation to serve as a practical data engine, a real workspace must be converted into a robot-learning-ready embodied environment : its objects should be individually reusable, its geometry should remain metrically consistent with the physical workspace, and its manipula-tion trajectories should be executable and scalable without repeatedly involving a human operator. Existing approaches for constructing robot-learning sim-ulations can be broadly categorized into generative and reconstruction-based methods. Generative approaches [1], [2] offer flexible scene and asset synthesis, but the generated environments may differ from the geometry and appearance of a target workspace. Reconstruction-based approaches [3], [4], [5], [6], [7] , in contrast, preserve the visual and spatial characteristics of real environments and are therefore attrac-tive for sim-to-real robot learning. However, when recon-struction is used as a data generation engine, substantial hu-man intervention remains between scene reconstruction and executable robot learning data. In particular, the remaining effort arises from two coupled challenges: preparing reusable simulation assets and making the reconstructed environment executable by a robot. On reusable asset construction : Obtaining simulation-ready objects from a real workspace typically involves sep-arate object and scene scanning [3], manual object segmen-tation [4], or additional per-object processing for extraction and completion [7]. Such operations introduce object-level human effort that grows with scene complexity and must be repeated when the workspace changes. More importantly, these pipelines generally treat scene reconstruction and ob-ject preparation as separate stages rather than providing a unified mechanism for turning a scanned workspace into reusable manipulation assets. On executable trajectory generation : A reconstructed scene alone is also insufficient for robot policy learning. The reconstruction is typically represented in its own coordinate system and must be registered to the robot before trajectories can be executed. This registration often requires explicit scene-to-robot calibration or manual alignment. Moreover, demonstrations used for learning are commonly collected through real-robot teleoperation, or trajectories must be manually specified and adapted to the reconstructed scene. Consequently, even when simulation removes the cost of physically executing thousands of demonstrations, human effort remains embedded in the process of producing the initial executable data. This limits the extent to which reconstruction-based simulation can serve as an automated and reusable data engine. We address these limitations with AutoRSR , a highly automated real-to-sim-to-real framework that converts ascanned real workspace into scalable manipulation data. The key idea is to exploit information already available during workspace scanning to eliminate subsequent manual alignment and annotation. We perform a hybrid scan of the workspace while recording wrist-camera poses and robot joint states. Given open-vocabulary semantic queries, these observations are used to reconstruct the workspace and extract individual object assets without manually annotated masks. Because the camera is rigidly attached to the robot and its poses are synchronized with the robot states, the reconstructed scene can be automatically registered to the robot base frame at metric scale using the recorded geometric arXiv:2610.20336v1 [cs.RO] 14 Oct 2026 REAL-WORLD INPUTS  REAL-TO-SIM  DATA AUGMENTATION         
+
+> Hybrid Scan
+> Human
+> Demonstration
+> 1Reconstruction & Segmentation
+> Open Vocabulary
+> Query
+> bowl, kettle
+> Scene representation Segmented objects
+> 2Auto-alignment
+> Multi-view observations Alignment results
+> View 1 View 2
+> 3Augmentation
+> Motion Trajectory & Visual Augmentation
+> Seed scene
+> 1 → N
+> Variant A Variant B
+> Variant C Variant D
+
+Fig. 1: Overview of AutoRSR . We first perform a hybrid scan of the workspace while recording robot states and wrist-camera poses, together with a reference manipulation motion. Given open-vocabulary semantic queries, AutoRSR reconstructs the scene and extracts individual object assets. The reconstructed workspace is then automatically registered to the robot base frame, enabling reference trajectories to be replayed and augmented in simulation. Finally, trajectory interpolation and domain randomization generate scalable manipulation data for robot policy learning. relationships. This produces a simulation environment in which reconstructed objects and robot motions are expressed in a physically consistent coordinate system. Within this aligned environment, we use a human demon-stration as motion seeds and automatically recover exe-cutable manipulation trajectories. Trajectory interpolation and domain randomization then produce diverse simulation episodes without requiring additional real-robot interaction. The result is a complete data-generation pipeline in which human effort is concentrated on the initial workspace scan and semantic specification, while object extraction, coordi-nate registration, trajectory generation, and data augmenta-tion are automated. We evaluate AutoRSR on three real-world manipulation tasks. For each task, we generate 1K simulation episodes and train robot policies using only the automatically generated data. We compare them against policies trained from 150 human teleoperated real-world demonstrations. On the phys-ical robot, AutoRSR-trained policies achieve 73.3–86.7% success, with performance within 10 percentage points of the corresponding real-data baselines. We further measure the human time required by the complete data-generation process and observe an order-of-magnitude reduction com-pared with collecting an equivalent amount of real-world data. These results suggest that automatically reconstructed real workspaces can provide a practical intermediate repre-sentation for scalable robot learning. In summary, our main contributions are: (i) We present 
+
+AutoRSR , an automated real-to-sim-to-real pipeline that converts scanned real workspaces into reusable, metrically aligned, and robot-executable simulation environments for manipulation data generation. (ii) We introduce an au-tomated processing for open-vocabulary object extraction, scene-to-robot registration, and executable trajectory genera-tion, enabling large-scale simulation data generation without manual object annotation, manual coordinate alignment, or robot teleoperation. (iii) We demonstrate the effectiveness of AutoRSR on three real-world manipulation tasks. Policies trained on 1K automatically generated episodes achieve real-robot performance comparable to policies trained on 150 human teleoperated demonstrations, while substantially reducing human data-collection effort. II. R ELATED WORKS 
+
+A. Robot Data Collection Paradigms. 
+
+The most prevalent source of robot manipulation data today is human teleoperation data[8], [9], [10], [11], [12], [13], [14]. However, collecting such data requires extensive human effort and time, making large-scale data acquisition prohibitively expensive. To obtain large volumes of robot manipulation data at a lower cost, researchers have explored various data generation paradigms. Ego-centric[15], [16] and humanoid-based approaches[17], [18] consider human be-haviors as a rich source of robot data. They enable robots to learn object interactions or joint motions through first-person hand manipulation data or human motion capture. UMI-based approaches[19], [20] enable fast and convenient col-lection of in-the-wild manipulation demonstrations by using a handheld gripper for human demonstrations and recovering the corresponding trajectories. Nevertheless, the embodi-ment gap between humans and robots remains a significant challenge. In contrast, generating large-scale data through simulation augmentation offers the most cost-effective and convenient solution. MimicGen[21], [22] generates diverse trajectories by transferring, perturbing, replaying, and com-posing a small number of human demonstrations. Other ap-proaches, such as RoboGen[23] and HRIBench[24], leverage large language models to plan behaviors and automatically generate simulated data. However, the sim-to-real gap intro-duced by simulation still limits the effectiveness of such data for training real-world robots. 
+
+B. Real2Sim2Real Data Generation. 
+
+To reduce the sim-to-real gap of simulation data, many ap-proaches have begun to follow the Real2Sim2Real paradigm ,which reconstructs the real world from observations, imports the reconstructed environments into simulators, and then collects and augments large-scale data in simulation. After training, the learned policies are transferred back to the real world for inference[3], [4], [5], [6], [7]. With the rapid development of 3D Gaussian Splatting (3DGS)[25] and the increasing support for neural Gaussian representa-tions in modern simulators, the visual sim-to-real gap has been significantly reduced. As a result, many approaches have started to build digital twins[26] by combining neural Gaussian representations of objects for high visual fidelity with collision mesh representations for physical interactions within simulation environments. III. M ETHOD 
+
+We perform hybrid scene scanning using the robot-mounted wrist camera and third-party cameras while record-ing the robot states. We then use a head-mounted camera to capture a human manipulation demonstration video. Then we perform anchor-based semantic reconstruction. After separat-ing the objects and the scene according to the user’s open-vocabulary semantic queries, we import them separately into the simulator. We then align the robot coordinate system with the reconstruction coordinate system, retarget the robot manipulation trajectory based on the demonstration video, and augment the aligned trajectories to generate a large-scale dataset. Users only need to provide scene-scanning data, a demonstration video, and open-vocabulary semantic queries for the target objects; the entire remaining pipeline is then executed fully automatically. 
+
+A. Initialization 
+
+To facilitate conversion of the scan data into the COLMAP format commonly used by 3DGS prior to reconstruction, we configured the two robotic arms to scan around the scene in a predefined sequence, with the left arm scanning first, followed by the right. Each arm’s return to the vicinity of its home position marked the completion of its data acquisition routine. We then established a mapping between image filenames and the corresponding robot poses to support subsequent alignment. We then process the combined set of scan images using COLMAP[27], [28] or PostShot[29] to "kettle"  "bowl " "green apple " "green chair" 
+
+Fig. 2: Object segmentation results on our Pour into the yellow bowl task and LERF[32] dataset. obtain a sparse point cloud and camera poses. The resulting camera poses are expressed in the reconstruction coordinate frame rather than the robot coordinate frame. After scanning, we establish consistent semantic anno-tations across all input views. Given a selected reference frame, we use SAM2[30], [31] to obtain object masks and propagate the corresponding object IDs throughout the video sequence, producing consistent semantic masks Mi across views. We then transfer these 2D semantic labels to the initial sparse point cloud. Specifically, each point a is projected onto all visible views according to the estimated camera poses and depth-occlusion relationships. Semantic label is determined by majority voting over the masks observed from valid projections: 
+
+ℓa = arg max 
+
+> ℓ∈Vℓ
+
+X
+
+> i
+
+vi,a I[Mi(πi(a)) = ℓ] . (1) where πi(·) denotes projection onto the i-th view, vi,a 
+
+indicates whether anchor a is visible in that view, and Vℓ
+
+denotes the set of candidate semantic labels. The labeled sparse points are subsequently voxelized to initialize the anchor representation. Each point a is quantized into an integer voxel coordinate q = round( a/h ), where h
+
+denotes the voxel size. Points assigned to the same voxel are merged into a single anchor located at the corresponding voxel-grid position. Since the initial point cloud remains sparse, particularly around thin structures and object bound-aries, we further densify the representation using semantic-constrained anchor growing. At each iteration, we retrieve the KNN neighbors of each anchor and generate midpoint anchors only between semantically consistent anchor pairs. The newly generated anchors inherit the corresponding se-mantic label, are merged with the existing anchor set, and are subsequently re-voxelized to remove duplicates. Repeating this procedure progressively densifies sparsely represented regions while reducing anchor propagation across semantic boundaries, providing a cleaner and denser initialization for subsequent semantic Gaussian reconstruction. 
+
+B. Scene Reconstruction and Object Segmentation 1) Object-Aware Gaussian Reconstruction and Optimiza-tion: We adopt ObjectGS[33], an object-aware anchor rep-resentation method following Scaffold-GS[34]. Each anchor 
+
+a contains a spatial position xWa , a learnable feature fa, an instance label ℓa, a local scale, and M learnable offsets. For the i-th camera, the anchor feature and viewing direction are jointly fed into opacity, color, and covariance MLPs to generate multiple neural Gaussians. Let g = ( a, m ) denote the m-th Gaussian generated from anchor a, whose center is: 
+
+μWg = xWa + spos  
+
+> a
+
+⊙ oa,m , g = ( a, m ), (2) ,where oa,m is the normalized local offset and spos  
+
+> a
+
+denotes the positional scale of anchor a. The Gaussian attributes, including color, opacity, covariance scale, and rotation, are predicted by their respective MLPs. At each training iteration, we sample a viewpoint and perform differentiable Gaussian rasterization to obtain RGB images, alpha maps, and semantic scores. The reconstruction objective is 
+
+Lrec = (1 − λssim )L1 + λssim (1 − SSIM) + λobj LCE + Lbase , (3) where LCE supervises the rendered semantic scores using the 2D object-ID masks, ignoring background label 0. Lbase 
+
+collects the auxiliary penalties enabled in the configura-tion, including scale, depth, normal, distortion, opacity, and background-semantic regularization. During densification of Gaussian training, accumulated screen-space gradients of child Gaussians identify regions requiring additional representation capacity. New anchors are generated in multi-scale voxel grids and inherit the label of the parent with the strongest gradient contribution. All child Gaussians spawned from an anchor share the one-hot semantic vector associated with ℓa, coupling object identity with local geometric generation and enabling direct instance selection. 
+
+2) Object Extraction and Asset Generation: Given a user query, we use GroundingDINO[35] and SAM to obtain a target mask on a rendered view, then associate it with reconstructed instance IDs through overlap scoring against the rendered semantic-ID map. We extract the corresponding anchors according to the selected IDs. For object removal, we expand the removal region through spatial neighbor-hoods to suppress residual related Gaussians, yielding both 
+
+object-only and scene-without-object representations. Since anchor-based Gaussian attributes are view-dependent, we evaluate their MLPs from multiple training cameras and aggregate the decoded attributes into standard explicit 3DGS assets. Object export uses opacity-based cross-view consen-sus and median aggregation, while scene export averages col-ors and opacities over accepted views to preserve coverage. When necessary, the explicit Gaussians are further distilled against multi-view renders from the original anchor model to reduce conversion artifacts. To obtain simulation geometry, we use SuGaR[36] to reconstruct meshes from the explicit Gaussians. For isolated objects, anisotropic Gaussian support removes unsupported mesh faces, followed by voxelization and surface reconstruc-tion to generate watertight collision meshes. When articu-lated assets are required, the resulting meshes can be further processed by Articulate-Anymesh[37]. Human  Demonstration 
+
+> Simulation Replay
+
+Fig. 3: Example of demonstration alignment for the Pour into the yellow bowl task. 
+
+C. Demonstration Alignment and Motion Retargeting 1) Metric Coordinate Alignment: We align the recon-structed scene with the robot using calibrated wrist-camera poses collected during scanning. For each image, the metric camera pose is computed from the synchronized robot con-figuration qi, robot-base extrinsics, and hand–eye calibration: 
+
+TRC i = TRB TBE (qi)TEC , (4) where TAB maps coordinates from frame B to frame A, and 
+
+R, B, E, and C denote the robot rig, robot base, wrist mount-ing frame, and camera frame, respectively. Corresponding reconstructed and robot-derived camera poses determine a similarity transform through RANSAC followed by robust refinement using camera positions and orientations. Object poses are then mapped from reconstruction coordinates W
+
+into metric robot coordinates: 
+
+pR = sRRW pW + tRW , RRO = RRW RW O . (5) The same scale is applied to Gaussian assets and collision meshes. This transformation is performed after reconstruc-tion, leaving the original COLMAP model unchanged. The demonstration is interpreted using the calibrated head-camera pose, rather than assigning it to an arbitrary scanning image. 
+
+2) Object Tracking and Grasp Retargeting: Using the open-vocabulary semantic queries already provided by the user, we employ GroundingDINO[35] and SAM2[31] to locate and segment the target object in the first frame of the human demonstration video, then propagate its mask throughout the video. Since all required inputs have already been prepared in the preceding stages, this process is fully automated. We then recover the object’s motion in 3D from the 2D demonstration video through differentiable Gaussian rendering. Gaussian appearance and local geometry remain fixed while the object pose is optimized using a fore-ground–background balanced silhouette loss, Dice loss, and robust foreground photometric error. Temporal regulariza-tion and a bounded image-centroid prior discourage abrupt changes in tracking. Initialization is constrained to a neigh-borhood of the reconstructed object pose, and subsequent frames use the preceding estimate as their initial guess. Next, we extract object geometry from the collision mesh and generate grasp candidates with different approach di-rections, gripper-closing directions, and positions. Candidate generation accounts for the gripper’s opening range and the object geometry. We use image-space hand cues pro-vided by HaMeR [38] to rank grasp candidates according to how closely their projected grasp locations match the thumb–index midpoint in the demonstration. These cues guide grasp selection without treating monocular hand-depth estimates as metric ground truth. We plan both the gripper opening at contact and its opening during approach. The desired end-effector motion is determined by the tracked object motion and the selected grasp pose in the object’s local frame. Inverse kinematics (IK) with joint-limit constraints is solved using sequential warm starts along the trajectory, and candidate acceptance checks both position and orientation residuals over the com-plete sequence. Robot forward kinematics, visual meshes, and collision geometry use the same URDF link transforms. During rigid-object transport with the gripper fully closed, the object pose is bound to the achieved end-effector pose while preserving the local grasp transform. Gaussian and collision geometry therefore move together despite finite IK residuals. At release, the achieved placement pose is retained, rather than snapping the object back to the nominal trajectory or allowing it to follow the retreating gripper. For constrained articulated or pushing motions, the prescribed object kine-matics are retained instead, and contact is checked against the achieved robot motion. 
+
+D. Motion Trajectory and Visual Augmentation 1) Motion Trajectory Augmentation: We construct areusable bank of feasible motion templates before expanding appearance diversity. We independently randomize the table-top placements of all objects specified for segmentation by the open-vocabulary semantic queries. We also modify their geometric properties. Planar translations are sampled from a bounded distribution, while yaw rotations are applied about each object’s initial position rather than the world origin. Initial heights remain unchanged, and the system preserves the validated grasp relationships and object scales. Independent placement is coupled with task-relative trajec-tory adaptation. The manipulated object retains its sampled initial pose, while its terminal pose is adjusted to preserve the demonstrated relationship to the independently placed re-ceiver. A smooth time-dependent correction blends positions directly in world coordinates and interpolates the relative orientation. An explicitly specified interaction interval can enforce the relationship throughout that interval instead of only at the endpoint. This preserves the demonstrated motion structure while avoiding unintended orbital motion around the coordinate origin. Each candidate is expanded into a synchronized approach, gripper-closing, and task-motion sequence. For placement tasks, a geometric support test determines whether a short settling motion, gripper opening, and retreat can be ap-pended. Support is assessed using object-relative surface probes, so a common planar transformation does not change the verdict. An object without confirmed terminal support remains held and required-placement candidates are rejected if support cannot be established. Settling is a bounded contact adjustment, not randomized vertical placement. Motion candidates are solved in batches, with sequential warm starts within each trajectory. We screen grasp support, joint limits, and pose residuals, and recheck terminal support after binding rigid objects to achieved forward kinematics. Replay additionally checks finger contact during fully closed intervals and excessive robot–object mesh penetration. Col-lision meshes follow their corresponding Gaussian assets but contribute no object appearance. These checks provide geometric feasibility screening, rather than a guarantee of force closure or dynamic task success. 
+
+2) Visual Augmentation: We combine the large number of augmented motion templates with multiple visual config-urations. While keeping the geometry, motion, actions, and timing unchanged, we randomize the textures of both objects and scenes, and apply coherent adjustments to the Gaussians’ exposure and white balance. Lighting variation is applied to the robot mesh renderer. During rendering, we continuously reuse Genesis[40], [41] runtime resources and cached Gaussian assets, and batch-process both Gaussian data and camera requests for compatible episodes. Robot meshes and Gaussian fore-ground/background layers are rendered from consistent cam-era poses and composited using depth. The head camera remains fixed in the rig frame, while wrist-camera poses are recomputed from the corresponding robot joint configura-tions and hand–eye transformations. All outputs share a single episode timeline: camera ob-servations, proprioceptive states, robot actions, and gripper openings all use aligned frame indices and timestamps. Each episode contains the observations and actions required for training. The observation views retain the input robot wrist-camera view and head-camera view. IV. E XPERIMENTS 
+
+A. Setups 
+
+We perform hybrid scene scanning using the built-in camera of a handheld smartphone and two wrist-mounted D405 cameras. In addition, a D435 camera is mounted at a fixed position in the scene to provide a top-down view and record human demonstration videos. The coordinate frames of both D405 cameras and the D435 camera are registered to the robot arm’s coordinate frame. The robot platform used in our experiments is a PiperX[42] robotic arm. All experiments were conducted on a single NVIDIA A800 GPU. For real-robot manipulation experiments, we designed three tasks and generated 1,000 augmented trajectories for each task using our system. For each of the three tasks, we also collect 150 teleoperated demonstrations. We fine-tune the π0.5[39] policy using LoRA[43] for 30,000 steps with a batch size of 32 separately on the teleoperated and augmented datasets and compare the resulting manipulation success rates. During fine-tuning, we update all parameters of the vision encoder and visual projection layer in π0.5, and apply LoRA to the attention and MLP layers of both the language model and the Close the laptop 
+
+> Put duck on the box
+> Pour into the yellow bowl
+
+Fig. 4: Real-robot inference results for π0.5[39] fine-tuned on 1,000 AutoRSR-augmented episodes. The solid red box highlights the target manipulation region, and the dashed red box at the bottom-left provides a magnified view of this region for better visualization TABLE I: Comparison of Physical Policy Success Rates Across Training Sources(%).                          
+
+> Task Teleop Trajectories AutoRSR Trajectories
+> 50 100 150 100 300 1000
+> Pour into the yellow bowl 026.7 73.3 013.3 73.3
+> Put duck on the box 6.7 46.7 86.7 020 80
+> Close the laptop 20 60 86.7 6.7 46.7 86.7
+
+TABLE II: Training-data mixture comparison(%). 
+
+Real-only (150) Sim-only (1k) Co-Train (150+1k) 
+
+73.3 73.3 86.7 
+
+action expert. The language embeddings and normalization layers remain frozen. We use a learning rate of 2.5 × 10 −5
+
+and an action horizon of 10. 
+
+B. Manipulation 
+
+We design three tasks: (1) Pour into the yellow bowl .Grasp the plastic jug, move it above the yellow bowl, and perform a pouring motion. (2) Put the duck on the box. 
+
+Grasp the toy duck and place it on the white box. (3) Close the laptop. Close the lid of the open laptop model. 
+
+a) Raw Evaluation Results: For each task, we col-lect 150 teleoperated demonstrations and then generate 1,000 augmented episodes using AutoRSR. We fine-tune the π0.5[39] policy using LoRA on teleoperated datasets comprising the first 50, 100, or 150 episodes and simulation-augmented datasets comprising the first 100, 300, or 1,000 episodes. Each trained policy is then deployed on the real robot for evaluation. During deployment, we randomize object placements in the scene and introduce slight variations in lighting and geometric conditions. We conduct 15 trials per task and calculate the success rate. We also conducted a co-training experiment on the Pour into the yellow bowl 
+
+TABLE III: Motion trajectory augmentation ablation(%). 
+
+w/o Traj. Augmentation w/ Traj. Augmentation 
+
+13.3 73.3 
+
+TABLE IV: Visual augmentation ablation(%). 
+
+less Vis. Augmentation more Vis. Augmentation 
+
+60 73.3 
+
+task using a mixture of 150 teleoperated demonstrations and 1,000 simulated demonstrations. The results in Tab.I show that the success rate achieved with 1,000 simulated samples is within 10 percentage points of that achieved with 150 real-robot samples. Tab.II also indicate that co-training can improve the success rate. 
+
+b) Ablation: We conducted separate ablation studies on motion trajectory augmentation and visual augmentation. For motion trajectory augmentation, we evaluated a setting in which it was completely disabled, replaying only the original object motion trajectories. For visual augmentation, we reduced its strength rather than disabling it entirely, as it was difficult to generate a sufficient amount of valid data using motion trajectory augmentation alone. The results are reported in the Tab.III and Tab.IV. When motion trajec-tory augmentation is disabled, the model fails to generalize because it is trained on too few trajectories. In contrast, reducing visual augmentation degrades the model’s gener-alization ability but does not lead to a catastrophic loss of this capability. 
+
+C. Alignment accuracy 
+
+To evaluate the accuracy of our trajectory alignment, we recreated the scene layouts for the three tasks and placed a calibration board at ten randomly selected positions on 0 40 80        
+
+> 50 100 150 250 500 1000 Episodes
+> 30.10 53.45 73.38 7.06 14.11 28.23
+> (a)
+> 50 150 1000 050 100
+> Success rate (%)
+> 73.3 73.3
+> (a)
+> 040 80 19.38 41.63 62.78 6.25 12.49 24.98
+> (b)
+> 50 150 1000
+> 86.7 80
+> (b)
+> 040 80 15.68 32.28 52.11 6.85 13.70 27.40
+> (c)
+> 50 150 1000
+> 86.7 86.7
+> (c)
+
+Data collection time Policy success rate     
+
+> Collection time (min) Training trajectories (log scale) (a) Pour into the yellow bowl (b) Put duck on the box (c) Close the laptop Teleop AutoRSR
+
+Fig. 5: Comparison of data collection time and physical policy success rates between teleoperation and AutoRSR. TABLE V: Alignment errors across different scenes (cm). (R) represents reconstruction coordinate frame and (A) rep-resents our aligned coordinate frame.                 
+
+> task Mean Error(R) Mean Error(A) RMSE(R) RMSE(A) grasp duck 8.62 0.61 9.07 0.62
+> pour 4.58 0.91 5.02 0.91
+> computer 3.81 0.77 3.95 0.78
+
+TABLE VI: Stage-by-stage comparison of human involve-ment across the entire pipeline. H indicates that human involvement is required, while A indicates that the stage is completed automatically by the system. Since GASE does not perform trajectory reproduction or augmentation, its corresponding entries in the demonstration and augmentation sections are left blank.                            
+
+> Task r2r2r[4] GASE[7] Ours Scanning HHHDemonstration H-HQuery HHHReconstruction AAASegmentation HHAAssert into Simulation HHAAlignment HHAAugmentation A-A
+
+the physical tabletop. For each placement, we computed the board’s corner coordinates in both our aligned coor-dinate frame and the coordinate frame obtained from the original COLMAP reconstruction via a Sim(3) transforma-tion. We then measured the 3D positional errors relative to their ground-truth coordinates which are calculated in real workspace. As shown in the Tab.V, our alignment achieves substantially lower mean error and root mean square error (RMSE) than the original reconstruction, with the estimated positions closely matching the ground truth. TABLE VII: Upfront processing time until generation. We train the reconstruction model for 7,000 iterations and di-rectly extract meshes using SuGaR[36].         
+
+> Task Time to complete Scanning 1 min Demonstration 10 s Mask processing 2 min Reconstruction 10 min Segmentation <10 s Meshification 2 min Alignment 10 min
+
+TABLE VIII: Time required for collecting 150 demonstra-tions through teleoperation with one human operator and for generating 1,000 synthetic demonstrations using AutoRSR with single GPU. 
+
+Task Teleop AutoRSR(Aug) 
+
+Pour into the yellow bowl 73.38 min 28.23 min Put duck on the box 62.78 min 24.98 min Close the laptop 52.11 min 27.40 min 
+
+D. Time cost and human involvment comparison 
+
+To demonstrate the efficiency of our system, we conduct time cost and human involvment comparison. For each of the three manipulation tasks, we first compare the time required to collect 150 teleoperated demonstrations with that required to generate 1,000 augmented episodes using AutoRSR. As shown in the Tab.VIII, AutoRSR generally requires no more than half the time needed to collect equivalent data through teleoperation. Moreover, teleoperated data collection requires continuous human involvement, whereas AutoRSR augmen-tation requires almost no human intervention. In addition, we compare AutoRSR with other systems in terms of the procedures that require human involve-ment throughout the pipeline. As shown in Tab.VI that our AutoRSR requires users only to provide scene scans, demonstration data, and open-vocabulary semantic queries. All remaining stages can be completed fully automatically, whereas other systems require substantial human interven-tion. In contrast, AutoRSR automates most of the pipeline. Finally, Tab.VII presents a breakdown of AutoRSR’s end-to-end processing time for the task Pour into the yellow bowl .V. C ONCLUSION 
+
+In this paper, we present AutoRSR, a highly automated simulation data reconstruction and augmentation framework. The proposed system efficiently reconstructs real-world scenes, extracts object assets through semantic segmenta-tion, aligns manipulation trajectories, and generates large-scale augmented data, enabling cost-effective acquisition of high-quality simulation data for policy learning. Real-robot experiments validate the effectiveness of our approach and demonstrate a small real-to-sim gap. REFERENCES [1] Y. Shi, W. Li, and et.al, “Scenemaker: Open-set 3d scene genera-tion with decoupled de-occlusion and pose estimation model,” arXiv preprint arXiv:2512.10957 , 2025. [2] L. Chen, Z. Zhou, and et.al, “Flexworld: Progressively expanding 3d scenes for flexiable-view synthesis,” 2025. [Online]. Available: https://arxiv.org/abs/2503.13265 [3] A. Jain, M. Zhang, and et.al, “Polaris: Scalable real-to-sim evaluations for generalist robot policies,” 2025. [Online]. Available: https://arxiv.org/abs/2512.16881 [4] J. Yu, L. Fu, and et.al, “Real2render2real: Scaling robot data without dynamics simulation or robot hardware,” 2025. [Online]. Available: https://arxiv.org/abs/2505.09601 [5] X. Han, J. Yu, and et.al, “Re 3sim: Generating high-fidelity simulation data via 3d-photorealistic real-to-sim for robotic manipulation,” in 
+
+ICRA , 2026. [6] M. N. Qureshi, S. Garg, and et.al, “Splatsim: Zero-shot sim2real transfer of rgb manipulation policies using gaussian splatting,” 2024. [Online]. Available: https://arxiv.org/abs/2409.10161 [7] J. Zhang and et.al, “Gase: Gaussian splatting-based automated system for reconstructing embodied-simulation environments,” 2026. [Online]. Available: https://arxiv.org/abs/2606.17520 [8] T. Z. Zhao, V. Kumar, S. Levine, and C. Finn, “Learning fine-grained bimanual manipulation with low-cost hardware,” 2023. [Online]. Available: https://arxiv.org/abs/2304.13705 [9] J. Aldaco, T. Armstrong, and et.al, “Aloha 2: An enhanced low-cost hardware for bimanual teleoperation,” 2024. [Online]. Available: https://arxiv.org/abs/2405.02292 [10] F. Ebert, Y. Yang, and et.al, “Bridge data: Boosting generalization of robotic skills with cross-domain datasets,” 2021. [Online]. Available: https://arxiv.org/abs/2109.13396 [11] H. Walke, K. Black, and et.al, “Bridgedata v2: A dataset for robot learning at scale,” in CoRL , 2023. [12] A. Khazatsky, K. Pertsch, and et.al, “Droid: A large-scale in-the-wild robot manipulation dataset,” 2025. [Online]. Available: https://arxiv.org/abs/2403.12945 [13] O. X.-E. Collaboration and et.al, “Open X-Embodiment: Robotic learning datasets and RT-X models,” https://arxiv.org/abs/2310.08864, 2023. [14] H.-S. Fang, H. Fang, and et.al, “Rh20t: A comprehensive robotic dataset for learning diverse skills in one-shot,” in ICRA . IEEE, 2024, pp. 653–660. [15] K. Grauman, A. Westbury, and et.al, “Ego4d: Around the world in 3,000 hours of egocentric video,” 2022. [Online]. Available: https://arxiv.org/abs/2110.07058 [16] K. Q. Lin, J. Wang, and et.al, “Egocentric video-language pretraining,” in Advances in Neural Information Processing Systems ,vol. 35. Curran Associates, Inc., 2022, pp. 7575–7586. [Online]. Available: https://proceedings.neurips.cc/paper files/paper/2022/file/ 31fb284a0aaaad837d2930a610cd5e50-Paper-Conference.pdf [17] X. B. Peng, P. Abbeel, and et.al, “Deepmimic: example-guided deep reinforcement learning of physics-based character skills,” ACM Transactions on Graphics , vol. 37, no. 4, p. 1–14, 2018. [Online]. Available: http://dx.doi.org/10.1145/3197517.3201311 [18] T. He, Z. Luo, and et.al, “Learning human-to-humanoid real-time whole-body teleoperation,” 2024. [Online]. Available: https: //arxiv.org/abs/2403.04436 [19] C. Chi, Z. Xu, and et.al, “Universal manipulation interface: In-the-wild robot teaching without in-the-wild robots,” 2024. [Online]. Available: https://arxiv.org/abs/2402.10329 [20] M. Xu, H. Zhang, and et.al, “Dexumi: Using human hand as the universal manipulation interface for dexterous manipulation,” in CoRL ,ser. Proceedings of Machine Learning Research, J. Lim, S. Song, and H.-W. Park, Eds., vol. 305. PMLR, 27–30 Sep 2025, pp. 437–459. [Online]. Available: https://proceedings.mlr.press/v305/xu25b.html [21] A. Mandlekar, S. Nasiriany, and et.al, “Mimicgen: A data generation system for scalable robot learning using human demonstrations,” in 
+
+CoRL , 2023. [22] Z. Jiang, Y. Xie, and et.al, “Dexmimicgen: Automated data generation for bimanual dexterous manipulation via imitation learning,” in ICRA ,2025. [23] Y. Wang, Z. Xian, and et.al, “Robogen: Towards unleashing infinite data for automated robot learning via generative simulation,” 2023. [24] C. Liu, J. Zhang, and et.al, “Hribench: Benchmarking interaction-centric human-robot collaboration,” 2026. [Online]. Available: https://arxiv.org/abs/2607.13056 [25] B. Kerbl, G. Kopanas, T. Leimk¨ uhler, and G. Drettakis, “3d gaussian splatting for real-time radiance field rendering,” ACM Transactions on Graphics , vol. 42, no. 4, July 2023. [Online]. Available: https://repo-sam.inria.fr/fungraph/3d-gaussian-splatting/ [26] H. Fan, H. Dai, and et.al, “Twinaligner: Visual-dynamic alignment empowers physics-aware real2sim2real for robotic manipulation,” 2025. [Online]. Available: https://arxiv.org/abs/2512.19390 [27] J. L. Sch¨ onberger and J.-M. Frahm, “Structure-from-motion revisited,” in Conference on Computer Vision and Pattern Recognition (CVPR) ,2016. [28] J. L. Sch¨ onberger, E. Zheng, and et.al, “Pixelwise view selection for unstructured multi-view stereo,” in ECCV , 2016. [29] Jawset Visual Computing, “Postshot,” https://www.jawset.com/, 2025, accessed: 2026-05-09. [30] A. Kirillov, E. Mintun, and et.al, “Segment anything,” 
+
+arXiv:2304.02643 , 2023. [31] N. Ravi, V. Gabeur, and et.al, “Sam 2: Segment anything in images and videos,” arXiv preprint arXiv:2408.00714 , 2024. [Online]. Available: https://arxiv.org/abs/2408.00714 [32] J. Kerr, C. M. Kim, K. Goldberg, A. Kanazawa, and M. Tancik, “Lerf: Language embedded radiance fields,” in ICCV , 2023. [33] R. Zhu, M. Yu, and et.al, “Objectgs: Object-aware scene reconstruction and scene understanding via gaussian splatting,” in ICCV, 2025 , 2025. [34] T. Lu, M. Yu, and et.al, “Scaffold-gs: Structured 3d gaussians for view-adaptive rendering,” in CVPR , 2024, pp. 20 654–20 664. [35] S. Liu, Z. Zeng, and et.al, “Grounding dino: Marrying dino with grounded pre-training for open-set object detection,” arXiv preprint arXiv:2303.05499 , 2023. [36] A. Gu´ edon and V. Lepetit, “Sugar: Surface-aligned gaussian splatting for efficient 3d mesh reconstruction and high-quality mesh rendering,” 
+
+CVPR , 2024. [37] X. Qiu, J. Yang, and et.al, “Articulate anymesh: Open-vocabulary 3d articulated objects modeling,” arXiv preprint arXiv:2502.02590 , 2025. [38] G. Pavlakos, D. Shan, and et.al, “Reconstructing hands in 3D with transformers,” in CVPR , 2024. [39] P. Intelligence, K. Black, and et.al, “ π0.5: a vision-language-action model with open-world generalization,” 2025. [Online]. Available: https://arxiv.org/abs/2504.16054 [40] G. A. Team, “The role of simulation in scalable robotics, genesis world 1.0, and the path forward,” Genesis AI Blog , May 2026. [41] G. Authors, “Genesis: A generative and universal physics engine for robotics and beyond,” December 2024. [Online]. Available: https://github.com/Genesis-Embodied-AI/genesis-world [42] A. Robotics, “Piper x: 6-dof collaborative robot arm,” https://www. agilex.ai/, 2024, accessed: 2026-07-22. [43] E. J. Hu, Y. Shen, and et.al, “LoRA: Low-rank adaptation of large language models,” in International Conference on Learning Representations , 2022. [Online]. Available: https://openreview.net/ forum?id=nZeVKeeFYf9

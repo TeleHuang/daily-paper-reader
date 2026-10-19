@@ -1,0 +1,553 @@
+{
+  "date": "20261010-20261019",
+  "date_label": "2026-10-10 ~ 2026-10-19",
+  "generated_at": "2026-10-19 09:46:22 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2610.15267v1",
+      "route": "20261010-20261019/2610.15267v1-lehami-symplectic-latent-dynamics-for-world-models",
+      "title": "LeHami: Symplectic Latent Dynamics for World Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "以动作条件哈密顿流替换JEPA预测器，稳定世界模型的长程潜空间推演",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.15294v1",
+      "route": "20261010-20261019/2610.15294v1-proworld-multi-view-world-model-with-proprioceptive-feedback-for-closed-loop-policy-evaluation",
+      "title": "ProWorld: Multi-View World Model with Proprioceptive Feedback for Closed-Loop Policy Evaluation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "以动作条件世界模型作为机器人策略的闭环评估环境",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.15429v1",
+      "route": "20261010-20261019/2610.15429v1-world-modeling-through-spectral-alignment",
+      "title": "World Modeling through Spectral Alignment",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "SpecWM是通过目标相似核指定观测关系的JEPA框架",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.15556v1",
+      "route": "20261010-20261019/2610.15556v1-vision-predictor-action-towards-efficient-embodied-ai-via-neuro-symbolic-jepa-predictors",
+      "title": "Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "用JEPA潜在预测与流匹配动作块替代自回归解码，降低机器人控制延迟",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.17922v1",
+      "route": "20261010-20261019/2610.17922v1-wovr-world-model-as-reliable-simulator-for-versatile-vla-policy-optimization-with-rl",
+      "title": "WoVR+: World Model as Reliable Simulator for Versatile VLA Policy Optimization with RL",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "以抗幻觉世界模型作为VLA策略强化学习的可靠模拟器",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.17999v1",
+      "route": "20261010-20261019/2610.17999v1-trace-efficient-transfer-learning-for-neural-whole-body-control-across-humanoid-embodiments",
+      "title": "TRACE: Efficient Transfer Learning for Neural Whole-Body Control Across Humanoid Embodiments",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "人形全身控制策略的高效跨本体适配",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.18194v1",
+      "route": "20261010-20261019/2610.18194v1-cross-embodiment-affordance-transfer-for-robotic-manipulation",
+      "title": "Cross-Embodiment Affordance Transfer for Robotic Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "以机器人物理属性为条件的跨具身可供性迁移",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.18447v2",
+      "route": "20261010-20261019/2610.18447v2-thinker-wm-a-unified-world-model-with-shared-multimodal-representations-for-embodied-intelligence",
+      "title": "Thinker-WM: A Unified World Model with Shared Multimodal Representations for Embodied Intelligence",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "共享动力学Transformer统一建模RGB、深度与机器人动作的多模态世界模型",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.18568v1",
+      "route": "20261010-20261019/2610.18568v1-wave-0-bridging-vla-policies-and-wams-with-lightweight-latent-future-prediction",
+      "title": "WAVE-0: Bridging VLA Policies and WAMs with Lightweight Latent Future Prediction",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "轻量潜在世界模型以未来预测增强VLA",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.19479v1",
+      "route": "20261010-20261019/2610.19479v1-active-generative-simulation-meta-learning-what-to-simulate-for-sim-and-real-policy-co-training",
+      "title": "Active Generative Simulation: Meta-Learning What to Simulate for Sim-and-Real Policy Co-Training",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "元学习仿真数据生成分布以缓解真实示范稀缺",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.19615v1",
+      "route": "20261010-20261019/2610.19615v1-polymorph-learning-locomotion-policy-for-cross-embodiment-adaptation",
+      "title": "PolyMorph: Learning Locomotion Policy for Cross-Embodiment Adaptation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "跨异构机器人形态的单一运动策略",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.19656v2",
+      "route": "20261010-20261019/2610.19656v2-accelerating-vla-inference-with-perturbation-informed-execution",
+      "title": "Accelerating VLA Inference with Perturbation Informed Execution",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "无需训练的动作块与执行时域选择以降低VLA推理调用",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.19683v1",
+      "route": "20261010-20261019/2610.19683v1-enhancing-latent-world-models-with-associative-memory",
+      "title": "Enhancing Latent World Models with Associative Memory",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "用联想记忆增强JEPA式潜在世界模型以服务具身规划",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.20336v1",
+      "route": "20261010-20261019/2610.20336v1-autorsr-automated-real-to-sim-to-real-data-generation-for-scalable-robot-learning",
+      "title": "AutoRSR: Automated Real-to-Sim-to-Real Data Generation for Scalable Robot Learning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "自动化真实到仿真再回真实的数据生成以缓解机器人数据稀缺",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.20904v1",
+      "route": "20261010-20261019/2610.20904v1-egojepa-beyond-retargeting-for-dexterous-manipulation-from-egocentric-videos",
+      "title": "EgoJEPA: Beyond Retargeting for Dexterous Manipulation from Egocentric Videos",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "从第一视角人类视频学习与本体无关的潜在动作表示，实现跨本体技能迁移",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.21095v1",
+      "route": "20261010-20261019/2610.21095v1-can-world-and-action-modeling-benefit-each-other-under-unified-causal-training",
+      "title": "Can World and Action Modeling Benefit Each Other under Unified Causal Training?",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "统一因果训练，将动作同时作为世界预测条件与策略学习目标",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.21389v1",
+      "route": "20261010-20261019/2610.21389v1-fast-vla-you-only-think-once-for-robot-manipulation",
+      "title": "Fast-VLA: You Only Think Once for Robot Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "每回合仅调用一次视觉语言模型以加速VLA推理",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.21798v1",
+      "route": "20261010-20261019/2610.21798v1-cross-embodiment-causal-transfer-from-human-videos-to-robot-manipulation",
+      "title": "Cross-Embodiment Causal Transfer from Human Videos to Robot Manipulation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "将人类视频中的子任务知识跨具身迁移到机器人操作",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.21922v1",
+      "route": "20261010-20261019/2610.21922v1-ts-wam-temporal-latent-actions-and-world-action-coupling-for-vision-language-robot-control",
+      "title": "TS-WAM: Temporal Latent Actions and World-Action Coupling for Vision-Language Robot Control",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "vlm-jepa自监督世界-动作模型与显式未来预测",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.22340v1",
+      "route": "20261010-20261019/2610.22340v1-dexterity-from-supervised-play",
+      "title": "Dexterity from Supervised Play",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于世界模型的MPC与蒸馏策略加速推理",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.23127v1",
+      "route": "20261010-20261019/2610.23127v1-bejepa-a-goal-conditioned-humanoid-behavior-world-model-via-unsupervised-rl",
+      "title": "BeJEPA: A Goal-Conditioned Humanoid Behavior World Model via Unsupervised RL",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于联合嵌入预测架构的目标条件世界模型",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.23334v1",
+      "route": "20261010-20261019/2610.23334v1-law-unifying-language-action-and-world-modeling-for-agentic-physical-intelligence",
+      "title": "LAW: Unifying Language, Action, and World Modeling for Agentic Physical Intelligence",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "融合语言推理、动作生成与世界建模的闭环VLM-WAM框架",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.23615v1",
+      "route": "20261010-20261019/2610.23615v1-beyond-action-prediction-learning-search-free-planning-in-latent-space",
+      "title": "Beyond Action Prediction: Learning Search-Free Planning in Latent Space",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于JEPA逆模型的潜世界模型免搜索规划",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.15305v2",
+      "route": "20261010-20261019/2610.15305v2-rm-wam-reliable-memory-augmented-world-action-models-for-long-horizon-robot-manipulation",
+      "title": "RM-WAM: Reliable Memory-Augmented World Action Models for Long-Horizon Robot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "记忆增强的世界动作模型联合预测未来状态与动作，服务长程操作决策与控制",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.15585v1",
+      "route": "20261010-20261019/2610.15585v1-streamingwam-streaming-world-action-modeling-via-chunk-wise-staircase-flow-matching",
+      "title": "StreamingWAM: Streaming World Action Modeling via Chunk-Wise Staircase Flow Matching",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向世界动作模型机器人控制的流式扩散，兼顾推理效率与连续性",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.15782v1",
+      "route": "20261010-20261019/2610.15782v1-data-centric-recursive-self-improvement-for-navigation-via-policy-synchronized-language-action-dual-bootstrapping",
+      "title": "Data-Centric Recursive Self-Improvement for Navigation via Policy-Synchronized Language-Action Dual Bootstrapping",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "以数据为中心的递归自我改进与可扩展语言监督合成",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.15794v1",
+      "route": "20261010-20261019/2610.15794v1--flow-matching-for-robot-foundation-models",
+      "title": "$Δ$ Flow Matching for Robot Foundation Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "基于历史的源分布实现VLA与世界动作模型的单步推理",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.14601v1",
+      "route": "20261010-20261019/2610.14601v1-stateskill-agent-an-effective-and-efficient-embodied-agent-via-state-conditioned-skill",
+      "title": "StateSkill-Agent: An Effective and Efficient Embodied Agent via State-conditioned Skill",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "具身多模态大模型智能体复用可迁移的状态条件技能",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.14871v1",
+      "route": "20261010-20261019/2610.14871v1-more-learning-motion-oriented-registers-for-driving-world-models-and-planning",
+      "title": "MORE: Learning Motion-Oriented Registers for Driving World Models and Planning",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向未来预测与规划的运动导向寄存器潜空间世界模型",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.17089v1",
+      "route": "20261010-20261019/2610.17089v1-interactive-navigation-beyond-reachability-benchmark-and-agentic-framework",
+      "title": "Interactive Navigation Beyond Reachability: Benchmark and Agentic Framework",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "具身交互式导航基准与智能体框架",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.17174v1",
+      "route": "20261010-20261019/2610.17174v1-generative-flow-on-symbolic-abstractions-for-embodiment-capability-discovery",
+      "title": "Generative Flow on Symbolic Abstractions for Embodiment Capability Discovery",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "学习接地的生成式任务生成器，产生本体可行的训练任务以缓解数据与任务稀缺",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.17001v1",
+      "route": "20261010-20261019/2610.17001v1-mosaic-mode--and-support-aware-inference-time-control-of-robot-diffusion-models",
+      "title": "MOSAIC: Mode- and Support-Aware Inference-Time Control of Robot Diffusion Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "机器人扩散策略的推理时控制",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.17252v1",
+      "route": "20261010-20261019/2610.17252v1-value-preserving-action-quantization",
+      "title": "Value-Preserving Action Quantization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "面向搜索式机器人策略学习与规划的价值保持动作量化",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    },
+    {
+      "paper_id": "2610.19495v1",
+      "route": "20261010-20261019/2610.19495v1-robota-embed-unified-vla-embeddings-for-robot-in-context-learning-and-evolution",
+      "title": "Robota-Embed: Unified VLA Embeddings for Robot In-Context Learning and Evolution",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "embodied-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "统一VLA嵌入实现无需参数更新的机器人上下文学习",
+      "first_seen_at": "2026-10-19 09:46:22 UTC",
+      "updated_at": "2026-10-19 09:46:22 UTC"
+    }
+  ]
+}

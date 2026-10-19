@@ -1,0 +1,358 @@
+Title: StateSkill-Agent: An Effective and Efficient Embodied Agent via State-conditioned Skill
+
+URL Source: https://arxiv.org/pdf/2610.14601v1
+
+Published Time: Wed, 14 Oct 2026 00:47:57 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+Preprint 
+
+# STATE SKILL -A GENT : A N EFFECTIVE AND EFFICIENT 
+
+# EMBODIED AGENT VIA STATE -CONDITIONED SKILL 
+
+Changxu Wei 1,6, Jingyi Zhang 2, Zhiyu Zheng 1, Tianyi Lin 1, Yixian Zhang 3,Yunpeng Qing 4,6, Jingyuan Liu 5,6, Zhi Hou 6, Jiaxing Huang 1† 
+
+> 1
+
+The Hong Kong Polytechnic University, 2 Nanyang Technological University,  
+
+> 3
+
+Tsinghua University, 4 Zhejiang University, 5 Fudan University, 6 ACE Robotics 
+
+ABSTRACT 
+
+In this work, we aim to develop an embodied MLLM agent that understands and solves embodied tasks by learning, abstracting, and reusing transferrable and gen-eralizable behavioral patterns. To this end, we propose StateSkill, a new skill rep-resentation for embodied agents, which introduces the concept of “finite-state ma-chines” into skill modeling for effective and efficient skill construction and learn-ing. The core idea of StateSkill is to model embodied interaction experiences as a finite-state machine, where a skill is organized around a set of task-progress states, state transitions, and state-conditioned guidance, enabling embodied agents to dy-namically adjust their skills as the task progresses while keeping skill contexts compact and stage-relevant. We further develop StateSkill-Evolve, an experience-driven evolution mechanism that iteratively refines StateSkill through retrospec-tive analysis of new successful and failed state-guided trajectories. Upon this, we introduce StateGRPO, which integrates StateSkill evolution and model optimiza-tion via state-conditioned GRPO into a unified iterative learning loop, enabling state-conditioned skills and model capabilities to co-evolve and reinforce each other. Extensive experiments demonstrate the effectiveness of our proposed meth-ods and trained model (i.e., StateSkill-Agent) across various embodied tasks. 
+
+1 INTRODUCTION 
+
+Embodied models like Vision-Language-Action (VLA) models have recently emerged as a promis-ing paradigm for building general-purpose agents for embodied AI by mapping visual observations and language instructions directly to robot actions (Zitkovich et al., 2023; Kim et al., 2024). De-spite rapid progress driven by large-scale collections of robot demonstrations (Open X-Embodiment Collaboration, 2024; Ghosh et al., 2024), current VLA methods remain highly dependent on the cov-erage and diversity of available trajectories, and their performance can degrade substantially when demonstrations are limited (Lin et al., 2025). A key reason lies in that these methods predominantly learn by directly imitating task-specific demonstrations, with few explicit mechanisms for identify-ing, abstracting, and reusing behavioral regularities shared across demonstrations of different tasks as in Figure 1 (a). Consequently, the resulting models may overfit to training tasks, leading to limited transferability and generalization, particularly in data-scarce scenarios. In this work, we aim to develop an embodied MLLM agent that understands and solves embodied tasks by learning, abstracting, and reusing transferrable and generalizable behavioral patterns. Re-cent advances in NLP, such as Anthropic’s Claude (Anthropic, 2025), have shown strong potential for enabling large language models (LLMs) to abstract past experiences into compact behavioral knowledge and utilize such knowledge to solve new tasks, substantially improving experience trans-fer and generalization (Wang et al., 2024a; Zhao et al., 2024; Xia et al., 2026). A core design under-lying these advances lies in the concept of “skill”: it summarizes generalizable behavioral patterns from successful or failed trajectories, capturing what actions are effective, under what conditions they should be applied, and what mistakes should be avoided, which together can subsequently guide the LLM in solving relevant but unseen tasks (Xia et al., 2026; Ma et al., 2026). 
+
+> †
+
+Corresponding author. 
+
+1arXiv:2610.14601v1 [cs.RO] 10 Oct 2026 Preprint a Imitating from task demonstrations  
+
+> VLA policy
+> Execute
+> Imitation
+> Can shared experience be reused?
+> b
+
+Limitations of textual LLM skills         
+
+> Limited Skill Representation
+> Textual LLM skills:
+> Move the bowl to the plate
+> Step1: Pick up the bowl from the stove.
+> Step2: Move the bowl above the plate.
+> Step3: Place the bowl on the plate and release it.
+> Hard to represent complex task progress
+> and changing environment
+> Limited Skill Efficiency
+> So much unrelated guidance!
+> Load full skill
+> Redundant context and Irrelevant experience
+> Inside Textual LLM skills
+> Stage 2: Turn on the stove
+> Step1: Reach for the stove knob Step2 ...
+> Stage 1: Prepare the pot ...
+> SKILL.md
+> Is the bowl still held, or already dropped?
+> Stage 3: Place the pot ...
+> c
+
+StateSkill           
+
+> State-conditioned Guidance
+> Refine skills
+> Current State Interaction Experience
+> Approach Pick Transport Release
+> Behavior pattern 1
+> Approach Pick Transport Release
+> ···
+> Behavior pattern 2
+> ···
+> Decompose & Abstract
+> Collect
+> ···
+> Place the wine bottle in the bowl
+> Move the bowl from the stove to the plate
+> Approach Pick Transport Release
+> Implicit shared behavioral patterns
+> Task-specific demonstrations
+> Unseen task
+> Pick the bowl on the wooden cabinet
+
+?
+
+> Generalization?
+> Improve Embodied Agent
+
+Figure 1: Motivation. (a) Imitating from task-specific demonstrations offers limited transferability and generalization. (b) Textual LLM skills face two key challenges for embodied agents: Limited Skill Representation in representing complex behavioral experiences in interactive physical environ-ments; and Limited Skill Efficiency due to loading entire skill descriptions that introduce redundant and irrelevant context. (c) StateSkill organizes shared behavioral patterns into finite-state machines as skills and dynamically provides state-conditioned guidance as tasks progress, while new interac-tion experiences enable StateSkill and the model to co-evolve and mutually reinforce each other. An intuitive idea is to directly apply these LLM skill methods to summarize and reuse behavioral knowledge for embodied MLLM agents, which, however, does not perform well. As illustrated in Figure 1 (b), we attribute this limitation primarily to two key observed challenges. (1) Skill Repre-sentation: Most existing LLM skills are typically represented in textual form while embodied agents are required to perceive, understand and make long-horizon decisions in complex and interactive physical environments, where such text-based skills are often insufficient to represent the complex behavioral experiences and task states arising from agent-environment interactions (e.g., spatial re-lationships, agent states, and environment states), thereby leading to limited performance. (2) Skill Efficiency: Most existing LLM skill paradigms commonly load an entire skill description at once. For embodied tasks involving multiple execution stages and repeated physical interactions, this can introduce excessively long contexts containing substantial redundant or stage-irrelevant informa-tion, which increase computational overhead and may introduce distracting or conflicting guidance, particularly for embodied multimodal agents with limited long-context understanding capabilities. To tackle these challenges, we propose StateSkill, a new skill representation for embodied agents, which introduces the concept of “finite-state machines” into skill modeling for effective and efficient skill construction and learning as illustrated in Figure 1 (c). The core idea of StateSkill is to model embodied interaction experiences as a finite-state machine, where a skill is organized around a set of task-progress states, state transitions, and state-conditioned guidance. Specifically, StateSkill first decomposes embodied trajectories of similar tasks into multiple progress stages, from which it abstracts a set of progress states and their associated state transitions, and further summarizes state-conditioned skills. Each state is equipped with (a) state-conditioned language guidance de-scribing how to accomplish the current stage or subtasks, (b) a state transition gate specifying when and how the agent should transition to next states, and (c) state-conditioned action priors modeled from embodied trajectories to guide action prediction. By explicitly conditioning skills on progress states, StateSkill enables an embodied agent to track the continuously changing states of the agent, environment, and task, determine state transitions based on the current state and newly observed information, and dynamically adjust its skills in a state-conditioned manner as the task progresses. In this way, StateSkill enables effective and efficient skill construction for embodied agents. (1) The finite-state representation enables StateSkill to organize embodied interaction experiences into explicit task-progress states and transitions, equipping each state with state-conditioned language 2Preprint guidance, a state transition gate and trajectory-derived action priors. Thus, it enables skills to rep-resent complex behavioral experiences and task states arising from agent-environment interactions in a structured, state-conditioned manner, allowing embodied agents to perceive, understand and make long-horizon decisions effectively in complex and interactive physical environments. (2) The state-conditioned guidance and state transition gates enable StateSkill to load the language guid-ance associated with the current progress state and dynamically adjust it as the task progresses, with transitions determined by the current state and newly observed information. This effectively keeps skill contexts compact and stage-relevant, reducing redundant information and the risk of distract-ing or conflicting guidance and thus lowering computational overhead and easing the long-context processing burden on embodied multimodal agents. Furthermore, we extend StateSkill with an iterative experience-driven evolution mechanism, termed StateSkill-Evolve, enabling it to continuously evolve by learning from new state-guided experiences beyond its initial construction from pre-generated trajectories. StateSkill-Evolve retrospectively analyzes new successful and failed trajectories, identifies strengths and diagnoses weaknesses in the current StateSkill, and revises its state-conditioned guidance, state transition gates, and action priors. In addition, we introduce StateGRPO, which integrates StateSkill evolution and model optimization into a unified iterative learning loop. At each iteration, the current StateSkill guides the model to generate embodied trajectories with state-conditioned guidance, transition control, and action priors, while the generated trajectories are then used to optimize the model via state-conditioned GRPO. The updated model then generates new embodied trajectories with enhanced capabilities, which in turn provide fresh experience and feedback for further StateSkill evolution. By alternating between skill evolution and model optimization, StateSkill and the model progressively co-evolve, enabling structured behavioral knowledge and learned model capabilities to mutually reinforce one another. With StateSkill, StateSkill-Evolve and StateGRPO, we train our model, StateSkill-Agent. The main contributions of this work are fourfold. First, we introduce the concept of finite-state ma-chines into skill modeling and learning for embodied agents and propose StateSkill, which structures reusable behavioral knowledge into state-conditioned skills for effective and efficient embodied ex-ecution. To the best of our knowledge, this is the first work that explores finite-state machines for skill modeling and learning in embodied MLLM agent. Second, we develop StateSkill-Evolve, an experience-driven evolution mechanism that iteratively refines StateSkill through retrospective analysis of new state-guided trajectories. Third, we introduce StateGRPO, which unifies StateSkill evolution and model optimization via state-conditioned GRPO in an iterative loop, enabling skills and model capabilities to co-evolve. Fourth, extensive experiments demonstrate the superiority of our proposed methods and trained model (i.e., StateSkill-Agent) on various benchmarks. 
+
+2 RELATED WORK 
+
+2.1 EMBODIED MODEL 
+
+Embodied models aim to enable agents to perceive environments and execute physical actions based on observations and instructions (Brohan et al., 2022; Chi et al., 2025; Driess et al., 2023; ACE-Brain Team, 2026). In recent years, Vision-Language-Action (VLA) models have significantly improved the generalization of embodied agents across diverse tasks by jointly modeling vision, language, and actions (Zitkovich et al., 2023; Kim et al., 2024; Black et al., 2025b; Jiang et al., 2023). Beyond standard VLA modeling, recent studies have further explored world models and agentic frameworks for enhancing long-horizon decision making (Liang et al., 2023; Ye et al., 2026). For example, CaP-X (Fu et al., 2026) composes robotic manipulation through code generation, Harness VLA (Zhang et al., 2026d) employs a high-level agent to dynamically orchestrate VLA policies and control prim-itives, while ASPIRE (Lu et al., 2026) constructs and updates robotic skills through interaction. Unlike these works that mainly focus on model architectures, policy orchestration, or skill invo-cation, we focus on the representation and learning of embodied skills themselves, and propose StateSkill, a new skill representation that models embodied interaction experiences as a finite-state machine, enabling skills to dynamically adapt to task progress and environment states. 3Preprint StateSkill Construction 
+
+> Decompose & Abstract
+> Task with similar behavior patterns
+
+q₁ g₁ g₂ g₃ q₄
+
+> StateSkill: Pick and Place
+
+q₂ q₃       
+
+> State-conditioned knowledge at q ₂
+> Language guidance Transition gate
+> Action
+> prior
+> a₁a₂a₃...
+> Example task: Turn on the stove and put the moka pot on it
+> StateSkill-Agent Framework
+> Observe MoveTo VLA
+> ...
+> Embodied Agent
+> a₁a₂a₃...
+> Load
+> 1 Turn on the stove
+> Rotational manipulation StateSkill
+> 2 Place the moka pot
+> Pick-and-place StateSkill
+> Decompose task and Select StateSkills Current State
+> StateSkill-Evolve
+> Review & Revise StateSkill
+> Fresh experience and feedback
+> c
+> ✓
+> ×
+> State-guided Experiences
+> New StateSkill Candidate ✓
+> StateSkill*
+> Execute Observation Call Advance or Stay
+> StateSkill ？
+> Validation
+> Execute & evaluate
+> ba
+> c
+> c
+> Bottle → Bowl
+> Bowl → Plate
+
+...     
+
+> Environment
+> dStateGRPO
+> τ₁✓
+> τ₂×
+> τ₃✓
+> StateSkill-guided rollouts
+> State-level reward
+> Outcome-level reward
+> +
+> Embodied Agent Update
+> Group-relative advantage
+> MLLM πθ
+> MLLM πθ′
+> Evolved StateSkill
+
+Figure 2: Overview. (a) StateSkill guides embodied execution through explicit state transitions and progressively loaded state-conditioned guidance, adapting to task progress and environment states. (b) StateSkill abstracts shared behavioral patterns from embodied trajectories into a finite-state machine, equipping each task-progress state with language guidance, a transition gate, and trajectory-derived action priors. (c) StateSkill-Evolve iteratively refines StateSkill by reviewing new successful and failed state-guided trajectories and validating candidate revisions. (d) StateGRPO integrates StateSkill evolution and state-conditioned embodied agent optimization into a unified iterative loop, enabling StateSkill and model capabilities to co-evolve. 2.2 SKILL FOR LARGE LANGUAGE MODEL 
+
+LLM skills abstract historical interaction experiences into reusable behavioral knowledge, allowing agents to transfer previously acquired experience to new tasks (Wu et al., 2026; Wang et al., 2026; 2025b; Jiang et al., 2026; Zhang et al., 2026a). Specifically, Voyager (Wang et al., 2024a) stores successfully executed programs in a retrievable skill library, ExpeL (Zhao et al., 2024) summarizes reusable linguistic experience from historical trajectories, while recent works such as SkillRL (Xia et al., 2026) and SkillGen (Ma et al., 2026) further explore automatically constructing and contin-uously updating skills from successful and failed trajectories. Existing LLM skills are typically represented as textual or programmatic task-level knowledge, with limited explicit modeling of con-tinuously changing task states during execution. In contrast, StateSkill models a skill as a finite-state machine consisting of task-progress states, state transitions, and state-conditioned guidance, enabling skills to dynamically adapt to changing task and environment states throughout embodied task execution. 2.3 REINFORCEMENT LEARNING IN LLM A GENT 
+
+Reinforcement learning enables LLM agents to directly optimize their decision-making policies through environmental interaction and reward feedback, and has recently been widely adopted for reasoning, tool use, and multi-turn agent tasks (Guo et al., 2025; Zhang et al., 2025a; Jin et al., 2025; Wang et al., 2025a; Feng et al., 2026; Jin et al., 2026). Methods such as GRPO (Shao et al., 2024) op-timize model policies based on group-relative rewards. RL has also been applied to interactive agent settings through WebRL (Qi et al., 2025), ToolRL (Qian et al., 2025), and Agent-R1 (Cheng et al., 2025). Related RL methods mainly optimize model parameters using task outcomes or trajectory-level feedback (Wei et al., 2025; Kong et al., 2026; Zhang et al., 2025b), while the internal state structure of long-horizon tasks remains less explicitly exploited. Different from existing RL methods for LLM agents, we propose StateGRPO, which introduces task states and state-level feedback into policy optimization, while using newly collected interaction trajectories to further evolve StateSkill, enabling the joint optimization of skill knowledge and model capabilities. 4Preprint 
+
+3 METHODOLOGY 
+
+3.1 STATE SKILL -A GENT FRAMEWORK 
+
+As illustrated in Figure 2, StateSkill-Agent uses task instructions and current visual observations to decompose tasks into subtasks and retrieve corresponding reusable StateSkills. It tracks execution progress through the explicit states and transitions of each active skill. Language guidance is in-troduced progressively as execution advances through these states, without loading the entire skill description upfront. After each interaction, a skill-specific gate interprets observations, executor feedback, and retained facts to update the active state or return a local skill outcome. StateSkill-Agent starts with StateSkills constructed by abstracting shared behavioral patterns from embodied trajectories. Building on these initial skills and the interaction trajectories generated dur-ing execution, StateSkill-Evolve refines skill structure and guidance using new successful and failed state-guided trajectories, while StateGRPO optimizes StateSkill-Agent’s underlying MLLM with state-conditioned feedback. The updated agent then generates further interaction experience for skill refinement, forming an iterative cycle of skill evolution and model optimization. 3.2 STATE SKILL : M ODELING EMBODIED SKILLS AS FINITE -S TATE MACHINES 
+
+StateSkill organizes reusable embodied interaction experience into explicit task-progress states rather than a single task-level textual description. We formulate a StateSkill as 
+
+S = ( Q, E, {κq }q∈Q ) , κq = ( ℓq , g q , p q ), (1) where Q denotes the task-progress states, E denotes their transitions, and κq represents the state-conditioned knowledge associated with state q. ℓq provides language guidance for the current task stage, gq specifies its transition conditions, and pq denotes a trajectory-derived action prior. Different skills define their own state vocabularies, evidence requirements, and termination conditions. 
+
+StateSkill construction. We use GPT-5.5 (OpenAI, 2026) to construct reusable StateSkills from exploration trajectories Dinit through segmentation, cross-task alignment, and knowledge synthe-sis. Within a given family of local operations, trajectories are partitioned into stages according to local objectives and progress conditions. Compatible stages are aligned into shared states, with task-specific entities parameterized by functional roles while retaining relevant relations. Stage ordering provides candidate transitions; recorded feedback and execution evidence inform their conditions, including progress, retries, and termination. For each state q, we use supporting segments to synthe-size language guidance ℓq , specify transition conditions gq , and identify action preferences encoded by pq , yielding κq = ( ℓq , g q , p q ) and the initial StateSkill S(0) .
+
+StateSkill inference. Let qt denote the active state and ht StateSkill-Agent’s context, including the task instruction, interaction history, and progressively introduced guidance. The active guidance ℓqt
+
+conditions the selection of a high-level action category c ∈ A . When the MLLM backend exposes action-category scores, the prior pqt reweights its decision distribution: 
+
+eπθ (c | ht, q t) = πθ (c | ht) pqt (c)
+
+P 
+
+> c′∈A
+
+πθ (c′ | ht) pqt (c′) . (2) The agent generates the corresponding action arguments based on the selected action category and its current context. The action vocabulary is fixed within the configured runtime. After execution, a deterministic skill-specific gate interprets the returned observations and feedback 
+
+et+1 together with retained execution facts mt. For a non-terminal interaction, it updates 
+
+(qt+1 , m t+1 ) = δS
+
+ qt, m t, e t+1 ; gqt
+
+. (3) The gate can retain the state, follow a valid transition, or return a local skill outcome to task-level control. Local skill completion does not imply overall task success. On a state transition, the new guide is appended to the context and supersedes earlier guides as operating guidance; the active action prior changes accordingly. 5Preprint 3.3 STATE SKILL -E VOLVE 
+
+StateSkill-Evolve uses StateSkill-Agent’s experience to refine how skills represent progress and guide behavior. At iteration k, an offline LLM updater analyzes D(k) = D(k)+ ∪ D (k) 
+
+> −
+
+, the successful and failed trajectories collected under S(k). For each visited state, it compares the active guidance, transition conditions, and action priors with the recorded actions and execution evidence. Successful trajectories identify effective behavior and its conditions of applicability; failed trajectories help identify missing guidance, inappropriate action preferences, or state distinctions and recovery paths absent from the current representation. Together, they support revisions grounded in specific states and trajectory segments to preserve effective behavior and address weaknesses. The updater can revise the state structure (Q, E) and state-conditioned knowledge κq = ( ℓq , g q , p q )
+
+to produce a candidate eS(k+1) . Knowledge updates refine guidance, transition conditions, and action preferences; structural updates adjust the state decomposition and transition graph when the execu-tion evidence warrants them. Each candidate remains a finite-state skill over the available action and feedback interfaces. Revisions are tied to supporting evidence and an expected behavioral effect, with unaffected state knowledge retained to preserve useful experience from earlier iterations. The candidate and current StateSkill are evaluated on the same validation task instances with the MLLM checkpoint and execution configuration held fixed. After consistency and behavioral checks, the candidate is accepted only if it improves aggregate task success; otherwise, S(k) is retained. Validation seeds are separate from the unseen seeds reserved for final evaluation. This procedure turns state-level revision hypotheses into execution-tested skill updates. 3.4 STATE GRPO StateSkill-Evolve refines skills, while StateGRPO optimizes StateSkill-Agent’s MLLM using task success and state-wise execution efficiency. At iteration k, we collect a group of G trajectories 
+
+{τi}Gi=1 for a fixed task and environment seed through StateSkill-guided execution with the MLLM policy πθ(k) . Training seeds are disjoint from those used for final evaluation. Let si ∈ { 0, 1} indicate task success for trajectory τi, and let Ti,q denote the total number of in-teraction turns spent in state q, including repeated visits. Let I+ 
+
+> q
+
+denote the indices of successful trajectories in the group that visit state q. For |I + 
+
+> q
+
+| ≥ 2, we define the state-specific reference: 
+
+¯Tq = 1
+
+|I + 
+
+> q
+
+|
+
+X
+
+> j∈I +
+> q
+
+Tj,q . (4) This avoids comparing absolute turn counts across states with different execution requirements. Let Ci contain the states visited by τi for which |I + 
+
+> q
+
+| ≥ 2. For Ci̸ = ∅, we define 
+
+Rstate (τi) = si
+
+|C i|
+
+X
+
+> q∈C i
+
+¯Tq
+
+Ti,q 
+
+, (5) and set Rstate (τi) = 0 when Ci is empty. Failed trajectories receive zero state reward, while suc-cessful ones are rewarded for using fewer turns relative to the reference in each comparable state. The comparison does not require identical state sequences across trajectories. We combine task success with state efficiency and compute group-relative advantages: 
+
+Ri = si + Rstate (τi), bAi = Ri − μR
+
+σR + ϵ , (6) where μR and σR are the mean and standard deviation of rewards within the trajectory group, and 
+
+ϵ > 0 ensures numerical stability. Differences in state efficiency can provide a learning signal even when all trajectories in a group succeed and therefore receive the same task-success reward. We optimize the MLLM policy using a clipped GRPO objective (Shao et al., 2024) with advantages 
+
+bAi. Truncated importance weighting accounts for differences between the rollout and optimization distributions. The current StateSkills remain fixed throughout each policy update. 6Preprint We then collect new StateSkill-guided trajectories with the updated policy πθ(k+1) , providing fresh successful and failed interaction experience for StateSkill-Evolve. This alternates model optimiza-tion with skill refinement, enabling reusable skill knowledge and model capabilities to co-evolve. 
+
+4 EXPERIMENTS 
+
+4.1 EXPERIMENTAL SETUP 
+
+We evaluate StateSkill-Agent on LIBERO-PRO (80 tasks) (Liu et al., 2023; Zhou et al., 2025), RoboCasa365 (Target50) (Nasiriany et al., 2026), and five real-world manipulation tasks, using GPT-5.5 (OpenAI, 2026) or Qwen3.5-9B (Qwen Team, 2026) as the high-level MLLM. For LIBERO-PRO, we use 10 environment seeds per task; for RoboCasa365, we use 10 seeds per atomic task and five per composite task. Each real-world task is evaluated over 20 trials. For low-level execution, we use πRLinf for LIBERO-PRO, RLDX-1 for RoboCasa365, and π0.5 for real-world tasks. VLA executors remain frozen; StateGRPO fine-tuning (FT) updates only Qwen3.5-9B. We report success rates (%), with Overall computed as the unweighted mean of per-task success rates, giving each task equal weight regardless of its number of evaluation episodes. Simulation evaluation seeds are held out from skill construction, skill evolution, candidate validation, and MLLM training. Table 1: Results on LIBERO-PRO. Success rates (%) under task (T) and swap (S) perturbations. Gains (pp) are relative to the corresponding baseline; “–” means unavailable.                                                                                                                                                                                        
+
+> Method Spat-T Spat-S Obj-T Obj-S Goal-T Goal-S L10-T L10-S Overall
+> Vision-Language-Action Models
+> OpenVLA (Kim et al., 2024) 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+> π0(Black et al., 2025b) 0.0 0.0 0.0 2.0 0.0 0.0 0.0 0.0 0.3
+> π0.5(Black et al., 2025a) 1.0 20.0 1.0 17.0 2.0 38.0 1.0 8.0 11.0 MolmoAct (Lee et al., 2025) 0.0 0.0 0.0 6.0 0.0 0.0 6.0 0.0 1.5 NORA (Hung et al., 2025) 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 X-VLA (Zheng et al., 2026) 0.0 0.0 8.0 2.0 9.0 1.0 10.0 0.0 3.8 AtomVLA (Sun et al., 2026) 1.0 16.0 0.0 10.0 11.0 2.0 9.0 1.0 6.3
+> πRLinf (Zang et al., 2026) 42.0 59.0 71.0 78.0 45.0 42.0 49.0 14.0 50.0
+> Code-as-Policy Agents
+> CaP-X (Fu et al., 2026) 14.0 12.0 18.0 22.0 17.0 26.0 ––18.2 RATS (Zhang et al., 2026b) 31.0 29.0 63.0 61.0 36.0 43.0 ––43.8 RHO (Elmaaroufi et al., 2026) 61.6 53.0 37.2 12.2 55.6 50.6 ––45.0 ASPIRE (Lu et al., 2026) 60.0 51.0 95.0 98.0 45.0 81.0 ––71.7 GPT-5.5 (Baseline) 40.0 46.0 55.0 29.0 41.0 35.0 11.0 12.0 33.6 Harness VLA Zhang et al. (2026d) 81.0 69.0 94.0 91.0 75.0 66.0 52.0 49.0 72.1 StateSkill-Agent 83.0 72.0 95.0 92.0 77.0 68.0 54.0 51.0 74.0 ↑40 .4
+> Qwen3.5-9B (Baseline) 24.0 19.0 17.0 22.0 11.0 14.0 7.0 8.0 15.3 Harness VLA Zhang et al. (2026d) 36.0 22.0 27.0 31.0 40.0 26.0 11.0 13.0 25.8 StateSkill-Agent 79.0 52.0 89.0 91.0 69.0 68.0 50.0 49.0 68.4 ↑53 .1
+> StateSkill-Agent w/ FT 82.0 56.0 90.0 91.0 72.0 70.0 54.0 52.0 70.9 ↑55 .6
+
+4.2 MAIN RESULTS ON SIMULATION BENCHMARKS 
+
+Tables 1 and 2 summarize the simulation results. With Qwen3.5-9B, StateSkill-Agent w/ FT achieves overall success rates of 70.9% on LIBERO-PRO and 43.6% on RoboCasa365, outper-forming Harness VLA by 45.1 and 18.4 percentage points, respectively. On LIBERO-PRO, im-provements span all four task families under both task and swap perturbations. On RoboCasa365, gains are concentrated in atomic-seen and composite-seen tasks, while composite-unseen success increases from 3.8% to 11.3%, indicating that unseen compositions remain challenging. With GPT-5.5, StateSkill-Agent also improves over Harness VLA by 1.9 and 2.6 percentage points on the two benchmarks, respectively, showing that the benefits extend beyond the Qwen3.5-9B configuration. 4.3 REAL -W ORLD EXPERIMENTS 
+
+We investigate sim-to-real skill transfer on five related real-world manipulation tasks using simulation-derived StateSkills, preserving their finite-state structure and adapting only environment-7Preprint Table 2: Results on RoboCasa365 (Target50). Success rates (%) on atomic and composite tasks. Gains (pp) are relative to the corresponding baseline. 
+
+Method Atomic-Seen Composite-Seen Composite-Unseen Overall 
+
+PRTS (Zhang et al., 2026c) 66.3 30.3 18.8 39.6 RLDX-1 (Kim et al., 2026) 67.6 27.9 8.5 36.0 WorldDreamer (Wang et al., 2024b) 66.3 26.7 9.0 35.3 GR00T N1.5 (Bjorck et al., 2025) 50.7 14.8 2.7 23.9 
+
+π0.5 (Black et al., 2025a) 39.6 7.1 1.2 16.9 
+
+π0 (Black et al., 2025b) 34.6 6.1 1.1 14.8 GPT-5.5 (Baseline) 54.4 33.8 8.8 33.2 Harness VLA (Zhang et al., 2026d) 91.7 56.3 13.8 55.4 StateSkill-Agent 94.4 58.8 16.3 58.0 ↑24 .8
+
+Qwen3.5-9B (Baseline) 22.8 11.3 2.5 12.6 Harness VLA (Zhang et al., 2026d) 52.2 16.3 3.8 25.2 StateSkill-Agent 72.8 37.5 10.0 41.4 ↑28 .8
+
+StateSkill-Agent w/ FT 75.6 40.0 11.3 43.6 ↑31 .0
+
+dependent components. We evaluate each embodied MLLM agent with and without StateSkill on the same set of tasks, using a frozen π0.5 policy for low-level execution. As shown in Table 3, StateSkill increases overall success from 60.0% to 76.0% for Qwen3.5-9B and from 75.0% to 86.0% for GPT-5.5, yielding gains of 16.0 and 11.0 percentage points, respectively. The gains span all five tasks for Qwen3.5-9B and four for GPT-5.5, whose success rate on Object Sorting remains unchanged at 100.0%. On Flower Insertion, Qwen3.5-9B improves from 30.0% to 50.0%, while GPT-5.5 im-proves from 55.0% to 70.0%, yielding gains of 20.0 and 15.0 percentage points, respectively. These results support sim-to-real StateSkill transfer with environment-specific adaptation. Table 3: Real-world manipulation results. Success rates (%) on five real-world tasks. GPT-5.5 and Qwen3.5-9B are used as baselines.                               
+
+> Method Block Stacking Flower Insertion Object Sorting Pen Placement Cup Nesting Overall
+> GPT-5.5 (Baseline) 80.0 55.0 100.0 55.0 85.0 75.0 GPT-5.5 + StateSkill 90.0 70.0 100.0 75.0 95.0 86.0 ↑11 .0
+> Qwen3.5-9B (Baseline) 70.0 30.0 70.0 60.0 70.0 60.0 Qwen3.5-9B + StateSkill 80.0 50.0 95.0 75.0 80.0 76.0 ↑16 .0
+
+4.4 ABLATION STUDIES AND DISCUSSION 
+
+Table 4: Ablation studies on LIBERO-PRO. 
+
+Success rates (%) with Qwen3.5-9B. Rows pro-gressively add the indicated components.                
+
+> StateSkill StateSkill-Evolve StateGRPO Overall
+> –––15.3
+> ✓––63.5
+> ✓✓–68.4
+> ✓✓✓70.9
+
+Ablation studies. Table 4 examines the pro-gression from finite-state skill construction to skill evolution and skill–model co-evolution on LIBERO-PRO with Qwen3.5-9B. StateSkill achieves 63.5% success by organizing in-teraction experience into task-progress states with state-conditioned guidance. Further with StateSkill-Evolve, we build our StateSkill-Agent , which increases success to 68.4% (+4.9 percentage points) through retrospective refine-ment using new successful and failed state-guided trajectories, supporting continued skill improve-ment beyond initial construction. Further involving StateGRPO, our final model, StateSkill-Agent w/ FT , raises success to 70.9% (+2.5 percentage points) by alternating skill evolution with state-conditioned GRPO updates to the embodied MLLM agent. 
+
+Comparison with LLM skills. Table 5 compares StateSkill-Agent with Harness VLA and rep-resentative LLM skill methods using the same Qwen3.5-9B backbone. During task execution, the agent reuses a shared skill library across tasks without retrieving task-matched reference trajecto-ries. StateSkill-Agent w/ FT achieves 70.9% success versus 25.8% for Harness VLA, with reported 8Preprint skill length of 11.0K versus 169.4K and token usage of 0.44M versus 3.62M. Compared with our reproductions of XSkill (Jiang et al., 2026), SkillGen (Ma et al., 2026), and Trace2Skill (Ni et al., 2026), it achieves higher success rates with fewer interaction turns and lower token usage. 
+
+Qualitative analysis. Figure 3 contrasts pick-and-place execution with and without StateSkill af-ter a missed grasp. Without StateSkill, the agent assumes grasping succeeded and proceeds with empty transport and release, causing task failure. With StateSkill, it detects the missed grasp, retries grasping, verifies the updated state, and completes the task. This example illustrates how task-state verification supports recovery instead of allowing failed actions to be treated as completed stages. Table 5: Comparison with LLM skills on LIBERO-PRO. All methods use Qwen3.5-9B as the baseline. Superscripts in the shaded column indicate improvements over Harness VLA: percentage-point gains in success rate and relative reductions (%) in other metrics. 
+
+Metric Harness VLA XSkill SkillGen Trace2Skill StateSkill-Agent StateSkill-Agent w/ FT Success Rate (%) ↑ 25.8 23.6 28.9 31.5 68.4 70.9 ↑45 .1
+
+Skill Length (K) ↓ 169.4 186.7 104.3 231.5 11.0 11.0 ↓93 .5% 
+
+Interaction Turns ↓ 74.96 76.80 69.50 66.10 23.10 21.91 ↓70 .8% 
+
+Token Usage (M) ↓ 3.62 3.74 3.05 3.22 0.47 0.44 ↓87 .8% step 0 step 2 step 4 step 6 step 26 step 29                
+
+> step 0 step 2 step 3 step 5 step 6 step 7
+> Without StateSkill
+> Initial Grasp assumed Empty transport Empty release Repeated error Failure
+> With StateSkill
+> Initial Miss detected Regrasp verified Transport Placement Success
+
+Figure 3: Qualitative results of StateSkill. Without StateSkill, the agent incorrectly assumes a successful grasp and continues with empty transport and release, causing repeated errors and eventual failure in a pick-and-place task. With StateSkill, the missed grasp is detected, enabling the agent to regrasp, verify the updated task state, and successfully complete the task. 
+
+5 CONCLUSION 
+
+This paper presents StateSkill, a new skill representation for embodied agents, which introduces the concept of “finite-state machines” into skill modeling for effective and efficient skill construction and learning. The core idea of StateSkill is to model embodied interaction experiences as a finite-state machine, where a skill is organized around a set of task-progress states, state transitions, and state-conditioned guidance. By explicitly conditioning skills on progress states, StateSkill enables an embodied agent to track the continuously changing states of the agent, environment, and task and dynamically adjust its skills in a state-conditioned manner as the task progresses, while keep-ing skill contexts compact and stage-relevant. Furthermore, we extend StateSkill with an iterative experience-driven evolution mechanism, termed StateSkill-Evolve, which retrospectively analyzes new successful and failed trajectories and refines the state-conditioned guidance, state transition gates, and action priors. In addition, we introduce StateGRPO, which integrates StateSkill evolution and model optimization into a unified iterative learning loop. With StateSkill, StateSkill-Evolve, and StateGRPO, we train our model, StateSkill-Agent. Extensive experiments demonstrate the ef-fectiveness of our proposed methods and trained model across various embodied tasks. 9Preprint 
+
+REFERENCES 
+
+ACE-Brain Team. ACE-Brain-0.5: A unified embodied foundational model for physical agentic AI. 
+
+arXiv preprint arXiv:2607.04426 , 2026. Anthropic. Introducing agent skills. https://claude.com/blog/skills , October 2025. Accessed: 2026-09-14. Johan Bjorck, Valts Blukis, Fernando Castañeda, Nikita Cherniadev, Xingye Da, Runyu Ding, Linxi Fan, Yu Fang, Dieter Fox, Fengyuan Hu, Spencer Huang, Joel Jang, et al. GR00T N1.5: An improved open foundation model for generalist humanoid robots. NVIDIA Research, 2025. Kevin Black, Noah Brown, James Darpinian, Karan Dhabalia, Danny Driess, Adnan Esmail, Michael Robert Equi, Chelsea Finn, Niccolo Fusai, Manuel Y. Galliker, Dibya Ghosh, Lachy Groom, Karol Hausman, Brian Ichter, Szymon Jakubczak, Tim Jones, Liyiming Ke, Devin LeBlanc, Sergey Levine, Adrian Li-Bell, Mohith Mothukuri, Suraj Nair, Karl Pertsch, Allen Z. Ren, Lucy Xiaoyang Shi, Laura Smith, Jost Tobias Springenberg, Kyle Stachowicz, James Tan-ner, Quan Vuong, Homer Walke, Anna Walling, Haohuan Wang, Lili Yu, and Ury Zhilinsky. π0.5:A vision-language-action model with open-world generalization. In Proc. Conf. Robot Learn. (CoRL) , 2025a. Kevin Black, Noah Brown, Danny Driess, Adnan Esmail, Michael Robert Equi, Chelsea Finn, Nic-colo Fusai, Lachy Groom, Karol Hausman, Brian Ichter, Szymon Jakubczak, Tim Jones, Liyiming Ke, Sergey Levine, Adrian Li-Bell, Mohith Mothukuri, Suraj Nair, Karl Pertsch, Lucy Xiaoyang Shi, Laura Smith, James Tanner, Quan Vuong, Anna Walling, Haohuan Wang, and Ury Zhilinsky. 
+
+π0: A vision-language-action flow model for general robot control. In Proc. Robot.: Sci. Syst. (RSS) , 2025b. Anthony Brohan, Noah Brown, Justice Carbajal, Yevgen Chebotar, Joseph Dabis, Chelsea Finn, Keerthana Gopalakrishnan, Karol Hausman, Alex Herzog, Jasmine Hsu, et al. RT-1: Robotics transformer for real-world control at scale. arXiv preprint arXiv:2212.06817 , 2022. Mingyue Cheng, Shuo Yu, Daoyu Wang, Qingchuan Li, Xiaoyu Tao, Jie Ouyang, Yucong Luo, Yitong Zhou, Qi Liu, and Enhong Chen. Agent-R1: A unified and modular framework for agentic reinforcement learning. arXiv preprint arXiv:2511.14460 , 2025. Cheng Chi, Zhenjia Xu, Siyuan Feng, Eric Cousineau, Yilun Du, Benjamin Burchfiel, Russ Tedrake, and Shuran Song. Diffusion policy: Visuomotor policy learning via action diffusion. Int. J. Robot. Res. , 44(10–11):1684–1704, 2025. Danny Driess, Fei Xia, Mehdi S. M. Sajjadi, Corey Lynch, Aakanksha Chowdhery, Brian Ichter, Ayzaan Wahid, Jonathan Tompson, Quan Vuong, Tianhe Yu, Wenlong Huang, Yevgen Chebotar, Pierre Sermanet, Daniel Duckworth, Sergey Levine, Vincent Vanhoucke, Karol Hausman, Marc Toussaint, Klaus Greff, Andy Zeng, Igor Mordatch, and Pete Florence. PaLM-E: An embodied multimodal language model. In Proc. Int. Conf. Mach. Learn. (ICML) , 2023. Karim Elmaaroufi, Justin Svegliato, Sarunas Kalade, Graham Schelle, Sanjit A. Seshia, and Matei Zaharia. RHO: Your coding agent is secretly a roboticist. arXiv preprint arXiv:2606.16458 , 2026. Jiazhan Feng, Shijue Huang, Xingwei Qu, Ge Zhang, Yujia Qin, Baoquan Zhong, Chengquan Jiang, Jinxin Chi, and Wanjun Zhong. ReTool: Reinforcement learning for strategic tool use in LLMs. In Proc. Int. Conf. Learn. Represent. (ICLR) , 2026. Max Fu, Justin Yu, Karim El-Refai, Ethan Kou, Haoru Xue, Huang Huang, Wenli Xiao, Guanzhi Wang, Fei-Fei Li, Guanya Shi, Jiajun Wu, Shankar Sastry, Yuke Zhu, Ken Goldberg, and Jim Fan. CaP-X: A framework for benchmarking and improving coding agents for robot manipulation. In 
+
+Proc. Int. Conf. Mach. Learn. (ICML) , 2026. Dibya Ghosh, Homer Rich Walke, Karl Pertsch, Kevin Black, Oier Mees, Sudeep Dasari, Joey Hejna, Tobias Kreiman, Charles Xu, Jianlan Luo, You Liang Tan, Lawrence Yunliang Chen, Quan Vuong, Ted Xiao, Pannag R. Sanketi, Dorsa Sadigh, Chelsea Finn, and Sergey Levine. Octo: An open-source generalist robot policy. In Proc. Robot.: Sci. Syst. (RSS) , 2024. 10 Preprint Daya Guo, Dejian Yang, Haowei Zhang, Junxiao Song, Peiyi Wang, Qihao Zhu, Runxin Xu, Ruoyu Zhang, Shirong Ma, Xiao Bi, Xiaokang Zhang, Xingkai Yu, Yu Wu, Z. F. Wu, Zhibin Gou, Zhihong Shao, Zhuoshu Li, Ziyi Gao, et al. DeepSeek-R1 incentivizes reasoning in LLMs through reinforcement learning. Nature , 645:633–638, 2025. Chia-Yu Hung, Qi Sun, Pengfei Hong, Amir Zadeh, Chuan Li, U-Xuan Tan, Navonil Majumder, and Soujanya Poria. NORA: A small open-sourced generalist vision language action model for embodied tasks. arXiv preprint arXiv:2504.19854 , 2025. Guanyu Jiang, Zhaochen Su, Xiaoye Qu, and Yi R. Fung. XSkill: Continual learning from experi-ence and skills in multimodal agents. In Proc. Int. Conf. Mach. Learn. (ICML) , 2026. Yunfan Jiang, Agrim Gupta, Zichen Zhang, Guanzhi Wang, Yongqiang Dou, Yanjun Chen, Li Fei-Fei, Anima Anandkumar, Yuke Zhu, and Linxi Fan. VIMA: General robot manipulation with multimodal prompts. In Proc. Int. Conf. Mach. Learn. (ICML) , 2023. Bowen Jin, Hansi Zeng, Zhenrui Yue, Dong Wang, Hamed Zamani, and Jiawei Han. Search-R1: Training LLMs to reason and leverage search engines with reinforcement learning. arXiv preprint arXiv:2503.09516 , 2025. Jiarui Jin, Haoyu Wang, Xingliang Wu, Xiaocheng Fang, Xiang Lan, Zihan Wang, Deyun Zhang, Bo Liu, Yingying Zhang, Xian Wu, et al. ECG-R1: Protocol-guided and modality-agnostic MLLM for reliable ECG interpretation. arXiv preprint arXiv:2602.04279 , 2026. Dongyoung Kim, Huiwon Jang, Myungkyu Koo, Suhyeok Jang, Taeyoung Kim, Beomjun Kim, Byungjun Yoon, Changsung Jang, Daewon Choi, Dongsu Han, et al. RLDX-1 technical report. 
+
+arXiv preprint arXiv:2605.03269 , 2026. Moo Jin Kim, Karl Pertsch, Siddharth Karamcheti, Ted Xiao, Ashwin Balakrishna, Suraj Nair, Rafael Rafailov, Ethan P. Foster, Pannag R. Sanketi, Quan Vuong, Thomas Kollar, Benjamin Burchfiel, Russ Tedrake, Dorsa Sadigh, Sergey Levine, Percy Liang, and Chelsea Finn. Open-VLA: An open-source vision-language-action model. In Proc. Conf. Robot Learn. (CoRL) , 2024. Yilun Kong, Yunpeng Qing, Guozheng Ma, Haoyu Wang, Li Shen, Zhi Hou, and Dacheng Tao. ExToken: Structured exploration for efficient vision-language-action reinforcement fine-tuning. 
+
+arXiv preprint arXiv:2607.12931 , 2026. Jason Lee, Jiafei Duan, Haoquan Fang, Yuquan Deng, Shuo Liu, Boyang Li, Bohan Fang, Jieyu Zhang, Yi Ru Wang, Sangho Lee, Winson Han, Wilbert Pumacay, Angelica Wu, Rose Hendrix, Karen Farley, Eli VanderBilt, Ali Farhadi, Dieter Fox, and Ranjay Krishna. MolmoAct: Action reasoning models that can reason in space. arXiv preprint arXiv:2508.07917 , 2025. Jacky Liang, Wenlong Huang, Fei Xia, Peng Xu, Karol Hausman, Brian Ichter, Pete Florence, and Andy Zeng. Code as policies: Language model programs for embodied control. In Proc. IEEE Int. Conf. Robot. Autom. (ICRA) , 2023. Fanqi Lin, Yingdong Hu, Pingyue Sheng, Chuan Wen, Jiacheng You, and Yang Gao. Data scaling laws in imitation learning for robotic manipulation. In Proc. Conf. Robot Learn. (CoRL) , 2025. Bo Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, and Peter Stone. LIBERO: Benchmarking knowledge transfer for lifelong robot learning. In Adv. Neural Inf. Process. Syst. (NeurIPS) , 2023. Runyu Lu, Yubo Wu, Ethan Kou, Letian Fu, Wenli Xiao, Ajay Mandlekar, Yinzhen Xu, Guanya Shi, Ken Goldberg, Ang Chen, Mosharaf Chowdhury, Yuke Zhu, Linxi Jim Fan, and Guanzhi Wang. ASPIRE: Agentic /Skills discovery for robotics. arXiv preprint arXiv:2607.00272 , 2026. Yuchen Ma, Yue Huang, Han Bao, Haomin Zhuang, Swadheen Shukla, Michel Galley, Xiangliang Zhang, and Stefan Feuerriegel. SkillGen: Verified inference-time agent skill synthesis. arXiv preprint arXiv:2605.10999 , 2026. Soroush Nasiriany, Sep Nasiriany, Abhiram Maddukuri, and Yuke Zhu. RoboCasa365: A large-scale simulation framework for training and benchmarking generalist robots. In Proc. Int. Conf. Learn. Represent. (ICLR) , 2026. 11 Preprint Jingwei Ni, Yihao Liu, Xinpeng Liu, Yutao Sun, Mengyu Zhou, Pengyu Cheng, Dexin Wang, Er-chao Zhao, Xiaoxi Jiang, and Guanjun Jiang. Trace2Skill: Distill trajectory-local lessons into transferable agent skills. arXiv preprint arXiv:2603.25158 , 2026. Open X-Embodiment Collaboration. Open x-embodiment: Robotic learning datasets and RT-X models. In Proc. IEEE Int. Conf. Robot. Autom. (ICRA) , 2024. OpenAI. GPT-5.5 system card, 2026. URL https://deploymentsafety.openai.com/ gpt-5-5 .Zehan Qi, Xiao Liu, Iat Long Iong, Hanyu Lai, Xueqiao Sun, Jiadai Sun, Xinyue Yang, Yu Yang, Shuntian Yao, Wei Xu, Jie Tang, and Yuxiao Dong. WebRL: Training LLM web agents via self-evolving online curriculum reinforcement learning. In Proc. Int. Conf. Learn. Represent. (ICLR) ,2025. Cheng Qian, Emre Can Acikgoz, Qi He, Hongru Wang, Xiusi Chen, Dilek Hakkani-Tur, Gokhan Tur, and Heng Ji. ToolRL: Reward is all tool learning needs. In Adv. Neural Inf. Process. Syst. (NeurIPS) , 2025. Qwen Team. Qwen3.5: Towards native multimodal agents, 2026. URL https:// huggingface.co/Qwen/Qwen3.5-9B .Zhihong Shao, Peiyi Wang, Qihao Zhu, Runxin Xu, Junxiao Song, Xiao Bi, Haowei Zhang, Mingchuan Zhang, Y. K. Li, Y. Wu, and Daya Guo. DeepSeekMath: Pushing the limits of math-ematical reasoning in open language models. arXiv preprint arXiv:2402.03300 , 2024. Xiaoquan Sun, Zetian Xu, Chen Cao, Zonghe Liu, Yihan Sun, Jingrui Pang, Ruijian Zhang, Zhen Yang, Kang Pang, Dingxin He, Mingqi Yuan, and Jiayu Chen. AtomVLA: Scalable post-training for robotic manipulation via predictive latent world models. arXiv preprint arXiv:2603.08519 ,2026. Chenxi Wang, Zhuoyun Yu, Xin Xie, Wuguannan Yao, Runnan Fang, Shuofei Qiao, Kexin Cao, Guozhou Zheng, Xiang Qi, Peng Zhang, and Shumin Deng. SkillX: Automatically constructing skill knowledge bases for agents. arXiv preprint arXiv:2604.04804 , 2026. Guanzhi Wang, Yuqi Xie, Yunfan Jiang, Ajay Mandlekar, Chaowei Xiao, Yuke Zhu, Linxi Fan, and Anima Anandkumar. Voyager: An open-ended embodied agent with large language models. 
+
+Trans. Mach. Learn. Res. , 2024a. Xiaofeng Wang, Zheng Zhu, Guan Huang, Boyuan Wang, Xinze Chen, and Jiwen Lu. World-Dreamer: Towards general world models for video generation via predicting masked tokens. arXiv preprint arXiv:2401.09985 , 2024b. Zihan Wang, Kangrui Wang, Qineng Wang, Pingyue Zhang, Linjie Li, Zhengyuan Yang, Kefan Yu, Minh Nhat Nguyen, Licheng Liu, Eli Gottlieb, Monica Lam, Yiping Lu, Kyunghyun Cho, Jiajun Wu, Li Fei-Fei, Lijuan Wang, Yejin Choi, and Manling Li. RAGEN: Understanding self-evolution in LLM agents via multi-turn reinforcement learning. arXiv preprint arXiv:2504.20073 , 2025a. Zora Zhiruo Wang, Jiayuan Mao, Daniel Fried, and Graham Neubig. Agent workflow memory. In 
+
+Proc. Int. Conf. Mach. Learn. (ICML) , 2025b. Changxu Wei, Huaze Tang, Yixian Zhang, Chao Wang, Xiao-Ping Zhang, and Wenbo Ding. Distri-butional decision transformer: Risk-sensitive offline RL via quantile-based critics and stochastic return. In Proc. IEEE/RSJ Int. Conf. Intell. Robots Syst. (IROS) , pp. 4204–4209, 2025. Xiyang Wu, Zongxia Li, Guangyao Shi, Alexander Duffy, Tyler Marques, Matthew Lyle Olson, Tianyi Zhou, and Dinesh Manocha. Co-evolving LLM decision and skill bank agents for long-horizon tasks. arXiv preprint arXiv:2604.20987 , 2026. Peng Xia, Jianwen Chen, Hanyang Wang, Jiaqi Liu, Kaide Zeng, Yu Wang, Siwei Han, Yiyang Zhou, Xujiang Zhao, Haifeng Chen, Zeyu Zheng, Cihang Xie, and Huaxiu Yao. SkillRL: Evolving agents via recursive skill-augmented reinforcement learning. arXiv preprint arXiv:2602.08234 , 2026. 12 Preprint Seonghyeon Ye, Yunhao Ge, Kaiyuan Zheng, Shenyuan Gao, Sihyun Yu, George Kurian, Suneel Indupuru, You Liang Tan, Chuning Zhu, Jiannan Xiang, et al. World action models are zero-shot policies. arXiv preprint arXiv:2602.15922 , 2026. Hongzhi Zang, Mingjie Wei, Si Xu, Yongji Wu, Zhen Guo, Yuanqing Wang, Hao Lin, Peihong Wang, Liangzhi Shi, Yuqing Xie, Zhexuan Xu, Zhihao Liu, Kang Chen, Wenhao Tang, Quanlu Zhang, Weinan Zhang, Chao Yu, and Yu Wang. RLinf-VLA: A unified and efficient framework for reinforcement learning of vision-language-action models. In Proc. Robot.: Sci. Syst. (RSS) ,2026. Jingyi Zhang, Jiaxing Huang, Huanjin Yao, Shunyu Liu, Xikun Zhang, Shijian Lu, and Dacheng Tao. R1-VL: Learning to reason with multimodal large language models via step-wise group relative policy optimization. In Proc. IEEE/CVF Int. Conf. Comput. Vis. (ICCV) , pp. 1859–1869, 2025a. Jingyi Zhang, Tianyi Lin, Huanjin Yao, Xiang Lan, Shunyu Liu, and Jiaxing Huang. R1-SyntheticVL: Is synthetic data from generative models ready for multimodal large language model? arXiv preprint arXiv:2602.03300 , 2026a. Junyi Zhang, Jiaxin Ge, Hanjun Yoo, Letian Fu, Zihan Yang, Yaowei Liu, Raj Saravanan, Shaofeng Yin, Justin Yu, Dantong Niu, Zirui Wang, Roei Herzig, Ken Goldberg, Yutong Bai, David M. Chan, Ion Stoica, Angjoo Kanazawa, Jiahui Lei, Haiwen Feng, and Trevor Darrell. Playful agentic robot learning. arXiv preprint arXiv:2606.19419 , 2026b. Yang Zhang, Jiangyuan Zhao, Chenyou Fan, Fangzheng Yan, Tian Li, Haitong Tang, Sen Fu, Xuan’er Wu, Qizhen Weng, Weinan Zhang, Xiu Li, Chi Zhang, Chenjia Bai, and Xuelong Li. PRTS: A primitive reasoning and tasking system via contrastive representations. arXiv preprint arXiv:2604.27472 , 2026c. Yixian Zhang, Huaze Tang, Chao Wang, and Wenbo Ding. Policy Newton algorithm in reproducing kernel Hilbert space. arXiv preprint arXiv:2506.01597 , 2025b. Yixian Zhang, Huanming Zhang, Feng Gao, Xiao Li, Zhihao Liu, Chunyang Zhu, Jiaxing Qiu, Yuchen Yan, Jiyuan Liu, Wenhao Tang, Zhengru Fang, Yi Nie, Changxu Wei, Yu Wang, Wenbo Ding, and Chao Yu. Harness VLA: Steering frozen VLAs into reliable manipulation primitives via memory-guided agents. arXiv preprint arXiv:2607.08448 , 2026d. Andrew Zhao, Daniel Huang, Quentin Xu, Matthieu Lin, Yong-Jin Liu, and Gao Huang. ExpeL: LLM agents are experiential learners. In Proc. AAAI Conf. Artif. Intell. (AAAI) , 2024. Jinliang Zheng, Jianxiong Li, Zhihao Wang, Dongxiu Liu, Xirui Kang, Yuchun Feng, Yinan Zheng, Jiayin Zou, Yilun Chen, Jia Zeng, Tai Wang, Ya-Qin Zhang, Jingjing Liu, and Xianyuan Zhan. X-VLA: Soft-prompted transformer as scalable cross-embodiment vision-language-action model. In Proc. Int. Conf. Learn. Represent. (ICLR) , 2026. Xueyang Zhou, Yangming Xu, Guiyao Tie, Yongchao Chen, Guowen Zhang, Duanfeng Chu, Pan Zhou, and Lichao Sun. LIBERO-PRO: Towards robust and fair evaluation of vision-language-action models beyond memorization. arXiv preprint arXiv:2510.03827 , 2025. Brianna Zitkovich, Tianhe Yu, Sichun Xu, Peng Xu, Ted Xiao, Fei Xia, Jialin Wu, Paul Wohlhart, Stefan Welker, Ayzaan Wahid, Quan Vuong, Vincent Vanhoucke, Huong Tran, Radu Soricut, Anikait Singh, Jaspiar Singh, Pierre Sermanet, Pannag R. Sanketi, Grecia Salazar, Michael S. Ryoo, Krista Reymann, Kanishka Rao, Karl Pertsch, Igor Mordatch, Henryk Michalewski, Yao Lu, Sergey Levine, Lisa Lee, Tsang-Wei Edward Lee, Isabel Leal, Yuheng Kuang, Dmitry Kalash-nikov, Ryan Julian, Nikhil J. Joshi, Alex Irpan, Brian Ichter, Jasmine Hsu, Alexander Herzog, Karol Hausman, Keerthana Gopalakrishnan, Chuyuan Fu, Pete Florence, Chelsea Finn, Ku-mar Avinava Dubey, Danny Driess, Tianli Ding, Krzysztof Marcin Choromanski, Xi Chen, Yev-gen Chebotar, Justice Carbajal, Noah Brown, Anthony Brohan, Montserrat Gonzalez Arenas, and Kehang Han. RT-2: Vision-language-action models transfer web knowledge to robotic control. In Proc. Conf. Robot Learn. (CoRL) , 2023. 13

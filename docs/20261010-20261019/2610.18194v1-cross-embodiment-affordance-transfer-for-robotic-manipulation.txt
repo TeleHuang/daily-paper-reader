@@ -1,0 +1,278 @@
+Title: Cross-Embodiment Affordance Transfer for Robotic Manipulation
+
+URL Source: https://arxiv.org/pdf/2610.18194v1
+
+Published Time: Wed, 14 Oct 2026 04:25:41 GMT
+
+Number of Pages: 9
+
+Markdown Content:
+# Cross-Embodiment Affordance Transfer for Robotic Manipulation 
+
+Sawera Yaseen ∗1, Serge Thill 1, Rekha Raja 1
+
+Abstract — Robotic manipulation systems commonly learn object affordances from human-annotated datasets, which re-flect interaction possibilities for a human hand rather than the physical constraints of a specific robot. For example, a surface region of an object identified as graspable by a human annotator may be geometrically unreachable or mechanically infeasible for a robot, yet this mismatch is rarely addressed ex-plicitly. To tackle this challenge, we proposed a framework that translates human affordance annotations into robot-executable affordance predictions conditioned on the physical properties of the robot. The network predicts which surface regions of object are physically executable by the robot, given a 3D point cloud of an object and a descriptor encoding the robot’s geometry and constraints. The model was trained using human-annotated affordances together with robotic execution outcomes from multiple sampled approach trials in simulation, where execution outcomes determined which regions are executable for the robot. The evaluation was performed on a household objects dataset using two parallel-jaw gripper configurations on a UR5e robot arm. The framework outperformed a model that does not receive information about the robot. The experimental results demonstrated that affordance prediction must be conditioned on the robot and that human annotations alone are insufficient for learning robot-executable affordance representations. 
+
+Keywords - Affordance learning, cross-embodiment, embodiment-conditioned perception, robotic manipulation. I. I NTRODUCTION 
+
+Robots operating in the real world must be able to determine not only what objects are, but also how they can be interacted with to accomplish a task. In ecological psychology, J. J. Gibson [1] introduced the term “affor-dance” in a discussion of how humans can directly perceive such action possibilities in the environment. In robotics, the ecological aspect of direct perception, that is, without internal modelling and representation, is usually lost; instead, affordance-based representations link visual perception to manipulation, enabling systems to identify where and how to interact with objects. [2], [3]. Recent advances in visual affordance prediction have demonstrated promising results in grasp detection, manipulation planning, and functional object understanding using RGB and RGB-D perception and deep learning methods [4], [5]. These methods construct affordance representations from existing affordance datasets which provide valuable information about how humans per-ceive possible interactions with objects. In particular, human-annotated datasets [6], [5] identify object regions associ-ated with functional interactions providing a foundation for learning where and how objects can be used. However, the 
+
+> 1School of Artificial Intelligence, Donders Centre for Cognition, De-partment of Human-Centred Intelligent Systems, Radboud University, Ni-jmegen, The Netherlands. *Email: sawera.yaseen@donders.ru.nl
+
+Fig. 1: Human-to-robot affordance gap. Human-interpreted affordance regions do not necessarily correspond to robot-executable regions, as executability depends on the physical capabilities of the acting embodiment. assumptions underlying these annotations introduce a fun-damental challenge that limits how far such representations can be transferred to robots. Human-annotated affordance datasets describe potential interactions from a human per-spective without grounding them in the execution capabilities of a particular robot. This limitation is well recognised. Myers et al. [5] provide region-level annotations derived from human observation, and subsequent work on this dataset notes that gripper and robot specifications restrict prediction generalisability in real-world settings [7]. Cavalli et al. [8] question the validity of human-labelled annotations when the acting agent is not a human hand, and Kemmeren et al. [9] observe that such datasets fail to address how robot embodiment affects interaction feasibility. The underlying issue is that affordances are relational, arising from the inter-action between an object and a specific agent. A dexterous human hand can approach and grasp from many locations and orientations, whereas a parallel-jaw gripper with limited aperture and restricted motion may access only a subset of these regions. Transferring human annotations directly to a robot therefore assumes that human-perceived affordance is equally actionable by that robot, an assumption that breaks down across embodiments with different morphologies and physical capabilities. To address this limitation, we investigated the human-to-arXiv:2610.18194v1 [cs.RO] 13 Oct 2026 robot affordance gap (Fig. 1) and proposed an embodiment-conditioned affordance learning framework. We formulated affordance prediction as a problem that jointly reasons over visual object geometry and robot feasibility. As a source of human interpreted affordance knowledge, we use the UMD Part Affordance Dataset [5], a dataset providing affordance labels across a range of categories for common household and tool objects, supplemented by robotic execution trials that provide embodiment-specific supervision. Object ge-ometry is represented as point clouds and predictions are conditioned on a descriptor encoding the robot’s geometry and constraints. Given an object point cloud and an embodi-ment descriptor, the model predicts which surface regions are both geometrically associated with an affordance and physically executable for that embodiment, focusing on grasp and wrap-grasp as the primary interaction modes of parallel-jaw grippers. Which parts of human-derived affordance knowledge transfer and which require adaptation is itself embodiment-dependent. The framework makes this analysis tractable for a specific robot without manual re-annotation, using existing human annotations as a common representa-tion of object-interaction knowledge while relatively small amounts of robotic interaction data adapt this knowledge to a given embodiment. We evaluate on the Yale-CMU-Berkeley (YCB) dataset [10], investigating whether human-interpreted affordance regions transfer directly to robots, how embodiment conditioning changes predicted actionable regions, and whether robotic execution data improves gener-alisation across embodiments. The main contributions of this work are threefold. First, we characterised the gap between human-interpreted affordances and robot-executable affordances, showing through experi-ments across multiple embodiments that affordance regions derived from human annotations cannot be assumed directly transferable to a robotic platform. Second, we proposed an embodiment-conditioned affordance learning framework that combines human-annotated affordance knowledge with robotic execution outcomes to model the relationship be-tween object geometry and embodiment-specific interaction feasibility. Third, we experimentally demonstrated that the learned robot-executable affordances generalise to object cat-egories unseen during training, while retaining embodiment-specific feasibility. II. R ELATED WORK 
+
+A. Visual Affordance Detection and Segmentation 
+
+Early affordance detection methods framed the problem as pixel-level segmentation over RGB or RGB-D images. Myers et al. [5] introduced the UMD dataset with per-part annotations across 105 tools and 7 affordance classes, and Do et al. [11] proposed AffordanceNet for joint object detection and affordance mask prediction. These 2D ap-proaches established visual affordance learning from human-annotated regions but offer limited geometric information for manipulation and remain viewpoint-sensitive. The shift to 3D point clouds addressed this. Deng et al. [12] established point-level affordance segmentation as a benchmark with 3D AffordanceNet, Nguyen et al. [4] ex-tended prediction to open-vocabulary settings, He et al. [13] integrated 2D semantic priors with 3D reasoning for scene-level segmentation, and Vu et al. [14] scaled affordance learning to complex indoor scenes via keypoint matching. Despite these advances, all treat affordances as object prop-erties under a fixed embodiment, without modelling how the acting agent’s physical capabilities influence executability. 
+
+B. Embodiment-Conditioned and Cross-Embodiment Affor-dance Learning 
+
+Affordance predictions depend on multiple factors such as object geometry, task semantics, physical object properties, and the morphology and kinematics of the acting agent [3]. These conditioning axes have been explored largely in isolation. Geometric conditioning through point cloud encoders has been addressed via multi-scale local feature aggregation [15]. Task-semantic conditioning through natu-ral language has enabled models to activate different output regions depending on intended manipulation [4]. Bahl et al. [16] used affordances extracted from human videos as a versatile conditioning substrate for downstream robotic manipulation. Borja-Diaz et al. [17] showed that affordance representations learned from unstructured play data can con-dition sample-efficient policy learning without task-specific annotation. Conditioning on agent embodiment has been explored primarily outside the affordance domain. Chen et al. [18] embedded hardware descriptors into policy networks to enable transfer across manipulators with different mor-phologies. Attarian et al. [19] addressed multi embodiment grasping through shared geometric representations across gripper geometries. Schiavi et al. [20] conditioned affordance predictions on the agent’s configuration state for closed-loop articulated object interaction, though within a single fixed embodiment. Across these conditioning axes, embodiment properties have not been used to condition per-point af-fordance segmentation. Geometric and language-conditioned methods carry no representation of the acting manipulator, and embodiment-encoding methods operate at the policy level, focusing on control transfer rather than modelling affordances as embodiment-dependent interactions. 
+
+C. Human-Interpreted vs. Robot-Executable Affordances 
+
+Although substantial progress has been made in affordance prediction, task-conditioned learning, and embodiment-aware manipulation, existing approaches largely assume that af-fordances can be transferred across embodiments with lim-ited adaptation. Furthermore, publicly available datasets rarely combine human-interpreted affordance annotations with robotic manipulation outcomes across different embod-iments, particularly unsuccessful interactions. Consequently, the relationship between human affordance interpretation, embodiment, physical execution remains insufficiently un-derstood. In this work, we address this gap by distinguishing between human-interpreted affordances and robot-executable affordances. We treat human annotations as a source of object-interaction knowledge and use successful and failed robotic executions to learn how this knowledge depends on the physical capabilities of the acting embodiment. This formulation enables affordance knowledge to be adapted to different robotic embodiments while retaining its transfer-ability to novel objects. III. M ETHOD 
+
+A. Problem Formulation 
+
+Given an object point cloud and a robot embodiment descriptor, the objective is to predict the affordance regions of the object that are executable by the robot. Let P ∈
+
+RN ×3 be the object point cloud expressed in robot base frame, where N is the number of points. Human affordance annotations from the UMD dataset [5] are represented as a label vector: 
+
+aH = {aHi }Ni=1 , aHi ∈ { 0, 1, 2} (1) where aHi = 0 indicates grasp, aHi = 1 indicates wrap-grasp, and aHi = 2 indicates background. Let e ∈ RD be a descriptor encoding the physical configuration of the robot, where D is the dimensionality of the embodiment representation. Formally the affordance prediction function is defined as: 
+
+Gθ : ( P, e) −→ ˆy, ˆyi ∈ { 0, 1, 2} (2) where ˆyi ∈ {0, 1} indicates a robot-feasible affordance and ˆyi = 2 indicates background. Points predicted as background include both geometrically unannotated regions and affordance regions that are physically infeasible for the given robot at the observed object pose, which together define the human-to-robot affordance gap. Human affordance annotations aH provide training supervision only and are not available to the model at inference time. 
+
+B. Multi-Embodiment Data Generation 1) Human-Interpreted Data: The affordance annotations are sourced from the UMD RGB-D Part Affordance dataset [5], which provides per-point affordance labels. Here we only retain grasp and wrap-grasp labels as target classes and all remaining classes are mapped to background, yielding the human annotation vector aH ∈ { 0, 1, 2}N . These annota-tions capture geometrically valid interaction regions on each object surface, independent of embodiment, and serve as the geometric prior from which embodiment-conditioned labels are derived. 
+
+2) Robot Interaction Data Generation: We developed a simulation pipeline to generate the robotic interaction data. The pipeline uses PyBullet as the physics engine with a combined UR5e robot and Robotiq 2F-85 and Robotiq 2F-140 grippers. Each object instance is placed at 200 sampled poses on a tabletop workspace, modelled as a free rigid body subject to gravity and contact dynamics. Candidate contact points are obtained by reprojecting UMD affordance annota-tions onto the object point cloud using Iterative Closest Point (ICP) registration [21], which aligns the UMD source point cloud to the target object point cloud by minimising the mean point-to-point distance between corresponding surfaces. This yields the annotated surface set AH per scene. For each candidate point pi ∈ A H , five approach poses are sampled and the robot attempts the corresponding manipu-lation primitive from each. Inverse kinematics is solved and collision checking is performed at each waypoint. Each trial receives one of four verdicts based on execution outcome. A trial is marked PASS if the gripper achieves contact at the affordance region, closes without collision, and lifts the object stably. It is marked PARTIAL if the gripper reaches the target but fails to close, MISMATCH if no valid IK solution is found, and MISS if no feasible approach trajectory exists. A candidate point pi receives its affordance class label 
+
+k ∈ {0, 1} if at least one of the five approach trials is marked PASS , and is assigned class 2 otherwise. Points in AH \ A R(e) are thereby labelled background, encoding the human-to-robot affordance gap in the label space and providing per-point supervision for for learning embodiment-dependent robot-executable affordances. 
+
+3) Embodiment Representation: An embodiment descrip-tor e ∈ RD encodes the physical properties of a robot that determine which interactions it can execute. To represent factors that can influence execution feasibility, the descriptor captures three aspects of the robot embodiment. The reach-able workspace defines which object poses the robot can reach. The end-effector geometry determines whether the gripper can physically close around an object region. The joint limits constrain which approach poses are kinematically feasible. Omitting any of these leaves the model with an incomplete picture of what the robot can physically execute. Any descriptor that encodes these three aspects for a given robot can be used with the proposed framework, and the dimensionality D varies with the robot configuration. For the UR5e robot used in this work, the descriptor is instantiated as a 21-dimensional vector partitioned into three groups: 
+
+e =
+
+
+
+w4×1
+
+g5×1
+
+q12 ×1
+
+ ∈ R21 (3) The kinematic workspace vector w ∈ R4 encodes outer horizontal reach, inner dead-zone radius, and minimum and maximum end-effector height. The end-effector geometry vector g ∈ R5 encodes maximum and minimum jaw open-ing, finger length, finger pad contact width, and lateral palm reach offset. The joint-limit vector q ∈ R12 encodes the lower and upper bounds of each of the six UR5e joints, interleaved per joint: 
+
+q = qmin 0 qmax 0 · · · qmin  
+
+> j
+
+qmax 
+
+> j
+
+⊤ (4) where qmin  
+
+> j
+
+and qmax  
+
+> j
+
+are the lower and upper rotation limits of joint j in radians, for j ∈ { 0, . . . , 5} corresponding to the base, shoulder, elbow, and three wrist joints of the UR5e arm. The 12-dimensional joint-limit block reflects the six-DOF configuration of the UR5e. A robot with a different number of joints produces a descriptor of different dimen-sionality. The embodiment descriptor is used to condition affordance learning and enable cross-embodiment transfer. The cross-embodiment transfer is achieved by substituting e
+
+with the descriptor of the target embodiment, requiring no architectural modification. The descriptor carries no learned parameters and is fixed per robot configuration making the representation directly extensible to new robots. 
+
+C. Proposed Network Architecture 
+
+We propose a hierarchical point segmentation network that conditions geometric feature learning on the acting embodiment through stage-wise affine modulation. The em-bodiment descriptor e is injected at each Set Abstraction (SA) stage, allowing the geometric representations to adapt to embodiment-specific physical capabilities at different levels of spatial abstraction. The architecture comprises a Point-Net++ encoder with multi-scale grouping (MSG), stage-wise Feature-wise Linear Modulation (FiLM) conditioning blocks, and a per-point classification head, as illustrated in Fig. 2. 
+
+1) PointNet++ Encoder: We use PointNet++ [22] with MSG as the backbone. Three SA stages progressively down-sample the point cloud while aggregating local geometric features across multiple query radii at each level:  
+
+> •
+
+SA 1: N → 512 centroids, radii {0.1, 0.2, 0.4} m, output 320 channels  
+
+> •
+
+SA 2: 512 → 128 centroids, radii {0.2, 0.4, 0.8} m, out-put 640 channels  
+
+> •
+
+SA 3: global aggregation, output 1024 channels Three Feature Propagation (FP) layers upsample back to the original N -point resolution using distance-weighted in-terpolation and skip connections from the corresponding SA stages. These skip connections preserve fine-grained geometric information required for point-level affordance prediction. 
+
+2) FiLM Conditioning: At each SA level l ∈ { 1, 2, 3},a dedicated two-layer MLP g(l) 
+
+> θ
+
+: RD → RCl × RCl where 
+
+θ denotes the learnable parameters, maps the embodiment descriptor to per-channel affine parameters: 
+
+γ(l), β(l) = g(l) 
+
+> θ
+
+(e), γ(l), β(l) ∈ RCl (5) where γ(l) is the per-channel scale vector and β(l) is the per-channel shift vector at level l. The Cl ∈ { 320 , 640 , 1024 } is the feature dimensionality at level l. The SA output features are then modulated via Feature-wise Linear Modulation (FiLM) [23]: 
+
+˜h(l) 
+
+> i
+
+= γ(l) ⊙ h(l) 
+
+> i
+
++ β(l), ∀ i ∈ { 1, . . . , N l} (6) where Nl is the number of centroids at level l and ⊙ denotes elementwise multiplication. The generators {g(l) 
+
+> θ
+
+}3 
+
+> l=1
+
+are instantiated independently per stage with non-shared param-eters, transforming the conditioning signal separately at each feature dimensionality Cl. The modulated features ˜h(l) are forwarded to the FP layers via skip connections, propagating embodiment influence through to the full-resolution per-point representations. 
+
+3) Classification Head: The final FP output is processed by two shared 1D convolutional layers with 256 and 128 channels, respectively. Each layer is followed by batch normalization, ReLU activation, and dropout. A final linear projection maps the resulting per-point features to three output logits, corresponding to the grasp class, wrap-grasp class, and background. During inference, a softmax operation converts these logits into per-point class probabilities. 
+
+D. Training Objective 
+
+The network is trained end-to-end using the embodiment-conditioned labels obtained from human affordance anno-tations and robotic execution outcomes. Points outside the human-interpreted affordance regions are assigned the back-ground class. For candidate affordance points within AH ,successful execution retains the corresponding affordance class k ∈ { 0, 1}, whereas unsuccessful execution is assigned the background class, indicating that the human-interpreted affordance is not executable for the evaluated embodiment. We use weighted cross-entropy to account for the class imbalance between background and affordance points: 
+
+L = − 1
+
+N
+
+> N
+
+X
+
+> i=1
+
+wyi log ˆ pi, y i (7) where yi ∈ { 0, 1, 2} is the ground-truth label at point i, ˆpi,k 
+
+is the predicted probability of class k, and wyi is the weight assigned to the ground-truth class. Class weights are defined as: 
+
+wk =
+
+ max j Nj
+
+Nk
+
+1/3
+
+(8) with Nk the total number of training points of class k.IV. E XPERIMENTS 
+
+A. Experimental Setup 
+
+We evaluate the proposed cross-embodiment affordance learning framework on a simulated UR5e robotic manip-ulation platform equipped with an end-effector mounted RGB-D camera (Fig. 3). The system is designed to study affordance transfer between human-interpreted affordance annotations and robotic execution under varying embodiment configurations. We consider two robot embodiments: (i) a UR5e manipulator equipped with a Robotiq 2F-85 gripper, and (ii) a UR5e manipulator equipped with a Robotiq 2F-140 gripper. Human annotations from the UMD dataset provide the human-interpreted affordance supervision. These config-urations enable studying affordance transfer under significant morphological and interaction differences. The evaluation considers manipulation tasks including grasping and wrap grasping for different objects. For each task, the model predicts affordance regions corresponding to feasible inter-actions for the target embodiment, which are subsequently used to execute the associated robotic action. Fig. 2: FiLM-conditioned PointNet++ for affordance segmentation. The model takes a 2048-point cloud and a 21-dimensional embodiment descriptor e. A per-point segmentation head produces logits over three classes: grasp, wrap-grasp, and background. 
+
+Fig. 3: Experimental setup in the PyBullet simulation. It consists of a UR5e manipulator with interchangeable Robotiq 2F-85 and 2F-140 grippers on a tabletop workspace. 
+
+B. Baseline 
+
+The proposed embodiment-conditioned model is compared against a no-embodiment baseline in which the embodiment descriptor is not provided as input. This ablation tests whether object geometry alone is sufficient for affordance prediction. 
+
+C. Implementation Details. 
+
+The model is trained end-to-end using the Adam optimizer (β1 = 0 .9, β2 = 0 .999 ) with an initial learning rate of 5 ×
+
+10 −4 and weight decay 1 × 10 −4. The learning rate schedule applies linear warmup over 10 epochs, then cosine annealing to 1 × 10 −6. Training runs for a maximum of 150 epochs with early stopping at a patience of 40 epochs and a batch size of 8. All experiments are conducted on a single NVIDIA Quadro RTX 6000 on an Intel Xeon Gold 5218 server. 
+
+D. Evaluation Metrics 
+
+We evaluate point-wise affordance prediction performance using precision, recall, F1-score, and Intersection-over-Union (IoU). These metrics are computed separately for each affor-dance class k ∈ { 0, 1}. Let TP k, FP k, and FN k denote the true positives, false positives, and false negatives for class k.The per-class metrics are: Prec k = TP k
+
+TP k + FP k
+
+, Rec k = TP k
+
+TP k + FN k
+
+(9) F1 k = 2 Prec k · Rec k
+
+Prec k + Rec k
+
+, IoU k = TP k
+
+TP k + FP k + FN k
+
+(10) Mean IoU (mIoU) is computed as the macro-average over the K affordance classes: mIoU = 1
+
+K
+
+> K
+
+X
+
+> k=1
+
+IoU k (11) mIoU is the primary metric for comparing across experi-ments. The gain of the embodiment-conditioned model over the no-embodiment baseline is reported as: 
+
+∆mIoU = mIoU EC − mIoU NE (12) where mIoU EC and mIoU NE denote the mIoU of the embodiment-conditioned model and the no-embodiment baseline respectively. V. R ESULTS 
+
+A. Affordance Segmentation Accuracy 
+
+Table I compares the embodiment conditioned model against the no-embodiment baseline across both affordance classes. Embodiment conditioning yields consistent improve-ments across every reported metric, with a macro mIoU gain of 1.18 points. The consistency of this gain across all metrics and both affordance classes demonstrates that the embodiment descriptor carries information complementary to object geometry and that stage-wise FiLM conditioning successfully propagates this signal through the geometric feature hierarchy. These results validated the central claims of this work. Human-annotated affordance regions were not directly transferable to robot execution without adaptation, and explicitly conditioning on the robot’s physical configura-tion reduced this gap, producing more accurate predictions of TABLE I: Affordance segmentation performance and embodiment-conditioning ablation. ∆ denotes the mIoU im-provement of the embodiment-conditioned model over the no-embodiment baseline.                                     
+
+> Method Affordance Prec. Rec. F1 IoU
+> Embodiment-conditioned Grasp 44.31 89.66 59.31 42.15 Wrap-Grasp 99.92 65.16 78.88 65.12
+> Macro Avg. 72.11 77.41 69.09 53.64
+> No-embodiment baseline Grasp 43.32 86.61 57.76 40.60 Wrap-Grasp 99.83 64.39 78.29 64.32
+> Macro Avg. 71.58 75.50 68.02 52.46
+> ∆IoU –––+1.18
+
+physically executable regions than reasoning from object ge-ometry alone. The two affordance classes exhibit structurally different prediction behaviour. Wrap-grasp achieves near-perfect precision in both conditions, indicating the model rarely predicts wrap-grasp outside the true executable region. Grasp exhibits high recall with lower precision, reflecting the broader spatial distribution of graspable regions across the object surface. Embodiment conditioning improves both classes, with the larger absolute gain on grasp, where manipulator-specific constraints such as jaw clearance and approach angle have more influence on which regions are physically reachable. 
+
+B. Cross-Gripper Transfer 
+
+Table II presents cross-gripper transfer results, where each model is trained on one gripper configuration and evaluated against ground-truth labels from the other. The results re-veal a pronounced and interpretable asymmetry in transfer direction. A model trained on the Robotiq 2F-140 transfers compet-itively to 2F-85 evaluation. The wider aperture exposes the model to successful wrap-grasp executions across a broader range of object geometries, producing richer affordance supervision. Adapting to the more constrained 2F-85 at eval-uation requires predicting a subset of the learned feasibility landscape, a structurally easier problem since the model has already observed the relevant geometry and associated it with feasible interactions during training. The reverse direction is substantially harder. A model trained on 2F-85 data showed limited transfer to 2F-140 evaluation, with a wrap-grasp IoU of 26.63% compared to 63.26% for the 2F-140-trained model. The 2F-85 physically cannot wrap-grasp most objects due to its narrower aperture, producing fewer successful wrap-grasp trials during training. The model consequently acquires no representation of feasible wrap-grasp regions and fails systematically when evaluated against ground truth where wrap-grasp is widely executable. This failure is consistent with a supervision gap caused by the embodiment gap rather than solely by model capacity. A manipulator that cannot execute an interaction cannot provide the training signal needed to learn it. The two embodiment configurations in this experiment differ only in maximum aperture of the gripper, while sharing TABLE II: Cross gripper transfer performance. The grippers used are Robotiq 2F-85 and 2F-140. Each model is trained on one gripper and evaluated on another. ∆ is computed as 2F-140 − 2F-85 .                                          
+
+> Affordance Embodiment Prec. Rec. F1 IoU
+> Grasp 2F-85 44.72 90.53 59.87 42.72 2F-140 43.71 87.26 58.25 41.09
+> ∆-1.01 -3.27 -1.62 -1.63
+> Wrap-Grasp 2F-85 99.45 26.67 42.06 26.63 2F-140 99.80 63.34 77.49 63.26
+> ∆+0.35 +36.67 +35.43 +36.63 Aggregated
+> 2F-85 72.08 58.60 50.96 34.68 2F-140 71.76 75.30 67.87 52.17
+> ∆-0.32 +16.70 +16.91 +17.49
+
+identical arm kinematics, workspace parameters, and joint limits. Despite this limited inter-embodiment variation, the impact on affordance feasibility is substantial. Embodiments with larger kinematic differences, such as varying reach, joint limits, or fundamentally different morphologies, would expose a wider embodiment gap and produce more pro-nounced differentiation in affordance predictions. The full 21-dimensional embodiment descriptor is designed to accom-modate such variation, and evaluation across more diverse embodiments remains an important direction for future work. 
+
+C. Qualitative Analysis 
+
+Figure 4 shows per-point affordance predictions across seen and unseen object categories. On unseen objects, pre-dicted grasp regions consistently corresponded to geomet-rically graspable regions such as tool handles and mug handles, demonstrating cross-category generalisation without retraining. On seen objects, predictions remained consistent with the executable regions for the Robotiq 2F-85 gripper. 
+
+D. Physical Geometry Grounds the Embodiment Gap 
+
+Table III grounds the numerical results in physical ge-ometry, characterising which affordances are valid for each gripper across the object set shown in Fig. 5. Several objects that geometrically afford wrap-grasp, such as mugs and cans with rounded cylindrical bodies, are infeasible for the 2F-85 because their body diameter exceeds the 85 mm aperture, while the same objects are executable for the 2F-140. Flat objects do not afford wrap-grasp for either gripper, confirming that the interaction is constrained by both object geometry and embodiment simultaneously. This analysis makes explicit what the numerical results imply. The wrap-grasp performance gap in Table II is not a consequence of model capacity but follows directly from the embodiment gap. A human annotator correctly identifies the mug body as wrap-graspable, yet the 2F-85, constrained by its aperture, cannot realise that affordance while the 2F-140 can. Table III provides the physical grounding that connects the learned representations to manipulator reality, confirming that embodiment-conditioned affordance prediction is not a modelling choice but a physical necessity. Unseen Objects Seen Objects 
+
+> RGB Depth Point Cloud Affordance
+
+Fig. 4: Qualitative results across seen and unseen objects. Each column corresponds to an object, while rows show the RGB observation, depth representation, reconstructed point cloud, and predicted affordance map. TABLE III: Physical affordance feasibility across two gripper configurations and object geometries. Grasp: feasible if the graspable cross-section is less than the gripper maximum span. Wrap-grasp: feasible if the gripper span exceeds the object body diameter and the object is cylindrical or rounded. Flat objects are not amenable to wrap-grasp.                                                                                                                               
+
+> Object Dimensions (mm) Robotiq 2F-85 Robotiq 2F-140 Grasp Wrap-Grasp Grasp Wrap-Grasp
+> Spoon 186 ×83 ×21 ✓—✓—Fork 198 ×27 ×16 ✓—✓—Knife 215 ×23 ×21 ✓—✓—Spatula 306 ×125 ×33 ✓—✓—Hammer 333 ×182 ×33 ✓—✓—Mug 117 ×93 ×81 ××✓✓
+> Mug 100 ×81 ×72 ✓✓✓✓
+> Mug 100 ×92 ×58 ××✓✓
+> Master Chef Can 140 ×103 ×102 ××✓✓
+> Sugar Box 176 ×94 ×50 ✓—✓—Cup 57 ×57 ×62 ✓—✓—Tomato Soup Can 102 ×68 ×68 ✓✓✓✓
+> Pitcher Base 242 ×149 ×145 ××××
+> ✓feasible; ×infeasible; – not applicable.
+
+VI. D ISCUSSION 
+
+A. Key Findings 
+
+The experimental results addressed the three questions raised in the introduction. The same object induced different interaction regions depending on the agent’s morphology and action capabilities. Regions correctly identified as wrap-graspable by a human annotator were infeasible for aparallel-jaw gripper whose aperture did not accommodate the object diameter, yet executable for a wider configuration. 
+
+Fig. 5: Representative YCB objects used for evaluating pre-dicted affordances across both gripper configurations. Cor-responding physical feasibility analysis is given in Tab. III. This was a systematic property of the human-to-robot affor-dance gap, not an edge case, arguing against treating human-annotated affordances as intrinsic object properties directly transferable across embodiments. Explicitly modelling em-bodiment information improved this transfer, and jointly incorporating object geometry with embodiment produced more discriminative affordance representations than object-centric baselines, particularly where human hand interactions did not map directly to robot gripper kinematics. Conditioning affordance prediction on embodiment al-lowed the model to align human-annotated affordances with robot-executable interactions. Supervision derived from robotic execution outcomes, including failed attempts, pro-vided the signal needed to distinguish which annotated regions were executable for a given robot. The degree of generalisation across embodiments depended on transfer di-rection, revealing that the availability of embodiment-specific supervision was itself a function of what the robot could physically execute. 
+
+B. Limitations and Future Work 
+
+The evaluation covers two gripper configurations sharing arm kinematics and differing only in aperture. This is suf-ficient to demonstrate the embodiment gap’s existence, but produces small inter-embodiment variation in the descriptor. Configurations with larger kinematic differences such as arm reach, joint limits, or end-effector morphology would expose a wider affordance gap and stronger prediction differentia-tion. The object and task scope is similarly constrained to YCB objects in simulation across two affordance classes. Broader object sets, additional affordance types, and real-world validation would strengthen generality. Conditioning gains are expected to scale with morphological and kinematic dissimilarity, as the descriptor carries a stronger discrimina-tive signal. Validating this across diverse robotic platforms is the primary direction for future work. VII. C ONCLUSION 
+
+In this work, we studied robotic affordances as embodiment-dependent interactions rather than intrinsic ob-ject properties, and proposed a cross-embodiment affordance learning framework that jointly modelled object geometry and manipulator configuration. A central finding was that existing human-annotated affordance datasets, while valuable as a source of object-interaction knowledge, were not directly transferable to robots with different bodies. The proposed framework increased the utility of such datasets by adapting their knowledge to a specific embodiment through robotic execution data, without requiring manual re-annotation for each new platform. Experiments on a UR5e robot with two parallel-jaw gripper configurations demonstrated that conditioning affordance prediction on the robot’s physical properties improved prediction accuracy and reduced the gap between human-annotated affordances and robot-executable regions. The learned representations generalised to object categories unseen during training, and transfer across gripper configurations showed that the availability of embodiment-specific supervision was a function of what the robot could physically execute. Explicitly modelling embodiment proved necessary for learning physically grounded affor-dance representations from human-annotated data. Existing affordance datasets can serve as a scalable foundation for cross-embodiment manipulation learning when paired with targeted robotic interaction data, and this work opens a path toward broader generalisation across robot platforms without the cost of platform-specific annotation. REFERENCES [1] J. J. Gibson, The Ecological Approach to Visual Perception . Boston, MA: Houghton Mifflin, 1979. [2] N. Yamanobe, W. Wan, I. G. Ramirez-Alpizar, D. Petit, T. Tsuji, S. Akizuki, M. Hashimoto, K. Nagata, and K. Harada, “A brief review of affordance in robotic manipulation research,” Advanced Robotics ,vol. 31, no. 19-20, pp. 1086–1101, 2017. [3] P. Ard´ on, E. Pairet, K. S. Lohan, S. Ramamoorthy, and R. P. A. Petrick, “Building affordance relations for robotic agents - a review,” in Pro-ceedings of the Thirtieth International Joint Conference on Artificial Intelligence (IJCAI-21) Survey Track , Z.-H. Zhou, Ed. International Joint Conferences on Artificial Intelligence Organization, 2021, pp. 4302–4311. [4] T. Nguyen, M. N. Vu, A. Vuong, D. Nguyen, T. Vo, N. Le, and A. Nguyen, “Open-vocabulary affordance detection in 3d point clouds,” in 2023 IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2023, pp. 5692–5698. [5] A. Myers, C. L. Teo, C. Ferm¨ uller, and Y. Aloimonos, “Affordance detection of tool parts from geometric features,” in 2015 IEEE International Conference on Robotics and Automation (ICRA) , 2015, pp. 1374–1381. [6] Z. Khalifa and S. A. A. Shah, “A large scale multi-view rgbd visual affordance learning dataset,” in 2023 IEEE International Conference on Image Processing (ICIP) , 2023, pp. 1325–1329. [7] Z. Liu, R. Zhao, L. Zhou, C. Yuan, Y. Wu, S. Guo, Z. Zhang, C. Liu, and M. H. A. Jr., “3d affordance keypoint detection for robotic manipulation,” in IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS) , 2024. [Online]. Available: https://arxiv.org/abs/2511.22195 [8] L. Cavalli, G. D. Pietro, and M. Matteucci, “Towards affordance prediction with vision via task oriented grasp quality metrics,” 2019. [Online]. Available: https://arxiv.org/abs/1907.04761 [9] A. Kemmeren, G. Burghouts, M. van Bekkum, W. Meijer, and J. van Mil, “Which objects help me to act effectively? reasoning about physically-grounded affordances,” in Robotics: Science and Systems Workshop on Semantic Reasoning and Goal Understanding in Robotics , 2024. [Online]. Available: https://arxiv.org/abs/2407.13811 [10] B. Calli, A. Walsman, A. Singh, S. Srinivasa, P. Abbeel, and A. M. Dollar, “Benchmarking in manipulation research: The ycb object and model set and benchmarking protocols,” IEEE Robotics & Automation Magazine , vol. 22, no. 3, pp. 36–52, 2015. [11] T.-T. Do, A. Nguyen, and I. Reid, “Affordancenet: An end-to-end deep learning approach for object affordance detection,” in 2018 IEEE International Conference on Robotics and Automation (ICRA) , 2018, pp. 5882–5889. [12] S. Deng, X. Xu, C. Wu, K. Chen, and K. Jia, “3d affordancenet: A benchmark for visual object affordance understanding,” in 2021 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , 2021, pp. 1778–1787. [13] L. He, M. Liu, Q. Ye, Y. Zhou, X. Deng, and G. Ding, “Task-aware 3D affordance segmentation via 2D guidance and geometric refinement,” in Proceedings of the AAAI Conference on Artificial Intelligence ,vol. 40, no. 6, 2026, pp. 4654–4662. [14] N. Vu, T. Do, K. Nguyen, B. Huang, N. Le, B. X. Nguyen, E. Tjiputra, Q. D. Tran, R. Prakash, T.-C. Chiu, and A. Nguyen, “AffordMatcher: Affordance learning in 3D scenes from visual signifiers,” in IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) ,2026, arXiv:2603.27970. [15] S. Ling, Y. Wang, R. Wu, S. Wu, Y. Zhuang, T. Xu, Y. Li, C. Liu, and H. Dong, “Articulated object manipulation with coarse-to-fine affordance for mitigating the effect of point cloud noise,” in 2024 IEEE International Conference on Robotics and Automation (ICRA) ,2024, pp. 10 895–10 901. [16] S. Bahl, R. Mendonca, L. Chen, U. Jain, and D. Pathak, “Affordances from human videos as a versatile representation for robotics,” in 
+
+Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , June 2023, pp. 13 778–13 790. [17] J. Borja-Diaz, O. Mees, G. Kalweit, L. Hermann, J. Boedecker, and W. Burgard, “Affordance learning from play for sample-efficient policy learning,” in 2022 International Conference on Robotics and Automation (ICRA) , 2022, pp. 6372–6378. [18] T. Chen, A. Murali, and A. Gupta, “Hardware conditioned policies for multi-robot transfer learning,” in Advances in Neural Information Processing Systems (NeurIPS) , vol. 31, 2018. [19] M. Attarian, M. A. Asif, J. Liu, R. Hari, A. Garg, I. Gilitschenski, and J. Tompson, “Geometry matching for multi-embodiment grasping,” in Proceedings of The 7th Conference on Robot Learning , ser. Proceedings of Machine Learning Research, J. Tan, M. Toussaint, and K. Darvish, Eds., vol. 229. PMLR, 06–09 Nov 2023, pp. 1242–1256. [Online]. Available: https://proceedings.mlr.press/v229/ attarian23a.html [20] G. Schiavi, P. Wulkop, G. Rizzi, L. Ott, R. Siegwart, and J. J. Chung, “Learning agent-aware affordances for closed-loop interaction with articulated objects,” in 2023 IEEE International Conference on Robotics and Automation (ICRA) , 2023, pp. 5916–5922. [21] P. J. Besl and N. D. McKay, “A method for registration of 3-D shapes,” 
+
+IEEE Transactions on Pattern Analysis and Machine Intelligence ,vol. 14, no. 2, pp. 239–256, 1992. [22] C. R. Qi, L. Yi, H. Su, and L. J. Guibas, “Pointnet++: Deep hierarchi-cal feature learning on point sets in a metric space,” in Advances in Neural Information Processing Systems (NeurIPS) , 2017, pp. 5099– 5108. [23] E. Perez, F. Strub, H. de Vries, V. Dumoulin, and A. Courville, “FiLM: Visual reasoning with a general conditioning layer,” in Proceedings of the AAAI Conference on Artificial Intelligence , 2018.

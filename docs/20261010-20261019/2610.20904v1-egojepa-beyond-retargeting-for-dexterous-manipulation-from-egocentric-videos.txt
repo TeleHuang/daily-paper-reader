@@ -1,0 +1,410 @@
+Title: EgoJEPA: Beyond Retargeting for Dexterous Manipulation from Egocentric Videos
+
+URL Source: https://arxiv.org/pdf/2610.20904v1
+
+Published Time: Fri, 16 Oct 2026 00:18:54 GMT
+
+Number of Pages: 18
+
+Markdown Content:
+# EGO JEPA: B EYOND RETARGETING FOR DEXTEROUS 
+
+# MANIPULATION FROM EGOCENTRIC VIDEOS 
+
+Meng Cao 1∗, Can Zhao 2,3 ∗
+
+, Jinjie Wei 1∗, Haonan Zhao 2,4 , Yulong Zhang 3, Duo Han 3,Xiaofan Li 3, Ziwu Song 3, Rongtao Xu 1, Ruyi Gan 3, Hao Wang 3, Qian Wang 3,
+
+Daolin Ma 2,4 †, Ian Reid 1, Xiaodan Liang 1,5 †
+
+> 1
+
+Mohamed bin Zayed University of Artificial Intelligence 
+
+> 2
+
+Shanghai Jiao Tong University 3X Square Robot 4Xense Robotics 5Sun Yat-sen University 
+
+https://mengcaopku.github.io/EgoJEPA 
+
+ABSTRACT 
+
+Egocentric human videos offer a scalable alternative to costly robot demonstra-tions, yet transferring their manipulation priors to robot control remains chal-lenging. The commonly adopted retargeting-based approaches convert human wrist and finger poses into embodiment-specific action commands through hand-crafted geometric mappings. However, such mappings require meticulous recal-ibration across different embodiments and risk propagating hand-tracking errors into downstream robot control pipelines. To this end, we propose EgoJEPA , a three-stage framework that learns embodiment-agnostic representations from ego-centric human videos without rule-based human-to-robot retargeting: 1) Human-action pre-training learns effect-aware latent actions through JEPA-style visual prediction conditioned on hand-motion differences; 2) Latent-action-based world modeling jointly predicts future visual dynamics and latent actions, which decou-ples human prior pre-training from robot-specific control parameterizations; 3) 
+
+Embodiment-specific tuning adapts the pretrained model to diverse robots through lightweight action adapters. Experiments on five real-world manipulation tasks across three robot embodiments demonstrate the effectiveness and efficiency of EgoJEPA. It achieves a 74% average success rate under the out-of-domain evalu-ation, compared with 65% for the retargeting baseline, while reducing cumulative cross-embodiment wall-clock cost by 47.2%, from 743.2 to 392.7 hours. 
+
+1 INTRODUCTION 
+
+Despite recent advances in robotic manipulation policies (Chi et al., 2025; Zhao et al., 2023; Kim et al., 2024), scaling such systems remains constrained by their reliance on task-specific robot demonstrations, typically obtained through teleoperation or specialized capture systems (Zhao et al., 2023; Khazatsky et al., 2024; Chi et al., 2024; Sun et al., 2026; Zhang et al., 2026). Collecting these demonstrations is costly, labor-intensive, and time-consuming, posing a significant bottleneck to scalable robot learning. In contrast, egocentric human videos provide a scalable supervision source for transferring manipulation skills from human hand-object interactions to robotic systems (Ma et al., 2026b; Feng et al., 2026). Earlier action-free methods operate without explicit hand-pose annotations, instead learning latent action representations directly from inter-frame visual dynamics (Ye et al., 2025; Wang et al., 2026b; Bjorck et al., 2025; Gao et al., 2026; Bharadhwaj et al., 2024). However, the resulting represen-tations may capture generic visual variations rather than action-induced physical effects, limiting their interpretability and transferability to robot control. To move beyond learning solely from vi-sual supervision, recent approaches explicitly leverage human hand-pose annotations and adopt a 
+
+retargeting-based pipeline (Kareer et al., 2025; Yang et al., 2025; Tao et al., 2025; Ma et al., 2026a; Wang et al., 2026c). Specifically, human hand motions, such as wrist and finger poses, are captured using specialized devices ( e.g ., Leap Motion (Weichert et al., 2013) or Aria glasses (Engel et al., 2023)) and subsequently mapped to a target robot action space through hand-crafted rules for policy pre-training or human-robot co-training.  
+
+> ∗
+
+Equal contributions.  
+
+> †
+
+Corresponding author. 
+
+1arXiv:2610.20904v1 [cs.RO] 14 Oct 2026 Retargeting           
+
+> Stage 1
+> Human-Robot Calibration
+> Stage 2
+> Human Data Pre-training
+> Stage 3
+> Robot Data Tuning
+> Stage 1
+> Human-Action Pre-train
+> Stage 2
+> Latent-Action World Modeling
+> Stage 3
+> Embodiment-Specific Tuning
+> EgoJEPA 16.1% Less Time
+> Cumulative wall-clock time (h)
+> (a) (b)
+> Embodiment-agnostic Embodiment-Specific
+> )2 +,*#(! .* -%#(! #** +.&&#(! )--& * (,+ 0#(! +)+ )1)&#(!   .'.&-#/  0&&&)%-#'  " "+* .$# +#** +!)  -+! -#(!
+
+Figure 1: Training efficiency and scalability of EgoJEPA v.s. retargeting. (a) The retar-geting pipeline requires embodiment-specific human-to-robot mappings and repeated calibration, whereas EgoJEPA learns an embodiment-agnostic latent action space in Stages 1–2 and performs embodiment-specific grounding only in Stage 3; (b) Cumulative training cost across robot embod-iments. Reusing the embodiment-agnostic models from Stages 1–2 reduces the per-embodiment adaptation overhead of EgoJEPA relative to the retargeting pipeline. Despite the intuitive formulation, the retargeting pipeline suffers from two key limitations: 1) 
+
+Embodiment-specific mapping . Retargeting relies on low-level geometric or kinematic mappings tailored to a particular robot embodiment, rather than learning transferable action semantics. Conse-quently, such mappings are tightly coupled to the robot morphology and typically require meticulous recalibration whenever either changes. As shown in Figure 1 (a), human–robot calibration alone takes 52.1 hours, accounting for 25.2% of the total pipeline time. Figure 1 (b) shows that this cost compounds when scaling to multiple robots, i.e ., retargeting must repeat the embodiment-specific human-robot calibration and pre-training whenever the robot morphology changes, which causes the cumulative wall-clock time to grow rapidly. 2) Noise propagation . Retargeting is highly sensitive to errors in estimated human motion. Hand-pose estimation noise caused by occlusions, viewpoint variations, or temporal jitter can propagate through the retargeting process, resulting in physically infeasible robot actions. As a concrete stress test, we inject Gaussian noise into human action an-notations while keeping robot training unchanged. As shown in Figure 6 (a), under a mild per-axis position noise of σ = 10 mm, the retargeting pipeline on the task of bottle cap unscrewing 
+
+drops drastically from 60% to 30% success rate, showing that annotation errors are directly amplified into downstream robot control failures. To this end, we propose EgoJEPA , an Ego centric instantiation of the Joint Embedding Predictive 
+
+Architecture (Assran et al., 2023) that learns embodiment-agnostic latent action representations from human videos. As shown in Figure 1, EgoJEPA comprises three stages: 1) Human-action pre-training learns generic effect-aware latent actions through human-motion-conditioned visual prediction; 2) Latent-action-based world modeling jointly predicts future visual dynamics and the 
+
+latent actions learned in Stage 1 via joint flow matching, rather than embodiment-specific robot commands; and 3) Embodiment-specific tuning adapts the pre-trained world model to robot action spaces through lightweight adapters. Evaluated on five real-world manipulation tasks across three robot embodiments (two dexterous hands and a gripper), EgoJEPA achieves the highest average suc-cess rate of 74% under the out-of-domain evaluation, outperforming the action-free method LAPA (Ye et al., 2025), the retargeting pipeline, and the prior egocentric human-video method DexWild (Tao et al., 2025). In addition, EgoJEPA significantly reduces the cost of scaling across robot em-bodiments. By reusing Stage 1–2 models and adapting only Stage 3 for each new robot, EgoJEPA reduces cumulative wall-clock cost from 743.2 to 392.7 hours over retargeting ( c.f . Figure 1 (b)). Our contributions are summarized as follows: • We propose EgoJEPA, a JEPA-style framework that eliminates the need for rule-based human-to-robot retargeting by learning embodiment-agnostic representations from human videos. • We introduce effect-aware latent actions as a transferable interface between human motion priors and robot control, enabling efficient policy adaptation across diverse embodiments via lightweight action adapters. • Extensive experiments on five real-world manipulation tasks across three robot embodiments demonstrate the effectiveness and cross-embodiment scalability of EgoJEPA. 22 RELATED WORK 
+
+WAMs for Dexterous Manipulation. WAMs move beyond action-only policies by incorporat-ing future state prediction into the action learning process, thereby modeling the coupled evolu-tion of visual dynamics and action control (Wang et al., 2026a; Shen et al., 2026; Li et al., 2025). While early WAMs mainly target low-DoF gripper manipulation, recent works have extended this paradigm toward dexterous manipulation (Goswami et al., 2025; Kim et al., 2026; Jiang et al.). DexWM (Goswami et al., 2025) conditions latent-state prediction on fine-grained hand keypoint displacements for dexterous interaction modeling. DWM (Kim et al., 2026) simulates dexterous behaviors using scene-action-conditioned video diffusion without explicitly decoding robot actions. However, existing dexterous WAMs rely on embodiment-specific robot demonstrations, limiting cross-embodiment transfer and scalability. EgoJEPA instead learns transferable manipulation priors from egocentric human videos, enabling efficient adaptation to diverse robots. 
+
+Robot Learning from Human Videos. Due to the high cost of teleoperated robot demonstrations, recent work has increasingly turned to human-centric robot learning, which leverages abundant hu-man videos as scalable semantic and physical priors (Ma et al., 2026b; Feng et al., 2026). Existing approaches can be broadly grouped into two categories. 1) Latent-based methods learn action-related representations from action-free videos by encoding inter-frame changes (Ye et al., 2025; Wang et al., 2026b; Bjorck et al., 2025; Gao et al., 2026) or future visual dynamics (Wu et al., 2024; Cheang et al., 2024; Bharadhwaj et al., 2024). However, lacking explicit action grounding, such latents may conflate controllable hand motion with camera motion and passive scene dynam-ics, making them less interpretable as action representations. 2) Retargeting-based methods recover explicit human motion, e.g ., wrist poses and finger poses captured by devices like Leap Motion or Aria glasses, and map them to robot-specific action spaces for pre-training or co-training (Ka-reer et al., 2025; Yang et al., 2025; Tao et al., 2025; Ma et al., 2026a; Wang et al., 2026c; Zheng et al., 2026). Although these approaches provide more structured supervision, they remain tied to embodiment-specific geometric mappings and are sensitive to hand-tracking noise. To this end, EgoJEPA encodes explicit human hand motions into effect-aware latent actions, enabling transfer to robot control without rule-based retargeting while improving robustness to hand-tracking noise. While concurrent work such as Being-H0 (Luo et al., 2025) adopts a similar spirit by discretizing MANO trajectories into motion tokens via a VQ-VAE structure, its motion tokens rely exclusively on isolated hand-pose sequences without grounding the tokenizer in the visual context. Conse-quently, such tokenizers are agnostic to visual interaction semantics, failing to capture the critical contact dynamics and spatial alignment between hands and target objects. 
+
+Joint-Embedding Predictive Architectures. JEPAs formulate latent world modeling by predicting the future evolution of a system in a compact representation space rather than reconstructing raw ob-servations (LeCun et al., 2022). Early works apply JEPA to self-supervised representation learning, where models learn semantic representations by predicting latent embeddings of masked image or video patches (Assran et al., 2023; Bardes et al., 2024; Assran et al., 2025). Recent studies further explore JEPA for action-conditioned latent world modeling (Assran et al., 2025; Zhou et al., 2024). LeWorldModel (Maes et al., 2026) extends JEPA into an end-to-end action-conditioned world model via SIGReg regularization (Bardes et al., 2021). DINO-WM (Zhou et al., 2024) instead leverages pretrained visual representations to learn latent dynamics by predicting future semantic features. Following this spirit, EgoJEPA investigates how human motion can serve as a physical condition for latent world modeling, which enables adaptation to diverse robot embodiments. 
+
+3 EGO JEPA 
+
+We propose EgoJEPA, a framework that learns embodiment-agnostic action representations from egocentric human videos and efficiently adapts them to downstream robotic manipulation tasks. As illustrated in Figure 2, EgoJEPA comprises three key stages: human-action pre-training (Stage 1), latent-action-based world modeling (Stage 2), and embodiment-specific tuning (Stage 3). 3.1 STAGE 1: H UMAN -A CTION PRE -TRAINING 
+
+Instead of relying on rule-based, embodiment-specific retargeting pipelines, EgoJEPA first learns an effect-aware latent space grounded in human-action -conditioned visual prediction. Specifically, 3Instruction:           
+
+> Nest the three paper cups into a single stack. Cross Attention Action Transformer Video Transformer Visual Encoder !!
+> Action Encoder Text Encoder Visual Decoder Action Decoder
+> !!!!"# !!"$%# ̂!!"$ !#
+> ∆# ":"$%&'
+> Context Encoder "$
+> Target Encoder "%$
+> $"$%
+> Action Encoder #&
+> %&(()
+> Adapter-In !!
+> Adapter-In
+> For Stage 3 only
+> $"
+> $"$%&'
+> Adapter-Out
+> …
+> Stage 1 Stage 2 & Stage 3
+> …
+> *(
+> Adapter-Out !!
+
+Figure 2: Overview of the EgoJEPA framework. Stage 1 : An effect-aware latent action space is learned from ego-centric human video data without embodiment-specific action re-targeting. Specif-ically, the predictor Pϕ predicts the future representation ˆzt+H from the visual context encoded by 
+
+Eθ and the hand-motion differences ∆mt:t+H−1 encoded by Aψ ; Stage 2 : A world-action model 
+
+Wω is trained on ego-centric human video data via joint flow matching to model future visual dy-namics and latent human actions extracted by the frozen action encoder Aψ ; Stage 3 : Using robot demonstration data, the learned action representation is grounded in a target robot embodiment by inserting embodiment-specific input and output adapters Dηr into the action branch, which map between relative robot actions and the shared latent action space. we define the “human action” as the difference between adjacent-frame hand annotations, such as 2D/3D keypoints, MANO parameters (Romero et al., 2022), or other hand-pose representations. This difference reflects the local hand motion responsible for visual state transitions, providing an embodiment-agnostic physical latent which can be later adapted to different robot embodiments. Let Dego denote an egocentric human video dataset, where each trajectory contains RGB obser-vations {ot}Tt=1 and aligned hand annotations {mt}Tt=1 . We instantiate the human action over a horizon H as adjacent-frame hand annotation differences. 
+
+∆mt:t+H−1 =  mi+1 − mi
+
+t+H−1 
+
+> i=t
+
+. (1) We then optimize a human-action-conditioned JEPA objective (Assran et al., 2023) that predicts the target visual representation from visual context and hand-motion differences, thereby grounding the learned action-effect latent in visual state transitions. 
+
+minimize  
+
+> ϕ,ψ,θ
+
+Pϕ
+
+ Eθ (oi)t+H−1 
+
+> i=t
+
+, Aψ (∆ mt:t+H−1)
+
+
+
+− sg  Eθ (ot+H )
+
+> 1
+
+, (2) where Eθ and E¯θ denote the online and target visual encoders, respectively, with ¯θ updated by an exponential moving average of θ. The action encoder Aψ maps the human action chunk ∆mt:t+H−1
+
+into the latent action embedding. The predictor Pϕ then combines this action condition with the context representations (Eθ (oi)) t+H−1 
+
+> i=t
+
+to predict the target representation at time t + H. The stop-gradient operator sg( ·) prevents gradients from flowing through the target branch. 3.2 STAGE 2: L ATENT -A CTION -B ASED WORLD MODELING 
+
+Building on Stage 1, we train a latent-action world model to jointly predict future visual dynamics and the corresponding latent actions. Notably, the action branch is supervised by frozen JEPA action embeddings Aψ (∆ m), avoiding the reliance on retargeted coordinate-level robot actions. Given an egocentric trajectory, we first construct the clean targets for the future visual dynamics and the latent action sequences as follows. 
+
+z1 = Eθ (ot+1: t+H ), u1 = Aψ (∆ mt:t+H−1), (3) 4where z1 represents the visual dynamics, while u1 denotes the corresponding latent action embed-ding. Eθ and Aψ denote the visual and action encoders adopted from the Stage 1 pre-trained model, respectively. We then formulate latent-action world modeling as a joint flow matching problem over future visual representations and latent actions. Specifically, for a flow timestep τ ∈ [0 , 1] , we construct the noisy joint state by linear interpolation: 
+
+zτ = τ z 1 + (1 − τ )z0, uτ = τ u 1 + (1 − τ )u0, (4) where z0 ∼ N (0 , I ) and u0 ∼ N (0 , I ) are Gaussian noises with the same dimensionalities as z1
+
+and u1. The world-action model Wω is trained to predict the velocity field from the noisy joint state to the clean video-action target [z1, u 1]:
+
+LStage2 (ω) = Ez,u,τ 
+
+h
+
+∥Wω ([ zτ , u τ ], q, τ ) − ([ z1, u 1] − [z0, u 0]) ∥22
+
+i
+
+, (5) where q denotes the language instruction, and [zτ , u τ ] denotes the noisy output token sequence at flow timestep τ , consisting of future visual tokens zτ and latent action tokens uτ .3.3 STAGE 3: E MBODIMENT -S PECIFIC TUNING 
+
+In Stage 3, EgoJEPA grounds the shared action representation into a target robot embodi-ment. Specifically, we initialize the world-action model Wω from Stage 2 and insert lightweight embodiment-specific adapters into its action branch. As shown in Figure 2 (right), the input adapter 
+
+maps robot action tokens into the shared action-token space of the pretrained WAM, while the output adapter maps the WAM action-channel output back to the target robot action space. To align the robot supervision with the relative hand-motion representations learned in Stage 1, we express robot actions as temporal differences. Given a sequence of absolute robot states {ai}t+Hi=t ,the delta-action chunk is defined as follows. 
+
+∆at:t+H−1 = {ai+1 − ai}t+H−1 
+
+> i=t
+
+, (6) where H denotes the action prediction horizon. Let ot denote the visual observation at time t, and let ot+1: t+H denote the subsequent RGB observation sequence over a horizon of H. We construct the clean future visual target and robot delta-action target as 
+
+z1 = Eθ (ot+1: t+H ), ∆a1 = ∆ at:t+H−1, (7) where z1 denotes the future visual dynamics of the robot trajectory, and ∆a1 denotes the corre-sponding executable relative robot action chunk. We then construct the noisy visual and action states through linear interpolation: 
+
+zτ = τ z 1 + (1 − τ )z0, ∆aτ = τ ∆a1 + (1 − τ )∆ a0, (8) where z0 ∼ N (0 , I ) and ∆a0 ∼ N (0 , I ) are the sampled Gaussian noises. Let Wω denote the pretrained world-action model from Stage 2, and let Dη denote the action adapter for the specific robot embodiment. The Stage 3 objective is formulated as follows. 
+
+LStage3 (ω, η ) = Ez, ∆a,τ 
+
+h
+
+∥Dη ◦ Wω ([ zτ , ∆aτ ], q, τ ) − ([ z1, ∆a1] − [z0, ∆a0]) ∥22
+
+i
+
+, (9) where q denotes the language instruction, and [zτ , ∆aτ ] denotes the noisy output token sequence composed of future visual tokens and robot delta-action tokens. We use Drη ◦ Wω to denote the adapted world-action model, where the embodiment-specific adapter is applied to the action channel while the visual encoder Eθ is kept unchanged. 
+
+4 EXPERIMENTS 
+
+4.1 EXPERIMENTAL SETUP 
+
+Human Pre-training Data. We use a commercially acquired egocentric human dataset for stages 1 and 2. The dataset contains 1,111,943 episodes from 62,518 recording sessions, amounting to ap-proximately 20,106.6 hours and 2.17 billion video frames. It covers 64,686 task instructions and 608 scene labels across diverse household and industrial activities. Each episode consists of a monocular 5RGB video recorded at approximately 30Hz, together with camera calibration and motion annota-tions comprising wrist poses and 21 three-dimensional keypoints for each hand. 
+
+Robot Post-training Tasks. We evaluate EgoJEPA on five real-world manipulation tasks spanning three robot embodiments including a Sharpa dexterous hand (Sharpa), a Wuji dexterous hand (Wuji Technology), and a Xense Tac UMI gripper (Xense Robotics). Each task is associated with a task-specific robot demonstration dataset for Stage 3 post-training: 1) Toy grasping uses the Sharpa hand to grasp a plush toy; 2) Cup stacking uses the Wuji hand to arrange cups into a target stack, requiring sequential manipulation and precise placement; 3) Zipper pulling uses the Wuji hand to pinch and slide a zipper pull; 4) Bottle cap unscrewing uses the Wuji hand to uncap a bottle through coordinated grasping; 5) Cardboard box folding uses the Xense Tac UMI gripper to fold a paper box into a target configuration, requiring multi-step manipulation. See Appendix A.1 for detailed specifications on both human pre-training and robot post-training datasets. 
+
+Implementation Details. In Stage 1, the context and target visual encoders are initialized from the pretrained Wan2.2 VAE encoder (Wan et al., 2025), and the predictor is a 24-layer Transformer with frame-causal attention. In Stage 2, the video Transformer is initialized from Wan2.2-TI2V-5B (Wan et al., 2025), while the Stage 1 action embeddings u1 are average-pooled along the feature dimension to obtain 128-dimensional latent action targets for stable training. In Stage 3, the input and output action adapters each comprise a two-layer MLP with a ReLU activation between the layers. Full training configurations are provided in Table A3. 
+
+Evaluation Protocol. We evaluate all policies under both in-domain and out-of-domain settings across five tasks and three robot embodiments. In-domain evaluation uses the same object instances and spatial layouts as Stage 3 training. Out-of-domain evaluation considers two forms of distribu-tion shift: 1) object shifts , using unseen object instances with different shapes, sizes, or materials while preserving task requirements; 2) spatial shifts , placing objects at positions and orientations outside the Stage 3 training distribution but within the robot’s reachable workspace. All policies are evaluated without additional fine-tuning under matched test configurations. We conduct 20 trials per task for each setting and define success as full task completion. 
+
+Compared Methods. We evaluate EgoJEPA against five competitive methods and architectural variants: 1) LAPA (Ye et al., 2025), an action-free method that learns discrete latent actions directly from inter-frame visual changes for policy pre-training; 2) DexWild (Tao et al., 2025), an egocen-tric human-video method that co-trains dexterous manipulation policies on in-the-wild videos and robot demonstrations; 3) Retargeting-based pipeline , which shares our architecture but replaces the learned latent actions with embodiment-specific robot targets derived via geometric retargeting, fol-lowed by fine-tuning on robot data; 4) EgoJEPA (Robot-only) , an ablation that omits Stage 1–2 human-video pre-training and is trained strictly on robot demonstrations; and 5) EgoJEPA (VQ-VAE) , a variant that replaces Stage 1 JEPA pre-training with a VQ-VAE reconstruction objective (Van Den Oord et al., 2017) over hand-motion annotations, while maintaining identical Stage 2–3 protocols. Refer to Appendix A.2 for more implementation details. 4.2 REAL -W ORLD PERFORMANCE 
+
+We present in-domain and out-of-domain manipulation results in Figure 3, highlighting three key findings: 1) State-of-the-art performance. EgoJEPA attains the highest success rate on all five tasks, with average success rates of 94% and 74% under in- and out-of-domain settings, respectively, sur-passing the retargeting pipeline by 14% and 9% absolute margins. 2) Generalization gap. All meth-ods exhibit lower average success rates under out-of-domain evaluation, highlighting the challenges posed by unseen object instances and spatial layouts. Nevertheless, EgoJEPA achieves the high-est out-of-domain success rate of 74%, compared with 65% for retargeting and 40% for DexWild. 3) Task-level variation. Bottle cap unscrewing and cardboard box folding yield EgoJEPA’s lowest out-of-domain success rates. The former requires coordinated bimanual control to stabilize and rotate the bottle, while the latter involves multi-step operations with strict geometric alignments. These constraints increase sensitivity to contact noise and error accumulation, making reliable completion challenging. 6Toy Grasping Cup Stacking Zipper Pulling Bottle Cap Unscrewing Cardboard Box Folding Average 020 40 60 80 100                          
+
+> Success rate (%)
+> 30 25 25 25 10 23 65 60 45 45 40 51 85 85 80 75 75 80 60 55 50 45 45 51 75 80 80 70 65 74 100 95 95 90 90 94
+> Sharpa Wuji Gripper
+> 30 20 15 20 10 19 50 50 35 35 30 40 70 70 65 60 60 65 50 45 40 30 35 40 65 70 70 55 55 63 80 75 75 70 70 74
+> LAPA DexWild Retargeting pipeline EgoJEPA (Robot-only) EgoJEPA (VQ-VAE) EgoJEPA In-domain: pale outer bar Out-of-domain: solid inner bar
+
+Figure 3: In-domain and out-of-domain manipulation performance across five tasks and three embodiments including Sharpa, Wuji, and Gripper. Bars report success rates over 20 trials per task, with the average success rate across tasks shown on the right. (a) Toy Grasping (Sharpa) (b) Cup Stacking (Wuji) (c) Zipper Pulling (Wuji) (d) Bottle Cap Unscrewing (Wuji) (e) Cardboard Box Folding (Gripper) 
+
+Figure 4: Qualitative results on five real-world robotic manipulation tasks. 4.3 ABLATION STUDIES 
+
+We conduct ablation studies to evaluate EgoJEPA’s architectural design and data efficiency. All policy evaluations follow the out-of-domain setting. 
+
+Benefits of Human Pre-training. To assess the contribution of human pre-training to downstream manipulation, we compare EgoJEPA with a robot-only variant, i.e ., EgoJEPA (Robot-only) in Fig-ure 3, which retains the same architecture but omits human-data training in Stages 1–2 and is trained directly on robot demonstrations. As shown, human pre-training increases the average out-of-domain success rate from 40% to 74%, with improvements across all five tasks. The largest gain occurs on bottle cap unscrewing , with success increasing from 30% to 70%. This task requires coordinated bimanual control to stabilize the bottle while rotating the cap, suggesting the value of human manipulation priors for learning coordinated actions. We further examine Stage 3 70 600 1200 1800 2400 3000 Training step 0.0 0.5 1.0 1.5 2.0 2.5 3.0 Action loss    
+
+> EgoJEPA EgoJEPA (Robot-only) 10 25 50 100
+> Robot training data (%)
+> 020 40 60 80 100
+> Success rate (%)
+> EgoJEPA Retargeting EgoJEPA (Robot-only)
+
+Figure 5: Left: Training convergence comparisons. Action loss during Stage 3 training on robot data for EgoJEPA and its robot-only variant. Right: Robot data efficiency analysis. Success rates on the task of bottle cap unscrewing with varying fractions of robot demonstrations. Shaded regions indicate 95% Wilson confidence intervals based on 20 evaluation trials per setting. 0 2 4 6 8 10              
+
+> Position noise (mm)
+> 020 40 60 80 100
+> Success rate (%)
+> (a)
+> 0246810 12
+> Maximum temporal offset (frames)
+> 020 40 60 80 100
+> (b)
+> 010 20 30 40
+> Missing annotations (%)
+> 020 40 60 80 100
+> (c) EgoJEPA Retargeting
+
+Figure 6: Robustness analysis to human action annotation errors. The success rate on bottle cap unscrewing with increasing (a) position noise standard deviation σ, (b) maximum temporal offset δ and (c) missing-annotation fraction p in human pre-training data (stage 1 & 2). training dynamics on bottle cap unscrewing by comparing action loss over training steps between EgoJEPA and its robot-only variant. As shown in Figure 5 (left), EgoJEPA converges faster and achieves substantially lower training loss, suggesting that priors learned from egocentric human videos facilitate embodiment-specific adaptation under limited robot supervision. 
+
+JEPA vs. VQ-VAE. To assess the benefit of JEPA-based predictive learning, we compare EgoJEPA with EgoJEPA (VQ-VAE), which replaces Stage 1 predictive learning with VQ-VAE-based action reconstruction (Van Den Oord et al., 2017), using the same data and downstream training protocol. As shown in Figure 3, EgoJEPA increases the average out-of-domain success rate from 63% to 74%, with gains across all five tasks. These results suggest that learning the visual consequences of human motion yields more effective representations for downstream control than reconstructing motion alone. Refer to Appendix A.2 for more details. 
+
+Robot Data Efficiency. We evaluate data efficiency on bottle cap unscrewing using 10%, 25%, 50%, and 100% of the robot demonstration dataset during adaptation. As shown in Figure 5 (right), EgoJEPA consistently outperforms both robot-only training ( i.e ., EgoJEPA (Robot-only)) and the retargeting baseline across all data budgets. Notably, with only 10% of the demonstrations, EgoJEPA achieves a 35% success rate, surpassing the 30% attained by the robot-only model trained on the full dataset (100%). Similarly, using just 50% of the demonstrations, EgoJEPA reaches a 65% success rate, outperforming retargeting using all demonstrations (60%). These results demon-strate that pre-trained effect-aware representations enable substantially more data-efficient policy adaptation, significantly reducing reliance on costly robot teleoperation data. 
+
+Robustness to Human Annotation Errors. Hand-motion annotations in human videos are sus-ceptible to localization errors, temporal misalignment, and tracking failures, which can propa-gate through retargeting into robot action supervision. To evaluate robustness against noisy hu-man pre-training data, we independently introduce three types of perturbation to hand annota-tions during Stages 1–2: 1) Position noise : additive Gaussian noise with per-axis standard devi-ation σ ∈ { 0, 2, 5, 10 } mm; 2) Temporal jitter : random frame shifts relative to original video frames, sampled uniformly from {− δ, . . . , δ } with maximum temporal offset δ ∈ { 0, 3, 6, 12 }
+
+frames; and 3) Annotation dropout : masking contiguous annotation segments covering a fraction 80 50 100 150 200                            
+
+> Wall-clock Time (h)
+> EgoJEPA Retargeting EgoJEPA Retargeting EgoJEPA Retargeting EgoJEPA Retargeting EgoJEPA Retargeting
+> Toy Grasping (Sharpa)
+> 15.8 112.2 45.5 173.5 h 52.1 109.2 45.5 206.8 h
+> Cup Stacking (Wuji)
+> 51.0 51.0 h Stages 1-2 reused 52.1 109.2 51.0 212.3 h
+> Zipper Pulling (Wuji)
+> 60.2 60.2 h Stages 1-2 reused 60.2 60.2 h Stages 1-2 reused
+> Bottle Cap Unscrewing (Wuji)
+> 70.5 70.5 h Stages 1-2 reused 70.5 70.5 h Stages 1-2 reused
+> Cardboard Box Folding (Gripper)
+> 37.5 37.5 h Stages 1-2 reused 46.7 109.2 37.5 193.4 h Human-Action Pre-training Human-Robot Calibration Latent-Action World Modeling Embodiment-Specific Tuning
+
+Figure 7: Training efficiency across five tasks and three robot embodiments. Stacked bars show the wall-clock time required for each task, with colors denoting training stages. EgoJEPA achieves greater training efficiency by reusing human pre-training (Stages 1–2) across robot embodiments. 
+
+p ∈ { 0% , 10% , 20% , 40% } of total frames, with missing keypoints linearly interpolated. All vari-ants are evaluated on bottle cap unscrewing , keeping Stage 3 robot demonstration data and training settings identical across experiments. See Appendix A.3 for further implementation details. As illustrated in Figure 6, EgoJEPA demonstrates significantly higher resilience to all three an-notation error types compared with the retargeting pipeline. Under the maximum position noise (σ = 10 mm), EgoJEPA experiences a modest 10% success-rate drop (70% to 60%), whereas re-targeting suffers a drastic 30% decline (60% to 30%). Among the evaluated perturbations, temporal jitter induces the most severe performance decay for both models, while annotation dropout exhibits the mildest impact. Specifically, at the highest perturbation levels, EgoJEPA’s success rate degrades to 50% under temporal jitter ( δ = 12 ) but maintains 65% under annotation dropout ( p = 40% ). 
+
+Cross-Embodiment Efficiency. To further evaluate the computational efficiency, we record the wall-clock adaptation costs across five tasks and three distinct robot embodiments. Wall-clock time is reported rather than GPU hours because the human-robot calibration step in the retargeting base-line is executed entirely on CPUs, making real-time wall-clock duration a more consistent and fair measure of end-to-end deployment cost. As illustrated in Figure 7, EgoJEPA seamlessly reuses pre-trained human action representations (Stages 1–2) across all downstream embodiments. In con-trast, the retargeting pipeline requires re-running expensive calibration and latent world modeling whenever a new robot embodiment is introduced. For instance, when adapting to the Xense Tac UMI gripper for cardboard box folding , EgoJEPA requires only 37.5 hours of Stage 3 tun-ing, compared with 193.4 hours for retargeting (including 46.7 hours of CPU-based calibration and 109.2 hours of GPU-based world modeling). Across all five tasks, EgoJEPA reduces cumulative wall-clock training time from 743.2 hours to 392.7 hours, achieving a 47.2% overall cost reduction. These results highlight EgoJEPA’s substantial time and compute savings when transferring shared, embodiment-agnostic action priors to new robotic platforms. 95 CONCLUSION 
+
+We introduced EgoJEPA, a three-stage framework that transfers manipulation priors from egocen-tric human videos to robot control without rule-based retargeting. By grounding latent actions in visual effects and integrating them into world modeling, EgoJEPA decouples human pre-training from embodiment-specific control, enabling shared pretrained models to be reused across robots through lightweight action adapters. Experiments across five real-world tasks and three embod-iments demonstrate that EgoJEPA outperforms the retargeting pipeline by an absolute margin of 9% under out-of-domain evaluation while reducing cumulative cross-embodiment training time by 47.2%. In addition, EgoJEPA exhibits greater robustness to human annotation noise, supporting scalable learning from imperfectly annotated egocentric videos. AI USE STATEMENT 
+
+In this work, we used generative AI tools to assist with literature searches, manuscript polishing, and experimental design. We have not used generative AI tools to generate synthetic datasets or implement the proposed method. Developing theoretical models, formulating mathematical claims, and writing proofs are not applicable to this work. We reviewed and revised the AI-assisted contents against experimental records, and verified references against their original sources. We take respon-sibility for the final content of this work, including text, claims, and artifacts produced with the aid of generative AI. 
+
+REFERENCES 
+
+Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, and Nicolas Ballas. Self-supervised learning from images with a joint-embedding predictive architecture. In 2023 IEEE/CVF Conference on Computer Vision and Pattern Recog-nition (CVPR) , pp. 15619–15629. IEEE, 2023. Mido Assran, Adrien Bardes, David Fan, Quentin Garrido, Russell Howes, Matthew Muckley, Am-mar Rizvi, Claire Roberts, Koustuv Sinha, Artem Zholus, et al. V-jepa 2: Self-supervised video models enable understanding, prediction and planning. arXiv preprint arXiv:2506.09985 , 2025. Adrien Bardes, Jean Ponce, and Yann LeCun. Vicreg: Variance-invariance-covariance regularization for self-supervised learning. arXiv preprint arXiv:2105.04906 , 2021. Adrien Bardes, Quentin Garrido, Jean Ponce, Xinlei Chen, Michael Rabbat, Yann LeCun, Mido Assran, and Nicolas Ballas. V-jepa: Latent video prediction for visual representation learning. 2024. Homanga Bharadhwaj, Debidatta Dwibedi, Abhinav Gupta, Shubham Tulsiani, Carl Doersch, Ted Xiao, Dhruv Shah, Fei Xia, Dorsa Sadigh, and Sean Kirmani. Gen2act: Human video generation in novel scenarios enables generalizable robot manipulation. arXiv preprint arXiv:2409.16283 ,2024. Johan Bjorck, Fernando Casta˜ neda, Nikita Cherniadev, Xingye Da, Runyu Ding, Linxi Fan, Yu Fang, Dieter Fox, Fengyuan Hu, Spencer Huang, et al. Gr00t n1: An open foundation model for generalist humanoid robots. arXiv preprint arXiv:2503.14734 , 2025. Chi-Lam Cheang, Guangzeng Chen, Ya Jing, Tao Kong, Hang Li, Yifeng Li, Yuxiao Liu, Hongtao Wu, Jiafeng Xu, Yichu Yang, et al. Gr-2: A generative video-language-action model with web-scale knowledge for robot manipulation. arXiv preprint arXiv:2410.06158 , 2024. Cheng Chi, Zhenjia Xu, Chuer Pan, Eric Cousineau, Benjamin Burchfiel, Siyuan Feng, Russ Tedrake, and Shuran Song. Universal manipulation interface: In-the-wild robot teaching with-out in-the-wild robots. arXiv preprint arXiv:2402.10329 , 2024. Cheng Chi, Zhenjia Xu, Siyuan Feng, Eric Cousineau, Yilun Du, Benjamin Burchfiel, Russ Tedrake, and Shuran Song. Diffusion policy: Visuomotor policy learning via action diffusion. The Inter-national Journal of Robotics Research , 44(10-11):1684–1704, 2025. 10 Jakob Engel, Kiran Somasundaram, Michael Goesele, Albert Sun, Alexander Gamino, Andrew Turner, Arjang Talattof, Arnie Yuan, Bilal Souti, Brighid Meredith, et al. Project aria: A new tool for egocentric multi-modal ai research. arXiv preprint arXiv:2308.13561 , 2023. Zhiyuan Feng, Qixiu Li, Huizhi Liang, Rushuai Yang, Yichao Shen, Zhiying Du, Zhaowei Zhang, Yu Deng, Li Zhao, Hao Zhao, et al. From human videos to robot manipulation: A survey on scal-able vision-language-action learning with human-centric data. arXiv preprint arXiv:2606.00054 ,2026. Shenyuan Gao, William Liang, Kaiyuan Zheng, Ayaan Malik, Seonghyeon Ye, Sihyun Yu, Wei-Cheng Tseng, Yuzhu Dong, Kaichun Mo, Chen-Hsuan Lin, et al. Dreamdojo: A generalist robot world model from large-scale human videos. arXiv preprint arXiv:2602.06949 , 2026. Raktim Gautam Goswami, Amir Bar, David Fan, Tsung-Yen Yang, Gaoyue Zhou, Prashanth Kr-ishnamurthy, Michael Rabbat, Farshad Khorrami, and Yann LeCun. World models for learning dexterous hand-object interactions from human videos. arXiv preprint arXiv:2512.13644 , 2025. Taoran Jiang, Liqian Ma, Yixuan Guan, Jiaojiao Meng, Weihang Chen, Zecui Zeng, Lusong Li, Dan Wu, Jing Xu, and Rui Chen. Dexsim2real2: Building explicit world model for precise articulated object dexterous manipulation, 2024. URL https://arxiv. org/abs/2409.08750 .Simar Kareer, Dhruv Patel, Ryan Punamiya, Pranay Mathur, Shuo Cheng, Chen Wang, Judy Hoff-man, and Danfei Xu. Egomimic: Scaling imitation learning via egocentric video. In 2025 IEEE International Conference on Robotics and Automation (ICRA) , pp. 13226–13233. IEEE, 2025. Alexander Khazatsky, Karl Pertsch, Suraj Nair, Ashwin Balakrishna, Sudeep Dasari, Siddharth Karamcheti, Soroush Nasiriany, Mohan Kumar Srirama, Lawrence Yunliang Chen, Kirsty El-lis, et al. Droid: A large-scale in-the-wild robot manipulation dataset. arXiv preprint arXiv:2403.12945 , 2024. Byungjun Kim, Taeksoo Kim, Junyoung Lee, and Hanbyul Joo. Dexterous world models. In Pro-ceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition , pp. 29663– 29673, 2026. Moo Jin Kim, Karl Pertsch, Siddharth Karamcheti, Ted Xiao, Ashwin Balakrishna, Suraj Nair, Rafael Rafailov, Ethan Foster, Grace Lam, Pannag Sanketi, et al. Openvla: An open-source vision-language-action model. arXiv preprint arXiv:2406.09246 , 2024. Yann LeCun et al. A path towards autonomous machine intelligence version 0.9. 2, 2022-06-27. 
+
+Open Review , 62(1):1–62, 2022. Xinqing Li, Xin He, Le Zhang, Min Wu, Xiaoli Li, and Yun Liu. A comprehensive survey on world models for embodied ai. arXiv preprint arXiv:2510.16732 , 2025. Hao Luo, Yicheng Feng, Wanpeng Zhang, Sipeng Zheng, Ye Wang, Haoqi Yuan, Jiazheng Liu, Chaoyi Xu, Qin Jin, and Zongqing Lu. Being-h0: vision-language-action pretraining from large-scale human videos. arXiv preprint arXiv:2507.15597 , 2025. Juncheng Ma, Jianxin Bi, Yufan Deng, Xuanran Zhai, Kewei Zhang, Ye Huang, Bo Liang, Shukai Gong, Jiankai Tu, Xiaotian Tang, et al. Humanscale: Egocentric human video can outperform real-robot data for embodied pretraining. arXiv preprint arXiv:2606.20521 , 2026a. Junyi Ma, Erhang Zhang, Haoran Yang, Ditao Li, Chenyang Xu, Guangming Wang, and Hesheng Wang. Robot learning from human videos: A survey. arXiv preprint arXiv:2604.27621 , 2026b. Lucas Maes, Quentin Le Lidec, Damien Scieur, Yann LeCun, and Randall Balestriero. Leworld-model: Stable end-to-end joint-embedding predictive architecture from pixels. arXiv preprint arXiv:2603.19312 , 2026. Javier Romero, Dimitrios Tzionas, and Michael J Black. Embodied hands: Modeling and capturing hands and bodies together. arXiv preprint arXiv:2201.02610 , 2022. Sharpa. Sharpa Wave. https://www.sharpa.com/pages/wave .11 Qiuhong Shen, Shihua Zhang, Yue Liao, Qi Li, Zhenxiong Tan, Shizun Wang, Shuicheng Yan, and Xinchao Wang. World action models: A survey. arXiv preprint arXiv:2606.20781 , 2026. Yu Sun, Meng Cao, Yang Ping, Kaidong Zhang, Qingxuan Chen, Rongtao Xu, Liangwang Ruan, Xuecheng Chen, Dongxiu Liu, Yunxiao Yan, et al. Maniparena: Comprehensive real-world eval-uation of reasoning-oriented generalist robot manipulation. arXiv preprint arXiv:2603.28545 ,2026. Tony Tao, Mohan Kumar Srirama, Jason Jingzhou Liu, Kenneth Shaw, and Deepak Pathak. Dexwild: Dexterous human interactions for in-the-wild robot policies. arXiv preprint arXiv:2505.07813 ,2025. Aaron Van Den Oord, Oriol Vinyals, et al. Neural discrete representation learning. Advances in neural information processing systems , 30, 2017. Team Wan, Ang Wang, Baole Ai, Bin Wen, Chaojie Mao, Chen-Wei Xie, Di Chen, Feiwu Yu, Haiming Zhao, Jianxiao Yang, Jianyuan Zeng, Jiayu Wang, Jingfeng Zhang, Jingren Zhou, Jinkai Wang, Jixuan Chen, Kai Zhu, Kang Zhao, Keyu Yan, Lianghua Huang, Mengyang Feng, Ningyi Zhang, Pandeng Li, Pingyu Wu, Ruihang Chu, Ruili Feng, Shiwei Zhang, Siyang Sun, Tao Fang, Tianxing Wang, Tianyi Gui, Tingyu Weng, Tong Shen, Wei Lin, Wei Wang, Wei Wang, Wenmeng Zhou, Wente Wang, Wenting Shen, Wenyuan Yu, Xianzhong Shi, Xiaoming Huang, Xin Xu, Yan Kou, Yangyu Lv, Yifei Li, Yijing Liu, Yiming Wang, Yingya Zhang, Yitong Huang, Yong Li, You Wu, Yu Liu, Yulin Pan, Yun Zheng, Yuntao Hong, Yupeng Shi, Yutong Feng, Zeyinzi Jiang, Zhen Han, Zhi-Fan Wu, and Ziyu Liu. Wan: Open and advanced large-scale video generative models. 
+
+arXiv preprint arXiv:2503.20314 , 2025. Siyin Wang, Junhao Shi, Zhaoyang Fu, Xinzhe He, Feihong Liu, Chenchen Yang, Yikang Zhou, Zhaoye Fei, Jingjing Gong, Jinlan Fu, et al. World action models: The next frontier in embodied ai. arXiv preprint arXiv:2605.12090 , 2026a. Yuqi Wang, Xinghang Li, Wenxuan Wang, Junbo Zhang, Yingyan Li, Yuntao Chen, Xinlong Wang, and Zhaoxiang Zhang. Unified vision-language-action model. In International Conference on Learning Representations , volume 2026, pp. 80929–80944, 2026b. Zhi Wang, Botao He, Kelin Yu, Seungjae Lee, Ruohan Gao, Furong Huang, and Yiannis Aloimonos. Humanego: Zero-shot robot learning from minutes of human egocentric videos. arXiv preprint arXiv:2605.24934 , 2026c. Frank Weichert, Daniel Bachmann, Bartholom¨ aus Rudak, and Denis Fisseler. Analysis of the accu-racy and robustness of the leap motion controller. Sensors , 13(5):6380–6393, 2013. Hongtao Wu, Ya Jing, Chilam Cheang, Guangzeng Chen, Jiafeng Xu, Xinghang Li, Minghuan Liu, Hang Li, and Tao Kong. Unleashing large-scale video generative pre-training for visual robot manipulation. In International Conference on Learning Representations , volume 2024, pp. 10641–10662, 2024. Wuji Technology. Wuji Hand. https://wuji.tech/en/hand .Xense Robotics. XTac-UMI G1. https://docs.xenserobotics.com/en/docs/ latest/xtac/ .Ruihan Yang, Qinxi Yu, Yecheng Wu, Rui Yan, Borui Li, An-Chieh Cheng, Xueyan Zou, Yunhao Fang, Xuxin Cheng, Ri-Zhao Qiu, et al. Egovla: Learning vision-language-action models from egocentric human videos. arXiv preprint arXiv:2507.12440 , 2025. Seonghyeon Ye, Joel Jang, Byeongguk Jeon, Se June Joo, Jianwei Yang, Baolin Peng, Ajay Man-dlekar, Reuben Tan, Yu-Wei Chao, Bill Yuchen Lin, et al. Latent action pretraining from videos. In International Conference on Learning Representations , volume 2025, pp. 28213–28239, 2025. Maeve Zhang, Rain Sun, Xiang Wang, Cyril Zhang, Shalfun Li, Meng Cao, Howard Lu, Ethan Chen, Harry Jhou, KZ Zheng, et al. Wall-ss: Scaling long-horizon world models via next-scale autoregression. arXiv preprint arXiv:2608.26239 , 2026. 12 Tony Z Zhao, Vikash Kumar, Sergey Levine, and Chelsea Finn. Learning fine-grained bimanual manipulation with low-cost hardware. arXiv preprint arXiv:2304.13705 , 2023. Ruijie Zheng, Dantong Niu, Yuqi Xie, Jing Wang, Mengda Xu, Yunfan Jiang, Fernando Casta˜ neda, Fengyuan Hu, You Liang Tan, Letian Fu, et al. Egoscale: Scaling dexterous manipulation with diverse egocentric human data. arXiv preprint arXiv:2602.16710 , 2026. Gaoyue Zhou, Hengkai Pan, Yann LeCun, and Lerrel Pinto. Dino-wm: World models on pre-trained visual features enable zero-shot planning. arXiv preprint arXiv:2411.04983 , 2024. 13 Table A1: Summary statistics of the human pre-training dataset. Dataset scale, recording speci-fications, task and scene coverage, and hand annotations. 
+
+Statistic Value 
+
+Episodes 1,111,943 Video Frames 2,169,344,852 Total Duration ≈20 , 106 .6 hours Frame Rate ≈29 .97 Hz Camera Views 1Mean Episode Duration ≈65 sMedian Episode Duration ≈30 sDistinct Task Instructions 64,686 Scene Labels 608 3D Keypoints per Hand 21 0 20k 40k 60k Episodes Fold clothes Assemble plastic components Fold laundry Wash dishes Assemble electronic components Sew fabric pieces Clean printed circuit boards Clean desk items Make dumplings Clean and inspect printed circuit boards Fold cardboard boxes Fold baby clothes Sew garments Fold socks Assemble pens Cook meal Sort and organize documents Assemble wire harness Pack cotton swabs Assemble ballpoint pens    
+
+> Top 20 tasks (episodes)
+> 040k 80k 120k Episodes sewing factory factory assembly line kitchen electronics assembly factory bedroom office residential entryway residential home laundry room electronics factory factory workshop packaging workshop living room residential room grocery store electronics assembly workshop bathroom home assembly workshop workshop
+> Top 20 scenes (episodes)
+
+Figure A1: Task and scene distributions of the human pre-training dataset. The 20 most fre-quent tasks (left) and scenes (right), ranked by episode count. 
+
+A APPENDIX 
+
+A.1 DATASET DETAILS 
+
+Human Pre-training Data Statistics. Table A1 summarizes the dataset scale, recording specifica-tions, and annotation coverage. Figure A1 presents the 20 most frequent tasks and scenes, covering household activities and industrial operations such as clothes folding, dish washing, and component assembly. Figure A2 shows the range of episode durations and frame counts, encompassing both brief interactions and extended manipulation sequences. Figure A3 further illustrates representative egocentric video sequences with aligned hand-keypoint annotations, providing a qualitative view of the human pre-training data. 
+
+Robot Demonstration Statistics. Table A2 summarizes the embodiment, action dimensionality, episode count, and average duration for each task. The datasets cover five manipulation tasks using the Sharpa hand, Wuji hand, and Xense Tac UMI gripper, with action dimensions of 56, 52, and 14, respectively. Demonstration durations vary with task demands, ranging from brief grasping interactions to longer sequences involving coordinated manipulation. 
+
+Data Licensing and Privacy Safeguards. To ensure strict regulatory compliance and ethical stan-dards, all third-party and commercially purchased datasets utilized in our experiments are managed under rigorous licensing and privacy protocols: 14 0 25 50 75 100 125 150 175 Episode length (s, clipped at 180s, 30fps) 020,000 40,000 60,000 80,000 100,000 120,000 140,000 Count       
+
+> Episode duration
+> 01000 2000 3000 4000 5000 6000 Frames (clipped at 6000) 020,000 40,000 60,000 80,000 100,000 120,000 140,000 160,000 Count
+> Episode frame count
+
+Figure A2: Episode length distributions of the human pre-training dataset. Histograms show episode durations in seconds (left) and frame counts (right). Table A2: Task-wise statistics of the robot demonstration datasets. 
+
+Task Embodiment Action Dim. # Episode Avg. Length (s) 
+
+Plush Toy Grasping Sharpa Hand 56 750 6.9 Cup Stacking Wuji Hand 52 916 13.6 Zipper Manipulation Wuji Hand 52 623 15.5 Bottle Cap Unscrewing Wuji Hand 52 635 23.8 Paper-Box Folding Xense Tac UMI gripper 14 843 297.6 
+
+• Commercial Licensing & Usage Scope: All commercially acquired datasets were legally licensed from standard commercial vendors under explicit agreements that grant authorization for non-commercial academic research and algorithmic evaluation. The usage fully complies with the intellectual property rights and End User License Agreements (EULA) specified by the vendors. • Privacy Safeguards & Anonymization: Prior to model training and representation learning, all datasets underwent thorough privacy verification. Human subjects appearing in egocentric videos and annotations are strictly anonymized, with personally identifiable information (PII), e.g . facial features, license plates, and sensitive background information, either blurred or removed by the data providers in accordance with global privacy regulations ( e.g ., GDPR). • Data Security & Responsible AI: All purchased assets are securely stored on restricted-access servers with role-based access control to prevent unauthorized redistribution or leakages. No biometric identifiers or sensitive personal characteristics were collected, inferred, or processed. A.2 IMPLEMENTATION DETAILS 
+
+Training Configurations of EgoJEPA. Table A3 summarizes the data, model initialization, and optimization settings for all three stages. Stages 1–2 use egocentric human data, while Stage 3 initializes from the Stage 2 checkpoint and jointly tunes the video and action Transformers with embodiment-specific adapters on robot data. Stage 3 additionally incorporates three camera views and proprioceptive conditioning. All stages use AdamW, with stage-specific learning rates, sched-ules, and batch sizes as detailed in the table. 
+
+Implementations of EgoJEPA (VQ-VAE). We detail the implementation and training procedure of EgoJEPA (VQ-VAE), which replaces Stage 1 JEPA pre-training with VQ-VAE-based hand-motion reconstruction (Van Den Oord et al., 2017). Let Dego denote an egocentric human video dataset, where each trajectory contains RGB observations {ot}Tt=1 and aligned hand annotations {mt}Tt=1 .A VQ-VAE encoder fenc maps each hand annotation mt to a continuous representation ht, which is quantized using a learnable codebook C = {ek}Kk=1 as follows: 
+
+qt = ht + sg( ekt − ht), s.t. kt = arg min  
+
+> k∈{ 1,...,K }
+
+∥ht − ek∥22, (A1) 15 (a)        
+
+> Left hand Right hand Left hand Right hand Left hand Right hand Left hand Right hand
+
+(b)        
+
+> Left hand Right hand Left hand Right hand Left hand Right hand Left hand Right hand
+
+(c)        
+
+> Left hand Right hand Left hand Right hand Left hand Right hand Left hand Right hand
+
+(d)        
+
+> Left hand Right hand Left hand Right hand Left hand Right hand Left hand Right hand
+
+Figure A3: Examples of egocentric human videos and hand annotations. Each sequence shows sampled frames with enlarged hand crops, where blue and pink keypoints denote the left and right hands, respectively. where sg( ·) is a straight-through estimator for encoder gradients, which preserves its input during the forward pass and blocks gradients during backpropagation. Then, a VQ-VAE decoder fdec maps the quantized representation qt back to the hand annotation space, yielding ˆmt = fdec (qt). The overall training objective is as follows: 
+
+LVQ = Eτ ∼D ego , t 
+
+∥mt − ˆmt∥22
+
+| {z }
+
+Lrec 
+
++ ∥ sg( ht) − ekt ∥22
+
+| {z }
+
+Lcodebook 
+
++ ∥ht − sg( ekt )∥22
+
+| {z }
+
+Lcommit 
+
+ , (A2) 16 Table A3: Training configurations for the three stages of EgoJEPA.                                                                                 
+
+> Configuration Stage 1 Stage 2 Stage 3
+> Training Data Ego Data Ego Data Robot Data Initialization Wan2.2 VAE Wan2.2-TI2V-5B Stage 2 Checkpoint Trainable Modules All Modules Video DiT + Action DiT Video DiT + Action DiT + Adapters Input Resolution 256 ×256 192 ×224 192 ×224
+> Camera Views 113Proprioceptive Conditioning No No Yes Action Prediction Horizon –32 32 Latent Action Dimension 1024 128 128 Robot Data Dimension ––56/52/14 Number of GPUs 32 64 64 Per-device Batch Size 128 128 64 Steps 3,500 6,000 3,000 Optimizer AdamW AdamW AdamW AdamW β(0 .9,0.999) (0 .95 ,0.999) (0 .95 ,0.999)
+> Learning Rate 4.25 ×10 −43×10 −51×10 −4
+> Minimum Learning Rate 01×10 −61×10 −6
+> LR Schedule Linear Cosine Cosine Weight Decay 0.04 0.01 0.01 Maximum Gradient Norm –1.0 1.0
+
+This VQ-VAE objective learns discrete representations of per-frame hand annotations without visual-effect supervision. It replaces only Stage 1 human-action pre-training, while the training protocols for Stages 2 and 3 remain unchanged. 
+
+Implementations of Retargeting Pipeline. We convert human wrist poses and 3D hand keypoints into embodiment-specific robot action targets. For the Sharpa and Wuji hands, we use their re-spective official retargeting implementations 12 , adapting the input keypoint ordering and coordinate conventions to each interface. Wrist poses are mapped to robot end-effector poses through calibrated coordinate transformations and tool offsets. For the Xense Tac UMI gripper, the thumb–index fin-gertip distance is mapped to the gripper opening using a calibrated, range-constrained mapping. Retargeted trajectories are aligned with the video frames and converted into relative actions consis-tent with the robot demonstrations. A.3 ROBUSTNESS EVALUATION PROTOCOL 
+
+We detail the experimental settings for evaluating robustness to human annotation errors. We inde-pendently introduce position noise, temporal jitter, and annotation dropout into human pre-training annotations, using identical perturbations for EgoJEPA and the retargeting pipeline. Stage 3 training remains unchanged, and both methods are evaluated on bottle cap unscrewing under the out-of-domain setting. 
+
+1) Position Noise. To evaluate robustness to localization errors in human hand-motion annotations, we perturb the annotated 3D positions with additive Gaussian noise. For each frame t, a translation vector is sampled independently and applied consistently to all keypoints of that hand: 
+
+ept,j = pt,j + ϵt, ϵt ∼ N  0, σ 2I3
+
+ , (A3) where pt,j ∈ R3 denotes the position of keypoint j, and σ is the noise standard deviation along each coordinate axis. The same translation is applied to the wrist position, preserving the hand geometry and leaving rotation annotations unchanged. We set σ ∈ { 0, 2, 5, 10 } mm, with σ = 0 denoting clean annotations. Perturbations are introduced before computing inter-frame motion differences or performing retargeting. Both methods are pretrained using the same perturbed annotations and subsequently adapted and evaluated using clean robot data. 
+
+2) Temporal Jitter. To evaluate robustness to temporal misalignment between human videos and hand-motion annotations, we randomly shift the annotation sequence relative to the video. For each 
+
+> 1
+
+https://github.com/sharpa-robotics/sharpa-vision-retargeting-sdk 
+
+> 2
+
+https://github.com/wuji-technology/wuji-retargeting 
+
+17 training clip, an integer offset δ is sampled uniformly: 
+
+emt = mt+δ , δ ∼ Uniform {− k, . . . , k }, (A4) where mt denotes the hand-motion annotation at frame t, and k controls the maximum temporal offset. The offset is shared across both hands and held constant within each clip, preserving motion continuity while disrupting visual–motion alignment. We set k ∈ { 0, 3, 6, 12 } frames, correspond-ing to maximum offsets of approximately {0, 100 , 200 , 400 } ms at 30 Hz. Perturbations are applied before temporal subsampling and action extraction, using only clips with sufficient surrounding frames to accommodate the shifts. Both methods use the same perturbed annotations for human pre-training, followed by adaptation and evaluation on clean robot data. 
+
+3) Annotation Dropout. To evaluate robustness to missing hand-motion annotations caused by oc-clusion or tracking failures, we randomly mask contiguous annotation segments within each training clip. Let D denote the set of masked frames. The perturbed annotations are obtained as 
+
+emt =
+
+mt, t / ∈ D ,
+
+Interp( mt− , mt+ ; t), t ∈ D , (A5) where t− and t+ are the nearest valid frames before and after the missing segment. Positions are reconstructed by linear interpolation, and rotations by spherical linear interpolation. Both the retar-geting pipeline and our EgoJPEA use identical masks and interpolation rules for human pre-training, followed by adaptation and evaluation on clean robot data. A.4 BROADER IMPACT AND LIMITATIONS 
+
+Broader Impact. This work advances generalist robot learning by presenting an embodiment-agnostic framework that effectively leverages large-scale, low-cost human egocentric videos. By bypassing tedious manual geometric retargeting and repeated human-robot calibrations, EgoJEPA significantly lowers the computational and labor barriers to deploying multi-embodiment dexterous robotic systems in real-world environments, such as domestic assistance and industrial automation. However, scaling learning from uncurated video datasets carries the risk of inheriting or amplify-ing biases present in human demonstration environments. Furthermore, as autonomous dexterous manipulation systems become more capable in physical deployment, safety, alignment, and strict physical containment protocols must be rigorously established to prevent unintended hardware col-lisions or operational hazards. 
+
+Limitations. Although EgoJEPA demonstrates strong generalization and cross-embodiment effi-ciency for dexterous manipulation, several limitations remain: (1) Performance bounds under severe action quality issues: While EgoJEPA exhibits noise robustness, extreme degradation in egocentric video actions ( e.g ., severe temporal misalignments or prolonged occlusions) can still distort latent representations and bottleneck downstream task performance. (2) Contact-intensive dynamics: Per-formance drops on out-of-domain tasks that require fine-grained contact dynamics ( e.g ., bottle cap unscrewing ). Integrating explicit interaction modeling or force-feedback priors into the latent action space remains a key direction for future work. 18

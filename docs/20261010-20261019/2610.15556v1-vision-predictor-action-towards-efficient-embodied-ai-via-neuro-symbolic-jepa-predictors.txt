@@ -1,0 +1,1000 @@
+Title: Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors
+
+URL Source: https://arxiv.org/pdf/2610.15556v1
+
+Published Time: Wed, 14 Oct 2026 01:44:36 GMT
+
+Number of Pages: 26
+
+Markdown Content:
+# VISION -P REDICTOR -A CTION : T OWARDS EFFICIENT EMBODIED 
+
+# AI VIA NEURO -S YMBOLIC JEPA P REDICTORS 
+
+Yeonseok Lee 
+
+SLING AI Inc. Incheon, Republic of Korea 
+
+ylee@sling.ai.kr 
+
+# ABSTRACT 
+
+Vision-Language-Action (VLA) models commonly generate robot actions token by token through Large Language Model (LLM) decoders, so their inference latency grows with the length of the action sequence and limits the achievable closed-loop control frequency. We present the Goal-Conditioned Vision-Predictor-Action (VPA) framework, which replaces the autoregressive decoder with a lightweight latent control loop. A shared vision encoder and a frozen text encoder embed observations, goal images, and instructions; a neuro-symbolic selector chooses a discrete skill; a Joint-Embedding Predictive Architecture (JEPA) predictor forecasts the next latent state; and a flow-matching solver generates an entire action chunk in a few integration steps, so that the number of sequential network evaluations per decision step does not depend on the action horizon. We analyze the inference complexity of this design, its regularization against representation collapse, and the assumptions under which latent sub-goal thresholding can limit error accumulation across task phases. As an initial proof of concept, we implemented VPA in PyTorch and evaluated it on the LIBERO-10 long-horizon manipulation suite. The trainable model has fewer than 20 Mparameters, and each released checkpoint is under 75 MB, excluding a frozen 63 .4M-parameter CLIP text encoder; a decision step of a single-camera reference configuration takes approximately 
+
+10 –14 ms on an Apple M4; and, trained only on the LIBERO-10 demonstrations in under three hours on a single GPU, a policy observing the scene through two cameras succeeded in 40 .0% of 200 
+
+evaluation episodes. These results come from a single training run and remain below previously reported success rates on this suite, but they suggest that the approach is workable. Code and model weights are available at https://github.com/ylee-sling/Vision-Predictor-Action and 
+
+https://huggingface.co/ylee-sling/vpa-libero10 , and the preprint is archived at https: //doi.org/10.5281/zenodo.22960920 .
+
+Keywords Embodied AI · Neuro-Symbolic AI · Joint-Embedding Predictive Architecture · Flow Matching · Robotic Manipulation 
+
+# 1 Introduction 
+
+Recent advances in embodied artificial intelligence have been largely driven by Vision-Language-Action (VLA) models, which extend web-scale pre-trained backbones to physical robotic manipulation [1, 2]. By mapping visual observations and natural language instructions into discrete token spaces, these systems exhibit strong semantic generalization across diverse tasks [3]. However, many current VLA architectures emit actions through autoregressive Large Language Model (LLM) decoders [4]. When continuous actions are discretized into tokens, generating an H-step action chunk of dimension da requires N = q · H · da tokens, where q denotes the number of tokens per scalar action component, and hence Θ( N ) sequential forward passes through a multi-billion-parameter Transformer per execution cycle (Section 5.1). For RT-2, for example, real-time inference rates of about 1–5 Hz have been reported [1], which restricts the ability of autoregressive VLAs to execute reactive, dynamic maneuvers or to compensate for unexpected physical perturbations in real time. arXiv:2610.15556v1 [cs.LO] 11 Oct 2026 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+Autoregressive VLA             
+
+> Image + instruction Multi-billion-parameter LLM decoder a1a2a3· · · aN
+> each token is fed back
+> N=q·H·dasequential passes about 1–5 Hz reported for RT-2 [1]
+
+VPA (ours)         
+
+> Images + instruction Encoders
+> Eψ+ frozen CLIP
+> Skill selector
+> πhϕ
+> JEPA predictor
+> Pω
+> Flow solver
+> vθ,Ksteps whole chunk At
+> K+ 3 sequential network evaluations per decision step, independent of the action horizon H
+
+Initial results (preliminary) 
+
+# 10–14 ms 
+
+> per decision step on an Apple M4
+
+# < 20M parameters 
+
+> trainable; checkpoint of under 75 MB
+
+# 40.0% success 
+
+> on LIBERO-10 (2 cameras, 200 episodes)
+
+# LIBERO-10 only 
+
+> no vision pre-training; < 3 h on one L4 GPU
+
+Figure 1: VPA at a glance. Top: autoregressive VLAs decode actions token by token through a large language model, so the number of sequential forward passes grows with the action horizon; inference rates of about 1–5 Hz have been reported for RT-2 [1]. Middle: VPA replaces the decoder with a short chain of small networks that produces an entire action chunk in K + 3 sequential evaluations. Bottom: initial results of our reference implementation (Section 6). Latency was measured for the single-camera reference configuration (Section 5.1); the parameter count and checkpoint size exclude the frozen CLIP text encoder ( 63 .4M parameters), which is downloaded separately; the success rate comes from a single training run; and the models were trained only on the LIBERO-10 demonstrations. The VLA and VPA figures do not come from a controlled comparison. To mitigate these latency constraints, hybrid approaches such as NS-VLA [4] introduce discrete neuro-symbolic skill pointers, while VLA-JEPA [5] incorporates joint-embedding predictive architectures (JEPA) [6, 7] to model latent world dynamics [8, 9]. Despite these improvements, such systems remain coupled to large causal vision-language backbones (e.g., Qwen3-VL-2B) that consume substantial computational resources, and their high-level plans are expressed as predefined action symbols (e.g., pick , place_on ) that constitute the interface between reasoning and control. Concurrently, non-autoregressive trajectory generators based on Action Chunking with Transformers (ACT) [10], Diffusion Policies [11], and Conditional Flow-Matching (CFM) [12, 13, 14] have demonstrated high-frequency motor execution ( 30 –100 Hz). These methods, however, typically either operate as reactive visual policies without forward-predictive dynamics or explicit sub-goal tracking, or, when language-conditioned as in π0 [14], retain a large vision-language backbone for instruction processing. In this work, we present the Goal-Conditioned Vision-Predictor-Action (VPA) framework, which replaces autore-gressive language decoding with a non-autoregressive latent control loop. As summarized in Figure 1, our reference implementation, trained only on the LIBERO-10 demonstrations, has fewer than 20 M trainable parameters (a checkpoint of under 75 MB), runs a decision step in approximately 10 –14 ms on an Apple M4 for a single-camera reference config-uration, and reaches a promising initial success rate of 40 .0% on LIBERO-10. By substituting the LLM decoder—the dominant source of sequential latency in token-based VLA models—with a lightweight JEPA predictor, VPA reduces both the parameter count and the sequential depth of the per-step computation. Rather than communicating through text tokens, the predictor supplies forecasted state-transition latents directly to the downstream action solver, which generates continuous and potentially multi-modal action distributions within the skill selected by a discrete primitive. VPA thus retains a symbolic vocabulary for high-level skill selection, but confines it to the choice of which skill is executed, while the motor trajectory itself is synthesized in a continuous space. We note that this design does not remove the symbolic bottleneck entirely: the set of high-level behaviors that VPA can compose is bounded by its primitive dictionary, and zero-shot generalization to skills outside this dictionary is not addressed by the present formulation. As illustrated in Figure 2, VPA decouples high-level task logic from low-level continuous motor control across a four-stage pipeline: 2Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+# Visual It, I g & Text x
+
+# 1. Multimodal Encoders 
+
+# ViT & CLIP Backbones 
+
+# 2. Primitive Selector πhϕ
+
+# Neuro-Symbolic Classifier 
+
+# 3. JEPA Predictor Pω
+
+# Latent Predictor 
+
+# 4. Flow-Matching Solver πlθ
+
+# Action Trajectory Generator Proprioception St
+
+# Action Chunk At
+
+# Executed Prefix of Length Ht
+
+Latents zt, z (mt) 
+
+> g
+
+, c text 
+
+Primitive ut
+
+St
+
+zt, c text 
+
+Token ut
+
+ˆzt+1 , σ t+1 
+
+Figure 2: High-level architectural overview of the Goal-Conditioned Vision-Predictor-Action (VPA) framework. Multimodal observations are projected into latent and text embeddings that condition the selection of an active primitive 
+
+ut, the forecast of the next latent state ˆzt+1 and its uncertainty σt+1 by a JEPA predictor, and a continuous flow-matching solver that generates an action chunk At, of which an uncertainty-dependent prefix of length Ht is executed. 1. Latent Multimodal Goal Encoding ( Eψ and Text Encoder): A non-generative, self-supervised vision encoder [15, 16] maps sensory frames into a compact latent space Z ⊂ Rd, in which Euclidean distances ∥zt −
+
+zg ∥2 are intended to serve as proxies for physical task progress, an idea related to the latent shaping potential of NS-VLA [4], which uses negative Euclidean distances to learned primitive prototypes. Concurrently, a lightweight, frozen text encoder (e.g., CLIP [17]) embeds the user’s natural language instruction x into a dense vector ctext , injecting the overarching task intent without requiring an LLM decoder. 2. Neuro-Symbolic Primitive Selector ( πhϕ ): A non-autoregressive classifier selects the active primitive token 
+
+ut ∈ U from a fixed dictionary of Nu atomic skills, conditioned on the current latent zt, the milestone latent 
+
+z(mt) 
+
+> g
+
+, and the text embedding ctext . This multimodal conditioning allows the selector to disambiguate task intent (e.g., “move the cup” versus “throw it away”). Milestone progression is governed by a symbolic transition rule [18] based on the latent threshold test ∥zt − z(mt) 
+
+> g
+
+∥2 < τ , where τ is scaled by the running latent variance margin maintained by the VICReg objective rather than fixed a priori (Section 4.2). 3. JEPA Predictor ( Pω ): A lightweight predictive dynamics model forecasts the next latent state together with a scalar uncertainty estimate, (ˆ zt+1 , σ t+1 ) = Pω (zt, u t), and is regularized against representation collapse via Variance-Invariance-Covariance Regularization (VICReg) [19]. The predictor is trained with conditioning on discrete primitive tokens and subsequently frozen, so that the downstream solver is trained against a stationary conditioning distribution rather than against latent inputs that drift as the representation evolves. 4. Flow-Matching Action Solver ( πlθ): A conditional vector field vθ synthesizes a continuous action chunk 
+
+At ∈ RH×da jointly over all H steps using K ∈ { 1, 2, 3} numerical ODE integration steps [12], of which a prefix of length Ht ≤ H, adapted to the predictor’s uncertainty σt+1 , is executed. 
+
+Implementation and Initial Validation. We implemented VPA in PyTorch and evaluated it as an initial proof of concept on LIBERO-10, the long-horizon suite of the LIBERO manipulation benchmark [20]. The implemented equations (Eqs. 7–15, 18, and 19) were each verified against independent double-precision reference computations, and the sequence of network evaluations in every decision step was audited at runtime to confirm the sequential 3Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors depth of K + 3 stated in Proposition 5.1. The trainable modules Eψ , πhϕ , Pω , and vθ together contain fewer than 
+
+20 M parameters, so that each released checkpoint occupies under 75 MB; the frozen CLIP text encoder contributes a further 63 .4M parameters, is downloaded separately, and lies outside the per-step dependency chain, because ctext 
+
+is computed once per episode. Trained only on the LIBERO-10 demonstrations, with a randomly initialized vision encoder, K = 2 , and H = 16 , and in under three hours on a single NVIDIA L4 GPU, the trained policy succeeded in 
+
+40 .0% of 200 evaluation episodes ( 20 per task; 95% Wilson interval 33 .5–46 .9% ) when the observation It comprised a third-person and a wrist-mounted camera view, compared with 10 .5% (7.0–15 .5% ) with the third-person view alone. Using two views changes only the input of Eψ and leaves all subsequent equations unchanged (Section 6). On an Apple M4 at batch size one, a complete decision step of the single-camera reference configuration took 10 .5–14 .2 ms for 
+
+K ∈ { 1, 2, 3} and H ≤ 64 .We wish to state the scope of these results plainly. They derive from a single training run per setting and 20 trials per task, so the success rates carry uncertainties of roughly ±7 percentage points. They remain below the success rates previously reported on this suite for existing policies, including diffusion-based policies trained without large-scale pre-training [2], and they do not constitute a controlled comparison with other methods. Latency was measured for the network pipeline in isolation; closed-loop control frequency on physical hardware, robustness to dynamic perturbations, and the encoder regularity constants of Section 5.3 were not evaluated and remain future work (Section 6.5). The experiments also used a single goal image per task and primitive labels derived heuristically from the gripper command, so the multi-milestone sequencing mechanism was not exercised. We therefore regard the present results as initial evidence that the latent control loop can be trained on standard demonstration data and executed at low latency on commodity hardware, rather than as evidence of competitive task performance. 
+
+Open-Source Release. To support reproduction and further investigation, we release the PyTorch reference imple-mentation, including the training, evaluation, and latency-benchmarking code, together with the trained LIBERO-10 checkpoints; the links are given in Section 1.1. 
+
+Summary of Contributions: 
+
+• Horizon-Independent Sequential Depth: We show that replacing autoregressive token generation with flow-matching action chunking reduces the number of sequential network evaluations per control cycle from 
+
+Θ( N ), with N = q · H · da, to K + 3 = O(K), a quantity independent of the action horizon H. The arithmetic cost of each solver evaluation nevertheless grows with the chunk dimensionality H · da; wall-clock latency is therefore approximately horizon-independent only while this computation fits within the available hardware parallelism. Latency measurements of the reference implementation were consistent with this analysis: on an Apple M4, the encoder, selector, and predictor times remained approximately constant across H, and the time of one solver evaluation, tl(H), remained within 10% of its value at H = 8 up to H = 64 before rising by 
+
+23 –27% at H = 128 . For H ≤ 64 , the summed network time of Eq. 17 was 6.2–9.5 ms, and the complete decision step, including non-network operations and timing synchronization, took 10 .5–14 .2 ms. • Anti-Collapse Representation Analysis: We characterize the conditions under which the variance hinge penalty v(Z) and the covariance decorrelation penalty c(Z) exclude the constant (fully collapsed) represen-tation from the global minimizers of the joint-embedding objective, without relying on pixel-reconstruction decoders. We further use the realized variance margin to calibrate the latent completion threshold τ , so that τ
+
+remains commensurate with the scale of the latent space throughout training. • Conditional Error Containment Across Task Phases: We make explicit the encoder regularity conditions under which discrete sub-goal thresholding ∥zt − z(mt) 
+
+> g
+
+∥2 < τ limits the physical deviation at each phase transition. These are an upper Lipschitz constant LE , which can be enforced with respect to the input image via spectral normalization [21] and governs whether the transition is triggered as the physical state approaches the milestone, and a lower (co-Lipschitz) constant μE with respect to task-relevant physical state, which bounds the physical deviation at transition by τ /μ E . Because standard Vision Transformers are not globally Lipschitz [22], and because the lower constant depends on the relation between images and physical state and cannot be enforced through architectural constraints alone, we present this error containment as an empirical expectation to be verified rather than as a formal guarantee; the LIBERO-10 experiments reported in this work do not yet estimate LE or μE .• Open-Source Reference Implementation and Proof of Concept: We provide a PyTorch implementation of the complete pipeline, verified equation by equation against independent reference computations, and report preliminary closed-loop results on LIBERO-10, together with ablations over the camera views and the executed horizon Ht (Section 6). The code and trained checkpoints are publicly available (Section 1.1). 4Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+1.1 Code and Model Availability 
+
+The reference implementation, the trained checkpoints, and the archived preprint are publicly available: • GitHub: https://github.com/ylee-sling/Vision-Predictor-Action 
+
+PyTorch source code for the four stages of the pipeline, the two-stage training and closed-loop LIBERO evaluation scripts, the latency benchmark of Section 5.1, per-module self-tests that compare each implemented equation with an independent reference computation, and the LIBERO-10 evaluation results of Section 6. Evaluation videos for three trials per task and model are attached to the repository’s release page. • Hugging Face: https://huggingface.co/ylee-sling/vpa-libero10 
+
+The one-camera and two-camera LIBERO-10 checkpoints reported in Section 6, in PyTorch and safetensors formats, together with their model configurations. • Zenodo: https://doi.org/10.5281/zenodo.22960920 
+
+The archived record of this preprint, from which later versions are also accessible. The code and the checkpoints are released under the GNU General Public License, version 3 (GPL-3.0-only); the checkpoints were trained on the LIBERO datasets [20], whose terms also apply. The preprint is distributed under the Creative Commons Attribution 4.0 International license (CC BY 4.0). The models were trained on Linux with an NVIDIA L4 GPU (Section 6.1). The self-tests and latency benchmarks were run on macOS 15 with an Apple M4 processor (MPS backend), Python 3.13, and PyTorch 2.14.1; the multi-camera ( V = 2 ) self-tests and the single-camera regression test were also run on CPU on the Linux training instance, with the CUDA build of PyTorch 2.14.1. We would be grateful for reports of errors or of attempts to reproduce the results. 
+
+# 2 Related Work 
+
+2.1 Vision-Language-Action Models 
+
+Recent advancements in embodied artificial intelligence have been largely driven by Vision-Language-Action (VLA) models, such as RT-2 [1], OpenVLA [2], and Instruct2Act [3]. These architectures extend web-scale pre-trained backbones to map visual observations and natural language instructions into multi-modal action spaces. However, VLAs that emit discretized action tokens through an autoregressive decoder incur an inherent sequential bottleneck: generating a multi-step action chunk requires N sequential forward passes through a multi-billion-parameter Transformer decoder, where N grows linearly with the action horizon, resulting in Θ( N ) sequential decoding steps per execution cycle. For RT-2, real-time inference rates of about 1–3 Hz for the 55B-parameter model and about 5 Hz for its 5B-parameter variant have been reported [1]; such rates reduce the effectiveness of autoregressive VLAs for real-time dynamic manipulation and for compensating physical perturbations. Generalist policies that replace token decoding with continuous generative action heads, such as Octo [23] and π0 [14], partially alleviate this bottleneck; we discuss these approaches in Section 2.4. 
+
+2.2 Neuro-Symbolic Robotics 
+
+To combine high-level semantic reasoning with continuous motor execution, neuro-symbolic robotics incorporates formal logic and discrete task structures. Classical approaches utilize Linear Temporal Logic (LTL) and automata to enforce reactive mission planning and safety constraints [18]. More recently, hybrid frameworks like NS-VLA [4] introduce discrete skill pointers to decompose complex manipulation tasks into atomic primitives. Nevertheless, existing neuro-symbolic VLA architectures continue to rely on causal Vision-Language Models (VLMs) or autoregressive text parsers for instruction processing and high-level logic; consequently, they inherit the sequential inference latency bottleneck, which limits high-frequency closed-loop execution. Concurrent work has also begun to examine neuro-symbolic formulations of JEPA, including approaches that couple knowledge and rule embeddings with joint-embedding prediction [24] and hybrid symbolic-neural latent predictors [25]. Our framework builds upon the principles of Neuro-Symbolic Joint-Embedding Predictive Architecture (NS-JEPA) [26], replacing autoregressive language parsers with a non-autoregressive primitive selector coupled directly to a latent predictive world model. We emphasize that the symbolic component of VPA is deliberately minimal: its transition rule (Section 4.2) realizes a monotone sequential automaton over a fixed primitive dictionary rather than a general temporal-logic specification, and it therefore inherits the expressivity limits of that dictionary. 5Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+2.3 Predictive World Models and Joint-Embedding Architectures 
+
+In contrast to generative world models that reconstruct high-dimensional visual pixels, Joint-Embedding Predictive Architectures (JEPAs) [6, 7] forecast future environment dynamics directly within abstract latent spaces. Because they dispense with pixel-level reconstruction decoders, JEPAs are not required to allocate model capacity to stochastic visual nuisances such as dynamic lighting and background shifts. Recent works, including LeWorldModel [8] and hierarchical latent planning frameworks [9], construct stable, non-collapsing latent spaces for world modeling and planning. The regularizers employed in this line of work range from variance–covariance penalties such as VICReg [19] to distribution-matching objectives that encourage isotropic Gaussian embeddings, as in LeJEPA [27]. At scale, V-JEPA 2 [28] shows that an action-conditioned latent predictor, post-trained on a modest amount of robot interaction data, can support zero-shot manipulation through planning in representation space, albeit at the cost of iterative optimization over action sequences at inference time. In robotic control, joint-embedding mechanics have been applied both as predictive dynamics models and as visual feature extractors. VLA-JEPA [5] introduces a unified pretraining framework with an online, time-causal latent world model to forecast future states. Conversely, JEPA-VLA [29] argues that standard visual backbones lack temporal policy priors and employs frozen video-predictive JEPA features as plug-and-play visual representations inside existing VLA architectures via gated cross-attention. Additionally, ACT-JEPA [30] employs latent prediction to regularize continuous imitation learning policies. While these approaches enhance visual representations or latent forward modeling, they either lack explicit, deterministic state-machine mechanisms for sub-goal verification or remain coupled to latency-heavy, text-conditioned causal language backbones. 
+
+2.4 Diffusion and Flow-Matching Policies 
+
+To enable high-frequency continuous control, non-autoregressive trajectory generation methods have emerged as an effective alternative. Action Chunking with Transformers (ACT) [10] predicts multi-step continuous action trajectories 
+
+At ∈ RH×da in a single forward pass, which reduces the effective number of decisions per episode and has been shown to mitigate compounding errors in imitation learning. Building upon this, Diffusion Policies [11] and Conditional Flow Matching (CFM) [12, 13] formulate action-chunk generation as iterative denoising or as transport along a learned ODE vector field, respectively, enabling expressive multi-modal trajectory sampling; straight or nearly straight transport paths further permit accurate integration in few steps [31]. When combined with action chunking, these continuous solvers support real-time execution rates ( 30 –100 Hz). However, they typically function either as reactive visual policies that lack long-horizon predictive dynamics, symbolic verification, or explicit sub-goal state tracking, or as action heads attached to generalist transformer backbones [23], which in the case of π0 [14] is a pre-trained vision-language model with billions of parameters. VPA adopts a CFM solver for low-level generation but conditions it on forecasted latent transitions and a lightweight text embedding, rather than on the hidden states of a large language backbone. 
+
+# 3 Problem Formulation 
+
+We formulate visual-goal robotic manipulation as a Goal-Conditioned Markov Decision Process (G-MDP) defined by the tuple M = ( S, G, A, P, R, γ disc ), where S represents the continuous state space, G denotes the multimodal goal space, A is the continuous action-chunk space, P : S × A → ∆( S) represents the stochastic chunk-level transition dynamics, R is the goal-conditioned (milestone-dependent) reward function, and γdisc ∈ [0 , 1) is the discount factor. We write γdisc to distinguish the discount factor from the VICReg variance margin γ introduced in Section 5.2. 
+
+3.1 State, Observation, and Goal Spaces 
+
+At control step t, the system state st ∈ S pairs raw visual sensory inputs with low-level kinematic feedback: 
+
+st = ( It, S t) ∈ S (1) where It ∈ RHimg ×Wimg ×C denotes the raw RGB observation frame with height Himg , width Wimg , and C channels, while St ∈ Rds represents the instantaneous robot proprioceptive state (e.g., joint positions, joint velocities, and end-effector pose). The pair st is an observation of an underlying physical configuration that is not directly accessible. We denote by 
+
+yt ∈ Y ⊂ Rdy the task-relevant physical state (e.g., the robot joint configuration and the poses of manipulated objects) and model image formation as It = I(yt, η t), where I is the image-formation (rendering) map and ηt collects task-irrelevant nuisance factors such as illumination, background content, and sensor noise. Following common practice, we treat st as the agent’s state, implicitly assuming that it is approximately Markovian for the control task; the distinction between yt and It is made explicit only in the analysis of Section 5.3. 6Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors To form a Goal-Conditioned VPA framework, the overarching task intent is specified by natural language alongside visual targets. The multimodal goal space G is defined by a tuple pairing a user language instruction x with target goal frames Ig :
+
+g = ( x, I g ) ∈ G (2) The language string x provides the semantic intent of the task. For multi-stage compositional tasks, the visual component Ig is an ordered sequence of M visual milestone goals (I(1)  
+
+> g
+
+, I (2)  
+
+> g
+
+, . . . , I (M ) 
+
+> g
+
+), with I(m) 
+
+> g
+
+∈ RHimg ×Wimg ×C ;single-stage tasks correspond to M = 1 . Each milestone frame is an observation of a target physical configuration, 
+
+I(m) 
+
+> g
+
+= I(y(m) 
+
+> g
+
+, η (m) 
+
+> g
+
+), and its latent embedding is denoted z(m) 
+
+> g
+
+= Eψ (I(m) 
+
+> g
+
+).
+
+3.2 Action Space and Action Chunking 
+
+To account for sensorimotor latency and to reduce single-step compounding execution drift, the controller operates over continuous multi-step action chunks rather than instantaneous atomic commands. Let A0 ⊆ Rda denote the per-step action space, where da is the dimensionality of the robot’s action space (e.g., 7-DoF joint command vectors alongside 1-DoF parallel-gripper actuation). At step t, the controller selects an open-loop action chunk over horizon H:
+
+At = ( at, a t+1 , . . . , a t+H−1) ∈ A = AH 
+
+> 0
+
+⊆ RH×da (3) As detailed in Section 4.4, the solver always generates a chunk of length H, of which an uncertainty-dependent prefix of length Ht ≤ H is executed before the inference pipeline is invoked again. We refer to the control steps at which the pipeline is invoked as decision steps ; the primitive ut, the milestone pointer mt, and the conditioning vector et are evaluated at decision steps and held fixed during chunk execution. 
+
+3.3 Transition Dynamics and Latent Metric Reward 
+
+The ground-truth physical dynamics of the environment govern state transitions at the chunk level according to: 
+
+st+H ∼ P (· | st, A t) (4) where P is induced by composing the per-step dynamics over the actions of the chunk (or over its executed prefix of length Ht). Rather than predicting high-dimensional pixel transitions p(It+H | It, A t) directly, the dynamics are modeled in a compact latent space Z ⊂ Rd obtained via the visual encoder Eψ . Within Z, the latent transition dynamics are modeled by the forward predictor Pω under the active discrete primitive token ut ∈ U :
+
+zt = Eψ (It), (ˆ zt+1 , σ t+1 ) = Pω (zt, u t) (5) where σt+1 ≥ 0 is a scalar predictive uncertainty (Section 4.3). The predictor operates at a fixed temporal stride of 
+
+ν ∈ N control steps, and we assume ν ≤ Hmin , where Hmin is the minimum executed chunk length (Section 4.4), so that the forecast horizon falls within every executed chunk. For notational brevity, we write zt+1 and ˆzt+1 for the actual and forecast latents zt+ν and ˆzt+ν throughout. Because Pω is conditioned on the primitive ut rather than on the action chunk At, it models the expected latent consequence of executing a skill, as represented in the demonstration data, rather than the consequence of a specific motor trajectory; the motor-level realization is delegated to the solver of Section 4.4. The sparse goal-reaching objective is approximated by a dense latent proxy reward based on the Euclidean distance to the active milestone: 
+
+R(st, g ; mt) = − Eψ (It) − Eψ
+
+ I(mt)
+
+> g
+
+
+
+> 2
+
+= − zt − z(mt) 
+
+> g2
+
+(6) where mt ∈ { 1, . . . , M } is the active milestone pointer. Since R depends on mt, the pointer acts as a discrete component of an augmented state (st, m t). In the present formulation, R serves as an analysis and monitoring signal rather than as an optimization target, as all components of VPA are trained by self-supervised latent prediction or by imitation of demonstrations (Section 4). Whether this proxy is monotonically related to physical task progress depends on the regularity of Eψ with respect to yt, which we examine in Section 5.3. Milestone mt is regarded as completed when the latent distance falls below a completion threshold τ > 0, such that 
+
+∥zt − z(mt) 
+
+> g
+
+∥2 < τ . Because the scale of Z is not fixed by the joint-embedding objective, τ is calibrated relative to the running latent variance margin rather than set to an absolute constant (Section 4.2). The task is complete when this condition is satisfied for the final milestone mt = M .7Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+## It (Current Frame) Milestone I(mt) 
+
+> g
+
+## & Text x
+
+## Encoder Eψ Encoder Eψ & Text Enc Latent zt Latent z(mt) 
+
+> g
+
+## & ctext 
+
+## Neuro-Symbolic Selector πhϕ
+
+## Token ut
+
+## Predictor Pω Proprioception St
+
+## Predicted (ˆ zt+1 , σ t+1 )
+
+## Unified Conditioning et = Concat   Embed( ut), z t, ˆzt+1 , S t, c text 
+
+## 
+
+## Flow-Matching Solver πlθ
+
+## Action Chunk At ∈ RH×da
+
+## (execute first Ht steps, Eq. 15) 
+
+Figure 3: VPA Closed-Loop Inference Pipeline (Action Trajectory Generation). This diagram shows the online forward pass executed at each decision step during robot deployment. The current observation It, the active milestone goal 
+
+I(mt) 
+
+> g
+
+, and the natural language instruction x are encoded and used to select a primitive ut, forecast (ˆ zt+1 , σ t+1 ), and form the unified conditioning vector et (Eq. 12), from which the solver synthesizes an action chunk At. The predictive uncertainty σt+1 determines the executed prefix length Ht (Eq. 15), and the milestone pointer mt is updated by the threshold rule of Eq. 9a. 8Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+# 4 The Goal-Conditioned VPA Architecture 
+
+Current Vision-Language-Action (VLA) architectures that decode actions autoregressively are constrained by a sequential computing bottleneck on control frequency. To overcome this, we introduce the Goal-Conditioned Vision-Predictor-Action (VPA) framework. The architecture bypasses large language model (LLM) backbones and formulates robotic manipulation as a closed-loop latent prediction problem. The architecture decouples high-level task logic from low-level continuous motor control through a four-stage pipeline: (1) a latent multimodal goal encoder that projects raw observations and text into a compact latent space; (2) a non-autoregressive neuro-symbolic selector that discretizes task primitives; (3) a collapse-regularized latent predictor that forecasts state transitions; and (4) a continuous flow-matching solver that outputs multi-step action trajectories. The number of sequential network evaluations per decision step in this pipeline does not depend on the action horizon (Section 5.1), which keeps the per-step computation short, as reactive control requires, while retaining semantic task specification. The complete data flow is illustrated in Figure 3. 
+
+4.1 Latent Multimodal Goal Encoding 
+
+The perception module in the VPA framework is designed to retain task-relevant spatial and physical configurations while suppressing high-frequency visual nuisance factors ηt (e.g., lighting variations, reflective glare, or dynamic backgrounds). Let It ∈ RHimg ×Wimg ×C denote the current observation frame at timestep t, and let I(m) 
+
+> g
+
+∈ RHimg ×Wimg ×C
+
+denote the visual goal frame of milestone m ∈ { 1, . . . , M }.We employ a shared vision encoder Eψ (e.g., a Vision Transformer backbone [15]), which operates as a Siamese network to independently map the high-dimensional image frames into a compact, continuous latent embedding space 
+
+Z ⊂ Rd:
+
+zt = Eψ (It), z(m) 
+
+> g
+
+= Eψ
+
+ I(m)
+
+> g
+
+, m = 1 , . . . , M (7) where zt is intended to encode the current configuration of the robot end-effector and scene objects, and z(m) 
+
+> g
+
+the target configuration of milestone m. The milestone embeddings depend only on the task specification and can be computed once per episode. To capture the overarching task intent without relying on a computationally heavy LLM, we introduce a lightweight, frozen text encoder (e.g., CLIP [17] or a distilled RoBERTa [32]). This encoder embeds the user’s natural language instruction x into a dense text vector ctext ∈ Rdc , which is likewise computed once per episode. Unlike standard autoencoders or generative models that minimize a pixel-level reconstruction loss LMSE (It, ˆIt), Eψ
+
+is optimized via a joint-embedding predictive objective (Section 4.3). Because this objective does not require the representation to retain information that is unpredictable from one frame to the next, it encourages, but does not guarantee, invariance to the nuisance factors ηt and a focus on predictable physical quantities such as kinematics, spatial geometry, and relative object distances. The latent distance ∥zt − z(m) 
+
+> g
+
+∥2 is accordingly intended to serve as a proxy for physical task progress; the extent to which it does so is governed by the regularity of the composite map 
+
+y 7 → Eψ (I(y, η )) from physical state to latent, which we analyze in Section 5.3. In the base formulation, no explicit Lipschitz constraint is imposed on Eψ ; the consequences of this choice, and the role of optional spectral normalization, are discussed in the same section. The text embedding ctext provides the semantic conditioning for the discrete primitive transitions and the continuous action generation modeled in subsequent stages. 
+
+4.2 Neuro-Symbolic Primitive Selector ( πhϕ )
+
+A fundamental limitation of autoregressive VLA models is their reliance on computationally heavy text generation to dictate sequential task logic. The VPA architecture instead formulates high-level reasoning as a discrete, latent-conditioned classification problem governed by a symbolic finite-state machine. The per-decision cost of this stage is a single classifier evaluation, independent of the number of milestones M .Let U = {u(1) , u (2) , . . . , u (Nu)} define a pre-determined dictionary of Nu executable atomic skills, or “primitives” (e.g., reach , grasp , push , place ). To handle multi-stage tasks, the overarching visual goal is specified as a sequence of milestones, represented in the latent space as (z(1)  
+
+> g
+
+, z (2)  
+
+> g
+
+, . . . , z (M ) 
+
+> g
+
+) (Eq. 7). We introduce a discrete, monotonically non-decreasing milestone pointer mt ∈ { 1, 2, . . . , M } that tracks the active sub-goal at decision step t. The neuro-symbolic primitive selector is a lightweight classifier πhϕ (parameterized by a Multi-Layer Perceptron) that maps the current state embedding, the active milestone embedding, and the text embedding 9Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+ctext directly to a categorical primitive token ut:
+
+ut = arg max 
+
+> u∈U
+
+πhϕ
+
+ u | zt, z (mt) 
+
+> g
+
+, c text 
+
+ (8) The selector is trained by minimizing the cross-entropy between πhϕ and the primitive labels provided by the demonstra-tion data (Figure 4). By incorporating ctext as a conditioning variable, the selector can disambiguate task intent (e.g., whether the instruction is to “move the cup” or to “throw the cup away”) without generating text tokens. It acts as a reactive policy that selects the skill expected to satisfy both the semantic instruction and the geometric goal by reducing the latent discrepancy between zt and z(mt) 
+
+> g
+
+.The progression of the task is governed by a symbolic transition rule that tests sub-goal completion via an ℓ2-norm threshold in Z. A threshold τ fixed in absolute units, however, is ill-suited to a jointly trained latent space: the variance hinge of the VICReg objective (Eq. 18) penalizes per-dimension standard deviations below the margin γ but does not bound them from above, so the overall scale of Z can drift during training, and a static τ would become relatively looser or stricter as training proceeds. We therefore scale τ with a running estimate of the realized latent variance margin. Let 
+
+Z(n) ∈ RB×d denote the batch of online-encoder latents at training iteration n (Section 5.2). The milestone pointer is updated at each decision step, and the threshold is calibrated during training, according to: 
+
+mt+1 =
+
+(
+
+mt + 1 , if ∥zt − z(mt) 
+
+> g
+
+∥2 < τ and mt < M, mt, otherwise , (9a) 
+
+¯γn = (1 − αγ ) ¯ γn−1 + αγ
+
+vuut 1
+
+d
+
+> d
+
+X
+
+> j=1
+
+Var  Z(n)
+
+> ·,j
+
+ + ϵ, (9b) 
+
+τn = κ√2d ¯γn, (9c) where αγ ∈ (0 , 1] is an exponential-moving-average rate, ϵ is the numerical constant of Eq. 18, and κ ∈ (0 , 1) is a dimensionless tolerance. The scaling in Eq. 9c has a direct interpretation: for two independent latents za, z b drawn from the batch distribution, E∥za − zb∥22 = 2 tr  Cov( Z), so that √2d ¯γn approximates (up to ϵ) the root-mean-square distance between independently drawn states, and κ expresses the completion tolerance as a fraction of this distance. Moreover, whenever the variance hinge is inactive on the current batch, every per-dimension term satisfies 
+
+Var( Z·,j ) + ϵ ≥ γ2, so the instantaneous estimate in Eq. 9b is at least γ. Because ¯γn is a moving average, the threshold is bounded below by κ√2d γ only if the hinge was inactive on every batch that contributed to ¯γn and ¯γ0 ≥ γ; under these conditions, the VICReg margin anchors the scale of τ . Whenever the transition rule is evaluated during training (e.g., to segment demonstrations into milestone phases), τ = τn is used. Once Eψ is frozen (Section 4.3), ¯γ is fixed to its final value ¯γ⋆, and deployment uses the constant threshold τ = τ ⋆ = κ√2d ¯γ⋆. When the test in Eq. 9a is satisfied for mt = M , the task is declared complete and the episode terminates. This neuro-symbolic formulation yields two structural properties. First, the selector output is restricted to the finite set U, which precludes the generation of non-executable or out-of-vocabulary commands. Second, the threshold test turns sub-task completion into an explicit, checkable predicate on the latent state. This predicate does not by itself guarantee that the physical preconditions of the next primitive are satisfied, which depends on the regularity of Eψ
+
+(Section 5.3), nor does it guarantee progress: if a milestone becomes unreachable, the pointer remains at mt indefinitely. A per-milestone time-out that triggers primitive re-selection can be used to detect such stalls; its design is deferred to the evaluation phase (Section 6.5). 
+
+4.3 Latent Predictor ( Pω )
+
+To generate kinematically stable and physically grounded continuous actions, the control system anticipates the consequences of its decisions. While generative world models achieve this by predicting future pixel observations 
+
+ˆIt+1 , pixel-level reconstruction can be computationally demanding for high-frequency control loops and may allocate model capacity toward stochastic visual nuisances (e.g., dynamic shadows or moving backgrounds) rather than relevant physical dynamics. To address this, the VPA framework introduces a predictor Pω , parameterized as a multi-layer perceptron or causal transformer, that operates within the low-dimensional latent space Z. Given the current latent state zt and the selected active primitive ut, the predictor forecasts both the expected future latent state ˆzt+1 (i.e., ν control steps ahead; Section 3.3) and an associated predictive uncertainty score σt+1 :
+
+(ˆ zt+1 , σ t+1 ) = Pω (zt, u t) (10) 10 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors The uncertainty score is intended to reflect epistemic uncertainty of the latent dynamics model and is used to modulate the downstream execution horizon. Because the prediction loss below does not supervise σt+1 , we obtain it from the disagreement of a small ensemble [33]: Pω comprises Ne prediction heads {P (i) 
+
+> ω
+
+}Ne 
+
+> i=1
+
+with independent initializations, 
+
+ˆzt+1 is the ensemble mean of the head outputs ˆz(i)
+
+> t+1
+
+, and 
+
+σt+1 = 1
+
+√d ¯γ⋆
+
+1
+
+NeNeX
+
+> i=1
+
+ˆz(i) 
+
+> t+1
+
+− ˆzt+1 
+
+> 22
+
+!1/2
+
+,
+
+where normalization by the frozen latent scale ¯γ⋆ (Eq. 9b) renders σt+1 dimensionless, so that the sensitivity hyperpa-rameter in Eq. 15 does not depend on the scale of Z.A known challenge in joint-embedding architectures lacking a pixel-level decoder is the vulnerability to representation collapse, in which the encoder and predictor output a constant vector to minimize prediction error. To mitigate this, Pω
+
+and the encoder Eψ are jointly optimized using a non-collapsing prediction objective based on Variance-Invariance-Covariance Regularization (VICReg) [19]. The objective consists of a latent ℓ2 prediction loss, which plays the role of the invariance term, coupled with a distributional regularizer: 
+
+LJEPA = Et
+
+h
+
+ˆzt+1 − sg  E ¯ψ (It+1 ) 22
+
+i
+
++ Lanti-collapse (Z), Lanti-collapse (Z) = λv v(Z) + λcc(Z) (11) where zt+1 = E ¯ψ (It+1 ) is the target embedding produced by a momentum (exponential-moving-average) copy E ¯ψ
+
+of the encoder, sg( ·) denotes the stop-gradient operator, and, with an ensemble, the prediction term is applied to each head ˆz(i)
+
+> t+1
+
+. The regularizer is evaluated on the batch Z of online -encoder latents zt = Eψ (It), since the momentum encoder receives no gradients; the variance and covariance terms v(Z) and c(Z) are defined in Section 5.2. These terms encourage the variance of each latent dimension to remain above the margin γ and reduce the off-diagonal covariance to decorrelate the latent variables. This regularized formulation encourages the prediction error ∥ˆzt+1 − zt+1 ∥22 to capture task-relevant physical state evolutions (e.g., object displacement, gripper state changes) associated with the primitive ut. Consequently, ˆzt+1 
+
+provides the downstream continuous action solver with predictive physical context, substituting a forward-simulated latent state for the autoregressive reasoning of large language models. Training proceeds in stages. In the representation-learning stage, Eψ and Pω are trained jointly with Eq. 11, with Pω
+
+conditioned on the discrete primitive labels ut provided by the demonstration data. At the end of this stage, both Eψ
+
+and Pω are frozen, which fixes the latent space, its scale ¯γ⋆, and the deployment threshold τ ⋆. Freezing provides the downstream solver with a stationary conditioning distribution rather than latent inputs that drift as the representation evolves, which simplifies the learning problem for the motor control module; it does not by itself guarantee the semantic consistency of Z, which depends on the quality of the learned representation. 
+
+4.4 Continuous Action Chunking via Flow-Matching ( πlθ )
+
+While the higher-level modules (Sections 4.2 and 4.3) operate in the semantic and latent predictive spaces, the low-level solver πlθ grounds these representations into high-frequency motor commands. To manage compounding execution errors and account for sensorimotor latency, we formulate πlθ as an action chunking policy. At each decision step t, rather than predicting a single atomic action, the solver synthesizes an H-step continuous action trajectory chunk At = ( at, a t+1 , . . . , a t+H−1) ∈ RH×da , where da denotes the dimensionality of the robot’s control space (e.g., 7-DoF joint velocities and 1-DoF gripper state) and H ≡ Hmax is the fixed length of the generated chunk. To bridge the latent dynamics with physical embodiment and task intent, we construct a unified conditioning vector et
+
+that encapsulates intent, current state, predicted future, and real-time kinematics: 
+
+et = Concat   Embed( ut), z t, ˆzt+1 , S t, c text 
+
+ ∈ Rde (12) where Embed : U → Rdu is a learned embedding of the discrete primitive, zt, ˆzt+1 ∈ Rd are the current and predicted latents, St ∈ Rds is the instantaneous proprioceptive state of the robot, ctext ∈ Rdc is the text embedding, and de = du + 2 d + ds + dc. The continuous components enter Eq. 12 after the fixed standardization described in Section 4.5. Generating multimodal trajectory distributions p(At | et) often relies on Denoising Diffusion Probabilistic Models (DDPMs) [34, 11]. However, the iterative sampling procedure of DDPMs, which typically requires many denoising steps, lengthens the sequential chain of network evaluations per decision step and can therefore conflict with the control rates of 30 Hz or more that motivate this architecture. 11 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors We therefore parameterize πlθ using a Conditional Flow-Matching (CFM) vector field vθ : RH×da × [0 , 1] × Rde →
+
+RH×da , which transports a simple base distribution (a standard Gaussian) to the action-chunk distribution via an Ordinary Differential Equation (ODE) [12]. Let ρ ∈ [0 , 1] denote the continuous integration time of the flow, distinct from the discrete control step t and from the latent completion threshold τ . We define a linear interpolation path between Gaussian noise ξ ∼ N (0 , I ), ξ ∈ RH×da , and the ground-truth action chunk At:
+
+A(ρ) 
+
+> t
+
+= ρA t + (1 − ρ) ξ (13) The neural vector field vθ (A(ρ) 
+
+> t
+
+, ρ | et) is trained to regress the time-derivative of this path, i.e., the target velocity 
+
+At − ξ, using the Flow-Matching objective: 
+
+Lsolver = Et, ξ, ρ ∼U [0 ,1] 
+
+h
+
+vθ
+
+ A(ρ) 
+
+> t
+
+, ρ | et
+
+ − (At − ξ) 22
+
+i
+
+(14) To mitigate the risk of physical errors caused by inaccurate latent forecasting, the system employs an uncertainty-aware execution strategy. Rather than always executing the full generated chunk, the executed horizon is scaled based on the predictor’s uncertainty. We define the executed horizon Ht at decision step t as: 
+
+Ht = max  Hmin , Hmax · exp   − β ¯σt+1 
+
+ (15) where β > 0 is a sensitivity hyperparameter, Hmin ≤ Hmax = H bound the executed chunk length, and ¯σt+1 is a smoothed uncertainty signal. Using the raw score σt+1 directly would allow high-frequency fluctuations in the uncertainty estimate to toggle the controller between long and short horizons on consecutive decision steps, which can induce jitter at the motor level. We therefore apply an asymmetric (fast-attack, slow-release) filter, ¯σt+1 =max {σt+1 , (1 − ασ )¯ σt + ασ σt+1 } with ασ ∈ (0 , 1] , under which the horizon contracts immediately when uncertainty rises but expands only gradually as it decays. When the environment dynamics are predictable (low ¯σt+1 ), a long prefix of the chunk is executed; during high-uncertainty events, Ht contracts toward Hmin , so that the control loop relies more frequently on fresh sensory feedback It rather than on the latent prediction. During closed-loop execution, a chunk ˆAt ∈ RH×da is sampled by drawing ξ ∼ N (0 , I ) and integrating the learned vector field from ρ = 0 to ρ = 1 with K steps of a numerical ODE solver; with the Euler method, A(ρk+1 ) =
+
+A(ρk ) + K−1vθ (A(ρk ), ρ k | et) for ρk = k/K , k = 0 , . . . , K − 1, and A(0) = ξ. The first Ht actions of ˆAt are then executed. Although the conditional paths in Eq. 13 are straight, the learned marginal flow can be curved, particularly for strongly multimodal action distributions; few-step integration is therefore accurate only to the extent that the learned flow is close to straight, a property that rectification procedures explicitly promote [31]. In practice, a small number of steps K ∈ { 1, 2, 3} is commonly used. Each decision step thus requires K sequential evaluations of vθ , each of which processes the full H × da chunk in parallel: the number of sequential evaluations is independent of H, whereas the arithmetic cost of each evaluation grows with H · da (Section 5.1). In the reference implementation, a complete decision step took 10 .5–14 .2 ms on an Apple M4 for H ≤ 64 (Section 5.1), which is short relative to the open-loop execution of a chunk at control rates of 30 –100 Hz. Overlapping the computation of the next chunk with the execution of the current one, which such rates would ultimately require on robotic hardware, was not evaluated in this work (Section 6.5). 
+
+4.5 Representation Alignment and Solver Warm-Starting 
+
+Before deploying end-to-end continuous action chunking, we adopt an initial alignment phase that matches the representation used by the frozen JEPA modules to the input expected by the continuous Flow-Matching Solver πlθ .Because the latent space is learned independently of the action data, its coordinates may have arbitrary offsets and a scale ¯γ⋆ that differs substantially from that of the proprioceptive and text inputs. Conditioning the vector field on unnormalized latents can produce large gradients in the early iterations of Eq. 14. After freezing, we therefore standardize the latent components of et with fixed statistics, ˜z = ( z − ¯μZ )/¯γ⋆, applied to both zt and ˆzt+1 , where ¯μZ
+
+is the mean latent over the training data; the proprioceptive state St is standardized analogously using dataset statistics. Because the same scale ¯γ⋆ also determines τ ⋆ and normalizes σt+1 , the completion threshold, the uncertainty signal, and the solver inputs are expressed in mutually consistent units. Utilizing principles of Behavior Cloning, the solver is then warm-started on demonstration datasets: conditioning vectors et are computed by the frozen encoder and predictor along demonstration trajectories and paired with the corresponding action chunks, and vθ is trained with Eq. 14. This alignment phase is intended to prevent the low-level solver from misinterpreting the latent transitions before any subsequent fine-tuning of the vector field. By establishing a shared representation early in training, the action decoder is aligned with the stationary latent space of the frozen modules, which is expected to facilitate a smoother and more reliable optimization of the flow-matching objective. 12 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors                               
+
+> It(Current Frame) It+1 (Next Frame) Online Encoder EψDemonstration Data (Primitive Labels) Target Encoder E¯ψ
+> (EMA, stop-gradient) Online Latent ztPrimitive utTarget Latent zt+1
+> Anti-Collapse on Online Batch Zv(Z)(Eq. 18) & c(Z)(Eq. 19) JEPA Predictor Pω
+> Predicted ˆzt+1
+> Prediction Error
+> ∥ˆzt+1 −sg( zt+1 )∥22
+> Total Objective (Eq. 11): LJEPA =E∥ˆzt+1 −sg( zt+1 )∥22+λvv(Z) + λcc(Z)
+
+Figure 4: Offline Representation-Learning Objective. The online encoder Eψ and the predictor Pω are trained jointly. The target latent zt+1 is produced by a momentum (exponential-moving-average) copy E ¯ψ of the encoder under stop-gradient, and the VICReg variance and covariance terms are evaluated on the batch Z of online latents, since the target branch receives no gradients. During this stage, the predictor is conditioned on the discrete primitive labels ut
+
+supplied by logged demonstration trajectories (Eq. 10); the frozen text encoder is not involved. At the end of the stage, 
+
+Eψ and Pω are frozen, which fixes the latent scale ¯γ⋆ and the deployment threshold τ ⋆ (Eq. 9). 
+
+# 5 Theoretical Analysis and System Properties 
+
+This section analyzes the runtime complexity of the VPA pipeline, the properties of its regularized latent representation, and the conditions under which its discrete sub-goal mechanism limits error accumulation across task phases. We distinguish between statements that follow directly from the definitions of the architecture and its objectives (Proposi-tions 5.1 and 5.2) and statements that additionally rely on regularity properties of the learned encoder (Proposition 5.3). Because the latter properties cannot be enforced by the training objective or by architectural constraints alone, the corresponding conclusions are presented as conditional results and as empirical expectations to be verified in the evaluation of Section 6.5. 
+
+5.1 Computational Complexity and Latency 
+
+A primary limitation of contemporary VLA models is their reliance on autoregressive token generation for continuous control. Let H be the length of the required action chunk and da the action dimension. Token-based VLAs discretize the continuous action space and generate N = q · H · da tokens per inference cycle, where q is the number of tokens per scalar action component. For an LLM-based policy with parameters WLLM , generating N tokens requires N forward passes, each of which depends on the token produced by its predecessor and therefore cannot be executed in parallel. With key-value caching, the i-th pass costs Θ( |WLLM | + Li dmodel ) arithmetic operations, where Li is the attention context length at step i and 
+
+dmodel the hidden width. Moreover, at batch size one, each pass must read all decoder parameters from memory; for models whose parameters exceed on-chip memory, the wall-clock latency therefore satisfies 
+
+TVLA =
+
+> N
+
+X
+
+> i=1
+
+tpass (Li) ≥ N · | WLLM |
+
+BW , N = q · H · da, (16) 13 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors where tpass (Li) is the wall-clock time of the i-th pass and BW denotes the effective memory bandwidth, measured in parameters per unit time. The latency of autoregressive action decoding thus grows at least linearly in N , and hence in H. For RT-2, real-time inference rates of about 1–3 Hz for the 55B-parameter model and about 5 Hz for its 5B-parameter variant have been reported [1]; rates in this range restrict reactive, high-speed physical adjustments. To analyze the VPA pipeline, we distinguish two cost measures for a single decision step: the sequential depth D,defined as the length of the longest chain of network evaluations in which each evaluation requires the output of its predecessor, and the total arithmetic work W . Wall-clock latency is lower-bounded by the sequential depth times the minimum per-evaluation latency, and approaches the work divided by the available parallelism when the hardware is saturated. 
+
+Proposition 5.1 (Sequential depth and work of a VPA decision step) . Consider one decision step of VPA in which the solver generates a chunk of length H with K integration steps, and assume that the milestone embeddings z(m) 
+
+> g
+
+and the text embedding ctext have been computed once per episode. Then: (i) the sequential depth is DVPA = K + 3 , which is independent of H and da, whereas autoregressive decoding of 
+
+N = q · H · da tokens has sequential depth DVLA = N = Θ( H · da);(ii) the work is WVPA (H) = CE + Ch + CP + K · Cl(H), where CE , Ch, and CP are the costs of the encoder, the selector, and the predictor (including all Ne ensemble heads), none of which depends on H, and Cl(H) is the cost of one evaluation of vθ. Since vθ outputs an element of RH×da , Cl(H) = Ω( H · da); if vθ applies self-attention across the H chunk positions, Cl(H) additionally contains a term quadratic in H.Proof. (i) Within one decision step, the data dependencies form the chain It → zt → ut → (ˆ zt+1 , σ t+1 ) → et →
+
+A(ρ1) → · · · → A(ρK ): the selector requires zt (Eq. 8), the predictor requires ut (Eq. 10), and each Euler step requires the previous iterate (Section 4.4). This chain contains one evaluation each of Eψ , πhϕ , and Pω , and K evaluations of vθ ;the ensemble heads of Pω are mutually independent and may be evaluated in parallel. No evaluation in the chain is repeated as a function of H. For autoregressive decoding, token i is an input to pass i + 1 , so all N passes lie on a single dependency chain. (ii) The expression for WVPA follows by summing the costs along the chain. Each evaluation of vθ writes H · da output entries, which requires Ω( H · da) operations. Proposition 5.1 makes precise the sense in which the VPA solver removes the dependence on the action horizon. The wall-clock latency of a decision step is 
+
+TVPA = tE + th + tP
+
+| {z } 
+
+> independent of H
+
++ K · tl(H), (17) where tE , th, tP , and tl(H) denote the wall-clock times of the encoder, the selector, the predictor, and one solver evaluation, respectively. Because K ≪ N and the sequential dependency on output generation is removed, the number of sequential network evaluations drops from Θ( H · da) to K + 3 = O(K). This does not imply that the per-cycle cost is O(1) in H: by part (ii) of Proposition 5.1, the arithmetic work of each solver evaluation grows at least linearly with H · da, and tl(H) is approximately constant in H only while a single evaluation of vθ fits within the available hardware parallelism; beyond that regime, tl(H) grows with Cl(H). The reduction in sequential depth is shared with other non-autoregressive action heads (Section 2.4); the distinguishing latency property of VPA is that all networks on the dependency chain are lightweight relative to a vision-language backbone. The absolute values of the terms in Eq. 17 depend on the sizes of Eψ , πhϕ , Pω , and vθ and on the hardware, and therefore do not follow from Proposition 5.1. We measured them for the reference implementation, as described below. 
+
+Measured latency on an Apple M4. We timed the four terms of Eq. 17 inside the complete decision step of the reference implementation (Section 1.1), sweeping K ∈ { 1, 2, 3} and H ∈ { 8, 16 , 32 , 64 , 128 }. The measurements used a Mac mini with an Apple M4 processor (10-core CPU, 32 GB memory), macOS 15.3.1, and PyTorch 2.14.1 with the MPS backend, at batch size one and in float32 arithmetic. Each stage was timed with forward hooks, with device synchronization before every clock read, and each value in Table 1 is the median of 100 runs after 10 warm-up runs. Because these timings do not depend on the values of the weights, randomly initialized weights were used. The benchmarked configuration uses the default, untuned module sizes of the implementation with a single camera view: 
+
+Eψ is a Vision Transformer with 224 × 224 input, patch size 16 , width 384 , depth 6, and latent dimension d = 256 
+
+(11 .12 M parameters); πhϕ is a multilayer perceptron with two hidden layers of width 512 over Nu = 8 primitives (0.79 M); Pω comprises Ne = 5 ensemble heads with two hidden layers of width 512 (2.79 M); and vθ is a Transformer of width 256 and depth 4 with da = 8 (3.55 M at H = 8 and 3.58 M at H = 128 , since only its positional embedding grows with H). The networks on the dependency chain thus total approximately 18 .3M parameters. The frozen text encoder is not on this chain, because ctext is computed once per episode, and is excluded from the measurements. 14 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors Table 1: Measured latency of one VPA decision step on an Apple M4 (MPS backend, batch size one, float32) for the single-camera benchmark configuration described in the text. Entries are medians of 100 runs, in milliseconds. “Sum” is the network time tE + th + tP + K · tl(H) of Eq. 17; “Full step” is the complete decision step, which additionally includes non-network operations and the synchronization overhead of the per-stage timing. Because each entry is a separate median, the columns need not add up exactly.                                                                                                                 
+
+> KHtEthtPtl(H)Sum Full step 183.732 0.333 0.692 1.473 6.229 10.481 116 3.766 0.336 0.711 1.482 6.295 10.617 132 3.714 0.334 0.687 1.485 6.220 10.484 164 3.740 0.333 0.692 1.568 6.333 10.726 1128 3.867 0.337 0.715 1.865 6.783 11.166 283.756 0.334 0.701 1.457 7.707 12.235 216 3.737 0.335 0.696 1.453 7.674 12.140 232 3.748 0.329 0.697 1.509 7.793 12.266 264 3.757 0.328 0.694 1.583 7.945 12.409 2128 3.752 0.340 0.707 1.799 8.397 12.917 383.703 0.331 0.694 1.443 9.057 13.730 316 3.719 0.330 0.697 1.446 9.084 13.687 332 3.780 0.337 0.711 1.524 9.401 14.205 364 3.739 0.334 0.705 1.581 9.521 14.167 3128 3.772 0.331 0.702 1.799 10.201 14.847
+
+Observations. The measurements are consistent with Proposition 5.1 in four respects. First, the implementation audits the order of network evaluations in every decision step and raises an error if it differs from one evaluation each of 
+
+Eψ , πhϕ , and Pω followed by K evaluations of vθ ; this audit passed in all configurations of the sweep, so the sequential depth was K + 3 throughout, as stated in part (i). Second, across all values of K and H, tE , th, and tP remained within 
+
+3.70 –3.87 ms, 0.33 –0.34 ms, and 0.69 –0.72 ms, respectively, consistent with their independence of H in Eq. 17. Third, 
+
+tl(H) remained within 10% of its value at H = 8 up to H = 64 and rose by 23 –27% at H = 128 . This is in line with part (ii): on this hardware, one evaluation of vθ appears to fit within the available parallelism up to approximately 
+
+H = 64 , beyond which its growing work becomes visible in the wall-clock time. Fourth, each additional integration step lengthened the complete decision step by approximately one solver evaluation (e.g., 10 .6, 12 .1, and 13 .7 ms for 
+
+K = 1 , 2, 3 at H = 16 ). For H ≤ 64 , the summed network time of Eq. 17 was 6.2–9.5 ms, and the complete decision step took 10 .5–14 .2 ms (at most 14 .8 ms at H = 128 ). At K = 2 and H = 16 , the setting used for the LIBERO-10 experiments (Section 6), the complete decision step took 12 .1 ms. Executed back to back, these step times correspond to approximately 70 –95 decision steps per second. 
+
+Scope of the measurements. We regard these results as initial empirical support for the sequential-depth analysis rather than as a characterization of deployed performance, for four reasons. (i) The benchmarked configuration uses a single 224 × 224 camera view, whereas the LIBERO-10 models of Section 6 use 128 × 128 frames and, in the two-camera setting, two views per observation. Because both views are processed as one batch within a single evaluation of Eψ , the sequential depth of the two-camera model remains K + 3 , but its latency is not reported here. (ii) The complete decision-step times include the synchronization introduced by the per-stage timing and may therefore somewhat overstate the time of an uninstrumented step; conversely, they exclude camera capture and actuation, and thus do not measure closed-loop control frequency. (iii) Table 1 reports a single sweep on a single machine. In a repeated sweep, the median difference per timing value was 1.5% , 55 of the 60 per-stage values agreed within 5% , and the largest difference was 19% ; differences of this size should be regarded as run-to-run variation. (iv) We did not run an autoregressive VLA on the same hardware. The contrast with the rates of about 1–5 Hz reported for RT-2 [1] is therefore indicative only, given differences in hardware, model scale, and measurement protocol, and should not be read as a measured speed-up. Measurements on robotic deployment hardware and in closed-loop operation remain future work (Section 6.5). 
+
+5.2 Representation Regularization and Anti-Collapse Properties 
+
+In predictive architectures trained with a mean-squared-error objective and no pixel-level decoder, the encoder and predictor admit a degenerate solution: representation collapse. The vision encoder Eψ and predictor Pω can drive the prediction term E∥ˆzt+1 − zt+1 ∥22
+
+ to zero by mapping all observations to an identical constant vector ζ ∈ Rd.15 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors To exclude this degenerate solution, VPA incorporates the variance and covariance terms of VICReg [19]. Given a batch of B online-encoder latents Z ∈ RB×d evaluated during training, the anti-collapse loss acts through two penalties. First, to counteract collapse to a point mass, a hinge loss is applied to the standard deviation of each latent dimension 
+
+j ∈ { 1, . . . , d } with target margin γ > 0:
+
+v(Z) = 1
+
+d
+
+> d
+
+X
+
+> j=1
+
+max 
+
+
+
+0, γ −
+
+q
+
+Var( Z·,j ) + ϵ
+
+
+
+(18) where ϵ > 0 is a small numerical constant, with ϵ < γ 2, that prevents unbounded gradients at zero variance, and Var 
+
+is computed with the same estimator as C(Z) below. The term v(Z) vanishes if and only if Var( Z·,j ) ≥ γ2 − ϵ for every j. It is a penalty rather than a hard constraint: at an optimum of the joint objective at which v(Z) > 0, some dimensions may remain below the margin. Furthermore, since v(Z) is a batch statistic, it does not imply that Eψ is injective on the state space; physically distinct states may still be mapped to nearby or identical latents. The hinge also does not bound the per-dimension standard deviations from above, which is why the completion threshold is calibrated to the realized margin ¯γ rather than to γ alone (Eq. 9c). Second, to counteract dimensional collapse, in which several latent dimensions encode the same variable, we penalize the off-diagonal entries of the empirical covariance matrix C(Z) ∈ Rd×d:
+
+c(Z) = 1
+
+d
+
+X
+
+> i̸=j
+
+([ C(Z)] i,j )2 (19) where C(Z) = 1
+
+> B−1
+
+PBb=1 (Zb, · − ¯Z)( Zb, · − ¯Z)⊤ and ¯Z is the batch mean. Equation 19 penalizes linear correlations between latent dimensions; it does not penalize nonlinear dependencies, so decorrelation should not be equated with statistical independence. The regularization term is Lanti-collapse (Z) = λv v(Z) + λcc(Z) (Eq. 11). The following proposition characterizes what this regularizer does and does not exclude. For tractability, we analyze the idealized objective in which the momentum target encoder coincides with the online encoder, E ¯ψ = Eψ , as at a fixed point of the moving-average update, and write 
+
+L(ψ, ω ) = Lpred (ψ, ω ) + λv v(Z) + λcc(Z), where Lpred denotes the prediction term of Eq. 11. 
+
+Proposition 5.2 (Anti-collapse properties) . Assume λv > 0 and ϵ < γ 2.(i) Every constant encoder Eψ ≡ ζ, paired with an optimal predictor, attains the objective value Lconst =
+
+λv
+
+ γ − √ϵ. Consequently, if the model class contains parameters (ψ′, ω ′) with L(ψ′, ω ′) < λ v (γ − √ϵ), no constant encoder is a global minimizer. (ii) If a batch Z satisfies both v(Z) = 0 and c(Z) = 0 , then C(Z) is diagonal with all diagonal entries at least 
+
+γ2 − ϵ > 0; hence C(Z) is positive definite and the batch latents span all d dimensions of Z. This can occur only if B > d .Proof. (i) For a constant encoder, every column of Z is constant, so Var( Z·,j ) = 0 for all j and C(Z) = 0 . Each hinge term therefore equals max(0 , γ − √ϵ) = γ − √ϵ, giving v(Z) = γ − √ϵ, while c(Z) = 0 . A predictor that outputs ζ attains Lpred = 0 , which is optimal since Lpred ≥ 0. Hence Lconst = λv (γ − √ϵ), and any parameters with a strictly smaller objective value exclude constant encoders from the set of global minimizers. (ii) c(Z) = 0 forces all off-diagonal entries of C(Z) to vanish, and v(Z) = 0 forces [C(Z)] j,j = Var( Z·,j ) ≥ γ2 − ϵ for all j. A diagonal matrix with positive diagonal entries is positive definite and has rank d; since rank C(Z) ≤ B − 1, this requires 
+
+B > d .Part (i) of Proposition 5.2 refines a frequently stated but imprecise claim: the positivity of λv alone does not exclude collapse. Collapse is excluded from the global minimizers only if some non-degenerate representation achieves an objective value below the collapse level λv (γ − √ϵ), a condition that is more readily satisfied for larger λv . Part (ii) shows that, at points where both penalties vanish, total and dimensional collapse are excluded on the training batch. Part (ii) does not apply to the batch size used in Section 6: with B = 64 and d = 256 , rank C(Z) ≤ 63 < d , so v(Z)
+
+and c(Z) cannot vanish together on a training batch. Neither part implies that latent distances faithfully reflect physical distances: a non-collapsed representation may still be insensitive to task-relevant differences or sensitive to nuisance factors. Non-collapse is therefore necessary but not sufficient for ∥zt − z(m) 
+
+> g
+
+∥2 to serve as a proxy for task progress; the additional conditions are examined in Section 5.3. 16 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+5.3 Error Accumulation and Conditional Phase-Transition Bounds 
+
+In step-by-step imitation learning (Behavioral Cloning), policies are subject to compounding covariate shift: if the learned policy errs with probability ϵπ per step under the demonstrator’s state distribution, its expected total cost over a horizon of T steps (with per-step costs in [0 , 1] ) exceeds that of the demonstrator by at most O(T 2ϵπ ), and this quadratic dependence is tight in the worst case [35]. VPA addresses error accumulation through two mechanisms: temporal action chunking within each task phase, and discrete sub-goal thresholding between phases. 
+
+Action chunking. The Flow-Matching solver πlθ generates an H-step action chunk At, and executing it open-loop reduces the number of decisions over a horizon of T steps from T to T /H . Applying the same reduction at the chunk level, treating each chunk as a single decision whose cost is the sum of H per-step costs and whose error probability under the demonstrator’s distribution is ϵH , yields 
+
+J(ˆ π) − J(π∗) ≤
+
+ TH
+
+2
+
+· H · ϵH = T 2
+
+H ϵH ,
+
+where J(ˆ π) and J(π∗) are the expected total costs of the learned and demonstrator policies. This bound improves on 
+
+T 2ϵπ only if ϵH grows sublinearly in H. Since a chunk contains H actions, a union bound yields only ϵH ≤ Hϵ π , under which the chunk-level bound coincides with the step-level bound. The benefit of chunking is therefore an empirical property, consistent with prior findings on action chunking [10], rather than a guarantee. Open-loop execution moreover forgoes sensory feedback within each chunk, a trade-off that the adaptive horizon of Eq. 15 is intended to manage. 
+
+Sub-goal thresholding. The milestone pointer mt advances only when ∥zt − z(mt) 
+
+> g
+
+∥2 < τ (Eq. 9a). Whether this latent condition constrains the physical state depends on the regularity of the composite map from task-relevant physical state to latent, y 7 → Eψ (I(y, η )) (Section 3.1). We state two conditions on this map, with a slack δη ≥ 0 that accounts for the latent displacement caused by variation of the nuisance factors η within the deployment set N ; without loss of generality, the same slack is used in both. 
+
+Assumption 5.1 (Upper regularity) . There exist LE < ∞ and δη ≥ 0 such that, for all y, y ′ ∈ Y and all η, η ′ ∈ N ,
+
+Eψ (I(y, η )) − Eψ (I(y′, η ′)) 2 ≤ LE ∥y − y′∥2 + δη .
+
+Assumption 5.2 (Lower (co-Lipschitz) regularity) . There exist μE > 0 and δη ≥ 0 such that, for all y, y ′ ∈ Y and all 
+
+η, η ′ ∈ N ,
+
+Eψ (I(y, η )) − Eψ (I(y′, η ′)) 2 ≥ μE ∥y − y′∥2 − δη .
+
+Proposition 5.3 (Conditional phase-transition bounds) . Let y(m) 
+
+> g
+
+denote the target physical configuration of milestone 
+
+m, observed as I(m) 
+
+> g
+
+= I(y(m) 
+
+> g
+
+, η (m) 
+
+> g
+
+) with η(m) 
+
+> g
+
+∈ N , and let z(m) 
+
+> g
+
+= Eψ (I(m) 
+
+> g
+
+).(i) Soundness. Under Assumption 5.2, a satisfied threshold test implies physical proximity to the milestone: 
+
+∥zt − z(mt) 
+
+> g
+
+∥2 < τ =⇒ ∥ yt − y(mt) 
+
+> g
+
+∥2 < τ + δη
+
+μE
+
+. (20) 
+
+(ii) Completeness. Under Assumption 5.1 and τ > δ η , sufficient physical proximity triggers the transition: 
+
+∥yt − y(mt) 
+
+> g
+
+∥2 < τ − δη
+
+LE
+
+=⇒ ∥ zt − z(mt) 
+
+> g
+
+∥2 < τ. 
+
+(iii) Phase-onset reset. Under Assumption 5.2, let tk be the decision step at which the pointer advances from k to 
+
+k + 1 , and let rk+1 = ∥ytk − y(k) 
+
+> g
+
+∥2 denote the physical residual with respect to milestone k at the onset of phase k + 1 . Then rk+1 < (τ + δη )/μ E , irrespective of the trajectory executed during phases 1, . . . , k .Proof. (i) Applying Assumption 5.2 with (y, η ) = ( yt, η t) and (y′, η ′) = ( y(mt) 
+
+> g
+
+, η (mt) 
+
+> g
+
+) gives μE ∥yt − y(mt) 
+
+> g
+
+∥2 − δη ≤∥zt − z(mt) 
+
+> g
+
+∥2 < τ ; rearranging yields Eq. 20. (ii) Applying Assumption 5.1 to the same pair gives ∥zt − z(mt) 
+
+> g
+
+∥2 ≤
+
+LE ∥yt − y(mt) 
+
+> g
+
+∥2 + δη < (τ − δη ) + δη = τ . (iii) At tk, the threshold test is satisfied for milestone k by the definition of Eq. 9a; part (i) then gives the bound, which depends only on τ , δη , and μE .
+
+Remark 5.1 (Direction of the Lipschitz inequality) . An upper bound of the form ∥za − zb∥2 ≤ LE ∥ya − yb∥2
+
+(Assumption 5.1 with δη = 0 ) implies only ∥yt − y(mt) 
+
+> g
+
+∥2 ≥ ∥ zt − z(mt) 
+
+> g
+
+∥2/L E , which is a lower bound on the physical deviation. An upper Lipschitz condition alone therefore cannot bound the physical error at a transition from above; that conclusion requires the lower regularity of Assumption 5.2. The two assumptions play complementary roles: Assumption 5.2 makes the threshold test sound (a transition implies physical proximity), whereas Assumption 5.1 makes it complete (physical proximity triggers a transition). 17 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+Consequences and their limits. Under Assumption 5.2, part (iii) of Proposition 5.3 implies max k rk < (τ ⋆ +δη )/μ E
+
+over all phases that are entered: the physical residual with which each primitive begins is bounded uniformly and independently of the length M of the milestone sequence, so that deviation accumulated in one phase is not propagated beyond this bound into the next. Three qualifications apply. First, the bound concerns phase onsets only; deviations within a phase are governed by the low-level policy and are subject to the chunk-level analysis above. Second, the bound is conditional on each transition occurring: by part (ii), a transition is guaranteed only if the physical state enters the ball of radius (τ ⋆ − δη )/L E around the milestone, which requires τ ⋆ > δ η , that is, a threshold exceeding the latent displacement induced by nuisance variation; otherwise the pointer may stall (Section 4.2). Third, τ ⋆ and δη jointly determine a trade-off: increasing κ in Eq. 9c raises τ ⋆, which improves completeness under nuisance variation but loosens the soundness bound of Eq. 20. 
+
+Why these properties are expectations rather than guarantees. The constants LE , μE , and δη are properties of the learned encoder composed with image formation, and none of them is controlled by the objective of Eq. 11. Regarding Assumption 5.1, standard dot-product self-attention is not globally Lipschitz [22], so a Vision Transformer encoder possesses no global Lipschitz bound with respect to its input unless explicit constraints are imposed. On a bounded image domain a finite constant exists, but it may be very large and is neither estimated nor controlled during training. Spectral normalization of the linear layers [21], combined with a Lipschitz-continuous attention variant [22], can bound the pixel-space Lipschitz constant Lψ of Eψ . Even then, Assumption 5.1 concerns the composition with the image-formation map I, whose local sensitivity to y can be very large at occlusion and contact events, so that LE is bounded by Lψ times the Lipschitz constant of I only where the latter is finite. Spectral normalization is not part of the base formulation; its effect on representation quality and on the threshold mechanism is a subject for empirical evaluation. Regarding Assumption 5.2, a lower bound cannot be obtained from architectural constraints of this kind at all. The encoder is designed to be non-injective with respect to pixels, being intended to be invariant to η, so the lower bound must hold with respect to y alone. It therefore depends on the data and on the learned representation, and it is violated wherever task-relevant differences are not visible in the image, for example under occlusion or object symmetry. The variance term of Eq. 18 promotes only batch-level spread and does not imply Assumption 5.2. Accordingly, we do not claim that VPA guarantees non-compounding error. We instead state the expectation that, to the extent that the learned encoder satisfies Assumptions 5.1 and 5.2 with favorable constants on the deployment distribution, discrete sub-goal thresholding limits the propagation of physical error across task phases in the manner described by Proposition 5.3. This expectation is directly testable. In simulation, where the physical state yt is available, the constants μE , LE , and δη can be estimated from the lower and upper envelopes of ∥z − z′∥2 as a function of 
+
+∥y − y′∥2 over sampled state pairs and nuisance conditions, and the phase-onset residuals rk can be measured directly (Section 6.5). 
+
+# 6 Empirical Evaluation 
+
+This section reports a first empirical evaluation of the reference implementation on the LIBERO-10 benchmark [20]. The experiments are intended as a proof of concept: they test whether the pipeline of Section 4 can be trained on standard demonstration data and executed in closed loop, and they measure the effect of two design choices, the camera configuration and the executed horizon Ht. Each configuration was trained once and evaluated on 200 episodes, so that success rates carry 95% intervals of roughly ±7 percentage points, and no baselines were evaluated under the same protocol. The results should therefore be read as preliminary. The trained checkpoints, the evaluation summaries, and the code used to produce them are publicly available (Section 1.1). 
+
+6.1 LIBERO-10 Implementation Benchmark and data. LIBERO-10 is the long-horizon suite of LIBERO [20]: ten tabletop manipulation tasks in kitchen, living-room, and study scenes, each specified by a natural-language instruction, most of which combine two sub-tasks (e.g., placing two objects in a basket, or placing an object in a drawer and closing it). We trained on the demonstrations provided with the suite, holding out two demonstrations per task ( 20 in total) for validation. Frames were rotated by 180 ◦, because LIBERO renders them upside down, and used at their stored resolution of 128 × 128 
+
+pixels. The proprioceptive state St concatenated the end-effector position and orientation, the gripper state, and the joint states ( ds = 15 ), and the action space was LIBERO’s six-dimensional end-effector displacement with a gripper command ( da = 7 ). We verified on the dataset files that each recorded frame follows the action with the same index, so that each training pair associates the observation (It, S t) with the chunk of the H subsequent actions. 
+
+Primitive labels and milestones. The formulation of Section 4.2 assumes primitive labels supplied with the demon-strations, which LIBERO does not provide. As a stand-in, we derived Nu = 4 primitives from the recorded gripper 18 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors Table 2: Settings of the LIBERO-10 experiments. The listed values are defaults of the reference implementation and were not tuned; both models share them except for the camera views.                                                                               
+
+> Component Setting Observation Itthird-person view, or third-person and wrist views; 128 ×128 RGB Proprioception Stend-effector position and orientation, gripper and joint states ( ds= 15 )Actions six-dimensional end-effector displacement and gripper command ( da= 7 )Encoder EψVision Transformer, patch size 16 , width 384 , depth 6,6heads, d= 256 ; random initialization Text encoder frozen CLIP ViT-B/32 text encoder, ctext ∈R512
+> Primitives Nu= 4 (reach, grasp, carry, release), derived from the gripper command Milestones M= 1 (final frame of a demonstration) Selector πhϕMLP with two hidden layers of width 512
+> Predictor PωNe= 5 heads, each an MLP with two hidden layers of width 512 ;ν= 1
+> Solver vθTransformer, width 256 , depth 4,4heads; H= 16 ,Hmin = 4 ,K= 2
+> Eq. 11 λv= 25 ,λc= 1 ,γ= 1 ,ϵ= 10 −4, momentum of E¯ψ:0.996
+> Eqs. 9b, 9c, 15 αγ= 0 .01 ,κ= 0 .1,ασ= 0 .1,β= 1
+> Optimization AdamW with warm-up and cosine decay; batch size 64 ;50 k+ 50 k steps; seed 0
+
+command with a window of 10 steps: grasp for the 10 steps after the gripper closes, carry while it remains closed thereafter, release for the 10 steps after it opens, and reach otherwise. This heuristic is not part of the method and was chosen for simplicity; annotated or learned segmentations may behave differently. Each task was specified by a single milestone ( M = 1 ): during training, the goal image I(1)  
+
+> g
+
+was the final frame of the same demonstration, and at evaluation, trial k of each task used the final frame of demonstration k mod 50 in that task’s LIBERO demonstration file, so that the 20 trials used demonstrations 0–19 , most of which were also training demonstrations. With M = 1 ,the milestone pointer of Eq. 9a never advances between phases, so the multi-phase sequencing mechanism and the phase-transition analysis of Section 5.3 were not exercised by these experiments. We further note that the goal image provides the policy with information about the target arrangement that language-conditioned policies evaluated on LIBERO do not receive. 
+
+Training. Following Section 4.3, training proceeded in two stages of 50 ,000 steps each with batch size 64 . In the first stage, Eψ and Pω were trained from random initialization with Eq. 11, after which both were frozen, which fixed 
+
+¯γ⋆ and τ ⋆. In the second stage, every frame was encoded once by the frozen encoder, the conditioning inputs were standardized as described in Section 4.5, and the selector and the solver were trained with the cross-entropy loss of Section 4.2 and with Eq. 14, respectively, using the demonstration primitive labels as inputs to Embed( ut) and Pω . The two-camera model differs from the one-camera model only in the input of Eψ : both views are passed through the same Vision Transformer body, and a single linear head maps their concatenated class tokens to zt, so that Eqs. 8–15 are unchanged. The trainable modules of both models contain fewer than 20 M parameters; the frozen CLIP text encoder (63 .4M parameters) is evaluated once per episode. All settings are listed in Table 2; they are default values of the implementation and were not tuned. Both models were trained on a Google Cloud g2-standard-4 instance with a single NVIDIA L4 GPU (24 GB), four vCPUs, and 16 GB of memory. Training took under 2 hours of wall-clock time for the one-camera model and under 3 hours for the two-camera model. Most of this time was spent in the first stage; the second stage, which operates on cached latents, took well under an hour. 
+
+Evaluation protocol. Each model was evaluated in closed loop in the LIBERO simulator on 20 trials per task ( 200 
+
+episodes per configuration), starting from LIBERO’s fixed initial states with evaluation seed 0. After each reset, five zero-action steps were executed before control started. An episode was counted as a success if LIBERO’s task-completion predicate was satisfied within 600 control steps. Although Section 4.2 specifies that an episode terminates once the test of Eq. 9a holds for mt = M , this completion flag did not end episodes in our experiments, and success was judged only by LIBERO’s predicate. Unless stated otherwise, the executed horizon followed Eq. 15 with β = 1 ,which in practice yielded Ht = 15 of the H = 16 generated actions (Section 6.3). We report success rates with 95% 
+
+Wilson score intervals. Because each configuration was trained with a single seed, these intervals reflect evaluation variability only, not variability across training runs. 
+
+6.2 Task Success Rates (One vs. Two Cameras) 
+
+Table 3 reports success rates for the one-camera model, which observes only the third-person view, as in the single-frame formulation of Section 4.1, and for the two-camera model, which additionally observes the wrist-mounted view. The 19 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors Table 3: LIBERO-10 success rates (%) of the one-camera (third-person view) and two-camera (third-person and wrist views) models. Each task was evaluated on 20 trials; the aggregate row lists 95% Wilson intervals in brackets. One training run per model.                                      
+
+> Task One camera Two cameras 0Alphabet soup and tomato sauce into the basket 010
+> 1Cream cheese box and butter into the basket 045
+> 2Turn on the stove and put the moka pot on it 30 40
+> 3Black bowl into the bottom drawer, then close it 35 55
+> 4White mug on the left plate, yellow-and-white mug on the right plate 040
+> 5Book into the back compartment of the caddy 20 50
+> 6White mug on the plate, chocolate pudding to its right 015
+> 7Alphabet soup and cream cheese box into the basket 050
+> 8Both moka pots on the stove 045
+> 9Yellow-and-white mug into the microwave, then close it 20 50
+> All tasks ( 200 episodes) 10 .5 [7 .0,15 .5] 40 .0 [33 .5,46 .9]
+
+one-camera model succeeded in 10 .5% of episodes ( 21 /200 ; 95% interval 7.0–15 .5% ) and failed in all trials of six of the ten tasks. Adding the wrist view raised the success rate to 40 .0% (80 /200 ; 33 .5–46 .9% ). The two aggregate intervals do not overlap, and the two-camera model achieved a higher rate on each of the ten tasks. With 20 trials per task, however, individual per-task rates carry intervals of up to about ±20 percentage points, and we do not draw conclusions about particular tasks. The size of this effect suggests that, in this configuration ( 128 × 128 frames and an encoder trained from random initialization on the demonstrations alone), the third-person view did not provide the policy with sufficient information on its own. One plausible explanation, which we have not tested directly, is that the wrist view resolves the relation between the gripper and nearby objects more clearly at this resolution. The result also indicates that the single-frame observation assumed in Section 4.1 was insufficient in this setting, and that treating It as a set of views, which changes only the input of Eψ , is a useful extension of the formulation. 
+
+Dependence on the third-person view. Replacing the third-person view of the two-camera model with a black image at every decision step, while leaving the goal image unchanged, reduced its success rate to 0% (0/200 ; upper 95% 
+
+bound 1.9% ). Because a black frame lies outside the training distribution, this test shows that the policy relies on the third-person view, but it does not cleanly measure how much task-relevant information that view contributes. 
+
+Training length. Evaluating the two-camera model at intermediate checkpoints after 40 k, 45 k, and 50 k second-stage steps gave 32 .5% (26 .4–39 .3% ), 36 .0% (29 .7–42 .9% ), and 40 .0% , respectively. The differences between adjacent checkpoints are within the statistical uncertainty, but the trend suggests that the policy had not converged when training stopped. 
+
+Context. Previously reported success rates on LIBERO-10 are higher than those reported here, including for policies trained without large-scale pre-training [2]. Our protocol differs from the standard one in the number of trials and training seeds and, as noted in Section 6.1, in the goal image supplied to the policy, so we do not make a direct comparison. We regard the two-camera result as evidence that the pipeline can learn non-trivial long-horizon behavior from demonstrations, not as evidence of competitive performance. 
+
+6.3 Execution Horizon Ablation 
+
+The executed horizon Ht determines how many of the H = 16 generated actions are executed open loop before the next decision step. Using the final two-camera checkpoint, we compared fixed executed horizons of 2, 4, and 8 actions with Eq. 15 at two sensitivities: β = 1 , for which the filtered uncertainty ¯σt+1 remained small enough that Ht = 15 ,and β = 40 .4, chosen so that the 90th percentile of the per-step uncertainty σt+1 observed in the β = 1 run gives 
+
+Ht = Hmin , for which Ht varied with ¯σt+1 and was usually much shorter than the chunk. All variants used the same checkpoint and the same 200 initial states. Table 4 shows the results. Success increased monotonically with the number of executed actions, from 16 .0% with Ht = 2 to 40 .0% with 
+
+Ht = 15 . The uncertainty-adaptive setting ( β = 40 .4) reached 30 .5% , comparable to a fixed horizon of 8 actions and below the near-full-chunk setting. Differences between adjacent rows lie within the statistical uncertainty, but the overall trend is consistent. 20 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors Table 4: Success rate of the two-camera model on LIBERO-10 as a function of the number of actions executed per decision step ( H = 16 ). All rows use the same checkpoint and the same 200 episodes; intervals are 95% Wilson intervals. The value β = 40 .4 was chosen so that the 90th percentile of σt+1 in the β = 1 run gives Ht = Hmin ; it was not tuned for task success.                                  
+
+> Executed horizon Successes Success (%) 95% interval Fixed, Ht= 2 32 /200 16 .011 .6–21 .7
+> Fixed, Ht= 4 52 /200 26 .020 .4–32 .5
+> Fixed, Ht= 8 67 /200 33 .527 .3–40 .3
+> Eq. 15, β= 40 .4(adaptive Ht)61 /200 30 .524 .5–37 .2
+> Eq. 15, β= 1 (Ht= 15 )80 /200 40 .033 .5–46 .9
+
+These results do not support a benefit of uncertainty-adaptive execution in this setting. The best result was obtained when Eq. 15 executed almost the entire chunk, which effectively disabled its adaptivity, whereas the configuration in which Ht responded to ¯σt+1 performed worse. A likely contributing factor is that each new chunk is generated from fresh noise ξ, so that frequent replanning can switch between different, individually valid realizations of the same motion; executing a longer prefix reduces the number of such switches. We have not verified this explanation. It also remains open whether a better-calibrated uncertainty estimate, a different form of Eq. 15, or a mechanism that keeps consecutive chunks consistent would change this outcome, and whether adaptive horizons become beneficial in the dynamic settings that motivated them (Section 6.5). 
+
+6.4 Latency Benchmarks 
+
+Section 5.1 reports per-stage latency measurements of the reference implementation on an Apple M4 (Table 1); we summarize them here in the context of the LIBERO-10 experiments. For K ∈ { 1, 2, 3} and H ≤ 64 , a complete decision step took 10 .5–14 .2 ms at batch size one, of which 6.2–9.5 ms was spent in the four networks on the dependency chain. At K = 2 and H = 16 , the values used in the LIBERO-10 experiments, the complete step took 12 .1 ms. The sequential depth was K + 3 in all measured configurations, the encoder, selector, and predictor times did not change appreciably with H, and the time of one solver evaluation remained within 10% of its value at H = 8 up to H = 64 ,consistent with Proposition 5.1. Two points limit how these figures relate to the experiments above. First, the latency benchmark used the default module sizes with a single 224 × 224 view, whereas the LIBERO-10 models used 128 × 128 frames, two views in the two-camera case, and the settings of Table 2. We have not separately benchmarked the released checkpoints, although the released benchmark script accepts the configuration of a trained model. Second, in the LIBERO-10 experiments a decision step was followed by the open-loop execution of Ht = 15 actions, so the networks were evaluated once per 
+
+15 control steps, and the simulated episodes did not run in real time. The measured latency therefore indicates the computational headroom of the pipeline rather than a constraint that was active in these experiments. Measurements on robotic deployment hardware and under real-time closed-loop operation remain future work. 
+
+6.5 Future Work 
+
+The experiments above establish that the pipeline can be trained and executed in a standard benchmark setting, but they leave open several questions that bear directly on the claims of this paper. First, the LIBERO-10 results should be strengthened by following the standard protocol, with several training seeds, 50 trials per task, all LIBERO suites, and baselines evaluated under identical conditions. Initializing Eψ from a pre-trained self-supervised encoder [16], which the implementation already supports, and replacing the gripper-derived primitive labels with annotated or learned segmentations are natural next steps. Second, multi-milestone tasks ( M > 1) are required to exercise the sequencing mechanism of Section 4.2, including the per-milestone time-out deferred there. Third, the properties that motivated the design, namely reactive control under dynamic perturbations and the conditional analysis of Section 5, require environments that support such perturbations and expose the privileged physical state yt.Section 5 establishes two kinds of properties: properties that follow from the architecture and its objectives (Proposi-tions 5.1 and 5.2), and properties that hold only under regularity assumptions on the learned encoder (Proposition 5.3). The latency measurements of Section 5.1 provide initial support for the former on one hardware platform; the latter remain untested. We therefore plan an evaluation that benchmarks high-frequency reactive control and visual robustness, areas in which current autoregressive Vision-Language-Action (VLA) models often experience difficulties, together with targeted measurements of the theoretical quantities introduced in Section 5. 21 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors                           
+
+> Dynamic Perturbations (Lighting Shifts, Moving Targets)
+> GPU-Accelerated Simulators (Isaac Sim / ManiSkill3)
+> Visual Stream ( It,I(m)
+> g)@ 60–100 Hz Proprioception ( St)@ 100–500 Hz VPA Inference Pipeline
+> K+3 Sequential Evaluations per Decision Step Action Chunk At∈RH×da
+> via CFM Solver ( Ksteps) Low-Level Motor Controller Open-Loop Execution of First HtSteps Integrate vθ
+> Continuous Motor Commands (at∈At)
+> Evaluation Logging
+> •Task Success (%)
+> •Latency Breakdown (ms)
+> •Control Frequency (Hz)
+> •v(Z),c(Z), Effective Rank
+> •Phase Residuals rk
+> •Encoder Constants ˆμE,ˆLE,ˆδη
+> Privileged State yt
+
+Figure 5: Planned Closed-Loop Evaluation in Simulation (Future Work). To benchmark high-frequency reactive control, the Goal-Conditioned VPA framework will be deployed in GPU-accelerated simulators subjected to dynamic physical and visual perturbations. High-frequency sensory streams are processed by the VPA pipeline, whose sequential depth of K + 3 network evaluations per decision step is independent of the action horizon (Proposition 5.1), and the resulting action chunks are executed open-loop for an uncertainty-dependent number of steps Ht. This setting is intended to test, under realistic closed-loop conditions, whether VPA avoids the low inference rates reported for autoregressive VLA architectures, such as about 1–5 Hz for RT-2 [1]. Because the simulator exposes the privileged physical state yt, the evaluation will also log the quantities required to test the conditional analysis of Section 5.3. 
+
+6.5.1 Simulation Environments 
+
+To benchmark the system reproducibly prior to physical hardware deployment, we plan to use established GPU-accelerated simulation platforms: • NVIDIA Isaac Sim [36]: This platform is selected for its PhysX physics engine and ray-traced rendering. It is suited to testing robustness against visual distribution shifts, such as dynamic lighting or reflections, and to assessing whether the regularized JEPA representations remain informative without pixel reconstruction. • ManiSkill3 [37]: This simulator is selected for its standardized manipulation tasks and parallelized tensor-based API. It allows for the rapid evaluation of continuous action chunking and neuro-symbolic transitions across numerous episodic rollouts. Both platforms expose the ground-truth physical state yt (robot configuration and object poses), which is unavailable on physical hardware and is required for the measurements of Section 6.5.3. 
+
+6.5.2 Planned Benchmark Tasks 
+
+The planned evaluation focuses on dynamic, non-stationary environments in which the low per-step latency measured in Section 5.1 may translate into a measurable advantage over autoregressive VLAs, for which inference rates of about 
+
+1–5 Hz have been reported for RT-2 [1]. 
+
+1. High-Speed Reactive Pick-and-Place: Unlike static tabletop manipulation, this task involves moving targets, such as items on a moving conveyor belt or objects physically perturbed mid-grasp. Autoregressive models often experience action lag in these scenarios, executing stale trajectories based on outdated observations. The Flow-Matching solver (πlθ) will be evaluated on its ability to update action chunks at > 50 Hz to track and grasp moving targets. In light of Section 6.3, this task will also test whether frequent replanning can be made beneficial when the target moves. 
+
+2. Reactive Obstacle Avoidance: In this task, the robot is instructed to reach a visual goal, but dynamic obstacles are introduced into the workspace mid-trajectory. This evaluates the neuro-symbolic primitive selector ( πhϕ ) and the 22 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors discrete sub-goal thresholding ( ∥zt − z(mt) 
+
+> g
+
+∥2 < τ ). If an obstacle blocks a trajectory, the system is expected to halt milestone progression or switch primitives to mitigate error accumulation; the frequency and duration of such halts also serve to characterize pointer stalls (Section 4.2). 
+
+3. Visual Nuisance Generalization: To test the nuisance robustness motivated in Sections 4.1 and 5.2, and to estimate the nuisance slack δη of Section 5.3, the agent will be trained in a visually sterile environment and tested in environments with visual distractors, such as changing background textures, moving camera perspectives, and variable illumination. The metric of interest is the zero-shot success rate decay compared to pixel-reconstruction baselines. 
+
+4. Language Intent Disambiguation: To evaluate the system’s semantic comprehension, this task presents environ-ments in which visual goals are ambiguous without language context (e.g., distinguishing between an instruction to move a cup and an instruction to throw it away). This benchmark tests whether the text embedding ctext produced by the lightweight frozen encoder provides sufficient conditioning for the primitive selector and the flow-matching solver, which are the modules that receive it (Eqs. 8 and 12), to resolve the overarching task intent without a large language model. 
+
+6.5.3 Verification of Theoretical Properties and Ablations 
+
+Beyond task-level performance, we plan the following measurements, each of which targets a specific statement or design choice of Sections 4 and 5: 1. Latency on deployment hardware (Proposition 5.1): Extend the measurements of Section 5.1 to robotic deployment hardware and to trained configurations, including the two-camera encoder, by measuring TVPA and its components tE , th, tP , and tl(H) (Eq. 17) as H and K are varied, together with the end-to-end closed-loop control frequency. 2. Encoder regularity (Assumptions 5.1 and 5.2): Using the privileged state yt, sample state pairs under controlled nuisance variation and estimate ˆμE , ˆLE , and ˆδη from the lower and upper envelopes of ∥z − z′∥2 as a function of ∥y − y′∥2 (e.g., via quantile regression), with and without spectral normalization of the encoder. 3. Phase-onset residuals (Proposition 5.3): On tasks with M > 1, record the residual rk at every milestone transition and compare its empirical distribution with the conditional bound (τ ⋆ + ˆδη )/ˆμE , together with the rates of premature transitions, missed transitions, and stalls under a per-milestone time-out. 4. Threshold calibration (Eq. 9): Compare a fixed absolute threshold with the variance-margin-scaled threshold of Eq. 9c across training checkpoints, and sweep the tolerance κ to trace the trade-off between soundness and completeness described in Section 5.3. 5. Horizon stability (Eq. 15): Building on Section 6.3, compare the raw uncertainty score σt+1 with the filtered signal ¯σt+1 in terms of the frequency of horizon switches and the magnitude of action discontinuities at chunk boundaries, and examine whether keeping consecutive chunks consistent changes the effect of the executed horizon on task success. 
+
+6.5.4 Baselines and Evaluation Metrics 
+
+The VPA architecture will be benchmarked against autoregressive VLA models (e.g., RT-2 [1]), generalist policies with continuous action heads (e.g., Octo [23] and π0 [14]), and diffusion-based behavior cloning policies [34, 11], under identical observations, training data, and evaluation protocols. Including continuous-head baselines isolates the contribution of the lightweight latent pipeline from that of non-autoregressive action generation, since the latter reduction in sequential depth is shared by these methods (Section 5.1). The primary evaluation metrics will include: 1. Task Success Rate (%): Measured across static and dynamic environments, with several training seeds. 2. End-to-End Inference Latency (ms): Wall-clock time from image capture to motor command generation, reported together with its per-module breakdown and the deployment hardware. 3. Control Frequency (Hz): The maximum stable closed-loop execution rate. 4. Representation Health: The variance and covariance penalties v(Z) and c(Z), together with the effective rank of C(Z) [38], evaluated for the frozen visual encoder under visual shift. 5. Phase-Transition Fidelity: The distribution of phase-onset residuals rk and the rates of premature transitions, missed transitions, and stalls. 6. Execution Smoothness: The frequency of changes in the executed horizon Ht and the magnitude of action discontinuities at chunk boundaries. 23 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+# 7 Conclusion 
+
+The pursuit of generalized embodied intelligence has recently been supported by the scaling of autoregressive Vision-Language-Action (VLA) models. However, the sequential token generation on which many of these models rely makes them challenging to deploy for the high-frequency, reactive demands of physical robotic control. In this paper, we introduced the Goal-Conditioned Vision-Predictor-Action (VPA) framework, proposing a shift from text-conditioned autoregressive decoding to latent-predictive continuous control, and implemented it as an open-source reference implementation. By decoupling high-level task logic from low-level motor execution and utilizing a lightweight frozen text encoder to capture user instructions, the VPA framework aims to retain semantic task comprehension without relying on computationally heavy Large Language Models (LLMs). Our analysis establishes three results at different levels of strength. First, formulating multi-step action chunking through Conditional Flow-Matching (CFM) reduces the number of sequential network evaluations per decision step from Θ( H · da) for autoregressive token decoding to K + 3 , a quantity independent of the action horizon H; the arithmetic cost of each solver evaluation nevertheless still scales with the chunk dimensionality H · da, so the per-cycle cost is not O(1) in H. Second, the VICReg variance and covariance penalties exclude fully collapsed representations from the global minimizers of the joint-embedding objective whenever a non-degenerate representation attains a lower objective value, and they exclude dimensional collapse on batches where both penalties vanish; the realized variance margin further provides a principled scale for calibrating the milestone completion threshold τ . Third, discrete sub-goal thresholding bounds the physical residual at each phase transition by (τ + δη )/μ E , but only under a co-Lipschitz condition on the encoder with respect to task-relevant physical state. Because Vision Transformers are not globally Lipschitz without explicit constraints, and because this lower bound cannot be enforced through architectural constraints alone, we regard the containment of error across task phases as an empirical expectation rather than a formal guarantee. 
+
+Initial empirical validation. The reference implementation provides a first proof of concept for the framework (Section 6). The trainable modules contain fewer than 20 M parameters, and the frozen CLIP text encoder ( 63 .4Mparameters) is evaluated only once per episode, outside the per-step dependency chain. Each model trained in under three hours on a single NVIDIA L4 GPU. On an Apple M4, a complete decision step of the single-camera reference configuration took 10 .5–14 .2 ms for K ∈ { 1, 2, 3} and H ≤ 64 , and the per-stage timings were consistent with the horizon-independent sequential depth of Proposition 5.1 (Section 5.1). On LIBERO-10, with a vision encoder trained from random initialization on the demonstrations alone, the policy succeeded in 40 .0% of 200 evaluation episodes (95% interval 33 .5–46 .9% ) when observing a third-person and a wrist-mounted camera, compared with 10 .5% with the third-person camera alone. In an ablation of the executed horizon, executing nearly the full action chunk before replanning gave the best results. We regard these results as promising but preliminary: they indicate that a latent control loop without a language-model decoder can be trained from demonstrations to complete long-horizon manipulation tasks in a meaningful fraction of trials, while its per-step computation remains small enough to run at low latency on commodity hardware. 
+
+Limitations. The repertoire of high-level behaviors is bounded by the fixed primitive dictionary U, and zero-shot synthesis of skills outside U is not addressed by the present formulation. The empirical results come from a single training run per configuration with 20 trials per task. They were not compared with baselines under the same protocol, and they remain below success rates previously reported on this suite. The experiments used a single goal image per task ( M = 1 ) and primitive labels derived heuristically from the gripper command, so the multi-milestone sequencing mechanism and the conditional analysis of Proposition 5.3 were not exercised; the encoder constants μE , LE , and δη
+
+and the phase-onset residuals rk have not yet been measured. The uncertainty-adaptive execution horizon of Eq. 15 did not improve task success in our ablation (Section 6.3). Latency was measured for a single-camera reference configuration on one hardware platform, not for the released checkpoints or on robotic deployment hardware, and closed-loop control frequency under real-time operation was not measured. Finally, the single-frame observation of the original formulation proved insufficient in our experiments, and the reported success rate depends on extending It to two camera views. We therefore view VPA as an analytically characterized architecture with an initial working implementation, whose theoretical properties are stated together with the assumptions they require and whose empirical support is, so far, limited to the setting reported here. The next steps are to evaluate the framework under the standard LIBERO protocol with baselines, on multi-milestone tasks, and in the dynamic simulation environments outlined in Section 6.5. We expect the explicit separation between unconditional and conditional properties to provide a sound basis for this work, and we hope that the released code and checkpoints (Section 1.1) will help others reproduce, test, and improve upon these results. 24 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors 
+
+# References 
+
+[1] Anthony Brohan, Noah Brown, Justice Carbajal, Yevgen Chebotar, Xi Chen, Krzysztof Choromanski, Tianli Ding, Danny Driess, Avinava Dubey, Chelsea Finn, et al. Rt-2: Vision-language-action models transfer web knowledge to robotic control. arXiv preprint arXiv:2307.15818 , 2023. [2] Moo Jin Kim, Karl Pertsch, Siddharth Karamcheti, Ted Xiao, Ashwin Balakrishna, Suraj Nair, Rafael Rafailov, Ethan Foster, Grace Lam, Pannag Sanketi, et al. Openvla: An open-source vision-language-action model. arXiv preprint arXiv:2406.09246 , 2024. [3] Siyuan Huang, Zhengkai Jiang, Hao Dong, Yu Qiao, Peng Gao, and Hongsheng Li. Instruct2act: Mapping multi-modality instructions to robotic actions with large language model. arXiv preprint arXiv:2305.11176 , 2023. [4] Ziyue Zhu, Shangyang Wu, Shuai Zhao, Zhiqiu Zhao, Jian Zhang, Shengjie Li, Yi Wang, Anh Tuan Luu, Xinliang Zhou, Fang Li, and Haoran Luo. NS-VLA: Towards neuro-symbolic vision-language-action models. arXiv preprint arXiv:2603.09542, 2026. [5] Jingwen Sun, Wenyao Zhang, Zekun Qi, Shaojie Ren, Zezhi Liu, Hanxin Zhu, Guangzhong Sun, Xin Jin, and Zhibo Chen. Vla-jepa: Enhancing vision-language-action model with latent world model. arXiv preprint arXiv:2602.10098 , 2026. [6] Yann LeCun. A path towards autonomous machine intelligence. OpenReview preprint, version 0.9.2, 2022-06-27, 2022. [7] Mahmoud Assran, Quentin Duval, Ishan Misra, Piotr Bojanowski, Pascal Vincent, Michael Rabbat, Yann LeCun, and Nicolas Ballas. Self-supervised learning from images with a joint-embedding predictive architecture. In 2023 IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) , pages 15619–15629. IEEE, 2023. [8] Lucas Maes, Quentin Le Lidec, Damien Scieur, Yann LeCun, and Randall Balestriero. Leworldmodel: Stable end-to-end joint-embedding predictive architecture from pixels. arXiv preprint arXiv:2603.19312 , 2026. [9] Wancong Zhang, Basile Terver, Artem Zholus, Soham Chitnis, Harsh Sutaria, Mido Assran, Randall Balestriero, Amir Bar, Adrien Bardes, Yann LeCun, et al. Hierarchical planning with latent world models. arXiv preprint arXiv:2604.03208 , 2026. [10] Tony Z Zhao, Vikash Kumar, Sergey Levine, and Chelsea Finn. Learning fine-grained bimanual manipulation with low-cost hardware. arXiv preprint arXiv:2304.13705 , 2023. [11] Cheng Chi, Zhenjia Xu, Siyuan Feng, Eric Cousineau, Yilun Du, Benjamin Burchfiel, Russ Tedrake, and Shuran Song. Diffusion policy: Visuomotor policy learning via action diffusion. The International Journal of Robotics Research , 44(10-11):1684–1704, 2025. [12] Yaron Lipman, Ricky TQ Chen, Heli Ben-Hamu, Maximilian Nickel, and Matt Le. Flow matching for generative modeling. arXiv preprint arXiv:2210.02747 , 2022. [13] Michael S Albergo and Eric Vanden-Eijnden. Building normalizing flows with stochastic interpolants. arXiv preprint arXiv:2209.15571 , 2022. [14] Kevin Black, Noah Brown, Danny Driess, Adnan Esmail, Michael Equi, Chelsea Finn, Niccolo Fusai, Lachy Groom, Karol Hausman, Brian Ichter, et al. π0: A vision-language-action flow model for general robot control. 
+
+arXiv preprint arXiv:2410.24164 , 2024. [15] Alexey Dosovitskiy, Lucas Beyer, Alexander Kolesnikov, Dirk Weissenborn, Xiaohua Zhai, Thomas Unterthiner, Mostafa Dehghani, Matthias Minderer, Georg Heigold, Sylvain Gelly, et al. An image is worth 16x16 words: Transformers for image recognition at scale. arXiv preprint arXiv:2010.11929 , 2020. [16] Maxime Oquab, Timothée Darcet, Théo Moutakanni, Huy Vo, Marc Szafraniec, Vasil Khalidov, Pierre Fernandez, Daniel Haziza, Francisco Massa, Alaaeldin El-Nouby, et al. Dinov2: Learning robust visual features without supervision. arXiv preprint arXiv:2304.07193 , 2023. [17] Alec Radford, Jong Wook Kim, Chris Hallacy, Aditya Ramesh, Gabriel Goh, Sandhini Agarwal, Girish Sastry, Amanda Askell, Pamela Mishkin, Jack Clark, et al. Learning transferable visual models from natural language supervision. In International conference on machine learning , pages 8748–8763. PmLR, 2021. [18] Hadas Kress-Gazit, Georgios E Fainekos, and George J Pappas. Temporal-logic-based reactive mission and motion planning. IEEE transactions on robotics , 25(6):1370–1381, 2009. [19] Adrien Bardes, Jean Ponce, and Yann LeCun. Vicreg: Variance-invariance-covariance regularization for self-supervised learning. arXiv preprint arXiv:2105.04906 , 2021. 25 Vision-Predictor-Action: Towards Efficient Embodied AI via Neuro-Symbolic JEPA Predictors [20] Bo Liu, Yifeng Zhu, Chongkai Gao, Yihao Feng, Qiang Liu, Yuke Zhu, and Peter Stone. LIBERO: Benchmarking knowledge transfer for lifelong robot learning. In Advances in Neural Information Processing Systems , volume 36, 2023. [21] Takeru Miyato, Toshiki Kataoka, Masanori Koyama, and Yuichi Yoshida. Spectral normalization for generative adversarial networks. arXiv preprint arXiv:1802.05957 , 2018. [22] Hyunjik Kim, George Papamakarios, and Andriy Mnih. The lipschitz constant of self-attention. In International Conference on Machine Learning , pages 5562–5571. PMLR, 2021. [23] Octo Model Team, Dibya Ghosh, Homer Walke, Karl Pertsch, Kevin Black, Oier Mees, Sudeep Dasari, Joey Hejna, Tobias Kreiman, Charles Xu, et al. Octo: An open-source generalist robot policy. arXiv preprint arXiv:2405.12213 ,2024. [24] Yongchao Huang and Hassan Raza. Knowledge, rules and their embeddings: Two paths towards neuro-symbolic jepa. arXiv preprint arXiv:2603.13265 , 2026. [25] Yongchao Huang. Sjepa: Learning elegant latent dynamics with hybrid symbolic-neural predictors. arXiv preprint arXiv:2608.04060 , 2026. [26] Yeonseok Lee. NS-JEPA: Towards Efficient Embodied AI via Neuro-Symbolic Joint-Embedding Predictive Architecture. Zenodo, https://doi.org/10.5281/zenodo.22493915 , 2026. [27] Randall Balestriero and Yann LeCun. Lejepa: Provable and scalable self-supervised learning without the heuristics. 
+
+arXiv preprint arXiv:2511.08544 , 2025. [28] Mahmoud Assran, Adrien Bardes, David Fan, Quentin Garrido, Russell Howes, Mojtaba Komeili, Matthew Muckley, Ammar Rizvi, Claire Roberts, Koustuv Sinha, Artem Zholus, Sergio Arnaud, Abha Gejji, Ada Martin, Francois Robert Hogan, Daniel Dugas, Piotr Bojanowski, Vasil Khalidov, Patrick Labatut, Francisco Massa, Marc Szafraniec, Kapil Krishnakumar, Yong Li, Xiaodong Ma, Sarath Chandar, Franziska Meier, Yann LeCun, Michael Rabbat, and Nicolas Ballas. V-jepa 2: Self-supervised video models enable understanding, prediction and planning. arXiv preprint arXiv:2506.09985 , 2025. [29] Shangchen Miao, Ningya Feng, Jialong Wu, Ye Lin, Xu He, Dong Li, and Mingsheng Long. Jepa-vla: Video predictive embedding is needed for vla models. arXiv preprint arXiv:2602.11832 , 2026. [30] Aleksandar Vujinovi´ c and Aleksandar Kovaˇ cevi´ c. Act-jepa: Novel joint-embedding predictive architecture for efficient policy representation learning. IEEE Access , 2026. [31] Xingchao Liu, Chengyue Gong, and Qiang Liu. Flow straight and fast: Learning to generate and transfer data with rectified flow. arXiv preprint arXiv:2209.03003 , 2022. [32] Yinhan Liu, Myle Ott, Naman Goyal, Jingfei Du, Mandar Joshi, Danqi Chen, Omer Levy, Mike Lewis, Luke Zettlemoyer, and Veselin Stoyanov. Roberta: A robustly optimized bert pretraining approach. arXiv preprint arXiv:1907.11692 , 2019. [33] Balaji Lakshminarayanan, Alexander Pritzel, and Charles Blundell. Simple and scalable predictive uncertainty estimation using deep ensembles. Advances in neural information processing systems , 30, 2017. [34] Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. Advances in neural information processing systems , 33:6840–6851, 2020. [35] Stéphane Ross and Drew Bagnell. Efficient reductions for imitation learning. In Proceedings of the thirteenth international conference on artificial intelligence and statistics , pages 661–668. JMLR Workshop and Conference Proceedings, 2010. [36] NVIDIA. Isaac Sim. https://developer.nvidia.com/isaac/sim , 2026. Accessed: 2026-10-08. [37] Stone Tao, Fanbo Xiang, Arth Shukla, Yuzhe Qin, Xander Hinrichsen, Xiaodi Yuan, Chen Bao, Xinsong Lin, Yulin Liu, Tse-kai Chan, et al. Maniskill3: Gpu parallelized robotics simulation and rendering for generalizable embodied ai. arXiv preprint arXiv:2410.00425 , 2024. [38] Olivier Roy and Martin Vetterli. The effective rank: A measure of effective dimensionality. In 2007 15th European signal processing conference , pages 606–610. IEEE, 2007. 26
