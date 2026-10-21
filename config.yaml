@@ -174,46 +174,46 @@ subscriptions:
       paper_sources:
         - arxiv
       keywords:
-        - keyword: recursive self-improvement
+        - keyword: recursive self improvement
           keyword_cn: 递归自我改进
-          query: AI systems that recursively improve themselves by designing more capable successor systems
-        - keyword: self-improving AI systems
-          keyword_cn: 自我改进的人工智能系统
-          query: AI systems that autonomously improve their own capabilities over successive generations
+          query: research on AI systems that recursively design and build more capable successor systems
+        - keyword: self improving AI systems
+          keyword_cn: 自我改进AI系统
+          query: self-improving artificial intelligence systems that autonomously enhance their own capabilities
         - keyword: automated AI research
-          keyword_cn: 自动化人工智能研究
-          query: automating the process of AI research and development with minimal human involvement
-        - keyword: AI designing AI systems
-          keyword_cn: 人工智能设计人工智能系统
-          query: AI systems designing stronger AI systems as part of self-improvement
+          keyword_cn: 自动化AI研究
+          query: automated machine learning research pipelines where AI agents generate and evaluate new AI methods
+        - keyword: AI research automation
+          keyword_cn: AI研究自动化
+          query: automation of the AI research and development process with minimal human intervention
         - keyword: recursive improvement loop
           keyword_cn: 递归改进循环
-          query: closed-loop processes where each AI generation accelerates the creation of a stronger next generation
-        - keyword: AI capability amplification
-          keyword_cn: AI能力放大
-          query: methods that amplify AI capabilities through iterative self-generated improvements
+          query: feedback loops where each AI generation accelerates the creation of a stronger next generation
+        - keyword: alignment self improving systems
+          keyword_cn: 自我改进系统对齐
+          query: alignment challenges and safety risks of self-improving AI systems
       intent_queries:
-        - query: Which current AI systems are closest to recursive self improvement?
-          query_cn: 目前哪些AI系统最接近递归自我改进？
+        - query: What current AI research systems are closest to recursive self improvement and how do they work?
+          query_cn: 目前哪些AI研究系统最接近递归自我改进，它们如何工作？
           enabled: true
           source: manual
           note: ''
-        - query: What technical principles enable AI systems to design stronger successor systems?
-          query_cn: 哪些技术原理使AI系统能够设计更强的下一代系统？
+        - query: How far are existing self improving AI research systems from true recursive self improvement?
+          query_cn: 现有自我改进AI研究系统距离真正的递归自我改进还有多远？
           enabled: true
           source: manual
           note: ''
-        - query: What difficulties and bottlenecks prevent the realization of recursive self improvement?
-          query_cn: 哪些困难和瓶颈阻止了递归自我改进的实现？
+        - query: What are the main limitations and failure modes of current recursive self improvement research prototypes?
+          query_cn: 当前递归自我改进研究原型的主要缺陷和失败模式是什么？
           enabled: true
           source: manual
           note: ''
-        - query: What limitations and defects exist in the most advanced self improving AI systems?
-          query_cn: 最先进的自我改进AI系统存在哪些局限和缺陷？
+        - query: What technical bottlenecks prevent AI systems from achieving recursive self improvement?
+          query_cn: 哪些技术瓶颈阻碍AI系统实现递归自我改进？
           enabled: true
           source: manual
           note: ''
-      updated_at: '2026-10-21T06:42:39.893Z'
+      updated_at: '2026-10-21T06:45:18.113Z'
 source_backends:
   arxiv:
     papers_table: arxiv_papers
