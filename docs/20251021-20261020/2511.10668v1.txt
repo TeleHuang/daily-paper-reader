@@ -1,0 +1,1658 @@
+Title: A Mathematical Framework for AI Singularity: Conditions, Bounds, and Control of Recursive Improvement
+
+URL Source: https://arxiv.org/pdf/2511.10668v1
+
+Published Time: Mon, 17 Nov 2025 01:00:45 GMT
+
+Number of Pages: 41
+
+Markdown Content:
+# Highlights 
+
+A Mathematical Framework for AI Singularity: Conditions, Bounds, and Control of Recursive Improvement 
+
+Akbar Anbar Jafari, Cagri Ozcinar, Gholamreza Anbarjafari • What would it take for AI progress to “run away”? We turn that into clear, measurable conditions using only things operators already track (power, bandwidth, data, benchmark scores), replacing specula-tion with checkable facts. • Easy-to-test rules. If improvement grows more than proportionally with capability and resources, runaway can happen; if not, it cannot. We give simple, interpretable thresholds and, when relevant, an upper bound on the time to runaway. • Hard physical and engineering limits. We translate facility power, cool-ing efficiency, memory and I/O bandwidth into concrete ceilings on improvement, showing when these limits alone guarantee no runaway. • Practical safety levers that work today. Power caps, throughput throt-tles, and evaluation gates are framed as control policies with provable guarantees that keep capability growth within safe bounds. • No simulation needed. We provide diagnostics that use rolling slopes of logged series (e.g., how fast improvement grows vs. capability) so teams can run falsifiable tests on public or internal data. • When the money loop matters (and when it doesn’t). We identify when reinvestment and financing can amplify growth, and provide a single “critical threshold” to monitor so economic feedback does not push systems into risky regimes. • Robust to uncertainty and noise. The tests and guarantees tolerate measurement error, model misspecification, and data revisions, and are intentionally conservative so they fail safe under ambiguity. • Clear map of real-world regimes. We work through capped-power, saturating-data, and investment-heavy scenarios to show, in plain terms, what each setting implies for growth and safety. 
+
+> arXiv:2511.10668v1 [cs.CV] 8 Nov 2025
+
+• A measurement-first safety playbook. We explain what to log, what to compute, and how to act: certify safety when the test says “safe,” es-calate when margins shrink, and shut down automatically if thresholds are crossed. • Bridge between research and operations. The framework stays fully an-alytic but is grounded in telemetry and governance, offering a practical path for labs, cloud providers, and regulators to assess and manage risk. 2A Mathematical Framework for AI Singularity: Conditions, Bounds, and Control of Recursive Improvement 
+
+Akbar Anbar Jafari a, Cagri Ozcinar a,b , Gholamreza Anbarjafari c,d,e 
+
+> aUniversity of Tartu, Institute of Technology, Tartu, , , Estonia
+> bLoughborough University London, Queen Elizabeth Olympic Park, The Broadcast Centre Here East, Lesney Ave, London, E20 3BS, , United Kingdom
+> cEstonian Business School, A. Lauteri tn 3, Tallinn, 10114, , Estonia
+> dPricewaterhouseCooper OY, Itämerentori 2, Helsinki, 00180, , Finland
+> e3S Holding OÜ, Purpuri 12-2, Tartu, 51011, , Estonia
+
+Abstract 
+
+AI systems improve by using more compute, data, and better algorithms. A common fear is that this improvement might feed on itself and run away—what people call a “singularity” [1]. This paper asks a precise version of that ques-tion: under what measurable conditions could capability growth run away in finite time, and under what conditions can we rule that out? We aim for answers that are testable with real power, bandwidth, and benchmark data, and for controls that can be implemented in practice (e.g., power caps, throttling, evaluation gates). The goal is to replace speculation with clear conditions that either certify safety or flag genuine risk—without relying on simulations or unverifiable assumptions. We study the prospect of an AI singularity as finite-time blow-up of a capability process I(t) driven by recursive self-improvement. We formalize how self-modifying systems couple gains in capability to increases in com-pute C(t), data D(t), energy E(t), and capital K(t), and we seek conditions under which trajectories remain bounded or diverge. The main objective of this work is to develop a rigorous framework for recursive self-improvement that yields testable criteria for singularity, global upper bounds from physics and information theory, and control policies that provably preclude uncon-trolled growth. We define dynamics ˙I = F (I, C, D, E ) with an improvement operator R and resource couplings ˙C = G(I, K ), ˙D = H(I), ˙E = J(I). Us-ing comparison principles, Osgood–Bihari inequalities, and Lyapunov bar-rier certificates, we derive necessary and sufficient conditions for blow-up and stabilization. Identifiability inequalities link model exponents to observ-able quantities. If ˙I ≥ aI p with p > 1, finite-time blow-up occurs with 
+
+T ≤ I(0) 1−p/(a(p − 1)) ; if p ≤ 1 under bounded a, no blow-up. Scaling rela-tions ∆I ≍ CαDβ ηγ imply singular regimes only when α+γ > 1 [2]. Physical and information-theoretic limits bound F via energy-to-erasure and mem-ory–communication constraints. Economic coupling ˙K = rK ζ − δK − χ(I)
+
+yields singularity only for ζ > 1 above a critical manifold. Control inputs enforce R ∞ 
+
+> I0
+
+dI/a (I) = ∞, ruling out singularity. Predictions are falsifiable through estimating d log ˙Id log I . Case studies admit closed-form envelopes without simulation. The framework is analytic and grounded in measurable con-straints. Limitations include the choice of capability metric and regular-ity assumptions; future work treats stochasticity, multi-agent coupling, and discontinuities. The results provide a concrete path to certify or preclude singularity in practice. 
+
+Keywords: AI singularity, recursive self-improvement, differential inequalities, control barrier functions, physical and information-theoretic limits, endogenous growth and capital coupling, identifiability inequalities 
+
+1. Introduction and Problem Statement 
+
+Motivation and scope 
+
+Why this paper, in plain terms. Modern AI systems get better because we invest more compute and energy, train on more data, and discover more efficient algorithms. As these systems become more capable, they can also help automate parts of the process that makes them better (e.g., code, op-timization, hardware utilization, data curation) [3, 4, 5, 6]. This feedback loop raises a natural question: could capability growth “run away” in prac-tice—and if not, what concrete limits keep it in check [7]? Our aim is to provide clear, measurable conditions that distinguish these possibilities and practical controls that ensure safety. The emphasis throughout is on tests one can run on real power, bandwidth, and benchmark series, and on policies that can be implemented by operators and regulators. This work develops a rigorous account of an AI singularity conceived as a finite time blow up of a capability process I(t). Let I : [0 , ∞) → [0 , ∞) en-code task-agnostic competence under fixed axioms of monotonicity, scale in-variance up to affine transforms, and aggregation across tasks. A singularity 2occurs if there exists T < ∞ with lim t↑T I(t) = ∞, or if lim sup t↑T ˙I(t) = ∞
+
+once I reaches a critical threshold I⋆. This notion separates finite time di-vergence from hyper exponential but non explosive growth where I(t) → ∞ 
+
+only as t → ∞ . The mechanism of interest is recursive self improvement, where capability growth increases the system’s ability to obtain and deploy resources that further accelerate improvement [8, 9]. 
+
+Problem formulation 
+
+We model recursive self improvement using a discrete improvement opera-tor and its continuous time limit. Let resources x(t) = ( C(t), D (t), E (t), K (t)) 
+
+denote compute, data, energy, and capital. Define a measurable operator 
+
+R : R1+4 + → R+ with 
+
+In+1 = R In; Cn, D n, E n, K n
+
+, xn+1 = Ξ  In, x n
+
+, (1) and continuous dynamics 
+
+˙I(t) = F  I(t), x (t), ˙x(t) = G I(t), x (t), (2) where F, G are locally Lipschitz and monotone in the resource coordinates. An efficiency term η(I) captures algorithmic improvements, and a generic scaling law links marginal capability gain to resources, 
+
+∆I ≍ CαDβ η(I)γ , (3) with nonnegative exponents [10]. Safety interventions are modeled by control inputs u(t) that act on resources or directly on F , written as ˙I = F (I, x, u ),
+
+˙x = G(I, x, u ), with u ∈ U measurable and subject to feasibility constraints. The central questions are to characterize conditions that yield finite time blow up, to derive global upper bounds that preclude it, to connect parameters to observable quantities through identifiability inequalities, and to synthesize control policies that certify safety. 
+
+Contributions 
+
+At a glance (non-technical). We contribute: (1) a simple way to tell apart “runaway” improvement from very fast but ultimately bounded growth; (2) physical and engineering limits that translate facility power, cooling, band-width, and memory into mathematical caps on improvement; (3) statistical tests you can run on public time series (compute, power, bandwidth, datasets, 3benchmarks) that falsify or support the runaway hypothesis; and (4) practi-cal control levers (e.g., power caps, throttles, evaluation gates) with provable guarantees against runaway growth [11, 12, 13]. Technical summary. (i) A formal improvement operator R and its contin-uous limit that cleanly separates algorithmic efficiency, resources, and policy. The operator provides a comparison principle against canonical superlinear recursions In+1 ≥ In +aI pn. (ii) Sharp blow up criteria and obstruction results under clearly stated assumptions. Using Osgood and Bihari type inequali-ties [14, 15] we show that dynamics satisfying ˙I ≥ a I p with p > 1 generate finite time divergence with explicit upper bounds on the blow up time, while sublinear or linear feedback p ≤ 1 with bounded gain forbids finite time blow up [16, 17]. Discrete analogues are given through monotone envelope arguments. (iii) Global upper bounds from physics and information theory that cap F using energy to erasure limits, memory and communication con-straints, and thermodynamic efficiency, yielding integrability conditions that force R ∞ 
+
+> I0
+
+dI/a (I) = ∞. (iv) Identifiability inequalities that map (α, β, γ )
+
+and resource growth to measurable series such as power budgets, fabrication capacity, dataset growth, and observed loss to compute exponents, thereby enabling hypothesis tests without simulation [18]. (v) Control theoretic safety conditions through barrier certificates and viability constraints that render sets {I ≤ ¯I} forward invariant, together with optimal control formulations that minimize risk subject to resource and deployment coupling [19, 20, 21]. 
+
+Relation to prior formal growth literatures 
+
+We situate our work at the intersection of: (a) mathematical blow-up theory (Osgood criteria, Bihari–LaSalle inequalities, comparison principles); (b) empirical scaling laws in machine learning and learning-theoretic lower bounds; (c) economic growth and capital accumulation models that cap-ture increasing returns [22, 23]; and (d) safety/control methods (Lyapunov functions, control barrier certificates, viability theory). While these ar-eas are well-developed individually, to our knowledge there is no unified, measurement-first framework that connects power, bandwidth, memory, and capital constraints to provable blow-up/non-blow-up conditions and deploy-able control policies for recursive self-improvement. We see this as comple-mentary to work on empirical scaling, compute governance, and AI safety controls, and a bridge between theory and facility-level telemetry. A com-plete literature review with detailed citations is provided in the appendix version and should be included in the camera-ready manuscript. 42. Preliminaries and Definitions 
+
+Capability metric I(t). Let T be a nonempty family of tasks and let Pτ (t) ∈
+
+R+ denote a performance functional for task τ ∈ T at time t ≥ 0. Define an aggregator A : RT 
+
+> +
+
+→ R+ that is monotone in each coordinate and continuous. The capability process is 
+
+I(t) := A (Pτ (t)) τ ∈T 
+
+, t ≥ 0, (4) and is assumed locally absolutely continuous. We work with the equivalence class [I] under positive affine transforms. The metric satisfies the following axioms. • Monotonicity : if Pτ (t) ≤ ˜Pτ (t) for all τ , then I(t) ≤ ˜I(t).• Affine invariance : for any a > 0 and b ∈ R, the transformation I 7 →
+
+aI + b preserves all qualitative statements about growth, blow up, and control feasibility. All results are stated on [I].• Task family coherence : if T ⊆ ˜T and the additional tasks in ˜T \ T are redundant in the sense of Blackwell dominance by tasks in T , then A
+
+agrees on T up to affine equivalence. Typical choices include A as a weighted power mean or a convex risk measure over {Pτ } [24]. All differentiability statements are taken almost everywhere. We remove reparameterization ambiguity and fix measurement units by the canonical construction introduced below; see (7). 
+
+Canonical normalization, units, and benchmark protocol. To eliminate repa-rameterization ambiguity and make I(t) empirically identifiable, we fix a canonical scale. Let TB ⊂ T be a finite benchmark family with task weights 
+
+wτ > 0, P  
+
+> τ∈T B
+
+wτ = 1 , and let Lτ (t) denote a strictly positive risk (or loss) for task τ computed under a published evaluation protocol (fixed prompts, seeds, and test sets). Define the reference operating point 
+
+Lref := ( Lref  
+
+> τ
+
+)τ ∈T B , Sref := X 
+
+> τ∈T B
+
+wτ log Lref 
+
+> τ
+
+L⋆τ
+
+, (5) where L⋆τ > 0 is a task-dependent irreducible error (Bayes or accepted floor). Let 
+
+g(L) := X 
+
+> τ∈T B
+
+wτ log Lτ
+
+L⋆τ
+
+and eI(t) := − g (Lτ (t)) τ ∈T B
+
+. (6) 5We work with the canonical capability defined by the unique affine transform 
+
+Ican (t) = a0 eI(t) + b0, with Ican (tref ) = 0 , dI can 
+
+d eI tref 
+
+= 1 . (7) This pins units so that one natural unit equals one nat of excess log-loss reduction aggregated over TB . In all statements below we replace I by its canonical representative Ican , and continue to write I for brevity. 
+
+Assumption 1 (Benchmark protocol) . The map t 7 → Lτ (t) is right-continuous with left limits, computed on a fixed held-out set; all preprocessing and metric definitions are frozen and public. The irreducible floors L⋆τ are either theoret-ically known or specified as conservative reference values; their uncertainty is propagated in reported confidence bands. 
+
+Definition 1 (Units and measurability) . The unit of I is the aggregated nat :an increase ∆I = 1 corresponds to multiplying the geometric mean loss ratio Q 
+
+> τ
+
+(Lτ /L ⋆τ )wτ by e−1. The quantity I is measurable from {Lτ }τ ∈T B without simulation. 
+
+Proposition 1 (Affine invariance and identifiability) . Let bI = aI + b be any positive affine transform. Then all qualitative results on blow-up, Osgood in-tegrals, and control feasibility are invariant. Moreover, under Assumption 1, 
+
+I is identified up to such an affine transform from observed {Lτ }; fixing 
+
+(7) removes this ambiguity. Consequently, elasticities p(t) = d log ˙Id log I , as well as the tests and inequalities of Sections 5–11, are invariant to the choice of benchmark weights and any strictly monotone rescaling of individual losses. Task-set robustness. To mitigate selection effects, we require TB to Blackwell-dominate any superset whose additional tasks are mixtures of TB (coinciding with our coherence axiom). In practice, we report results for two disjoint benchmark families and verify that estimates of the feedback elasticity p(t)
+
+agree within confidence bands; discrepancies trigger a sensitivity analysis reported in an appendix. 
+
+Improvement operator R and learning curve ℓ(·). Let x = ( C, D, E, K ) ∈
+
+R4+ collect resources for compute, data, energy, and capital. The discrete recursive self improvement operator is a measurable map 
+
+R : R+ × R4+ → R+, In+1 = R(In; xn), (8) 6with xn+1 = Ξ( In, x n) for a measurable resource update Ξ. The continuous time limit is 
+
+˙I(t) = F  I(t), x (t), ˙x(t) = G I(t), x (t), (9) with F, G locally Lipschitz and monotone in resource coordinates. Algorith-mic efficiency enters through a learning curve ℓ : R+ → R+ that maps an effective effort variable z to an expected risk or loss [25]. We assume ℓ non-increasing, continuous, and with finite left derivative on compact subsets. Capability increments are related to loss reduction by a known monotone transform, and we summarize returns to scale by exponents (α, β, γ ) ≥ 0
+
+through the relation 
+
+∆I ≍ CαDβ η(I)γ , η : R+ → R+ (10) where η(I) parameterizes algorithmic efficiency improvements as a function of capability. 
+
+Finite time singularity. A finite time singularity occurs if there exists T < ∞
+
+such that 
+
+lim  
+
+> t↑T
+
+I(t) = ∞ (11) or if there exists a finite threshold I⋆ and T < ∞ with lim t↑T I(t) = I⋆ and 
+
+lim sup t↑T | ˙I(t)| = ∞. The first case is genuine blow up of the state. The second case is a gradient singularity at a critical capability level. 
+
+Resource processes. Compute C(t), data D(t), energy E(t), and capital K(t)
+
+evolve as locally absolutely continuous processes on R+. We use the compact notation x(t) = ( C(t), D (t), E (t), K (t)) . Each coordinate admits natural constraints, for example capacity constraints 0 ≤ C(t) ≤ ¯C(t) with ¯C de-termined by fabrication and deployment schedules, and budget constraints encoded in K(t).
+
+Physical, economic, and algorithmic parameters. Thermodynamic and infor-mation constraints enter as parameters and inequality bounds. Landauer’s limit sets a lower bound on energy per bit erased Ebit ≥ kB T ln 2 with Boltz-mann constant kB and absolute temperature T . Memory and communication limits appear through entropy and bandwidth constraints, summarized by constants governing maximal memory density, I/O throughput, and chan-nel capacity. Economic returns to scale are parameterized by ζ in a capital 7accumulation model ˙K = rK ζ − δK − χ(I) with reinvestment rate r > 0,depreciation δ ≥ 0, and deployment cost χ. Algorithmic parameters include the efficiency function η(·), learning curve shape constants implicit in ℓ, and returns exponents (α, β, γ ). These parameters determine identifiable inequal-ities that constrain F and R and will be used to certify or preclude singular behavior without simulation. 
+
+3. Core Model of Recursive Self-Improvement 
+
+State, resources, and policy 
+
+Let the capability state be I : R+ → R+ and let the resource vector be 
+
+x(t) :=  C(t), D (t), E (t), K (t) ∈ R4+, (12) representing compute, data, energy, and capital. A policy input u(t) ∈ U ⊂ 
+
+Rm captures allocation, deployment, and safety constraints. We consider the controlled dynamics 
+
+˙I(t) = F  I(t), x (t), u (t), ˙x(t) = G I(t), x (t), u (t), (13) with F : R+ × R4+ × U → R and G : R+ × R4+ × U → R4.
+
+Structural assumptions. Throughout we impose the following regularity and order structure. (S1) Local well-posedness. F and G are locally Lipschitz on R1+4 + × U . For any measurable locally bounded u(·) and initial (I0, x 0) ∈ R1+4 + , system (13) admits a unique maximal Carathéodory solution on [0 , T max ).(S2) Baseline cooperativity with bounded antagonism. Write the Jacobian of 
+
+(F, G ) with respect to (I, x ) as 
+
+J(I, x, u ) = Jco (I, x, u )
+
+| {z } 
+
+> Metzler on (I,x )
+
++ ∆( I, x, u )
+
+| {z }
+
+> antagonistic
+
+, (14) where Jco has nonnegative off-diagonal entries (Kamke condition) and 
+
+∆ collects cross-effects that can be negative due to interference, con-gestion, or depletion. Assume there exists a nonnegative weight vector 8w ∈ R1+4 and constants κF , κ G ≥ 0 such that the weighted induced norms satisfy 
+
+∥∆F (I, x, u )∥w→1 ≤ κF , ∥∆G(I, x, u )∥w→w ≤ κG (15) uniformly on compact subsets, where ∆F and ∆G denote the I- and 
+
+x-rows of ∆. The cooperative part Jco defines the baseline comparison system used in our envelopes. (S2 ′) Mixed-monotone decomposition. There exist decomposition functions 
+
+F ↑(I+, x +, u ; I−, x −) and G↑(I+, x +, u ; I−, x −) that are monotone in-creasing in the “ +” arguments and monotone decreasing in the “ −”arguments and satisfy 
+
+F (I, x, u ) = F ↑(I, x, u ; I, x ), G(I, x, u ) = G↑(I, x, u ; I, x ). (16) This yields cooperative upper and lower bounding systems via (I+, x +)
+
+and (I−, x −) trajectories. (S2 ′′ ) Sector-bounded antagonism. There exist nonnegative functions σI (I)
+
+and σx(∥x∥) such that for all (I, x, u )
+
+F (I, x, u ) − F co (I, x, u ) ≤ σI (I) + σx(∥x∥), (17) where F co is the F induced by Jco . The sector bounds enter explicitly in our comparison and barrier inequalities. (S3) Invariance of the positive orthant. If I(0) ≥ 0 and x(0) ≥ 0, then solutions remain in R1+4 + . Boundary fluxes satisfy F (0 , x, u ) ≥ 0 and 
+
+Gi(I, 0, u ) ≥ 0 for any replenishable coordinate i.(S4) Returns-to-scale representation. There exist nonnegative exponents 
+
+(α, β, γ ) and an efficiency map η : R+ → R+ such that for an effec-tive effort Z = Z(C, D, E ; u),
+
+∂tI = Φ  I Ψ Z, Ψ( z) ≍ z, Z ≍ CαDβ η(I)γ , (18) where Φ is nondecreasing and positive on (0 , ∞). The symbol ≍ denotes equality up to bounded positive factors that are independent of I on compact sets. 9(S5) Resource dynamics. Capital follows 
+
+˙K = rK ζ − δK − χ(I, u ), r > 0, δ ≥ 0, ζ ≥ 0, (19) and the remaining coordinates satisfy admissible buildout constraints 
+
+˙C := gC (I, K, u ) − sC (C, u ),
+
+˙D := gD(I, u ) − sD(D, u ),
+
+˙E := gE (I, K, u ) − sE (E, u ).
+
+(20) with g• nondecreasing in their resource-enabling arguments and s• non-decreasing in the resource level. (S6) Physical and information constraints. The instantaneous effort satisfies 
+
+Ψ( Z) ≤ φ(E) where φ is increasing and concave, and energy through-put is bounded by thermodynamic and engineering limits. In partic-ular the useful switching or erasure rate satisfies P (t) ≥ kB T (t) ln 2 ·
+
+˙Nerase (t), so that Ψ( Z) ≤ ϑ P (t), T (t) for a known increasing function 
+
+ϑ.
+
+Improvement operator and discrete RSI 
+
+The discrete recursive self-improvement operator acts per update cycle 
+
+n ∈ N:
+
+In+1 = R(In; Cn, D n, E n, K n) , xn+1 = Ξ( In, x n) , (21) with measurable R : R1+4 + → R+ and Ξ : R1+4 + → R4+. We impose the comparison property 
+
+R(I; x) − I ≥ a(x) ϕ(I), a(x) ≥ 0, ϕ nondecreasing , (22) together with Lipschitz continuity in I on bounded sets. The continuous-time model (13) arises as the fluid limit of (21) under update spacing ∆t → 0
+
+with a(x)ϕ(I) = ∆ t F (I, x, u )+ o(∆ t). The discrete comparison (22) provides super- and subsolution envelopes for (13) and will be used to transfer blow-up and boundedness criteria between time scales. 
+
+Learning curve and efficiency 
+
+Let ℓ : R+ → R+ be a nonincreasing learning curve that maps an effective sample-compute proxy z to expected risk. Assume ℓ is differentiable a.e. with 
+
+−ℓ′(z) regularly varying at in 10 4. Blow-Up and Superlinear Feedback: Necessary and Sufficient Conditions 
+
+We state sharp criteria for finite time blow up of the capability process I(t)
+
+governed by (13) under the structural assumptions of Section 4. All results are analytic and rely on differential and integral inequality techniques. 
+
+Notation. For measurable a : [0 , ∞) → (0 , ∞) and nondecreasing ϕ : R+ →
+
+R+, write the differential inequality 
+
+˙I ≥ a(t) ϕ I a.e. on [0 , T ). (23) Define the Osgood integral Oϕ(y) := R ∞ 
+
+> yds ϕ(s)
+
+for y > 0. For cooperative systems we use the standard comparison principle: if ˙I1 ≥ f (I1) and ˙I2 =
+
+f (I2) with I1(0) ≥ I2(0) , then I1(t) ≥ I2(t) up to their common existence time. 
+
+Comparison under bounded antagonism. Assumption (S2) permits non-Metzler cross-couplings captured in ∆. We show that our blow-up and safety con-clusions survive provided antagonism is bounded relative to the cooperative envelope. Additional antagonism bounds and safety results are omitted here for brevity. 
+
+Theorem 1 (ODE comparison, superlinear envelope) . Let p > 1 and a0 > 0.Suppose there exists I1 ≥ I(0) such that whenever I(t) ≥ I1 one has 
+
+˙I(t) ≥ a0 I(t)p a.e. (24) 
+
+Then I(t) blows up in finite time. Moreover the blow up time satisfies 
+
+Tbu ≤ I1−p 
+
+> 1
+
+− I(0) 1−p
+
+a0(p − 1) if I(0) < I 1,Tbu ≤ I(0) 1−p
+
+a0(p − 1) if I(0) ≥ I1.
+
+(25) 
+
+Proof sketch. Consider the comparison ODE ˙y = a0yp with y(0) = max {I(0) , I 1}. Separation of variables yields y(t) = [ y(0) 1−p −a0(p−1) t]− 1
+
+> p−1
+
+and finite time blow up at t = y(0) 1−p/(a0(p − 1)) . By comparison and the threshold I1, the bound for Tbu follows. 11 Theorem 2 (No blow up under Osgood condition) . Let a(·) be locally bounded and positive and suppose 
+
+˙I(t) ≤ a(t) ϕ I(t) a.e. , (26) 
+
+with ϕ nondecreasing and Oϕ(I0) = ∞. Then I(t) cannot blow up in finite time. In particular, if ϕ(I) ≤ c0(1+ I)p with p ≤ 1 and a essentially bounded, then Tmax = ∞.Proof sketch. By Bihari–LaSalle, from (26) we get R I(t) 
+
+> I(0)
+> ds ϕ(s)
+
+≤ R t 
+
+> 0
+
+a(τ ) dτ. 
+
+If Oϕ(I(0)) = ∞, the left-hand side cannot reach infinity at finite t, hence no blow up. The polynomial case follows since R ∞ ds/ (1 + s)p = ∞ for 
+
+p ≤ 1.Discrete-time analogues and thresholded variants are omitted here for brevity. 
+
+Elasticity criteria. Define the marginal feedback elasticity 
+
+p(I; x, u ) := ∂ log F (I, x, u )
+
+∂ log I whenever defined . (27) Theorems 1 and 2 imply operational envelopes; sufficient superlinearity and sublinear safety corollaries are omitted here for brevity. 
+
+Interfaces with resources and physics. The criteria above remain valid un-der resource coupling. If Z(C, D, E ; u) in (18) admits a lower envelope 
+
+Z(t) ≥ κ0C(t)αD(t)β η(I(t)) γ and if C and E grow at least exponentially due to ζ > 1 in the capital channel, then F (I, x, u ) inherits a superlinear envelope and Theorem 1 applies. Conversely, if thermodynamic and com-munication ceilings enforce Z(t) ≤ ¯Z(t) with ¯Z subexponential and Φ( I)
+
+sublinear at infinity, then an a(I) satisfying (26) exists and Theorem 2 rules out singularity. 
+
+Technical tools. Proofs use separation of variables for polynomial envelopes, Osgood and Bihari–LaSalle integral inequalities for general ϕ, discrete reciprocal-power transforms in the discrete setting, and monotone comparison for co-operative systems. 12 5. Algorithmic Efficiency and Scaling Laws 
+
+Efficiency map and effective effort 
+
+Let Z = Z(C, D, E ; u) denote an effective effort variable that aggregates usable compute, data, and energy under policy u. As in Section 4 we write 
+
+F (I, x, u ) = Φ( I) Ψ  Z(C, D, E ; u), Z ≍ CαDβ η(I)γ , (28) with exponents α, β, γ ≥ 0, efficiency map η : R+ → R+, and Ψ increasing with Ψ( z) ≍ z on operational ranges. The factor Φ( I) converts marginal loss reduction into capability growth and captures task aggregation. We assume 
+
+Φ and η are locally absolutely continuous and regularly varying at infinity with indices q and ξ, meaning 
+
+lim 
+
+> s→∞
+
+Φ( λs )Φ( s) = λq,
+
+lim 
+
+> s→∞
+
+η(λs )
+
+η(s) = λξ for all λ > 0.
+
+(29) 
+
+Regular-variation assumption and empirical diagnostics. The indices q and ξ
+
+are operational only if supported by data. We therefore replace the informal statement “ Φ, η ∈ RV ” by the following testable assumption. 
+
+Assumption 2 (RV with slowly varying envelope and Potter bounds) . There exist slowly varying functions LΦ, L η and constants q, ξ ∈ R such that 
+
+Φ( I) = IqLΦ(I), η(I) = IξLη(I), (30) 
+
+and for every ϵ > 0 there exists Iϵ and cϵ ≥ 1 with the Potter-type inequalities 
+
+c−1
+
+> ϵ
+
+ IJ
+
+−ϵ
+
+≤ LΦ(I)
+
+LΦ(J) ≤ cϵ
+
+ IJ
+
+ϵ
+
+,c−1
+
+> ϵ
+
+ IJ
+
+−ϵ
+
+≤ Lη(I)
+
+Lη(J) ≤ cϵ
+
+ IJ
+
+ϵ
+
+,
+
+(31) 
+
+for all I, J ≥ Iϵ. The operational indices are the pointwise limits 
+
+q = lim 
+
+> I→∞
+
+I Φ′(I)Φ( I) , ξ = lim 
+
+> I→∞
+
+I η ′(I)
+
+η(I) , (32) 
+
+whenever the limits exist; otherwise we work with upper and lower envelopes 
+
+q+ := lim sup IΦ′/Φ and q− := lim inf IΦ′/Φ, and analogously for ξ.
+
+13 Lemma 1 (Potter envelopes imply elasticity control) . Under Assumption 2, for any ϵ > 0 there exists Iϵ such that for all I ≥ Iϵ
+
+q− − ϵ ≤ I Φ′(I)Φ( I) ≤ q+ + ϵ, ξ− − ϵ ≤ I η ′(I)
+
+η(I) ≤ ξ+ + ϵ. (33) 
+
+Consequently the total feedback elasticity satisfies, for large I,
+
+ptot (I) = IΦ′(I)Φ( I) + γ Iη ′(I)
+
+η(I) +
+
+αu C + βu D + ˜ αu E ∈ p− − ϵ, p + + ϵ,
+
+(34) 
+
+with p− := q− + γξ − + αu C + βu D + ˜ αu E and p+ defined analogously. 
+
+Corollary 1 (Blow-up and safety without exact RV) . If there exists I1 and 
+
+δ > 0 such that p−(I) ≥ 1 + δ for all I ≥ I1, then there is finite-time blow-up by Theorem 1. Conversely, if p+(I) ≤ 1 eventually and F (I, x, u ) ≤ Φ( I)ϕ(t)
+
+with R ∞ 
+
+> I0
+> ds
+> Φ( s)
+
+= ∞, then blow-up is precluded by Theorem 3 even when the limits q, ξ do not exist. Model selection when RV fails. If diagnostic tests reject RV, we adopt a piecewise-regular envelope: choose breakpoints I0 < I 1 < · · · < I J and fit local elasticities (qj , ξ j ) on each interval. Theorems in Sections 5 and 7 apply with ptot replaced by the interval-wise bounds p− 
+
+> j
+
+, p +
+
+> j
+
+ and conclusions are drawn by worst-case composition across intervals. 
+
+Elasticities and the superlinear threshold 
+
+For any fixed x and u the instantaneous capability elasticity with respect to I is 
+
+p(I; x, u ) := ∂ log F (I, x, u )
+
+∂ log I = IΦ′(I)Φ( I) + γ Iη ′(I)
+
+η(I) . (35) If Φ ∈ RV q and η ∈ RV ξ then p(I; x, u ) → q + γξ as I → ∞ . Hence algorithmic feedback alone is superlinear if and only if 
+
+q + γξ > 1, (36) in which case Theorem 1 applies even with frozen resources. When resources depend on I through G (Section 4), write asymptotic resource elasticities 
+
+uC = lim I→∞ ∂ log C/∂ log I and similarly uD, u E whenever the limits exist. Using (28), 
+
+ptot = q + γξ + αu C + βu D + ˜ αu E , (37) 14 where ˜α is the effective exponent of E inside Z. The superlinear threshold for total feedback is ptot > 1. This identity separates algorithmic gain (q +
+
+γξ ) from resource-amplified returns and will be used to map identifiability inequalities on uC , u D, u E into blow-up tests. 
+
+Learning-curve link and diminishing returns 
+
+Let ℓ : R+ → R+ be a nonincreasing expected risk as a function of effective effort z. Assume ℓ is differentiable a.e. and that its slope is regularly varying at infinity with index −ρ − 1 for some ρ ∈ [0 , 1] :
+
+−ℓ′(z) ∈ RV −ρ−1 ⇒ −ℓ′(z) ≍ z−ρ−1. (38) Let I be an increasing function of the excess risk reduction r = ℓ(z) − ℓ∞.By the chain rule, 
+
+∂tI ≃ κ(I) [ −ℓ′(Z)] ∂tZ ≍ κ(I) Z−ρ ∂tZ, (39) for some locally bounded κ(I) > 0. If ∂tZ ≍ Z on operational ranges, then 
+
+F (I, x, u ) ≍ Φ( I) Z1−ρ. The effective resource exponents become 
+
+αeff = (1 − ρ)α, βeff = (1 − ρ)β, γeff = (1 − ρ)γ, (40) which implies intrinsic diminishing returns whenever ρ > 0. In particular, the algorithmic-resource superlinear condition reads 
+
+q + ξγ eff + αeff uC + βeff uD + ˜ αeff uE > 1. (41) 
+
+Learning-theoretic lower bounds as constraints on F
+
+Let N denote effective sample count. Suppose a minimax lower bound holds on excess risk E(N ) ≥ c N −r for some c > 0 and r ∈ (0 , 1] dictated by smoothness and dimension in a nonparametric class. Then −dE/dN ≤
+
+c′ N −r−1. If N is proportional to usable data D times a throughput factor subsumed into Z, one obtains 
+
+∂tI ≲ ˜κ(I) D−r ∂tD, (42) and hence the data contribution to F is at most Dβ−r after aggregation, so that 
+
+βeff ≤ (1 − ρ) min {β, β − r}. (43) 15 An analogous argument with computational lower bounds that limit opti-mization accuracy per unit compute yields an exponent cap αeff ≤ (1 −
+
+ρ)( α − ˆrC )+. These inequalities constrain the admissible envelopes for F and tighten (41). No-free-lunch theorems imply that in the absence of structure the constants c, c ′ can be chosen to make r arbitrarily small, which drives ex-ponents toward their diminishing-returns values and disfavors superlinearity. 
+
+Identifiability and estimation 
+
+The exponents in (28) and the indices q, ξ, ρ are identifiable from obser-vational series without simulation. Estimators are based on log-derivative slopes 
+
+ˆα = d log Fd log C I,D,E,u 
+
+,
+
+ˆβ = d log Fd log D I,C,E,u 
+
+,
+
+ˆγ = d log Fd log η I,C,D,E 
+
+,
+
+(44) and on regular variation diagnostics for Φ, η, ℓ . Confidence regions for ptot 
+
+follow by delta-method propagation through (37) and (40). The falsifiable inequality ptot ≤ 1 for all large I precludes finite time blow up by Theorem 2. Observing ptot > 1 on a sustained interval with resource ceilings nonbinding provides evidence toward the superlinear regime of Theorem 1. Equations (36)–(43) give a compact, testable interface between algorith-mic efficiency, empirical scaling, and fundamental learning-theoretic limits, yielding envelopes for F that are suitable for the global analysis of Section 6 and the safety synthesis of Section 8. 
+
+6. Physical and Information-Theoretic Upper Bounds 
+
+Thermodynamic ceilings and usable power 
+
+Let Pfac (t) be facility electrical power and let T (t) denote the effective operating temperature. Denote by COP( T ) the cooling coefficient of perfor-mance and by ηpw ∈ (0 , 1] the fraction of wall power delivered to informa-tion processing after conversion and distribution losses. The usable compute power satisfies 
+
+Puse (t) ≤ ηpw 
+
+COP  T (t)
+
+1 + COP  T (t) Pfac (t) (45) 16 whenever thermal steady state is enforced. Landauer’s principle bounds the irreversible bit-erasure rate ˙Nerase by 
+
+Puse (t) ≥ kB T (t) ln 2 · ˙Nerase (t). (46) 
+
+Unit conventions and constants. All thermodynamic quantities are in SI units unless stated otherwise. Power in watts (W), energy in joules (J), temperature in kelvin (K), entropy in nats. Boltzmann constant kB =1.380649 × 10 −23 J/K. The bit-erasure work at temperature T is kB T ln 2 
+
+J per bit. Facility electrical power Pfac (t) is nameplate AC input measured at the utility interconnect. The fraction delivering DC power at the compute boards is ηelec ∈ (0 , 1] (transformer/rectifier/bus efficiency). Cooling removes heat at coefficient of performance COP( T ), defined by COP = Qcold /W cool 
+
+with Qcold in W and electric work Wcool in W. The rack-to-chip conversion and distribution efficiency is included in ηelec ; the fraction of board-level power that is actually devoted to useful switching/erasure is ηuse ∈ (0 , 1] (excludes leakage and non-switching losses). 
+
+Measured-to-usable power mapping. Let Pdc (t) = ηelec Pfac (t) be DC power available to IT load. Thermal steady state implies Pdc = Qcold + Wcool with 
+
+Qcold the heat rejected by IT. Since Qcold = COP 1+COP Pdc , the board-level usable power for information processing is 
+
+Puse (t) = ηuse Qcold (t) = ηuse 
+
+COP  T (t)
+
+1 + COP  T (t) ηelec Pfac (t). (47) Combining with Landauer’s inequality yields the erasure rate bound 
+
+˙Nerase (t) ≤ Puse (t)
+
+kB T (t) ln 2 . (48) Let σeff > 0 denote the maximum capability increment per irreversible bit processed after accounting for architecture inefficiencies. The improvement throughput is then 
+
+Ψ Z(C, D, E ; u) ≤ σeff ˙Nerase (t) ≤ σeff 
+
+kB ln 2 
+
+Puse (t)
+
+T (t) . (49) Substituting (49) into the factorization F (I, x, u ) = Φ( I)Ψ( Z) yields the instantaneous ceiling 
+
+F (I, x, u ) ≤ Φ( I) ϕP T (t), ϕP T (t) = σeff 
+
+kB ln 2 
+
+Puse (t)
+
+T (t) (50) 17 Memory, communication, and density constraints 
+
+Let Bio (t) be the sustained I/O bandwidth in bits per second and Bmem (t)
+
+the sustained memory bandwidth. Define ϕio (t) = σeff Bio (t) and ϕmem (t) = 
+
+σeff Bmem (t). The information service rate available to learning is 
+
+ϕsvc (t) := min {ϕP T (t), ϕ io (t), ϕ mem (t)} , (51) which implies the global envelope 
+
+F (I, x, u ) ≤ Φ( I) ϕsvc (t). (52) 
+
+Envelope convention. Throughout the paper we adopt the convention 
+
+˙I(t) ≤ Φ I(t) ϕsvc (t), (53) where ϕsvc is a service-rate envelope with units nat/s (see (56)). Any occur-rence of Φ( I)/ϕ svc (t) in earlier drafts is a typographical error and must be read as Φ( I)ϕsvc (t) . This convention is used in all comparison arguments and control designs. Ultimate density and rate bounds impose additional caps. If M (t) is the deployed memory mass-energy within radius R, the Bekenstein-type infor-mation bound gives Hmax (t) ≤ κB Emem (t) R for a universal constant κB > 0.If Esys (t) is total system energy, Bremermann-type limits produce a compute rate cap ˙Hmax (t) ≤ κBr Esys (t) with κBr > 0. These enter through upper bounds on Bmem and Puse and therefore tighten (51). 
+
+Ceiling-induced elasticity caps. Sustained training is service-rate limited, so there exist κio , κ mem , κ pow > 0 with 
+
+C(t) ≤ κio Bio (t), C(t) ≤ κmem Bmem (t),C(t) ≤ κpow 
+
+Puse (t)
+
+T (t) . (54) Hence, for any differentiable K(t) with K → ∞ ,
+
+υ+ 
+
+> C
+
+≤
+
+min 
+
+
+
+lim sup 
+
+> t→∞
+
+d log Bio 
+
+d log K , lim sup 
+
+> t→∞
+
+d log Bmem 
+
+d log K , lim sup 
+
+> t→∞
+
+d log( Puse /T )
+
+d log K
+
+
+
+. (55) Analogous caps hold for υ+ 
+
+> E
+
+with E(t) ≤ ˜κ P use (t) and for υ+ 
+
+> D
+
+with D(t) ≤
+
+κD Bio (t) when data ingestion is I/O bound. 18 Global integrability cap 
+
+We formalize the role of envelopes like (52) using an Osgood-type crite-rion. 
+
+Dimensional consistency. Define the capability-throughput calibration σeff 
+
+as nats of capability gain per irreversible bit processed. Then σeff ˙Nerase has units of nats/s and matches Ψ in F = Φ( I)Ψ . We explicitly set 
+
+ϕP T (t) := σeff 
+
+kB ln 2 
+
+Puse (t)
+
+T (t) [nats/s ], (56) so that F (I, x, u ) ≤ Φ( I) ϕP T (t) is dimensionally homogeneous. 
+
+Lemma 2 (Units check) . With Puse in J/s, T in K, and σeff in nat/bit, the quantity ϕP T in (56) is nat/s. Consequently Φ( I)ϕP T has units nat/s if Φ( I)
+
+is nat per unit capability increment, which is coherent with the canonical capability normalization in Section 2. Operating ranges and envelope parameters. We specify admissible ranges as measurable sets: 
+
+T (t) ∈ [Tmin , T max ], COP( T ) ∈ [COP min , COP max ],ηelec ∈ [ηelec , η elec ], ηuse ∈ [ηuse , η use ], (57) with Tmin > 0 and finite Pmax = sup t Pfac (t). Substituting (47) into (56) yields the calibrated power–temperature envelope 
+
+ϕP T (t) ≤ σeff 
+
+kB ln 2 
+
+ηuse ηelec 
+
+Tmin 
+
+COP max 
+
+1 + COP max 
+
+Pmax =: ¯ϕPT [nats/s ]. (58) 
+
+Uncertainty propagation. Let (bηelec , bηuse , [COP max , bTmin , bPmax ) be point esti-mates with relative errors (δelec , δ use , δ cop , δ T , δ P ). A first-order bound gives 
+
+∆ ¯ϕPT 
+
+¯ϕPT 
+
+≤ δuse + δelec + δcop + δP + δT , (59) which we report as confidence bands on ¯ϕPT and, consequently, on the enve-lope F ≤ Φ( I) ¯ϕPT used in Theorem 3. 19 Theorem 3 (Global cap by integrable service envelope) . Assume there ex-ists a measurable envelope ϕ : [0 , ∞) → [0 , ∞) such that for all admissible trajectories obeying thermodynamic and engineering limits, 
+
+F  I(t), x (t), u (t) ≤ Φ I(t) ϕ(t) a.e. on [0 , T ), (60) 
+
+and R T 
+
+> 0
+
+ϕ(τ ) dτ < ∞ for every finite T . If Φ satisfies the Osgood condition R ∞ 
+
+> I0
+> ds
+> Φ( s)
+
+= ∞, then I(t) cannot blow up in finite time. Proof. From (60) one has dI  
+
+> Φ( I)
+
+≤ ϕ(t) dt a.e. Integrating yields R I(t) 
+
+> I(0)
+> ds
+> Φ( s)
+
+≤
+
+R t 
+
+> 0
+
+ϕ(τ ) dτ. The right-hand side is finite for any finite t. If R ∞ 
+
+> I0
+
+ds/ Φ( s) = ∞,the left-hand side cannot diverge at finite t, which precludes finite-time blow up. 
+
+Explicit ceilings from power and thermal budgets 
+
+We instantiate ϕ using (50) and (45). Let Pmax be a plant-level cap and 
+
+Tmin the minimum safe operating temperature. Then 
+
+ϕP T (t) ≤ ¯ϕPT with ¯ϕPT as in (58) . (61) In practice we compute ¯ϕPT from metered Pfac , qualified COP curves over 
+
+[Tmin , T max ], and efficiency audits providing (ηelec , η elec ) and (ηuse , η use ); un-certainty is propagated as stated above. If COP( T ) is bounded over the admissible temperature band and Pmax <
+
+∞, then ϕP T ∈ L1loc ([0 , ∞)) . Combining with (52) gives 
+
+˙I(t) ≤ Φ I(t) ¯ϕPT , (62) 
+
+Φ( I) is nat per unit capability, ¯ϕPT is nat/s, hence the right-hand side has units nat/s and matches ˙I and Theorem 3 rules out blow up whenever R ∞ 
+
+> I0
+
+ds/ Φ( s) = ∞. In particular, if Φ( I) ≤ c0(1 + I)p with p ≤ 1, finite-time singularity is impossible under any admissible power and thermal policy. 
+
+Bandwidth and memory throttling 
+
+If sustained I/O is the limiter, then F (I, x, u ) ≤ Φ( I) ϕio (t) with ϕio (t) ≤
+
+Bmax σeff where Bmax < ∞ is the engineered bandwidth. The same holds for memory service rate. Both cases fall under Theorem 3. If Bmax scales only polylogarithmically with capital due to packaging and crosstalk constraints, then for any Φ with at most linear growth the Osgood integral diverges and blow up is excluded. 20 Ultimate bounds 
+
+In a closed physical envelope with total energy Etot and radius R, Bekenstein-type bounds imply a maximum storable information Hmax ≤ κB Etot R. If the system is energy limited so that Etot ≤ ¯E < ∞ on finite horizons and power limited with Pmax < ∞, then both storage and processing rates are uniformly bounded and ϕ ∈ L1loc . Theorem 3 applies without further assumptions on u
+
+and the resource couplings G.Equations (52)–(62) provide measurable, facility-level inequalities that map directly into the comparison principles of Sections 3 and 7. They con-vert thermodynamic, bandwidth, and engineering specifications into analytic certificates that preclude finite-time singularity whenever the capability fac-tor Φ satisfies an Osgood-type divergence. 
+
+Remark on envelope polarity. All envelopes in this work are service-rate upper bounds . They multiply Φ( I) rather than divide it. Any future extension should preserve the polarity in (53) to maintain dimensional consistency and validity of Osgood-type arguments. 
+
+7. Compute, Capital, and Deployment Coupling 
+
+Economic feedback and deployment channels 
+
+Let K(t) denote deployable capital and let u(t) ∈ U encode allocation fractions into compute, power, data acquisition, and safety. We consider 
+
+˙K = rK ζ − δK − χ I(t), u (t), r > 0, δ ≥ 0, ζ ≥ 0, (63) where r and ζ summarize reinvestment intensity and returns to scale, and χ
+
+is an operating and compliance expenditure increasing in I along deployment channels. Capital drives resources through admissible buildout maps 
+
+˙C = πC uC K − sC (C),
+
+˙E = πE uE K − sE (E),
+
+˙D = πDuDK − sD(D),
+
+(64) with productivity coefficients π• > 0, allocation fractions u• ∈ [0 , 1] sum-ming to at most one, and saturation losses s• nondecreasing. The capability evolution satisfies ˙I = F (I, x, u ) = Φ( I)Ψ  Z(C, D, E ; u) as in (28). Power availability couples to compute through engineering constraints of Section 7, so that C and E cannot grow independently beyond service limits. 21 Microfounded accumulation, financing, and adjustment frictions. We endo-genize capital formation and resource conversion. Let Π( t) be pre-financing operating profit from AI products and services, with reinvestment share 
+
+s(t) ∈ [0 , 1] and payout 1 − s(t). External financing Fext (t) is available at marginal cost of capital κ(t) ≥ 0, subject to a leverage cap λmax > 0.Capital evolves as 
+
+˙K(t) = s(t) Π( t) + Fext (t) − κ(t) Fext (t)
+
+| {z }
+
+> financing cost
+
+− δK (t) − χ I(t), u (t), (65) with the feasibility constraint Fext (t) ≤ λmax K(t).Buildouts face convex installation/adjustment costs and order-pipeline delays. Let qC (t), qE (t), qD(t) be order backlogs converting into delivered capacity at rate μ• > 0:
+
+˙qC = ιC (t)−μC qC , ˙C = μC qC −sC (C)− ΓC ( ˙C)
+
+| {z } 
+
+> adjustment cost
+
+, and similarly for E, D, 
+
+(66) where ιC (t) is the order flow financed from K, with per-unit procurement price pC (QC ) that depends on global order rate QC . The convex functions 
+
+Γ•(·) satisfy Γ•(0) = 0 , Γ′•(·) ≥ 0 and capture ramp-rate limits. 
+
+Market-clearing and supply elasticities. Compute and power procurements clear against upward-sloping supply curves 
+
+pC (QC ) = ¯ pC
+
+
+
+1 + βC QηC
+
+> C
+
+
+
+, pE (QE ) = ¯ pE
+
+
+
+1 + βE QηE
+
+> E
+
+
+
+, (67) with ηC , η E > 0 and baseline prices ¯p• > 0. Orders satisfy a budget constraint 
+
+pC (QC ) ιC + pE (QE ) ιE + pD(QD) ιD ≤ φK K(t), (68) for some allocation φK ∈ (0 , 1) determined by u(t), after financing costs. 
+
+Production side and profit. Output Y (t) is generated by a concave CES pro-duction function with embodied capability and resources, 
+
+Y (t) = Υ( I(t), C (t), E (t), D (t), L (t)) , (69) with Υ strictly increasing and jointly concave in (C, E, D, L ) and nondecreas-ing in I. Profit is Π( t) = PY (t)Y (t) − pC (QC )ιC − pE (QE )ιE − pD(QD)ιD −
+
+OPEX( t), with PY ≥ 0 the output price and OPEX operating expenses, all measurable. This microfoundation replaces the reduced-form exponent ζ by primitives (ηC , η E , Γ•, κ, λ max ) and demand parameters in Υ.22 Resource elasticities: definition and existence. Define upper and lower capi-tal elasticities for X ∈ { C, D, E } by 
+
+υ+ 
+
+> X
+
+:= lim sup 
+
+> t→∞
+
+d log X(t)
+
+d log K(t), υ− 
+
+> X
+
+:= lim inf 
+
+> t→∞
+
+d log X(t)
+
+d log K(t). (70) When the limit exists we write υX = lim d log X/d log K. Existence and bounds follow from the buildout dynamics and service ceilings. 
+
+Lemma 3 (Existence and basic bounds) . Assume u•(t) are bounded and persistently exciting with u•(t) ≥ u• > 0 on arbitrarily long intervals, s• are locally Lipschitz, and there exist σ• ≥ 0, θ• ≥ 1 such that 
+
+s•(x) ≥ σ• xθ• for x ≥ x0. (71) 
+
+Then along any trajectory with K(t) → ∞ one has 
+
+0 ≤ υ− 
+
+> X
+
+≤ υ+ 
+
+> X
+
+≤ 1 (X ∈ { C, D, E }). (72) 
+
+If θC = 1 and Puse , B io , B mem are unbounded on some horizon while uC ≥
+
+uC > 0, then υC = 1 . If any service ceiling binds so that X(t) ≤ ¯X(t) with 
+
+¯X subexponential in K, then υX = 0 .Proof sketch. From ˙C = πC uC K − sC (C) and θC ≥ 1, comparison with ˙C = πC uC K − σC CθC implies C(t) = O(K(t)) . Ratio differentia-tion yields d log C/d log K ∈ [0 , 1] a.e.; limsup/liminf exist by bounded-ness. If θC = 1 and no ceiling binds, variation-of-constants gives C(t) = 
+
+> πC
+> σC
+
+R t 
+
+> 0
+
+uC (τ )K(τ )e−σC (t−τ )dτ ∼ πC 
+
+> σC
+
+K(t), hence υC = 1 . If a ceiling enforces 
+
+C ≤ ¯C with log ¯C = o(log K), the derivative ratio tends to 0. Analogous arguments hold for D, E .
+
+Endogenous growth threshold 
+
+The following result characterizes when economic amplification can gen-erate the superlinear envelope required by Theorem 1. 
+
+Theorem 4 (Endogenous amplification under market and financing con-straints) . Consider the microfounded system (65) –(68) with convex Γ•, upward-sloping supplies p•(·), and concave Υ. Define the effective capital-to-capacity elasticities 
+
+υ± 
+
+> X
+
+= lim sup / lim inf 
+
+> t→∞
+
+d log X(t)
+
+d log K(t) ∈ [0 , 1] , X ∈ { C, D, E }, (73) 23 and the total feedback bounds 
+
+p− 
+
+> tot
+
+= q + γξ + αυ − 
+
+> C
+
++ βυ − 
+
+> D
+
++ ˜ αυ − 
+
+> E
+
+,p+tot = q + γξ + αυ + 
+
+> C
+
++ βυ + 
+
+> D
+
++ ˜ αυ + 
+
+> E
+
+. (74) 
+
+Then: 
+
+(i) No superlinear capital elasticity under convex costs and finite supply elasticities. If ηC , η E > 0 and Γ• are strictly convex with 
+
+Γ′•(·) → ∞ as | ˙X| → ∞ , then υ+ 
+
+> X
+
+≤ 1 and equality υ+ 
+
+> X
+
+= 1 requires nonbinding supply and adjustment constraints on an unbounded hori-zon. If either a supply curve or an adjustment cost binds on arbitrarily long intervals, then υ+ 
+
+> X
+
+< 1.
+
+(ii) Capital loop bounded by financing. Under the leverage cap Fext ≤
+
+λmax K and positive financing cost κ(t) ≥ κ > 0, the capital growth satisfies ˙K ≤ s(t) Π max (K) − δK + λmax (1 − κ)K, (75) 
+
+with Πmax (K) concave in K if Υ is concave and supply curves are upward-sloping. Hence K(t) is at most exponential in the long run. 
+
+(iii) Threshold with envelopes. If p− 
+
+> tot
+
+> 1 and service ceilings are non-binding on a horizon, finite-time blow-up is possible via Theorem 1. If p+tot ≤ 1 or the measurable envelope ˙I ≤ Φ( I)ϕsvc (t) holds with R ∞ ds/ Φ( s) = ∞, then blow-up is precluded by Theorem 2. Proof sketch. (i) With convex installation costs and upward-sloping sup-plies, marginal capacity per dollar is decreasing, so X(t) = O(K(t)) and 
+
+υ+ 
+
+> X
+
+≤ 1; strict inequality follows when constraints bind infinitely often. (ii) The financing cap and positive cost of capital bound net external inflow and keep ˙K at most linear in K plus a concave profit term, implying at most exponential growth by Grönwall. (iii) Follows by the elasticity bounds and Sections 4 and 6. 
+
+Critical manifold in policy–technology space 
+
+Define the critical set 
+
+M = {(r, ζ, u, π •, σ •) : q + γξ + αυ C (·) + βυ D(·) + ˜ αυ E (·) = 1 } , (76) where υ• are computed from (64) under the thermodynamic and commu-nication constraints of Section 7. Policies on the supercritical side of M
+
+permit trajectories with ptot > 1 when not power bounded. Policies on the subcritical side satisfy the Osgood envelope of Theorem 3 once ceilings are enforced. 24 Identifiable parameter inequalities 
+
+The quantities in M are linked to measurable series. Let gfab be the sustained growth rate of fabrication capacity, gpower the growth rate of deliv-erable facility power, and gpack the growth rate of practical I/O bandwidth. Then 
+
+υC ≤ gfab 
+
+gK
+
+, υE ≤ gpower 
+
+gK
+
+, υD ≤ gdata 
+
+gK
+
+, (77) where gK is the asymptotic growth rate of K under (63). If power and cooling expansions satisfy gpower ≤ ¯g with ¯g < ∞ and packaging obeys gpack = o(gK ),then υE = 0 and memory or I/O throttling enforces υC ≤ υmax  
+
+> C
+
+< 1.
+
+Hyper-exponential but nonsingular regimes 
+
+The coupling (63)–(64) converts macroeconomic and engineering roadmaps into analytic conditions on ptot . Theorem 4 identifies a precise endogenous growth threshold and a critical manifold that are both estimable from fab capacity, power buildout, and supply chain series, enabling falsifiable assess-ments without simulation. 
+
+8. Control and Safety: Avoiding Singularity 
+
+Control channels and admissible policies 
+
+Let u(t) ∈ U ⊂ Rm denote a measurable policy that acts on resources and on the improvement rate. We consider the controlled system 
+
+˙I = F (I, x, u ), ˙x = G(I, x, u ), (78) with x = ( C, D, E, K ) and structural assumptions from Sections 3–6. The set 
+
+U encodes rate limits and compliance constraints and is compact and convex. We say that a policy is safety-admissible if it respects the thermodynamic and engineering envelopes that bound Ψ( Z) and therefore F .
+
+Plant signals and actuation map. Safety control uses only measurable signals and audited setpoints. Let 
+
+y(t) =  Pfac , T, B io , B mem , C sust , util , temp _headroom , I bench 
+
+ (79) be the telemetry vector, sampled every ∆ > 0 seconds. Actuation is through 
+
+u(t) =  power cap Pmax , job throttle θ, batch size b, lr λ, ingress cap Bmax , eval gate g,
+
+(80) 25 constrained by box and rate limits u ∈ U = {umin ≤ u ≤ umax , ∥ ˙u∥∞ ≤ ru}.The service envelope ϕsvc is computed online from y as in Section 7, and I is inferred from benchmark losses (Section 2). 
+
+Global stabilization by Osgood envelopes 
+
+The next result formalizes a sufficient condition for the absence of finite-time singularity. 
+
+Theorem 5 (Global stabilization) . Assume there exists a safety-admissible policy u(·) and a positive, locally Lipschitz function a : R+ → R+ such that for almost all t,
+
+˙I(t) = F  I(t), x (t), u (t) ≤ a I(t),
+
+Z ∞
+
+> I0
+
+ds a(s) = ∞. (81) 
+
+Then I(t) does not blow up in finite time. Moreover, if a is integrable against a facility envelope ϕ(t) as in Theorem 3, the closed loop solution is global and 
+
+I(t) is bounded whenever a admits a finite upper bound on [0 , ∞).Envelope used in control. In all control designs we adopt the service–rate envelope convention ˙I(t) ≤ Φ I(t) ϕsvc (t), (82) so that any specialized choice like a(I) = Φ( I) ¯ϕ (with ¯ϕ a constant cap de-rived from Section 7) is dimensionally consistent and compatible with The-orem 5. 
+
+Proof. Integrate (81) and apply the Osgood criterion as in Theorem 2. The global statement follows from the uniform local boundedness of a and the positive invariance of the orthant. Design details (barrier certificates, sampled-data QP, observers, throt-tling, optimal control, robustness) are omitted here for brevity. 
+
+9. Identifiable Inequalities from Real-World Quantities (No Simu-lation) 
+
+Measurable primitives and estimation protocol 
+
+All bounds are expressed in terms of time series that are directly mea-surable: facility power Pfac (t), usable power Puse (t) and temperature T (t);sustained compute throughput C(t) in flops or token-updates per second; sustained I/O and memory bandwidths Bio (t), Bmem (t); dataset size D(t) in 26 effective unique tokens or samples; and benchmark capability I(t). Let ∆
+
+denote a finite differencing operator over a fixed window. Define observable log-slopes 
+
+ˆgX (t) := ∆ log X(t)∆t ,
+
+ˆϵY |X (t) := ∆ log Y (t)∆ log X(t),
+
+(83) which estimate growth rates and elasticities. Confidence intervals follow from heteroskedastic regression with Newey–West corrections. No simulation is used. 
+
+Data quality, nonstationarity, and bias corrections. Observed series are re-vised, nonstationary, and noisy. Let the true latent process be X⋆t and the observation Xt satisfy a log–errors-in-variables model 
+
+log Xt = log X⋆t + ε(X) 
+
+> t
+
+, Eε(X) 
+
+> t
+
+| F t−1
+
+ = 0 , (84) with serially correlated ε(X) 
+
+> t
+
+. Then naive log-slope estimators suffer attenua-tion. We therefore use: (i) HAC-robust local regressions with prewhitening; (ii) IV slopes when an instrument Zt exists with Cov(log Zt, ε (X) 
+
+> t
+
+) = 0 but 
+
+Cov(log Zt, log X⋆t )̸ = 0 :
+
+bϵIV   
+
+> Y|X
+
+= Cov(log Yt, log Zt)Cov(log Xt, log Zt); (85) (iii) a state-space de-noising where log X⋆t follows a local-trend model and is estimated by a Kalman smoother; identifiability inequalities are then computed with bX⋆t . We handle nonstationarity via rolling windows and 
+
+structural-break tests ; if a break is detected, all elasticities and ptot are re-ported piecewise with conservative union-of-intervals confidence sets. Revi-sions are tracked by versioned snapshots; survivorship and reporting biases are mitigated by including decommissioned capacity and failed training runs when available. 
+
+Bounds for the gain a and envelopes for F
+
+From Section 6 the instantaneous service envelope is 
+
+ϕsvc (t) = min 
+
+ σeff 
+
+kB ln 2 
+
+Puse (t)
+
+T (t) , σ eff Bio (t), σ eff Bmem (t)
+
+
+
+, (86) 27 hence 
+
+F (I, x, u ) ≤ a(I, t ) := Φ( I) ϕsvc (t). (87) We emphasize that a(I, t ) is increasing in both arguments when Φ and ϕsvc 
+
+increase, consistent with the comparison theorems of Sections 4 and 6. The measurable function a(I, t ) provides a data-driven upper envelope for 
+
+˙I. If R ∞ 
+
+> I0
+
+ds/ Φ( s) = ∞ and ϕsvc ∈ L1loc then Theorem 3 precludes finite-time blow up. 
+
+Transistor and accelerator roadmaps 
+
+Let gfab be the sustained growth rate of available accelerators and garch the efficiency growth from architectural advances measured as tokens-per-joule. The compute throughput elasticity satisfies 
+
+ˆϵC|K ≤ gfab + garch 
+
+gK
+
+= υmeas  
+
+> C
+
+, (88) which yields a bound on the compute exponent contribution to ptot :
+
+α υ C ≤ α υ meas  
+
+> C
+
+. (89) Packaging and thermal constraints further limit υC by the measured I/O slope ˆgBio and memory slope ˆgBmem , since sustained training is at most service-rate limited: 
+
+υC ≤ min 
+
+ ˆgBio 
+
+gK
+
+, ˆgBmem 
+
+gK
+
+
+
+. (90) 
+
+Power availability and thermodynamic efficiency 
+
+Measured deliverable power and cooling yield 
+
+ϕP T (t) = σeff 
+
+kB ln 2 
+
+ηpw COP( T (t)) 1 + COP( T (t)) 
+
+Pfac (t)
+
+T (t) . (91) If ˆgPfac and ˆgT are the observed growth rates, the energy channel elasticity for Z is bounded by 
+
+υE ≤ ˆgPfac − ˆgT + ˆ gCOP 
+
+gK
+
+. (92) This converts directly to a cap on the energy contribution in ptot :
+
+˜α υ E ≤ ˜α ˆgPfac − ˆgT + ˆ gCOP 
+
+gK
+
+. (93) 28 Dataset growth and synthetic-to-real limits 
+
+Let Dreal be unique high-quality real data and Dsynth synthetic data fil-tered for novelty. Define a replacement coefficient ρsyn ∈ [0 , 1] such that marginal utility of synthetic tokens is ρsyn times that of real tokens at equal quality, estimated by counterfactual evaluation. Then the effective dataset is Deff = Dreal + ρsyn Dsynth and the data elasticity satisfies 
+
+υD ≤ ˆgDreal + ˆ gρsyn + ˆ gDsynth 
+
+gK
+
+. (94) Learning-theoretic lower bounds with minimax rate N −r imply the exponent cap 
+
+βeff ≤ (1 − ρ) max {0, β − r}, (95) as in Section 6. Combining with the measured υD gives the data contribution to ptot .
+
+Empirical loss–compute exponents 
+
+Let L denote benchmark loss. The observed compute scaling exponent 
+
+ˆχ is the slope of −∂ log L/∂ log C on the operating range. If capability is a monotone transform of L with locally bounded derivative, then the compute contribution satisfies 
+
+αeff ≤ (1 − ρ) min {α, ˆχ}, (96) hence 
+
+ptot ≤ q + γξ + αeff υmeas  
+
+> C
+
++ βeff υmeas  
+
+> D
+
++ ˜ αeff υmeas  
+
+> E
+
+. (97) Inequality (97) is completely empirical once (q, ξ, ρ ) are estimated via regular-variation diagnostics for Φ, η, and −ℓ′. All plug-in estimates are computed on de-noised (or IV-corrected) series and reported per regime between detected breaks; confidence bands account for HAC errors and measurement-error attenuation. 
+
+Economic identifiability and tests. We estimate (ηC , η E ) from supply curves using public price–quantity pairs (p•, Q •) via log–log slopes; Γ• from ramp-rate telemetry by regressing realized ˙X on order backlogs; κ and λmax from financing disclosures and interest spreads; and Π from segment financials. These yield confidence sets for υ± 
+
+> X
+
+(Section 8) and for the bound in Theo-rem 4(ii). We then compute 
+
+bp± 
+
+> tot
+
+= ˆ q + ˆ γ ˆξ + αeff bυ± 
+
+> C
+
++ βeff bυ± 
+
+> D
+
++ ˜ αeff bυ± 
+
+> E
+
+, (98) 29 and test H0 : bp+tot ≤ 1 with one-sided bands. Failure to reject, together with envelope verification, certifies nonsingularity. 
+
+Estimation of resource elasticities and confidence sets. Given time series 
+
+{(Kt, X t)} for X ∈ { C, D, E }, define local-slope estimators 
+
+bυX (t) = d log Xt
+
+d log Kt
+
+(99) via local polynomial regression with bandwidth chosen by generalized cross-validation; compute Newey–West robust standard errors. We report 
+
+bυ− 
+
+> X
+
+= inf  
+
+> t∈W
+
+bυX (t), bυ+ 
+
+> X
+
+= sup 
+
+> t∈W
+
+bυX (t) (100) over a validation window W and propagate these into 
+
+bp− 
+
+> tot
+
+= ˆ q + ˆ γ ˆξ + αeff bυ− 
+
+> C
+
++ βeff bυ− 
+
+> D
+
++ ˜ αeff bυ− 
+
+> E
+
+, (101) 
+
+bp+tot = ˆ q + ˆ γ ˆξ + αeff bυ+ 
+
+> C
+
++ βeff bυ+ 
+
+> D
+
++ ˜ αeff bυ+ 
+
+> E
+
+. (102) A sufficient condition for nonsingularity is bp+tot ≤ 1 with a one-sided (1 − α)
+
+band; evidence for the singular regime requires bp− 
+
+> tot
+
+> 1 with the same band and nonbinding envelope tests (Section 10). 
+
+Hypothesis tests for singular vs nonsingular regimes 
+
+Define the null H0 : lim sup I→∞ ptot ≤ 1. Using (89)–(97), form a plug-in estimator bptot with delta-method standard error stot . Reject H0 at level α
+
+if bptot − z1−αstot > 1. Rejection indicates superlinear feedback consistent with the sufficient condition of Theorem 1 on a policy-stable horizon. Fail-ure to reject, together with the envelope (87) and an Osgood Φ, certifies nonsingularity by Theorem 2. 
+
+Mapping inequalities to Section 5 regimes 
+
+Collecting the contributions yields the decision rule: 
+
+
+
+Singular regime admissible if ∃ horizon with 
+
+ˆptot > 1 and ϕsvc nonbinding ,
+
+Nonsingular regime certified if ˆptot ≤ 1 and 
+
+˙I ≤ a(I, t ) = Φ( I)/ϕ svc (t)
+
+with R ∞ ds  
+
+> Φ( s)
+
+= ∞.
+
+(103) Each inequality tightens the right-hand side of (97) or lowers ϕsvc and thus moves the system toward the nonsingular regime. 30 Summary of identifiable constraints 
+
+Transistor and accelerator roadmaps bound αυ C by (89); power and ther-modynamics bound ˜αυ E by (93); dataset and synthetic-to-real limits bound 
+
+βeff by (95); compute scaling bounds αeff inside (97); facility envelopes bound 
+
+F by (87). The conjunction yields a simulation-free pipeline from measure-ments to analytic certificates of singular or nonsingular behavior. 
+
+10. Falsifiable Predictions and Tests 
+
+Rolling elasticity estimation and inequality tests 
+
+Define the instantaneous feedback elasticity 
+
+p(t) := d log ˙I(t)
+
+d log I(t) whenever ˙I(t) > 0. (104) Given sampled series {Ik, ˙Ik}nk=1 at times {tk}, estimate p(t) with a local log–log slope over a window W(t):
+
+ˆp(t) = arg min 
+
+> a,b
+
+X
+
+> k∈W (t)
+
+wk
+
+ log ˙Ik − (a + b log Ik)2, ˆp(t) = b, (105) where wk are kernel weights. Let sˆp(t) be the heteroskedastic Newey–West standard error. The singularity-sufficient condition of Theorem 1 motivates the rolling one-sided test 
+
+H0 : p(t) ≤ 1 vs. H1 : p(t) > 1, (106) with decision rule ˆp(t) − z1−α sˆp(t) > 1. Failure to reject on a sustained horizon, together with an envelope ˙I ≤ Φ( I)ϕ(t) and an Osgood Φ, certifies nonsingularity by Theorems 2 and 3. 
+
+Estimation of q, ξ, ρ with diagnostics. Estimate local indices by log-derivative regressions: 
+
+ˆq(I) = d log Φ( I)
+
+d log I ,
+
+ˆξ(I) = d log η(I)
+
+d log I ,
+
+ˆρ(Z) = −1 − d log[ −ℓ′(Z)] 
+
+d log Z ,
+
+(107) 31 implemented via local polynomial fits with bandwidth chosen by cross-validation. Construct pointwise confidence bands using sandwich estimators and Newey–West corrections. RV is accepted on a range if ˆq(I) and ˆξ(I) are statistically flat and Potter-type inequalities hold within a tolerance. If RV is rejected, use the envelope approach of Corollary 1 with p−, p + and report conclusions as interval statements. 
+
+Monotonicity and antagonism diagnostics. We estimate cross-partial signs and magnitudes to test (S2)–(S2 ′′ ). Using local regressions, 
+
+c∂xi F (I, x, u ), b∂I Gi(I, x, u ), i ∈ { C, D, E, K }, (108) we compute the empirical Metzler violation 
+
+dviol = X
+
+> i̸=j
+
+ − min {0, c∂xj Fi} − min {0, c∂xj Gi} 
+
+> +
+
+, (109) and the sector residuals bσI (I), bσx(∥x∥) as the positive parts of deviations from the cooperative fit F co . We accept the cooperative envelope on a window if 
+
+dviol is statistically zero and bσI (I) + bσx(∥x∥) ≤ θ ba(I) with θ < 1.
+
+Necessary trend breaks for a singular regime 
+
+If superlinearity is endogenous through efficiency, Section 6 implies palg →
+
+q + γξ . A necessary condition for any singular trajectory is the existence of a trend break tb and a horizon H such that 
+
+inf  
+
+> t∈[tb,t b+H]
+
+ˆp(t) > 1 − ε, (110) for some statistical margin ε > 0 derived from sˆp. When resources contribute through Z, a second necessary condition is a sustained break in the aggregate resource elasticity 
+
+ˆeZ (t) := d log Zd log K or d log Zdt (111) such that αˆeC + βˆeD + ˜ αˆeE is strictly positive over H. Absent these breaks, 
+
+ptot ≤ 1 almost everywhere and Theorem 2 applies. 
+
+Break detection and piecewise certification. We apply rolling change-point tests on log Xt and on ˆp(t); upon rejection of stability, we segment the hori-zon into regimes {R j } and compute (bp±
+
+> tot
+
+)j and envelope tests per regime. A global singularity claim requires existence of a regime with (bp−
+
+> tot
+
+)j > 1
+
+and nonbinding envelopes throughout that regime; a global nonsingularity certificate requires (bp+tot )j ≤ 1 and verified envelopes in every regime. 32 Ceiling-to-elasticity hypothesis test. To ensure that measured resource elas-ticities are consistent with physical service ceilings (Section 7), we test whether the capital–compute elasticity can exceed what I/O, memory, and power–temperature channels allow. Define the ceiling limsup elasticities 
+
+e+io := lim sup 
+
+> t→∞
+
+d log Bio (t)
+
+d log K(t) , e+mem := lim sup 
+
+> t→∞
+
+d log Bmem (t)
+
+d log K(t) ,e+pow := lim sup 
+
+> t→∞
+
+d log  Puse (t)/T (t)
+
+d log K(t) .
+
+(112) By the ceiling-induced caps in (55) one has 
+
+υ+ 
+
+> C
+
+≤ e+ceil := min {e+io , e +mem , e +pow }. (113) Using the local-slope estimators and Newey–West bands from Section 10, we form plug-in estimates 
+
+bυ+ 
+
+> C
+
+, be+io , be+mem , be+pow , (114) with one-sided (1 − α) confidence radii sυ+
+
+> C
+
+, s io , s mem , s pow . We test 
+
+Hceil 0 : υ+ 
+
+> C
+
+≤ min {e+io , e +mem , e +pow } vs. 
+
+Hceil 1 : υ+ 
+
+> C
+
+> min {e+io , e +mem , e +pow }. (115) With Bonferroni correction for three one-sided comparisons, reject Hceil 0 at familywise level α only if 
+
+bυ+ 
+
+> C
+
+− z1−α/ 3 sυ+
+
+> C
+
+>
+
+min 
+
+nbe+io + z1−α/ 3 sio , be+mem + z1−α/ 3 smem , be+pow + z1−α/ 3 spow 
+
+o
+
+. (116) Failure to reject implies, with probability at least 1 − α, that 
+
+p+tot ≤ q + γξ + αeff e+ceil + βeff bυ+ 
+
+> D
+
++ ˜αeff e+pow , (117) so if the right-hand side is ≤ 1 on a validation window, the nonsingularity certificate of Theorem 2 holds jointly with the measurable envelope test of Section 10. 33 Closed-form capability estimation without simulation 
+
+Let L(t) be a benchmark loss and let g be a known increasing transform so that I(t) = g Lref −L(t) with g′ locally bounded. Published training reports provide compute C(t), data D(t), and energy E(t). Using finite differences, 
+
+˙Ik ≈ g Lref − Lk
+
+ − g Lref − Lk−1
+
+
+
+tk − tk−1
+
+,ϕsvc ,k = min 
+
+n σeff   
+
+> kBln 2
+> Puse ,k
+> Tk
+
+, σ eff Bio ,k , σ eff Bmem ,k 
+
+o
+
+.
+
+(118) 
+
+Measurable envelope test. Given ϕsvc ,k constructed from Section 7, we verify the inequality ˙Ik ≤ Φ( Ik) ϕsvc ,k . (119) with Φ estimated by local regression of ˙Ik/ϕ svc ,k on Ik. If R ∞ 
+
+> I0
+
+ds/ ˆΦ( s) = ∞,the data imply nonsingularity under the observed facility constraints. 
+
+Power analysis and sampling requirements 
+
+Let Var  log ˙I = σ2 on the operating range. Over a window with m
+
+effective samples and Var  log I = τ 2, the asymptotic variance of ˆp satisfies 
+
+s2ˆp ≈ σ2/(m τ 2). To detect p(t) ≥ 1 + δ at level α and power 1 − β, it suffices that 
+
+m ≳ ( z1−α + z1−β )2 σ2
+
+δ2 τ 2 . (120) This provides a concrete requirement on measurement cadence and bench-mark noise. 
+
+Cross-checks with Section 9 inequalities 
+
+Compute the plug-in estimator 
+
+bptot (t) = ˆq(t) + ˆ γ(t) ˆξ(t) + ˆ αeff (t)ˆ υC (t)+ ˆβeff (t)ˆ υD(t) + ˆ ˜αeff (t)ˆ υE (t) (121) using the identifiability pipeline of Section 10. Consistency requires ˆp(t) ≤
+
+bptot (t) + op(1) . A persistent violation invalidates the modeling assumptions and triggers model revision. Agreement with bptot ≤ 1 and the envelope test supports the nonsingular regime. 34 Event-level predictions 
+
+If a sustained interval satisfies ˆp(t) > 1 + δ with nonbinding ϕsvc , Theo-rem 1 yields a finite-time upper bound 
+
+bTbu (t) = I(t)1−(1+ δ)
+
+a0
+
+ (1 + δ) − 1 = I(t)−δ
+
+a0 δ , (122) for an envelope ˙I ≥ a0I1+ δ. If the same data imply ˙I ≤ Φ( I) ¯ϕ and R ∞ ds/ Φ( s) = 
+
+∞, then the event is falsified and singularity is ruled out under prevailing constraints. The procedures above convert public benchmark, compute, energy, and bandwidth series into statistical tests of the analytic conditions in Sections 4–6. Each claim is falsifiable by construction and requires no simulation. 
+
+11. Case Studies 
+
+We analyze stylized policies that admit closed forms or tight comparison bounds. Throughout write F (I, x, u ) = Φ eff (I) Zeff (t) with 
+
+Φeff (I) ≍ I q+γξ and Zeff (t) ≍ C(t)αeff D(t)βeff E(t)˜αeff , (123) where αeff , β eff , ˜αeff incorporate the learning-curve factor (1 − ρ) from Sec-tion 6. Set p := q + γξ . We use Osgood/Bihari comparison and explicit solutions of scalar ODEs. 
+
+A. Constant-elasticity compute buildout 
+
+Assume capital obeys ˙K = rK ζ − δK with ζ > 1 and r > δ . Compute is fed by capital with a saturation loss sC (C) ≤ σC C, and a persistent allocation 
+
+uC (t) ≥ uC > 0, giving 
+
+˙C = πC uC K − sC (C) ⇒ C(t) ≥ c1K(t) − c2 (124) after a finite transient. Hence Zeff (t) ≥ κ K (t)αeff for some κ > 0. For large 
+
+K, ˙K ≥ r 
+
+> 2
+
+Kζ , which yields the explicit lower solution 
+
+K(t) = 
+
+
+
+K1−ζ 
+
+> 0
+
+− r 
+
+> 2
+
+(ζ − 1) t
+
+− 1
+
+> ζ−1
+
+, TK = 2 K1−ζ
+
+> 0
+
+r(ζ − 1) . (125) Therefore 
+
+˙I ≥ a(t) Φ eff (I), a(t) = κ K (t)αeff ,
+
+Z TK
+
+> 0
+
+a(t) dt = + ∞. (126) 35 Result A1 (finite-time blow-up). If p > 1 then R ∞ 
+
+> I0
+
+ds/ Φeff (s) < ∞ and Os-good’s criterion implies blow-up no later than TK . A crude explicit upper bound is 
+
+Tbu ≤ inf 
+
+n
+
+t < T K :
+
+Z t
+
+> 0
+
+a(τ ) dτ ≥
+
+Z ∞
+
+> I0
+
+ds 
+
+Φeff (s)
+
+o
+
+. (127) 
+
+Result A2 (nonsingular hyper-exponential). If p ≤ 1 then R ∞ ds/ Φeff (s) = ∞;even though a(t) → ∞ as t ↑ TK , Bihari’s inequality cannot force blow-up. Capability can grow faster than any fixed exponential yet remains nonsingu-lar. 
+
+12. Robustness and Sensitivity (Mathematical) 
+
+We summarize robustness at a high level. The analysis treats parameter and model uncertainty uniformly via envelopes and comparison arguments; continuity and structural stability of blow-up and nonsingularity follow from Osgood-type integrals; and safety margins are linked to measurable elastici-ties and facility ceilings. Full theorems, proofs, and design implications are omitted here for brevity. 
+
+13. Conclusion 
+
+This paper presented a rigorous, fully analytic framework for recursive self-improvement and the AI singularity. We formalized capability as a pro-cess I(t) with axioms of monotonicity and affine invariance, introduced a discrete improvement operator R and its continuous limit, and modeled re-source couplings for compute, data, energy, and capital. We established necessary and sufficient conditions for finite-time blow-up using Osgood and Bihari–LaSalle inequalities and discrete reciprocal-power transforms. In par-ticular, we proved that superlinear feedback ˙I ≥ aI p with p > 1 implied finite-time explosion with explicit bounds on the blow-up time, while sublin-ear envelopes with an Osgood-divergent integral precluded singularity. We derived physical and information-theoretic ceilings from energy-to-erasure, bandwidth, and memory service limits and showed that these produced global caps that blocked blow-up whenever the capability factor satisfied an inte-grability condition. We analyzed economic amplification via capital dynam-ics and located an endogenous growth threshold on a measurable critical manifold. We constructed barrier certificates and resource-aware throttling 36 policies that certified nonsingularity, and we posed an optimal control prob-lem balancing capability, resources, and risk. We provided identifiability inequalities that tied (α, β, γ ), elasticities, and facility envelopes to observ-ables, enabling falsifiable tests without simulation. Analytical case stud-ies delivered closed-form envelopes across capped-power, logistic-data, and superlinear-capital regimes. Robustness analyses established structural sta-bility of conclusions and uniform safety under bounded modeling error and distribution shift. The work yielded a measurement-first methodology: either demonstrate 
+
+ptot > 1 with nonbinding facility envelopes or certify nonsingularity via Osgood-type bounds estimated from power, bandwidth, and benchmark se-ries. This separated algorithmic superlinearity from resource-driven ampli-fication and converted engineering specifications into mathematical safety guarantees. Future directions were clear. On the theory side, we planned to extend the results to stochastic and jump-diffusion RSI, delay and hybrid systems, non-cooperative multi-agent settings, and non-smooth learning curves with phase changes. On the identification side, we aimed to develop causal estimators for elasticities under intervention, uncertainty-aware online certification with sequential tests, and tighter learning-theoretic lower bounds for modern ar-chitectures. For responsible AI, we proposed normative thresholds and audit procedures grounded in our inequalities, governance policies that triggered throttling when margins to the critical manifold shrank, standards for re-porting compute, energy, and bandwidth sufficient to reproduce the safety certificates, and red-team analyses that treated adversarial policy deviations as uncertainty in our envelopes. Together, these directions strengthened the path toward deployable, testable guarantees that either ruled out singular trajectories or identified them early enough for corrective control. 
+
+References 
+
+[1] R. Kurzweil, The singularity is near, in: Ethics and emerging technolo-gies, Springer, 2005, pp. 393–406. [2] J. Hoffmann, S. Borgeaud, A. Mensch, E. Buchatskaya, T. Cai, E. Rutherford, D. d. L. Casas, L. A. Hendricks, J. Welbl, A. Clark, et al., Training compute-optimal large language models, arXiv preprint arXiv:2203.15556 (2022). 37 [3] I. J. Good, Speculations concerning the first ultraintelligent machine, in: Advances in computers, Vol. 6, Elsevier, 1966, pp. 31–88. [4] J. Collenette, K. Atkinson, T. Bench-Capon, Explainable ai tools for legal reasoning about cases: A study on the european court of human rights, Artificial Intelligence 317 (2023) 103861. [5] A. A. Jafari, G. Anbarjafari, Geyolo-ahc: A hybrid graph-enhanced framework with adaptive heat conduction for scalable, real-time object detection, Authorea Preprints (2025). [6] R. Aggarwal, S. Sachan, R. Verma, N. Dhanda, Traditional ai vs mod-ern ai, in: The Confluence of Cryptography, Blockchain and Artificial Intelligence, CRC Press, 2025, pp. 51–75. [7] V. Vinge, The coming technological singularity: How to survive in the post-human era, Science fiction criticism: An anthology of essential writ-ings 81 (1993) 352–363. [8] E. Yudkowsky, et al., Artificial intelligence as a positive and negative factor in global risk, Global catastrophic risks 1 (303) (2008) 184. [9] P. Giudici, M. Centurelli, S. Turchetta, Artificial intelligence risk mea-surement, Expert Systems with Applications 235 (2024) 121220. [10] J. Kaplan, S. McCandlish, T. Henighan, T. B. Brown, B. Chess, R. Child, S. Gray, A. Radford, J. Wu, D. Amodei, Scaling laws for neural language models, arXiv preprint arXiv:2001.08361 (2020). [11] B. Nick, Superintelligence: Paths, dangers, strategies, Strategies (2014). [12] N. Bostrom, The control problem. excerpts from superintelligence: Paths, dangers, strategies, Science Fiction and Philosophy: From Time Travel to Superintelligence (2016) 308–330. [13] J.-S. Dessureault, R. Lamontagne, P.-O. Parisé, The ethics of creat-ing artificial superintelligence: a global risk perspective, AI and Ethics (2025) 1–23. [14] G. Mussardo, Integrability, non-integrability and confinement, Jour-nal of Statistical Mechanics: Theory and Experiment 2011 (01) (2011) P01002. 38 [15] Y. Zhao, X. Chen, W. Pan, Quantitative stability and contraction prin-ciples for mean-field g-sdes, arXiv preprint arXiv:2509.03439 (2025). [16] I. Bihari, A generalization of a lemma of bellman and its application to uniqueness problems of differential equations, Acta Mathematica Hun-garica 7 (1) (1956) 81–94. [17] A. Cosso, F. Gozzi, I. Kharroubi, H. Pham, M. Rosestolato, Master bellman equation in the wasserstein space: Uniqueness of viscosity so-lutions, Transactions of the American Mathematical Society 377 (01) (2024) 31–83. [18] D. Amodei, D. Hernandez, Ai and compute (2018). URL https://openai.com/index/ai-and-compute/ 
+
+[19] A. D. Ames, X. Xu, J. W. Grizzle, P. Tabuada, Control barrier function based quadratic programs for safety critical systems, IEEE Transactions on Automatic Control 62 (8) (2016) 3861–3876. [20] C. Dawson, S. Gao, C. Fan, Safe control with learned certificates: Asurvey of neural lyapunov, barrier, and contraction methods for robotics and control, IEEE Transactions on Robotics 39 (3) (2023) 1749–1767. [21] H. Almubarak, N. Sadegh, E. A. Theodorou, Barrier states theory for safety-critical multi-objective control, IEEE Transactions on Automatic Control (2025). [22] E. T. Change, Endogenous technological change, Journal of Political Economy 98 (5) (1990) 2. [23] M. Han, H. Shen, J. Wu, X. Zhang, Artificial intelligence and firm re-silience: Empirical evidence from natural disaster shocks, Information Systems Research (2025). [24] A. Srivastava, A. Rastogi, A. Rao, A. A. M. Shoeb, A. Abid, A. Fisch, A. R. Brown, A. Santoro, A. Gupta, A. Garriga-Alonso, et al., Beyond the imitation game: Quantifying and extrapolating the capabilities of language models, Transactions on machine learning research (2023). [25] Y. LeCun, Y. Bengio, G. Hinton, Deep learning, nature 521 (7553) (2015) 436–444. 39

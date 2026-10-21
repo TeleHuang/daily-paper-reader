@@ -1,0 +1,1497 @@
+{
+  "date": "20251021-20261020",
+  "date_label": "2025-10-21 ～ 2026-10-20",
+  "generated_at": "2026-10-21T07:01:19.477540+00:00",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2609.26457v1",
+      "route": "20251021-20261020/2609.26457v1",
+      "title": "Recursive self-improvement of AI research agents",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "该论文探讨AI代理递归自我改进，与专题关注的递归AI能力演进直接相关。",
+      "first_seen_at": "2026-10-21T07:01:06.213282+00:00",
+      "updated_at": "2026-10-21T07:01:06.213282+00:00"
+    },
+    {
+      "paper_id": "2610.28201v1",
+      "route": "20251021-20261020/2610.28201v1",
+      "title": "MaD-RSI: Model-as-Data for Recursive Self-Improvement of Agent Harnesses",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:09.987728+00:00",
+      "updated_at": "2026-10-21T07:01:09.987728+00:00"
+    },
+    {
+      "paper_id": "2610.24464v1",
+      "route": "20251021-20261020/2610.24464v1",
+      "title": "Learning to Compose: Recursive Self-Improvement of Shared Executable Stacks for Zero-Shot Long-Horizon Robot Manipulation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:09.855188+00:00",
+      "updated_at": "2026-10-21T07:01:09.855188+00:00"
+    },
+    {
+      "paper_id": "2610.23344v1",
+      "route": "20251021-20261020/2610.23344v1",
+      "title": "Language Models Learn to Improve Language Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:09.722385+00:00",
+      "updated_at": "2026-10-21T07:01:09.722385+00:00"
+    },
+    {
+      "paper_id": "2610.22192v1",
+      "route": "20251021-20261020/2610.22192v1",
+      "title": "Terminal-RSI: Recursive Self-Improving Terminal Agents via Recursive Self-Rewrite and Policy-Refine",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:09.590804+00:00",
+      "updated_at": "2026-10-21T07:01:09.590804+00:00"
+    },
+    {
+      "paper_id": "2610.20474v1",
+      "route": "20251021-20261020/2610.20474v1",
+      "title": "AdaRSI: On-Demand Recursive Self-Improvement for Embodied Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:09.456754+00:00",
+      "updated_at": "2026-10-21T07:01:09.456754+00:00"
+    },
+    {
+      "paper_id": "2609.36675v1",
+      "route": "20251021-20261020/2609.36675v1",
+      "title": "Gödel Forest: Balancing Search Depth and Breadth for Data-Centric Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:09.325667+00:00",
+      "updated_at": "2026-10-21T07:01:09.325667+00:00"
+    },
+    {
+      "paper_id": "2609.35561v2",
+      "route": "20251021-20261020/2609.35561v2",
+      "title": "RSI-Master: Structuring Experiments to Guide Autonomous Model Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:09.194679+00:00",
+      "updated_at": "2026-10-21T07:01:09.194679+00:00"
+    },
+    {
+      "paper_id": "2609.33867v1",
+      "route": "20251021-20261020/2609.33867v1",
+      "title": "R$^2$ Flow: Recursive Self-Improvement via Recursive Skill Evolution",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:09.062664+00:00",
+      "updated_at": "2026-10-21T07:01:09.062664+00:00"
+    },
+    {
+      "paper_id": "2609.33398v1",
+      "route": "20251021-20261020/2609.33398v1",
+      "title": "COEVO: Co-Evolving Context and Parameters for Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:08.931135+00:00",
+      "updated_at": "2026-10-21T07:01:08.931135+00:00"
+    },
+    {
+      "paper_id": "2609.31760v1",
+      "route": "20251021-20261020/2609.31760v1",
+      "title": "What Stops Recursive Self-Improvement in Robotics? Lessons from 123 Rounds of Agentic Skill Discovery",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:08.800562+00:00",
+      "updated_at": "2026-10-21T07:01:08.800562+00:00"
+    },
+    {
+      "paper_id": "2609.19526v1",
+      "route": "20251021-20261020/2609.19526v1",
+      "title": "Self Improvement via Fast Tree-search",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:08.670371+00:00",
+      "updated_at": "2026-10-21T07:01:08.670371+00:00"
+    },
+    {
+      "paper_id": "2609.14858v1",
+      "route": "20251021-20261020/2609.14858v1",
+      "title": "Dream-RSI: Recursive Self-Improvement through Evolving Worlds",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:08.529389+00:00",
+      "updated_at": "2026-10-21T07:01:08.529389+00:00"
+    },
+    {
+      "paper_id": "2609.14857v1",
+      "route": "20251021-20261020/2609.14857v1",
+      "title": "ModularRSI: Modular and Generalizable Recursive Harness Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:08.395338+00:00",
+      "updated_at": "2026-10-21T07:01:08.395338+00:00"
+    },
+    {
+      "paper_id": "2609.13406v1",
+      "route": "20251021-20261020/2609.13406v1",
+      "title": "Generalized Agent Iteration: One Formal Framework for Iterative Policy Improvement and Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:08.265428+00:00",
+      "updated_at": "2026-10-21T07:01:08.265428+00:00"
+    },
+    {
+      "paper_id": "2609.11873v2",
+      "route": "20251021-20261020/2609.11873v2",
+      "title": "The Last AI Built by Humans: Toward Genuine Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:08.133588+00:00",
+      "updated_at": "2026-10-21T07:01:08.133588+00:00"
+    },
+    {
+      "paper_id": "2609.08183v1",
+      "route": "20251021-20261020/2609.08183v1",
+      "title": "NeoHorse-1: Towards Recursive Self-Improvement via Agentic Post-Training with Routing Harness",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:08.003876+00:00",
+      "updated_at": "2026-10-21T07:01:08.003876+00:00"
+    },
+    {
+      "paper_id": "2609.06396v2",
+      "route": "20251021-20261020/2609.06396v2",
+      "title": "MetaRSI / RSI2: A Meta-Recursive Self-Improving System for Recursive Self-Improving Systems Themselves",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:07.874503+00:00",
+      "updated_at": "2026-10-21T07:01:07.874503+00:00"
+    },
+    {
+      "paper_id": "2609.00137v1",
+      "route": "20251021-20261020/2609.00137v1",
+      "title": "Recursive Criticality of AI Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:07.746865+00:00",
+      "updated_at": "2026-10-21T07:01:07.746865+00:00"
+    },
+    {
+      "paper_id": "2608.24735v1",
+      "route": "20251021-20261020/2608.24735v1",
+      "title": "Meta$^n$: Recursive Self-Improvement through Emergent Depth",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:07.605282+00:00",
+      "updated_at": "2026-10-21T07:01:07.605282+00:00"
+    },
+    {
+      "paper_id": "2608.20318v1",
+      "route": "20251021-20261020/2608.20318v1",
+      "title": "AI4AI-Bench: Benchmarking LLM Agents in Algorithmic Design for Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:07.474671+00:00",
+      "updated_at": "2026-10-21T07:01:07.474671+00:00"
+    },
+    {
+      "paper_id": "2607.28568v1",
+      "route": "20251021-20261020/2607.28568v1",
+      "title": "Frontis-MA1: Training an AI4AI Model towards Recursive Self-Improvement in Machine Learning Engineering",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向递归AI专题，提供可执行AI4AI训练栈与元进化智能体实证。",
+      "first_seen_at": "2026-10-21T07:01:07.347435+00:00",
+      "updated_at": "2026-10-21T07:01:07.347435+00:00"
+    },
+    {
+      "paper_id": "2607.25886v1",
+      "route": "20251021-20261020/2607.25886v1",
+      "title": "RSIBench-Data: Benchmarking Data-Centric Research for Recursive Self-Improvement",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "该论文构建数据中心的智能体研究基准，直接评测递归自我改进所需的研究闭环能力，与专题高度相关。",
+      "first_seen_at": "2026-10-21T07:01:07.221637+00:00",
+      "updated_at": "2026-10-21T07:01:07.221637+00:00"
+    },
+    {
+      "paper_id": "2607.07663v2",
+      "route": "20251021-20261020/2607.07663v2",
+      "title": "Recursive Self-Improvement in AI: From Bounded Self-Refinement to Autonomous Research Loops",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "该综述为递归自我改进专题提供分类框架与验证层级，并指出治理测量的研究空白。",
+      "first_seen_at": "2026-10-21T07:01:07.095308+00:00",
+      "updated_at": "2026-10-21T07:01:07.095308+00:00"
+    },
+    {
+      "paper_id": "2607.05297v1",
+      "route": "20251021-20261020/2607.05297v1",
+      "title": "MetaSkill-Evolve: Recursive Self-Improvement of LLM Agents via Two-Timescale Meta-Skill Evolution",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "探讨LLM智能体递归自我改进与元技能进化，属递归AI专题。",
+      "first_seen_at": "2026-10-21T07:01:06.966506+00:00",
+      "updated_at": "2026-10-21T07:01:06.966506+00:00"
+    },
+    {
+      "paper_id": "2607.04277v1",
+      "route": "20251021-20261020/2607.04277v1",
+      "title": "Self-Reference in Large Language Models: The Introspection Threshold for Recursive Self-Improvement",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "为递归自改进LLM提供内省阈值理论判据，属该专题的理论基础与安全边界探讨。",
+      "first_seen_at": "2026-10-21T07:01:06.840701+00:00",
+      "updated_at": "2026-10-21T07:01:06.840701+00:00"
+    },
+    {
+      "paper_id": "2606.26294v2",
+      "route": "20251021-20261020/2606.26294v2",
+      "title": "The Red Queen Gödel Machine: Co-Evolving Agents and Their Evaluators",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向递归自改进智能体，提出评估者与智能体共同演化的非平稳效用搜索框架，属递归AI专题。",
+      "first_seen_at": "2026-10-21T07:01:06.715710+00:00",
+      "updated_at": "2026-10-21T07:01:06.715710+00:00"
+    },
+    {
+      "paper_id": "2606.09663v1",
+      "route": "20251021-20261020/2606.09663v1",
+      "title": "From 0-to-1 to 1-to-N: Reproducible Engineering Evidence for MetaAI Recursive Self-Design",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "为递归AI专题提供证据框架与可复现协议，DGM为当前最直接案例，MetaAI-Mini尚待完整运行验证。",
+      "first_seen_at": "2026-10-21T07:01:06.588660+00:00",
+      "updated_at": "2026-10-21T07:01:06.588660+00:00"
+    },
+    {
+      "paper_id": "2603.19461v1",
+      "route": "20251021-20261020/2603.19461v1",
+      "title": "Hyperagents",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "探讨递归自我改进智能体，使元级修改机制本身可编辑，属于递归AI专题的核心方法探索。",
+      "first_seen_at": "2026-10-21T07:01:06.464048+00:00",
+      "updated_at": "2026-10-21T07:01:06.464048+00:00"
+    },
+    {
+      "paper_id": "2511.10668v1",
+      "route": "20251021-20261020/2511.10668v1",
+      "title": "A Mathematical Framework for AI Singularity: Conditions, Bounds, and Control of Recursive Improvement",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "为AI递归自我改进专题提供可检验的增长条件与功率限流等控制思路，属理论框架而非直接验证。",
+      "first_seen_at": "2026-10-21T07:01:06.340281+00:00",
+      "updated_at": "2026-10-21T07:01:06.340281+00:00"
+    },
+    {
+      "paper_id": "2610.27735v1",
+      "route": "20251021-20261020/2610.27735v1",
+      "title": "RSI Control: Can AI Models Perform Covert Sabotage in the Self-Improvement Process?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:15.007535+00:00",
+      "updated_at": "2026-10-21T07:01:15.007535+00:00"
+    },
+    {
+      "paper_id": "2610.27610v1",
+      "route": "20251021-20261020/2610.27610v1",
+      "title": "Auditing the Product, Not the Recursion: The Evaluation Evidence Behind Recursive Self-Improvement Claims",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:14.862891+00:00",
+      "updated_at": "2026-10-21T07:01:14.862891+00:00"
+    },
+    {
+      "paper_id": "2610.26848v1",
+      "route": "20251021-20261020/2610.26848v1",
+      "title": "Where is Physical RSI capability from? An Observational Scaling Law of LLM-as-policy",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:14.719408+00:00",
+      "updated_at": "2026-10-21T07:01:14.719408+00:00"
+    },
+    {
+      "paper_id": "2610.26770v2",
+      "route": "20251021-20261020/2610.26770v2",
+      "title": "HarnessPro: Recursive Harness Self-Improvement with Pareto Optimization for Performance-Cost Trade-offs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:14.575562+00:00",
+      "updated_at": "2026-10-21T07:01:14.575562+00:00"
+    },
+    {
+      "paper_id": "2610.26342v2",
+      "route": "20251021-20261020/2610.26342v2",
+      "title": "VibeTraining-Bench: Data-Trainer-Harness Co-Design for Iterative System Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:14.431352+00:00",
+      "updated_at": "2026-10-21T07:01:14.431352+00:00"
+    },
+    {
+      "paper_id": "2610.25114v1",
+      "route": "20251021-20261020/2610.25114v1",
+      "title": "Compile Once, Run Cheap: Frozen, Portable Skills for Embodied Agents, and What Recursive Self-Improvement Adds",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:14.287831+00:00",
+      "updated_at": "2026-10-21T07:01:14.287831+00:00"
+    },
+    {
+      "paper_id": "2610.22791v1",
+      "route": "20251021-20261020/2610.22791v1",
+      "title": "Self-Evolving Coding Agents via Harness-Policy Optimization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:14.144240+00:00",
+      "updated_at": "2026-10-21T07:01:14.144240+00:00"
+    },
+    {
+      "paper_id": "2610.22740v1",
+      "route": "20251021-20261020/2610.22740v1",
+      "title": "R$^2$Orch: Recursive Self-Improvement for Agent Orchestration via Self-Play within a Skill-Internalization Loop",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:14.001422+00:00",
+      "updated_at": "2026-10-21T07:01:14.001422+00:00"
+    },
+    {
+      "paper_id": "2610.21646v1",
+      "route": "20251021-20261020/2610.21646v1",
+      "title": "The Self-Improvement Problem",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:13.856567+00:00",
+      "updated_at": "2026-10-21T07:01:13.856567+00:00"
+    },
+    {
+      "paper_id": "2610.21040v1",
+      "route": "20251021-20261020/2610.21040v1",
+      "title": "Recursive Reward Improvement via Adversarial Meta-Prompt Evolution",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:13.713544+00:00",
+      "updated_at": "2026-10-21T07:01:13.713544+00:00"
+    },
+    {
+      "paper_id": "2610.20294v1",
+      "route": "20251021-20261020/2610.20294v1",
+      "title": "MMLA-RSI: Recursive Self-Improvement through RTT and RTMA",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:13.571373+00:00",
+      "updated_at": "2026-10-21T07:01:13.571373+00:00"
+    },
+    {
+      "paper_id": "2610.18083v1",
+      "route": "20251021-20261020/2610.18083v1",
+      "title": "AReaL-RSI: Adaptive Scaling and Coordination of Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:13.428068+00:00",
+      "updated_at": "2026-10-21T07:01:13.428068+00:00"
+    },
+    {
+      "paper_id": "2610.16491v1",
+      "route": "20251021-20261020/2610.16491v1",
+      "title": "Drafting Agents, Not Just Tokens: Speculative Recursive Self-Improvement for Agentic Systems",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:13.286992+00:00",
+      "updated_at": "2026-10-21T07:01:13.286992+00:00"
+    },
+    {
+      "paper_id": "2610.13912v1",
+      "route": "20251021-20261020/2610.13912v1",
+      "title": "RSI-Anything: Unlocking Recursive Self-Improvement with World Models",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:13.146174+00:00",
+      "updated_at": "2026-10-21T07:01:13.146174+00:00"
+    },
+    {
+      "paper_id": "2610.10611v1",
+      "route": "20251021-20261020/2610.10611v1",
+      "title": "Verification and Self-Improvement in Agentic AI: Foundations and Limits",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:13.002538+00:00",
+      "updated_at": "2026-10-21T07:01:13.002538+00:00"
+    },
+    {
+      "paper_id": "2610.10310v1",
+      "route": "20251021-20261020/2610.10310v1",
+      "title": "RSIGym: A Flexible Environment for Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:12.862913+00:00",
+      "updated_at": "2026-10-21T07:01:12.862913+00:00"
+    },
+    {
+      "paper_id": "2610.09426v1",
+      "route": "20251021-20261020/2610.09426v1",
+      "title": "RSI-Forge: From Research Papers to Environments for Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:12.723763+00:00",
+      "updated_at": "2026-10-21T07:01:12.723763+00:00"
+    },
+    {
+      "paper_id": "2609.39306v1",
+      "route": "20251021-20261020/2609.39306v1",
+      "title": "ReSAIL: Mitigating Collapse in Iterative Agent Self-Distillation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:12.583952+00:00",
+      "updated_at": "2026-10-21T07:01:12.583952+00:00"
+    },
+    {
+      "paper_id": "2609.37834v1",
+      "route": "20251021-20261020/2609.37834v1",
+      "title": "Mixture of Self-Improving Branches For Agent Harness Optimization",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:12.445323+00:00",
+      "updated_at": "2026-10-21T07:01:12.445323+00:00"
+    },
+    {
+      "paper_id": "2609.33180v2",
+      "route": "20251021-20261020/2609.33180v2",
+      "title": "Which Self-Improvements Should We Trust? Reliable Self-Improvement When Agents Reuse Their Benchmarks",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:12.307087+00:00",
+      "updated_at": "2026-10-21T07:01:12.307087+00:00"
+    },
+    {
+      "paper_id": "2609.31186v1",
+      "route": "20251021-20261020/2609.31186v1",
+      "title": "Evolutionary Safety of Recursive Self-Improving AI: Taxonomy, Risk Discovery, and Evaluation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:12.167619+00:00",
+      "updated_at": "2026-10-21T07:01:12.167619+00:00"
+    },
+    {
+      "paper_id": "2609.29773v1",
+      "route": "20251021-20261020/2609.29773v1",
+      "title": "Breaking the Environment Wall: Evolving LLM Agent Environments for Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:12.026997+00:00",
+      "updated_at": "2026-10-21T07:01:12.026997+00:00"
+    },
+    {
+      "paper_id": "2609.24972v2",
+      "route": "20251021-20261020/2609.24972v2",
+      "title": "RRSI: Regularized Recursive Self-Improvement of Agent Harnesses",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:11.888986+00:00",
+      "updated_at": "2026-10-21T07:01:11.888986+00:00"
+    },
+    {
+      "paper_id": "2609.15802v1",
+      "route": "20251021-20261020/2609.15802v1",
+      "title": "The Economics of Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:11.752265+00:00",
+      "updated_at": "2026-10-21T07:01:11.752265+00:00"
+    },
+    {
+      "paper_id": "2609.15364v2",
+      "route": "20251021-20261020/2609.15364v2",
+      "title": "RSIAgent: Autonomous Exploration for Recursive Self-improvement in New Environments",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:11.615949+00:00",
+      "updated_at": "2026-10-21T07:01:11.615949+00:00"
+    },
+    {
+      "paper_id": "2608.24876v1",
+      "route": "20251021-20261020/2608.24876v1",
+      "title": "Recursive Experiential-Working Memory Evolution for Long-Horizon Agent Harnesses",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:11.478842+00:00",
+      "updated_at": "2026-10-21T07:01:11.478842+00:00"
+    },
+    {
+      "paper_id": "2608.04003v1",
+      "route": "20251021-20261020/2608.04003v1",
+      "title": "PAST-Bench: Benchmarking the Foundations of Recursive Self-Improvement in Personal Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:11.343090+00:00",
+      "updated_at": "2026-10-21T07:01:11.343090+00:00"
+    },
+    {
+      "paper_id": "2607.15524v1",
+      "route": "20251021-20261020/2607.15524v1",
+      "title": "Recursive Harness Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:11.206368+00:00",
+      "updated_at": "2026-10-21T07:01:11.206368+00:00"
+    },
+    {
+      "paper_id": "2607.12254v2",
+      "route": "20251021-20261020/2607.12254v2",
+      "title": "Self-Aware Recursively Self-Improving Agents for Personal Singularity: A Goal-, Scope-, Tool-, and Benchmark-Driven Multi-Agent Architecture",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:11.069003+00:00",
+      "updated_at": "2026-10-21T07:01:11.069003+00:00"
+    },
+    {
+      "paper_id": "2605.27381v1",
+      "route": "20251021-20261020/2605.27381v1",
+      "title": "The Computational Boundary of Inference: Capability Internalization, Training, and the Turing Jump",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:10.932001+00:00",
+      "updated_at": "2026-10-21T07:01:10.932001+00:00"
+    },
+    {
+      "paper_id": "2605.27276v2",
+      "route": "20251021-20261020/2605.27276v2",
+      "title": "SIA: Self Improving AI with Harness & Weight Updates",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:10.797071+00:00",
+      "updated_at": "2026-10-21T07:01:10.797071+00:00"
+    },
+    {
+      "paper_id": "2605.15219v3",
+      "route": "20251021-20261020/2605.15219v3",
+      "title": "NOVA: Fundamental Limits of Knowledge Discovery Through AI",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:10.661872+00:00",
+      "updated_at": "2026-10-21T07:01:10.661872+00:00"
+    },
+    {
+      "paper_id": "2603.29640v1",
+      "route": "20251021-20261020/2603.29640v1",
+      "title": "ASI-Evolve: AI Accelerates AI",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:10.527427+00:00",
+      "updated_at": "2026-10-21T07:01:10.527427+00:00"
+    },
+    {
+      "paper_id": "2603.18073v1",
+      "route": "20251021-20261020/2603.18073v1",
+      "title": "Continually self-improving AI",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:10.393306+00:00",
+      "updated_at": "2026-10-21T07:01:10.393306+00:00"
+    },
+    {
+      "paper_id": "2603.06333v1",
+      "route": "20251021-20261020/2603.06333v1",
+      "title": "SAHOO: Safeguarded Alignment for High-Order Optimization Objectives in Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:10.259250+00:00",
+      "updated_at": "2026-10-21T07:01:10.259250+00:00"
+    },
+    {
+      "paper_id": "2610.24453v1",
+      "route": "20251021-20261020/2610.24453v1",
+      "title": "Hippo: Training-Free Agent Self-Evolution via Hippocampal Replay",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:17.515489+00:00",
+      "updated_at": "2026-10-21T07:01:17.515489+00:00"
+    },
+    {
+      "paper_id": "2610.18842v1",
+      "route": "20251021-20261020/2610.18842v1",
+      "title": "Who Improves the Robot? Toward Physical Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:17.365163+00:00",
+      "updated_at": "2026-10-21T07:01:17.365163+00:00"
+    },
+    {
+      "paper_id": "2610.14625v1",
+      "route": "20251021-20261020/2610.14625v1",
+      "title": "From Existing Methods to New Research Ideas: Two Perspectives on Recursive Self-Improvement",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:17.215060+00:00",
+      "updated_at": "2026-10-21T07:01:17.215060+00:00"
+    },
+    {
+      "paper_id": "2610.04184v1",
+      "route": "20251021-20261020/2610.04184v1",
+      "title": "EvalResearchBench: Can AI Agents Design Their Own Evaluations?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:17.065313+00:00",
+      "updated_at": "2026-10-21T07:01:17.065313+00:00"
+    },
+    {
+      "paper_id": "2608.31100v1",
+      "route": "20251021-20261020/2608.31100v1",
+      "title": "S3Gym: Can LLMs Turn Self-Testing and Self-Judging into Self-Improvement?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:16.916099+00:00",
+      "updated_at": "2026-10-21T07:01:16.916099+00:00"
+    },
+    {
+      "paper_id": "2608.24231v1",
+      "route": "20251021-20261020/2608.24231v1",
+      "title": "RecurSE: Bounded Recursive Self-Evaluation for LLM Rubric Judges",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:16.767351+00:00",
+      "updated_at": "2026-10-21T07:01:16.767351+00:00"
+    },
+    {
+      "paper_id": "2608.10157v1",
+      "route": "20251021-20261020/2608.10157v1",
+      "title": "SBCO: Self-Supervised, Verifier-Grounded Harness Optimization For Planning Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:16.620072+00:00",
+      "updated_at": "2026-10-21T07:01:16.620072+00:00"
+    },
+    {
+      "paper_id": "2605.08678v3",
+      "route": "20251021-20261020/2605.08678v3",
+      "title": "MLS-Bench: A Holistic and Rigorous Assessment of AI Systems on Building Better AI",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:16.471305+00:00",
+      "updated_at": "2026-10-21T07:01:16.471305+00:00"
+    },
+    {
+      "paper_id": "2603.07300v2",
+      "route": "20251021-20261020/2603.07300v2",
+      "title": "AutoResearch-RL: Perpetual Self-Evaluating Reinforcement Learning Agents for Autonomous Neural Architecture Discovery",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:16.323256+00:00",
+      "updated_at": "2026-10-21T07:01:16.323256+00:00"
+    },
+    {
+      "paper_id": "2603.02218v2",
+      "route": "20251021-20261020/2603.02218v2",
+      "title": "Self-Play Only Evolves When Self-Synthetic Pipeline Ensures Learnable Information Gain",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:16.176778+00:00",
+      "updated_at": "2026-10-21T07:01:16.176778+00:00"
+    },
+    {
+      "paper_id": "2601.12310v1",
+      "route": "20251021-20261020/2601.12310v1",
+      "title": "Survival is the Only Reward: Sustainable Self-Training Through Environment-Mediated Selection",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:16.029158+00:00",
+      "updated_at": "2026-10-21T07:01:16.029158+00:00"
+    },
+    {
+      "paper_id": "2601.11658v1",
+      "route": "20251021-20261020/2601.11658v1",
+      "title": "Towards AGI A Pragmatic Approach Towards Self Evolving Agent",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:15.882977+00:00",
+      "updated_at": "2026-10-21T07:01:15.882977+00:00"
+    },
+    {
+      "paper_id": "2512.24940v1",
+      "route": "20251021-20261020/2512.24940v1",
+      "title": "Iterative Deployment Improves Planning Skills in LLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:15.734932+00:00",
+      "updated_at": "2026-10-21T07:01:15.734932+00:00"
+    },
+    {
+      "paper_id": "2512.23760v1",
+      "route": "20251021-20261020/2512.23760v1",
+      "title": "Audited Skill-Graph Self-Improvement for Agentic LLMs via Verifiable Rewards, Experience Synthesis, and Continual Memory",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:15.588862+00:00",
+      "updated_at": "2026-10-21T07:01:15.588862+00:00"
+    },
+    {
+      "paper_id": "2512.13764v1",
+      "route": "20251021-20261020/2512.13764v1",
+      "title": "Mathematics and Coding are Universal AI Benchmarks",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:15.443320+00:00",
+      "updated_at": "2026-10-21T07:01:15.443320+00:00"
+    },
+    {
+      "paper_id": "2512.02731v1",
+      "route": "20251021-20261020/2512.02731v1",
+      "title": "Self-Improving AI Agents through Self-Play",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:15.297846+00:00",
+      "updated_at": "2026-10-21T07:01:15.297846+00:00"
+    },
+    {
+      "paper_id": "2511.00758v1",
+      "route": "20251021-20261020/2511.00758v1",
+      "title": "Active Thinking Model: A Goal-Directed Self-Improving Framework for Real-World Adaptive Intelligence",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:15.152205+00:00",
+      "updated_at": "2026-10-21T07:01:15.152205+00:00"
+    },
+    {
+      "paper_id": "2610.08902v1",
+      "route": "20251021-20261020/2610.08902v1",
+      "title": "Agent Plasticity: Measuring Self-Improvement Through Experience",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:19.477540+00:00",
+      "updated_at": "2026-10-21T07:01:19.477540+00:00"
+    },
+    {
+      "paper_id": "2609.38516v2",
+      "route": "20251021-20261020/2609.38516v2",
+      "title": "From Solo to Social Learning: Characterizing Recursive Social Improvement in LLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:19.321391+00:00",
+      "updated_at": "2026-10-21T07:01:19.321391+00:00"
+    },
+    {
+      "paper_id": "2609.09113v2",
+      "route": "20251021-20261020/2609.09113v2",
+      "title": "SAEScientist-Bench: Can AI Agents Conduct Autonomous SAE Interpretability Research?",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:19.166420+00:00",
+      "updated_at": "2026-10-21T07:01:19.166420+00:00"
+    },
+    {
+      "paper_id": "2608.27266v1",
+      "route": "20251021-20261020/2608.27266v1",
+      "title": "Naive Prompt Optimization: Rethinking the Need for Complex Prompt Search",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:19.011748+00:00",
+      "updated_at": "2026-10-21T07:01:19.011748+00:00"
+    },
+    {
+      "paper_id": "2607.13104v1",
+      "route": "20251021-20261020/2607.13104v1",
+      "title": "Self-Improvements in Modern Agentic Systems: A Survey",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:18.857146+00:00",
+      "updated_at": "2026-10-21T07:01:18.857146+00:00"
+    },
+    {
+      "paper_id": "2606.28438v1",
+      "route": "20251021-20261020/2606.28438v1",
+      "title": "When AI Reviews Its Own Code: Recursive Self-Training Collapse in Code LLMs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:18.697513+00:00",
+      "updated_at": "2026-10-21T07:01:18.697513+00:00"
+    },
+    {
+      "paper_id": "2602.10014v3",
+      "route": "20251021-20261020/2602.10014v3",
+      "title": "A Task-Centric Theory for Iterative Self-Improvement with Easy-to-Hard Curricula",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:18.544690+00:00",
+      "updated_at": "2026-10-21T07:01:18.544690+00:00"
+    },
+    {
+      "paper_id": "2602.03094v1",
+      "route": "20251021-20261020/2602.03094v1",
+      "title": "Test-time Recursive Thinking: Self-Improvement without External Feedback",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:18.392596+00:00",
+      "updated_at": "2026-10-21T07:01:18.392596+00:00"
+    },
+    {
+      "paper_id": "2512.05356v2",
+      "route": "20251021-20261020/2512.05356v2",
+      "title": "AI & Human Co-Improvement for Safer Co-Superintelligence",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:18.239357+00:00",
+      "updated_at": "2026-10-21T07:01:18.239357+00:00"
+    },
+    {
+      "paper_id": "2512.02472v1",
+      "route": "20251021-20261020/2512.02472v1",
+      "title": "Guided Self-Evolving LLMs with Minimal Human Supervision",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:18.087958+00:00",
+      "updated_at": "2026-10-21T07:01:18.087958+00:00"
+    },
+    {
+      "paper_id": "2511.12063v3",
+      "route": "20251021-20261020/2511.12063v3",
+      "title": "TextBO: Bayesian Optimization in Language Space for Eval-Efficient Self-Improving AI",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "recursive-ai"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "",
+      "first_seen_at": "2026-10-21T07:01:17.935845+00:00",
+      "updated_at": "2026-10-21T07:01:17.935845+00:00"
+    }
+  ]
+}

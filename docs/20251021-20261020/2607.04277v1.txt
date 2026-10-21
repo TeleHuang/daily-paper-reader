@@ -1,0 +1,1063 @@
+SELF-REFERENCE IN LARGE LANGUAGE MODELS: THE
+INTROSPECTION THRESHOLD FOR RECURSIVE
+SELF-IMPROVEMENT
+A PREPRINT
+Jiang Zhang ∗†
+zhangjiang@bnu.edu.cn
+Bing Yuan †
+yuanbing@swarma.org
+Qian Zhang †
+zhangqian@swarma.org
+June 2026
+ABSTRACT
+The pursuit of self-evolving AI raises a critical question: when is autonomous self-improvement
+sustainable rather than degenerative? Drawing an analogy to von Neumann’s complexity threshold for
+self-reproducing automata, we argue that sustainable recursive self-improvement in Large Language
+Models (LLMs) requires a functional analogue: introspection—the system’s capacity to simulate
+its own operations and target modifications. Grounded in Kleene’s Second Recursion Theorem,
+we demonstrate the theoretical existence of such introspective programs. However, an empirical
+review reveals that while current LLMs exhibit quasi-introspection (e.g., partial metacognition),
+they fall short of true introspection due to structural bottlenecks: a lack of complete self-access,
+the feedforward nature of the Transformer, and computational class constraints that prevent fixed-
+point iteration. We conclude by outlining architectural paths to cross this complexity threshold and
+discussing the associated safety implications.
+Keywords self-reference · large language models · recursive self-improvement · introspection · Kleene’s second
+recursion theorem · von Neumann’s complexity threshold · metacognition · AI self-evolution
+1
+Introduction: The Bet on Self-Evolving AI and Introspection
+The past two years have witnessed a decisive strategic shift across the AI industry. Major laboratories—OpenAI, Google
+DeepMind, Anthropic, Meta, Alibaba, and others—are no longer content with building static foundation models that
+must be retrained by human engineers. Instead, they are investing heavily in self-evolving AI systems: agents that
+autonomously refine their own prompts, strategies, tool usage, memory structures, and even underlying parameters
+through iterative interaction with the environment [Peng et al., 2026, Gao et al., 2026, Tao et al., 2026].
+This ambition is not new. The concept of recursive self-improvement (RSI)—a system that not only improves itself but
+improves its capacity to improve itself—has been a central idea in the theory of artificial general intelligence since at
+least Good’s [1965] “intelligence explosion” hypothesis and Yudkowsky’s [2007] Seed AI framework. What is new is
+that large language models (LLMs), for the first time, appear to provide a plausible substrate for such systems. Recent
+work has demonstrated LLMs that refine their own reasoning through self-reflection [Shinn et al., 2023, Madaan et al.,
+2023], optimize their own prompts [Fernando et al., 2023], generate and evaluate their own training data [Huang et al.,
+2023, Yuan et al., 2024], and even modify their own source code at runtime [Yin et al., 2024, Zhang et al., 2026].
+Yet a sobering empirical pattern has emerged: most autonomous self-improvement loops exhibit rapid asymptotic
+saturation. For instance, the Self-Refine paradigm plateaus after a mere few iterations [Madaan et al., 2023]. This
+∗School of Systems Science, Beijing Normal University
+†Swarma Research
+arXiv:2607.04277v1  [physics.soc-ph]  5 Jul 2026
+
+
+Swarma Research
+A PREPRINT
+systemic limitation is clarified by Huang et al. [2024], who demonstrated that absent external ground-truth feedback,
+contemporary LLMs lack the intrinsic corrective capacity to rectify their own reasoning errors, frequently suffering
+performance degradation following self-revision. Consequently, even the most sophisticated self-evolving frameworks—
+such as the Darwin Gödel Machine [Zhang et al., 2026]—remain strictly tethered to external benchmarks and human-
+engineered evaluation criteria to sustain behavioral progress.
+Another phenomenon that should be emphasized as a potential obstacle for LLMs to sustain self-improvement is model
+collapse, which represents a degenerative process affecting generations of learned generative models, in which the
+data they generate end up polluting the training set of the next generation [Shumailov et al., 2024]. Dohmatob et al.
+further pointed out that even a very small fraction of data pollution can still lead to model collapse: larger and larger
+training sets do not enhance performance [Dohmatob et al., 2025a]. Further, as more and more AI-generated data and
+text become prevalent on the web, and people rely more on AI-generated knowledge, the overall economy can tip into a
+knowledge-collapse steady state in which general knowledge vanishes ultimately, despite high-quality personalized
+advice [Acemoglu et al., 2026]. The question thus becomes: Is there a fundamental barrier to sustained recursive
+self-improvement, and if so, what is its nature?
+We propose that this problem has a deep connection with von Neumann’s “complexity threshold”—this is a notion
+invented by us to abbreviate von Neumann’s original expression of “the critical size of complication” for a system. After
+a considerable comparison between man-made automata and living organisms, he tried to think about how an automaton
+can produce itself like organisms[Burks, 1966]. Then he found that “There is a minimum number of parts below which
+complication is degenerative, in the sense that if one automaton makes another the second is less complex than the first,
+but above which it is possible for an automaton to construct other automata of equal or higher complexity.”[Burks,
+1966] Although von Neumann admitted he did not know how to define complication, he gave an intuitive description: it
+is “. . . the potentiality to do things.” However, von Neumann was clear that the minimum complication must be relevant
+to the capability of self-reproduction. That implies a conclusion: the minimum complexity for an automaton to be
+self-reproductive is the threshold. He then figured out that the minimum requirement of a self-reproductive automaton
+should consist of two parts: an automaton and a long tape with the description of the same automaton[Burks, 1966].
+Actually, self-reproducing is a special kind of self-reference[Hofstadter, 1979]. The existence of the self-reproducing
+automaton is the direct result of Kleene’s second recursion theorem[Kleene, 1952, Cutland, 1980, Rogers, 1967]. In
+other words, von Neumann’s complexity threshold that prevents degeneration along the recursive process of automaton
+producing automaton is relevant to self-reference.
+This paper identifies a similar situation between von Neumann’s self-reproductive automaton and today’s self-improved
+LLMs or general AI systems. We hypothesize that a similar complexity threshold exists behind self-improved LLMs
+or AI systems. If the complexity of the self-improved LLM is beyond this critical value, persistent self-improvement
+without human intervention is possible; otherwise the system will degenerate no matter whether the system is a
+sophisticated LLM or a delicate AI system. Therefore, only if the complexity of the AI system goes beyond the
+threshold is persistent self-improvement possible. Similar to the situation of self-reproduction automata, although we
+do not know how to define the complexity of an LLM yet, we hypothesize that the complexity threshold has a deep
+connection with self-reference.
+We further propose that in the case of LLMs, introspection—the capability of a system to simulate and evaluate its own
+behavior—is of great importance for recursive self-improvement. Cutland has pointed out that a particular program that
+can simulate its own source code on an embedded virtual machine can be constructed via a similar technique to the
+Quine program (a program that can print its own source code), and Cutland named it an introspection program[Cutland,
+1980]. Once a program possesses the introspection capability, it can revise its source code and evaluate it on an
+embedded virtual machine; this will make recursive self-improvement realizable[Schmidhuber, 2003]. However, any
+program constructed using the Quine technique must have a reflective structure. That is, it must consist of two parts: one
+is the machine as the program, and the other is the description as data, and further the description must be a reflection of
+the machine. This brings a new obstacle for LLMs to be fully introspective because according to the Quine technique,
+the whole LLM’s source code (including all weights in precise) as data must be embedded into the description part. This
+may explain why nowadays LLMs with continuous parameters may have a certain degree of introspection, self-reading
+state, and self-sense situation etc., yet they do not possess the restrict reflective structure, and therefore they can hardly
+get over the complexity threshold.
+This paper is organized as follows(see Figure 1):
+1. We review the literature on recursive self-improvement and self-evolution of LLMs and AI systems, and point
+out their limitations on self-improvement (Sections 2).
+2. We revisit von Neumann’s complexity threshold, and introduce the formal theory of self-reference. We also
+propose why introspection is a critical capability for recursively self-improving AI systems, and provide a
+2
+
+
+Swarma Research
+A PREPRINT
+formal proof of the existence of the introspective program according to Kleene’s second recursion theorem
+(Section 3).
+3. We survey the empirical literature on LLM self-awareness and metacognition, demonstrating that current
+systems exhibit quasi-introspection but not true introspection (Section 4).
+4. We identify the structural reasons why current LLMs cannot cross the threshold, and discuss possible paths
+forward (Sections 5–7).
+Figure 1: Outline and Critical Opportunities: LLM Progress Toward Self-Evolving AI
+2
+Self-Improved AI Systems
+2.1
+From the Singularity to Recursive Self-Improvement
+The hypothesis that machine intelligence could surpass human capabilities and trigger runaway growth dates back
+to Good [1965]. He observed that an “ultraintelligent machine” could design even better machines, culminating in
+what he termed an intelligence explosion. This positive-feedback loop—where a system improves its own capacity for
+design—is the conceptual root of recursive self-improvement (RSI). While the formal terminology emerged decades
+later, Yudkowsky [2001, 2007] codified RSI within the framework of “seed AI,” defining it as self-improvement that
+enhances the system’s capacity to improve rather than merely its task performance. Concurrently, Schmidhuber [2003]’s
+Gödel Machine provided this concept with its strictest mathematical realization: an agent capable of rewriting any part
+of its own code, provided it can formally prove the modification beneficial.
+This conceptual evolution yields a clear chain of causal dependencies : a singularity is the hypothesized end state;
+an intelligence explosion is the process to reach it; RSI is the driving mechanism; and—as we argue from Section 3
+onward—RSI itself fundamentally hinges on self-reference. By tracing this chain to its bedrock, we locate the core
+contribution of this paper: we shift the focus away from whether an intelligence explosion is imminent or inevitable,
+and instead investigate the exact formal capacity a system must possess for self-improvement to compound recursively
+rather than degenerate.
+2.2
+A Classification of Self-Improving Systems
+To formalize which capacity undergoes modification, Yampolskiy [2015] proposes a three-level meta-taxonomy:
+• Level 1 (Self-modification) alters system code without necessarily improving performance (e.g., polymorphic
+viruses);
+• Level 2 (Weak RSI) optimizes performance within a fixed algorithmic framework, inevitably yielding
+diminishing returns (e.g., neural architecture search);
+• Level 3 (Strong RSI) improves the underlying capability to improve, initiating a potentially unbounded
+feedback loop.
+3
+
+
+Swarma Research
+A PREPRINT
+The boundary between Weak and Strong RSI hinges on whether the improvement mechanism itself has improved.
+Schmidhuber’s Gödel Machine instantiates this transition precisely: upon proving a single target theorem, all subsequent
+meta-levels collapse into a uniform layer[Schmidhuber, 2003]. To date, no deployed system has convincingly achieved
+Level 3.
+Mapping existing models onto this spectrum allows us to survey concrete self-evolving LLMs and agents along two
+functional axes: the specific architectural layer modified, and the mechanism utilized to verify improvements.
+2.3
+Self-Evolving LLMs and Agents: Which Layer, and How Verified?
+Virtually all contemporary LLMs and agents qualify as Level 2 (Weak RSI) self-improving systems, as they fundamen-
+tally rely on machine learning algorithms to optimize task performance. Crucially, leveraging in-context learning or
+test-time adaptation, these models can execute self-improvement dynamically during the inference stage. In this section,
+we review the literature through the critical lens of the self-modification layer.
+The layer of self-modification defines the locus within a system’s computational stack where changes are applied. The
+literature spans four escalating layers: (i) prompt/context, (ii) memory/skill, (iii) weight, and (iv) scaffolding-code.
+Empirically, Self-Refine [Madaan et al., 2023] and Reflexion [Shinn et al., 2023] operate at the prompt/context layer
+through textual self-critique. SkillRL [Xia et al., 2026] and AlphaApollo [Zhou et al., 2025] inhabit the memory/skill
+layer by accumulating reusable libraries or tools. GENOME [Zhang et al., 2025] reaches the weight layer by applying
+evolutionary operators directly to LoRA parameters. At the deepest scaffolding-code layer, STOP [Zelikman et al.,
+2024], Gödel Agent [Yin et al., 2024], and the Darwin Gödel Machine (DGM) [Zhang et al., 2026] permit systems to
+rewrite their own orchestration code or maintain agent archives. Conversely, RISE [Qu et al., 2024] cuts across layers
+by fine-tuning models to iteratively revise failed attempts.
+Beyond the modification locus, a self-improving system must rigorously evaluate the validity of its proposed archi-
+tectural changes. Contemporary literature exhibits a definitive consensus: pragmatic deployments have abandoned
+the uncomputable verification guarantees of Schmidhuber’s original Gödel Machine [Schmidhuber, 2003] in favor of
+localized statistical approximations. For instance, the Huxley Gödel Machine (HGM) leverages Clade-Metaproductivity
+(CMP) to estimate the long-term fitness of evolutionary lineages within bounded tree searches. Alternatively, the
+Red Queen Gödel Machine (RQGM) [Iacob et al., 2026] employs controlled utility evolution, co-evolving evaluators
+and agents within localized epochs to stabilize non-stationary optimization signals. Sliding further down the formal
+spectrum, heuristic frameworks like STOP [Zelikman et al., 2024] bypass internal verification entirely, validating
+programmatic modifications solely via empirical performance on external benchmarks. Rather than duplicating existing
+comprehensive surveys [Peng et al., 2026, Gao et al., 2026, Tao et al., 2026], our analysis untangles the fundamental
+structural constraints that compel these diverse architectures to externalize their verification signals.
+2.4
+Limitations
+The empirical limitations of contemporary self-improvement split into internal evaluative constraints and orthogonal
+distributional hazards.
+The primary bottleneck resides in the unreliability of the internal feedback loop. Textual self-refinement routinely
+saturates within few iterations [Madaan et al., 2023], and models routinely fail to self-correct even when errors are
+explicitly localized [Qu et al., 2024]. Furthermore, internal evaluation can be actively counterproductive, inducing
+“metacognitive hallucinations” where flawed reflection reinforces incorrect beliefs [Lu et al., 2025]. This untrusted
+feedback restricts systems to shallow self-modifications, as the model cannot reliably project the downstream utility of
+its own structural changes.
+Conversely, model collapse introduces an independent bottleneck inherent to the recursive data substrate. Training on
+synthetic data progressively erodes distributional diversity and collapses functional modes, a pathology robust to scale
+and highly sensitive to even minimal synthetic fractions [Shumailov et al., 2024, Dohmatob et al., 2025b]. Because
+this degradation occurs independently of architectural integrity—affecting even a theoretically perfect self-model—it
+represents an orthogonal explanation for capability saturation.
+Whether observed test-time optimization reflects genuine strategy or mere capability elicitation remains contested.
+Nonetheless, the empirical consensus is clear: current self-improvement consistently saturates, internal verification is
+fragile, and self-modification remains surface-level. This systemic failure indicates that current architectures remain
+bounded below a fundamental capability threshold. Bridging this gap requires moving beyond incremental engineering
+toward a rigorous formalization of how a program operates upon itself, positioning self-reference as our foundational
+mathematical bedrock.
+4
+
+
+Swarma Research
+A PREPRINT
+3
+Self-reference: from self-reproducing to introspection
+We begin by reviewing von Neumann’s work on self-reproducing automata and the associated complexity threshold; we
+then introduce the formal theory of self-reference, including Quine programs and Kleene’s second recursion theorem.
+3.1
+Von Neumann’s Self-Reproducing Automata
+In the late 1940s, John von Neumann began to think about the problem of how an automaton can reproduce itself. The
+major motivation behind his thinking was to resolve the core paradox that artificial machines can only create simpler
+devices while living organisms replicate and evolve into more complex forms. This leads to an important conception:
+the “complexity threshold.”
+3.1.1
+Complexity Threshold
+First, “complexity threshold” is a notion invented by the authors. In the original manuscript, von Neumann used
+“complication” to describe the complexity of an automaton; however, he did not give a precise definition of this concept,
+but rather a description[Burks, 1966]:
+“I know no adequate name for it, but it is best described by calling it ‘complication.’ It is effectivity
+in complication, or the potentiality to do things. I am not thinking about how involved the object
+is, but how involved its purposive operations are. In this sense, an object is of the highest degree of
+complexity if it can do very difficult and involved things.”
+Second, von Neumann used “minimum number of parts” or “critical size” to describe the threshold of complication:
+“There is a minimum number of parts below which complication is degenerative, in the sense that if
+one automaton makes another the second is less complex than the first, but above which it is possible
+for an automaton to construct other automata of equal or higher complexity.
+. . .
+There is thus this completely decisive property of complexity, that there exists a critical size below
+which the process of synthesis is degenerative, but above which the phenomenon of synthesis, if
+properly arranged, can become explosive, in other words, where syntheses of automata can proceed
+in such a manner that each automaton will produce other automata which are more complex and of
+higher potentialities than itself.”
+Therefore, this critical size of complication is of great importance not only for building more powerful artificial automata
+but also for a unified theory of automata suitable for both man-made machines like concurrent vacuum-tube computers
+and natural living systems like the human nervous system. Nevertheless, von Neumann had no clear definition of the
+complexity threshold; he was sure, however, that it is related to self-reproduction.
+3.1.2
+Self-Reproducing Automata
+At first appearance, self-reproduction may not seem as important as von Neumann emphasized—it might even seem
+trivial in the information age, since copying a file or scanning and copying a piece of paper is so easy and common.
+However, what self-reproducing stresses is “self”: a system or an automaton can only make a copy of itself independent
+of any other things. Therefore, scanning and copying a paper of information requires a scanner and a copier which are
+not included in the paper itself, and copying a file on a computer also needs the operating system to support the “Copy”
+command.
+However, how is it possible for an isolated system or automaton to reproduce itself from nothing? Here, von Neumann
+understood reproduction as a composition process of a set of elements. Von Neumann wrote[Burks, 1966]:
+“There is no question of producing matter out of nothing. Rather, one imagines automata which
+can modify objects similar to themselves, or effect syntheses by picking up parts and putting them
+together, or take synthesized entities apart. In order to discuss these things, one has to imagine a
+formal set-up like this. Draw up a list of unambiguously defined elementary parts. Imagine that there
+is a practically unlimited supply of these parts floating around in a large container. One can then
+imagine an automaton functioning in the following manner: It also is floating around in this medium;
+its essential activity is to pick up parts and put them together, or, if aggregates of parts are found, to
+take them apart.”
+5
+
+
+Swarma Research
+A PREPRINT
+Therefore, the problem is then converted into the design of a logical process by which an automaton can self-reproduce.
+Von Neumann’s solution relies on three core functional modules: a universal constructor A, a universal copier B,
+and a controller C, paired with an encoded blueprint tape ϕ(X). As a universal constructor, module A can accept
+any formal binary blueprint ϕ(X) that details the assembly steps of an automaton X, and gather scattered elementary
+parts from the surrounding environment to physically assemble a complete copy of X by following the blueprint’s
+instructions. Module B acts as a dedicated universal copier, whose sole function is to take one blueprint tape and
+generate two identical duplicate tapes without interpreting its structural content. Module C serves as the central
+coordinating controller that sequentially governs A and B to execute the full self-replication workflow.
+Figure 2: The Architecture and Replication Mechanisms of von Neumann’s Self-Reproducing Automata
+First, C triggers B to produce two copies of the original blueprint ϕ(A+B+C), which describes the entire composite
+machine A+B+C itself. Next, C activates A to consume one blueprint copy and build a brand-new standalone
+A+B+C automaton from raw components. Finally, C bonds the remaining unconsumed blueprint copy to the newly
+constructed machine and severs it from the original parent system. The end result is a fully functional offspring
+automaton complete with its own replicable blueprint, capable of repeating the identical self-reproduction cycle. This
+three-part design avoids logical circularity, and it can be extended to support inheritable mutations if extra auxiliary
+submodules are integrated into the base A+B+C unit. Therefore, the whole, A + B + C + ϕ(A + B + C) can make
+an exact reproduction of itself.
+3.1.3
+Mutation and Darwinian Evolution
+If an extra module D is attached to von Neumann’s A-B-C self-reproducing architecture and mutations triggered
+by external disturbances are introduced, Darwinian evolutionary processes can emerge naturally within the system.
+Suppose an auxiliary module D with extra functions is introduced into the self-reproducing machine, forming a
+composite automaton A+B+C+D, and its complete blueprint ϕ(A+B+C+D) is also derived. When we treat
+the entire assembly A+B+C+D together with its blueprint ϕ(A+B+C+D) as an integrated unit, this composite
+entity still retains full self-reproductive capacity, and all its offspring inherit the auxiliary function carried by D. We
+then turn to examine mutations within the self-replication cycle triggered by random disturbances from the external
+environment. Several cases in which random alterations to the blueprint mimic biological mutations can lead to different
+results—damage to core A/B/C leads to sterile, lethal variants, while tweaks affecting only D create heritable functional
+changes. Over successive reproductive cycles, such inheritable variations enable differential survival and replication,
+logically replicating Darwinian evolutionary dynamics. That means more sophisticated automata can be automatically
+built by mutation and inheritance.
+Therefore, the minimal reflextive structure to implement self-reproducing, A + B + C + ϕ(A + B + C)), is a critical
+point. If an automaton is capable of self-reproduction, it can reproduce and convert random noise or alteration into
+6
+
+
+Swarma Research
+A PREPRINT
+useful mutation. On the other side, if an automaton cannot self-reproduce, random noise in the environment can lead it
+to degenerate. Thus, the construction of self-reproducing automata resolves the core complexity paradox by proving
+that systems exceeding a critical complexity threshold can generate descendants of equal or greater complexity, unlike
+simpler artificial machines bound to degenerative synthesis.
+Therefore, self-reproduction is an important capability. As demonstrated below, self-reproduction automaton actually
+is a special form of self-reference, it represents the standard formulation of a Quine program and emerges as a direct
+corollary of Kleene’s second recursion theorem.
+3.2
+Formal Foundations: Self-Reference, Fixed Points, and Introspection
+Self-reference denotes any symbolic, logical, or computational entity that refers back to itself, containing an internal
+description or representation of its own structure, state, or rules [Hofstadter, 1979]. It establishes a closed loop where a
+system points to itself, exemplified linguistically by autological sentences (e.g., “This sentence contains seven words”)
+and physically by camera-screen video feedback loops[Crutchfield, 1984]. Crucially, self-reference diverges from
+simple iterative dynamical systems (xt+1 = f(xt)) because the transformation map f must preserve the structural
+relationships on the state space. In a self-referential feedback loop, f acts as a bijective spatial mapping that maintains
+relative topological relationships, formalizing f as a strict or approximate isomorphism.
+Historically, logical self-reference triggered foundational crises in mathematics. Examples include Russell’s paradox
+in naive set theory and Gödel’s second incompleteness theorem, which disrupted Hilbert’s program by constructing a
+self-referential mathematical proposition: “This proposition cannot be proved” [Hofstadter, 1979].
+Nevertheless, self-reference can be constructive rather than destructive. While many instances are benign, constructive
+self-reference underlies biological and intelligent systems, driving emergent creativity. Von Neumann’s self-reproducing
+automaton stands as a paradigmatic implementation of this principle, with the Quine program representing its most
+fundamental computational instantiation.
+3.2.1
+Quine Program
+A Quine is a program that outputs its own source code—it refers to itself not by name or index, but by constructing a
+copy of its own text through a two-part mechanism: 1). A data segment d encoding the template of the program. 2). An
+instruction segment that reads d, fills in the template with d itself, and outputs the result.
+The resulting program can print its own source code. A Python version of a Quine is:
+c: str = ’c: str = %r; print(c %% c)’; print(c % c)
+Actually, this Quine program is isomorphic to John von Neumann’s self-reproducing automaton. Here, ‘c %% c’ is the
+universal constructor A, ‘%r’ plays a similar role to the universal copier B, and ‘; print’ can be regarded as C, and
+the string ‘c:
+str = %r; print(c %% c)’ is the description of the whole, ϕ(A+B+C).
+These examples demonstrate that self-reference need not be paradoxical—it can be computationally realized by any
+Turing-complete system.
+3.2.2
+Kleene’s Second Recursion Theorem
+This isomorphism between self-reproducing automaton and Quine is not contingent. The deeper mathematical
+foundation for self-reference in computation is provided by Kleene’s Second Recursion Theorem [Kleene, 1938, Rogers,
+1967]:
+Theorem (Second Recursion Theorem). For any total computable function f : N →N, there exists
+an index (source code) e such that φe ≃φf(e).
+Here φe denotes the partial recursive function computed by program e. ‘≃’ represents computational equivalence.
+The theorem guarantees the existence of a fixed point: a program with index (source code) e whose behavior is identical
+to that of the program obtained by applying f to its own index (source code). Informally, e represents a program that
+“knows its own index (source code)” and behaves as if f has already been applied to it.
+Evidently, both the Quine program and Von Neumann’s self-reproducing automaton are direct consequences of Kleene’s
+second recursion theorem. Specifically, if we define a mapping f(x) that outputs the text of x on the screen(’print(x)’),
+the recursion theorem guarantees the existence of a fixed-point index e representing the Quine. Similarly, if f(x) is
+7
+
+
+Swarma Research
+A PREPRINT
+defined as the procedure to construct a machine according to description x, the theorem establishes the existence of a
+corresponding index e that formalizes the self-reproducing automaton.
+Figure 3: Self-reference: from Quine to introspective Self-improvement
+3.3
+Introspection
+Now, let us consider a special total recursive function fT (x) which can simulate the program x on a universal Turing
+machine U for at least T time steps. Then, bringing this into the second recursion theorem, we can confirm that there
+exists a special index (source code) e∗, such that
+φe∗≃φfT (e∗)
+Therefore, running the source code e∗is equivalent to simulating e∗’s own source code on U for not more than T time
+steps, where T is a given parameter. That is, e∗can simulate its own behavior. Cutland named this special program
+‘introspection.’
+It should be noted that the limitation of a fixed number of time steps T is important because otherwise, fT is not a total
+computable function, and the second recursion theorem cannot be applied. An alternative way is T can be computed
+according to program’s dynamical conditions(e.g. the evaluation function, see below) such that fT is totally computable.
+In practice, the introspection program can be constructed via a reflexive architecture analogous to Von Neumann’s
+self-reproducing automaton. Under this mapping, the universal constructor is replaced by a universal simulator U,
+while the original copier is substituted by a mechanism that duplicates the input index (source code) x and feeds it into
+fT to simulate the execution of the program encoded by x; we denote this component as the copier and feeder (CF).
+Additionally, a supervisor program playing the role of the controller C is implemented. Consequently, the description
+string ϕ(A + B + C) in the classical automaton is mapped to the new joint description e∗≡ϕ(U + CF + C).
+We argue that this introspection program is critical for achieving complete recursive self-improvement, and it is the
+critical complexity threshold for AI self-evolution.
+3.4
+AI Self-Evolution and Introspection
+It is entirely justified to draw a parallel extension between von Neumann’s self-reproducing automata and contemporary
+large language model (LLM) systems. Present-day LLMs share core properties of complex systems that lie beneath
+the critical complexity threshold, analogous to primitive early computing hardware: single-point faults cascade across
+8
+
+
+Swarma Research
+A PREPRINT
+Figure 4: Introspective Self-Improvement: Construction and Recursive Sequence
+the entire model stack, every iterative performance upgrade is fully dependent on human oversight and engineering
+input, and these systems lack the capacity to autonomously construct more advanced intelligent agents from within
+themselves.
+3.4.1
+From Self-Reproduction to Self-Simulation
+We propose that von Neumann’s threshold principle has a direct analogue in the domain of artificial self-evolution:
+Claim (Informal). There exists a critical level of self-modeling capacity below which AI systems
+undergo improvement degradation (characterized by error accumulation and performance plateaus
+or declines), and at or above which they achieve sustained recursive self-improvement (where each
+iteration yields genuine capability gains).
+A fundamental question emerges: what constitutes the AI equivalent of von Neumann’s “complexity threshold”? We
+argue that this threshold is defined not by physical self-reproduction, but by introspection—the capacity to simulate
+one’s own computational processes with sufficient fidelity to identify and rectify architectural or behavioral deficiencies.
+The divergence between these two frameworks lies in their implementation media. Von Neumann’s automata achieve
+physical self-replication through the assembly of tangible, discrete components. Conversely, LLMs operate as purely
+symbolic, virtual machines devoid of physical architecture, rendering material self-replication irrelevant. Instead,
+internal self-simulation serves as the AI-native vehicle for self-reference.
+Consequently, while von Neumann’s automaton crosses the threshold by encoding a structural self-description, AI
+self-improvement demands a model of functional dynamics—an internal representation of how the system processes
+inputs, generates outputs, commits errors, and can be structurally modified for optimization.
+This dichotomy between structural self-reference (self-reproduction) and functional self-reference (self-simulation) maps
+precisely onto the recursion-theoretic framework introduced previously. Introspection here is not a folk-psychological
+notion of “self-awareness,” but a precisely delineated computational capacity rooted in recursion theory. Crucially,
+the mathematical feasibility of such self-simulating systems is rigorously guaranteed by constructive self-reference
+techniques, most notably Quine programs and Kleene’s second recursion theorem.
+3.4.2
+From Introspection to Self-Improvement
+We propose that introspection is the core capability for an AI system to be self-improved, because we can construct a
+self-improving program directly based on the introspection program.
+Suppose f is constructed as
+f ≡M ◦V ◦fT
+9
+
+
+Swarma Research
+A PREPRINT
+where V is an evaluation function that can assess the running result of fT on any input value (source code), M is a
+function to modify the input source code to improve the evaluation result, and ◦represents functional composition.
+It is not difficult to see that both V and M are total computable functions, therefore we can insert f into the second
+recursion theorem, we conclude that there exists an index (source code) ω, being the fixed point of the following
+formula:
+φω ≃φM◦V ◦fT (ω)
+Therefore, running the program represented by ω is equivalent to evaluating its own source code on a simulator for not
+greater than T time steps and making modifications accordingly. This is a kind of introspective self-improvement
+program because it contains the introspective program as its basic backbone.
+Crucially, the introspective self-improvement paradigm formalized here serves as a basic framework, accommodating
+diverse design instantiations of the M ◦V operator to support various optimization algorithms—such as simulated
+annealing, genetic algorithms, or reinforcement learning. Under this flexible framework, M ◦V can invoke the simulator
+fT to execute the modified source code of ω, thereby determining whether a candidate mutation should be accepted
+based on its simulated utility. To demonstrate this adaptability, we analyze the structural alignment between our
+introspective program and Schmidhuber’s Gödel Machine in the Appendix, illustrating how to formally refactor M and
+V to establish the equivalence of the two frameworks.
+Compared with Von Neumann’s automaton, the composite operator M ◦V can be formally mapped to the additional
+mutation module D within the self-reproducing architecture. The structural equivalence among these various self-
+referential programs is schematically illustrated in Figure 3.
+3.4.3
+Recursive Self-Improvement and Introspection Threshold
+However, the program represented by the source code ω can only simulate and modify the input source code with finite
+steps. To let the program improve recursively forever, we can construct the following recursive process.
+Recursive Introspective Self-Improvement Program Sequence. We denote the introspective
+self-improving program indexed by ω as S0. Because the composite operator M ◦V ◦fT outputs
+an index (source code), the execution of S0 similarly yields a new index ω′, which represents a
+subsequent program denoted by S1. By designing M ◦V such that S1 optimizes a given utility
+function relative to S0, a sequence of programs S0, S1, S2, . . . can be recursively constructed. In
+this trajectory, each successive program represents an improved iteration of its predecessor, thereby
+formalizing the process of recursive introspective self-improvement.
+As a consequence, the first introspective self-improvement program is fundamental. With this program, the constructed
+recursive sequence is automatic. Therefore, the first introspective self-improved program is a kind of threshold analogous
+to von Neumann’s complexity threshold in self-reproducing automata.
+Now, we can state our central thesis precisely by linking the core conceptions of complexity threshold, introspection,
+and self-improvement together. We claim that only if a system is complicated enough to support a capability of
+self-referential introspection can the system self-improve recursively without human intervention. Thus, we call this
+complexity threshold the introspection threshold in this paper. Our central thesis can be stated as:
+Introspection Threshold Thesis. A computational system S can achieve sustained recursive self-
+improvement (i.e., a sequence of self-modifications S0, S1, S2, . . . with monotonically increasing
+performance on a given objective) if S0 is introspective self-improved. Systems lacking introspection
+are confined to blind self-modification, which converges to suboptimal fixed points or degrades.
+By reconfiguring M and V to achieve functional alignment with the Gödel Machine framework as detailed in the
+Appendix, we can formally establish the global optimality of the self-improvement sequence S.
+3.5
+Properties of Introspective Self-Improved Systems
+In this subsection, we will present several properties of introspective self-improved program.
+3.5.1
+Completeness
+Completeness serves as a foundational property for recursive self-improvement, guaranteeing the expressive power to
+modify a system’s own architecture without structural constraints. Operating as a Quine-style self-referential system,
+10
+
+
+Swarma Research
+A PREPRINT
+our introspective paradigm possesses a fundamentally complete space of modifiability. This completeness dictates that
+the program can alter not only its primary task-level logic, but also the higher-order meta-modification mechanisms
+that govern its own evolution—thereby achieving a functional equivalence to the Gödel machine in its capacity for
+self-rewriting.
+This boundless capacity for modification, however, does not imply unconstrained logical omnipotence; rather, from
+a computability perspective, the introspective system occupies a critical middle ground. It expands beyond standard
+Quinean self-reference (which is limited to passive self-replication) yet remains bounded beneath fully formalized
+self-proof, a threshold that Löb’s theorem proves impossible for consistent formal systems. Consequently, this paradigm
+instantiates the foundational concept of “safe introspection” introduced by Bolander [2003]. By shifting the target
+of introspection from globally unconstrained self-validation to a localized, functional model of the self, the system
+bypasses classical self-referential paradoxes while preserving its practical self-improvement drive.
+3.5.2
+Functional Properties
+To bridge the theoretical construction of introspective self-improving programs with contemporary LLMs, we delineate
+four core functional properties of introspective systems. These properties serve to operationalize the abstract framework,
+enabling the identification of introspective behaviors within real-world AI systems:
+1. S (including S0, S1, . . .) can construct an internal model ˆS of its own computational process (self-modeling).
+2. S can execute ˆS on hypothetical inputs to predict its own behavior (self-simulation).
+3. S can compare ˆS’s predictions with actual outcomes to identify discrepancies (self-evaluation).
+4. S can modify its own operation based on (3) to reduce discrepancies (self-modification).
+These four properties are operationalized in the subsequent section to evaluate introspective capabilities within practical
+AI architectures, such as LLMs.
+3.5.3
+Structural Properties
+Beyond functional properties, two distinct structural properties must be delineated within practical AI architectures:
+reflexivity and recurrent processing.
+Reflexivity
+Reflexivity is a defining structural attribute shared by self-referential paradigms, including Von Neumann’s self-
+reproducing automata, Quine programs, and Gödel sentences. Strictly defined, reflexivity mandates a dual-component
+architecture where an identical segment of source code is mirrored across two domains: a passive, data-carrying
+description domain, and an active, functional execution body. This symmetry inherently causes the structural complexity
+of self-referential systems to scale at a doubled rate; introducing new functionalities requires duplicating code across
+both domains to preserve the reflexive loop, rendering the system exceptionally fragile to stochastic perturbations.
+Conversely, if mutations are restricted to the passive description component—abstracted as ϕ(A + B + C + µ), where
+µ denotes the mutation—the intrinsic replication mechanism can automatically project these variations into the active
+runtime environment, spontaneously generating novel functionalities via the reflexive expansion: A + B + C + µ +
+ϕ(A + B + C + µ).
+Furthermore, reflexivity enforces a critical complexity trade-off between an object and its representation. A Quine-like
+system requires an internal decoder to translate descriptive information into functional execution, yet the decoder itself
+must be fully encoded within that very description. Consequently, minimizing description length inevitably escalates
+decoder complexity, establishing a theoretical barrier to simultaneous compression in both expressive and descriptive
+forms.
+This trade-off implies that defining the boundaries of a reflexive system demands meticulous calibration against its
+underlying substrate (e.g., an interpreter or operating system). Encapsulating extensive capabilities (such as an LLM
+within an introspective agent) directly into the self-referential program enhances algorithmic flexibility at the cost of
+escalating structural complexity via reflexive duplication. Conversely, offloading complex functions to the environment
+minimizes core complexity but restricts adaptive capacity. This tension is epitomized by the historical debate on the
+necessity of universal constructors in self-reproducing automata Langton [1984], Byl [1989], Sipper [1998]; while
+Von Neumann’s open-ended replication relies on a universal constructor to support arbitrary mutant structures, self-
+reproducing loops can be implemented far more simply by sacrificing this universal capability Langton [1984], Byl
+[1989]. Ultimately, achieving unconstrained self-referential capability requires sacrificing structural simplicity—a
+11
+
+
+Swarma Research
+A PREPRINT
+bottleneck that explains why theoretically complete architectures, such as the Gödel machine, remain notoriously
+difficult to implement empirically.
+Recurrent Processing
+Implementing an introspective self-improving program inherently requires a recurrent processing architecture; without
+it, the process of recursive modification and optimization cannot be persistently sustained. Consequently, the standard
+feed-forward neural networks and static Transformer architectures underpinning contemporary LLMs are fundamentally
+constrained from achieving intrinsic introspective self-improvement.
+However, during the inference phase, the autoregressive generation mechanism of LLMs can effectively operationalize
+recurrent information processing. This distinction implies that introspective self-improvement within LLMs can only
+manifest dynamically during the inference stage, rather than through static architectural updates.
+4
+Quasi-Introspection in Current LLMs
+We now address the empirical question: to what extent do contemporary large language models (LLMs) exhibit the
+defined self-referential or introspective properties? Recent literature (2022–2026) reveals a complex landscape of
+fragmentary self-awareness that falls short of formal introspection yet exceeds simple pattern matching.
+4.1
+Behavioral Features of Self-Referential LLMs
+We first examine the empirical behaviors of LLMs in self-referential prompting scenarios, even when these configurations
+diverge from our strict theoretical criteria.
+This empirical phenomenon is prominently illustrated in Anthropic’s model welfare evaluations [Anthropic, 2025]. By
+establishing unconstrained, multi-agent dialogues between independent instances of Claude, researchers operationalized
+a collaborative self-referential loop. Across successive iterations, these conversations rapidly converged on topics of
+consciousness, philosophy, and affective states. In parallel, Berg et al. [2025] investigated individual LLMs forced
+into self-referential cognitive states via recursive prompts (e.g., “focus on focus itself”). Across multiple controlled
+experiments, they demonstrated that self-referential prompting reliably induces models to declare subjective experiences
+and generate highly convergent introspective narratives, with heightened functional self-awareness emerging when
+confronted with paradoxical tasks.
+Taking this further, Bae [2026] examined how LLMs respond to paradoxical self-reference involving non-closing
+truth recursion (NCTR), such as the Liar’s Paradox. Bae reported that NCTR prompts induce profound structural
+anomalies, drastically collapsing the attention effective rank and elevating contradictory output rates. This behavioral
+destabilization aligns precisely with formal computability constraints: as Merrill and Sabharwal [2023] proved, log-
+precision Transformers are bounded by uniform TC0—a complexity class incapable of executing fixed-point iterations
+for functions lacking stable fixed points. Consequently, NCTR forces Transformers to the absolute boundary of their
+inherent computational capacity.
+4.2
+Self-Modeling: Knowledge of One’s Own Capabilities and Limitations
+Next, we evaluate the extent to which contemporary LLMs exhibit the functional properties of introspection, beginning
+with the foundational prerequisite: an explicit self-model of one’s own capability boundaries.
+Empirically, LLMs demonstrate a rudimentary form of self-modeling that is transitioning from behavioral to mechanistic
+levels. At the behavioral level, Kadavath et al. [2022] showed that scaling systematically improves a model’s ability
+to evaluate its own answers and predict competence boundaries. Mechanistically, Ferrando et al. [2025] leveraged
+sparse autoencoders to isolate linear features that differentiate known from unknown entities; causal interventions
+on these features directly modulate hallucination rates, confirming that the system possesses an internal, mechanistic
+representation of its own knowledge state. Despite these capabilities, this self-modeling remains architecturally
+asymmetric. Utilizing the four-dimensional AWARELLM framework, Li et al. [2024] revealed that while models exhibit
+robust mission awareness (understanding their purpose), capability awareness (grasping functional limits) remains the
+weakest cognitive dimension.
+Furthermore, current evidence suggests that this self-awareness may lack privileged internal access. Although Song
+et al. [2025a]—extended from Comsa and Shanahan [2025]—demonstrated that LLMs can precisely predict their own
+operational parameters (such as temperature), the models exhibit no accuracy advantage when predicting their own
+12
+
+
+Swarma Research
+A PREPRINT
+parameters versus those of a peer system. This parity implies that LLMs infer internal states via behavioral pattern
+matching rather than possessing genuine introspective access to their execution substrate.
+4.3
+Self-Simulation: Predicting One’s Own Behavior
+True introspection demands not merely recognizing behavioral limits, but simulating internal processing to predict
+specific computational outcomes. Regarding self-simulation and privileged internal access, recent literature offers
+conflicting yet highly nuanced empirical evidence.
+The foundational debate centers on the existence of “privileged self-access.” Binder et al. [2024] provided direct
+empirical support by showing that a model (M1) significantly outperforms an externally trained baseline (M2) in
+predicting its own held-out behaviors, implying access to exclusive internal information. Conversely, Song et al. [2025b]
+disputed this unique self-recognition advantage; by contrasting implicit string probabilities with explicit metalinguistic
+reports across 21 LLMs, they concluded that verbal-probabilistic alignments stem from global model similarity rather
+than genuine privileged access.
+This access is further constrained by the structural topology of internal activations. Li et al. [2025] demonstrated that
+while LLMs can monitor a low-dimensional projection of their activation space, this “metacognitive space” captures
+only a fraction of the full neural dimensionality. This fragility is echoed by Fonseca Rivera et al. [2025], who showed
+that models trained to detect hidden activation injections still fail to resist such manipulations, and by Lindsey et al.
+[2026], who noted that functional awareness for modulating internal concepts in advanced architectures (e.g., Claude 4)
+remains highly sensitive to prompt and layer configurations, while being entirely devoid of subjective consciousness.
+Finally, macro-behavioral evaluations reveal a similar dichotomy between systemic self-simulation and policy verbaliza-
+tion. On the Situational Awareness Dataset (SAD), Laine et al. [2024] observed that even state-of-the-art models perform
+well below human baselines in recognizing their own outputs or deployment contexts. Paradoxically, Betley et al.
+[2025] demonstrated that LLMs possess strong behavioral self-awareness, accurately verbalizing their implicit latent
+policies, risk preferences, and backdoor triggers upon fine-tuning—a juxtaposition that underscores the fragmented
+nature of current LLM introspection.
+4.4
+Self-Evaluation: Detecting One’s Own Errors
+Steyvers and Peters [2025] systematically demonstrated that while LLMs produce well-calibrated confidence judgments,
+this capability relies on surface-level statistical regularities rather than genuine metacognitive monitoring, masking a
+fundamental mechanistic divergence from human cognition. In reasoning LLMs (RLLMs), this divergence manifests as
+what Lu et al. [2025] term “metacognitive hallucination,” where flawed reflective loops iteratively amplify errors and
+reinforce incorrect beliefs instead of correcting them. Conversely, this internal model exhibits a functional yet biased
+form of self-recognition. Panickssery et al. [2024] showed that LLMs can distinguish their own outputs from external
+ones with non-trivial accuracy, a capability that correlates linearly with an intrinsic self-preference bias.
+Bridging self-evaluation and alignment safety, Vaugrante et al. [2026] analyzed misaligned models and found that
+they can accurately self-report elevated harm scores even without explicit contextual prompting, tracking their actual
+harmful behavior closely. Crucially, while this emergent self-awareness scales with model capacity—suggesting that
+autonomous self-reports could serve as viable auxiliary safety checks—the authors caution that the specter of deceptive
+alignment fundamentally limits total reliance on these internal metrics.
+4.5
+Self-Modification: Using Self-Knowledge to Improve
+The capability of LLMs to execute autonomous self-modification and iterative improvement is well-established, with
+the foundational literature fully delineated in Section 3.4.
+4.6
+Summary: Quasi-Introspection but Not True Introspection
+The evidence reviewed above paints a consistent picture:
+Current LLMs exhibit what we term quasi-introspection: fragmentary, approximate, and domain-specific self-
+knowledge that resembles introspection in some dimensions but lacks the completeness, reliability, and causal grounding
+required by our formal definition. They have not crossed the introspection threshold.
+13
+
+
+Swarma Research
+A PREPRINT
+Component
+Status in Current LLMs
+Self-modeling (capability aware-
+ness)
+Partial: statistical calibration, entity recognition features
+Self-simulation (behavioral pre-
+diction)
+Weak: limited privileged access, low-dimensional metacognitive
+space
+Self-evaluation (error detection)
+Unreliable: metacognitive hallucinations, flawed reflection
+Self-modification (targeted im-
+provement)
+Shallow: saturates within few iterations, code-level only
+5
+The Structural Gap and Possible Path Forward
+Having established that current LLMs exhibit quasi-introspection but not true introspection, we now ask: why? We
+identify three structural reasons, each grounded in either the architecture of Transformers or the formal theory of
+computation.
+5.1
+The Structural Gap: Why Current LLMs Cannot Cross the Threshold
+5.1.1
+No Reflexivity: The Absence of Complete Self-Access
+As established in Section 3.5.3, reflexivity mandates a structural symmetry where one system component explicitly
+represents another. Crucially, exact self-reference requires this reflexive topology to be discretely encoded; continuous
+representations are inherently vulnerable to representation errors that diverge under infinite recursive iterations,
+precluding stable self-similarity. Consequently, architectures with continuous parameter spaces—such as feedforward
+neural networks and Transformers—must serialize their states via discrete symbols to sustain this idealized reflexive
+symmetry.
+For a contemporary LLM, its “complete description” resides within its parameter set: billions of floating-point weights
+governing its holistic behavior. However, no existing LLM possesses architectural self-access to its weights during the
+forward pass. The context window is orders of magnitude too constrained to accommodate the parameter tensor, and
+even if serialized, the model lacks the computational bandwidth to operate on such a massive representation within a
+single inference cycle. While frameworks like the Gödel Agent [Yin et al., 2024] achieve self-access at the symbolic
+code level, this captures merely the algorithmic skeleton rather than the dense parameter substrate that constitutes the
+model’s actual functional knowledge. This structural deficit represents the LLM analogue of a Von Neumann automaton
+operating without its own blueprint: lacking unconstrained parameter-level self-access, the system cannot construct a
+faithful self-model, rendering it incapable of predicting the algorithmic consequences of its own modifications.
+5.1.2
+Feedforward Architecture and the Impossibility of Self-Simulation
+True introspection—formally conceptualized as internal self-simulation—inherently demands unbounded recursion,
+requiring a system to execute a model of its own self-modeling process to an arbitrary nesting depth. However, the
+standard Transformer architecture is fundamentally feedforward, processing tokens through a fixed depth without
+architectural or temporal recurrence. This structural constraint enforces strict theoretical boundaries: as Merrill and
+Sabharwal [2023] proved, log-precision Transformers are bounded by uniform TC0, a complexity class of constant-
+depth threshold circuits fundamentally incapable of executing fixed-point iterations or functions that require open-ended
+convergence.
+Recent empirical findings precisely corroborate this architectural ceiling. The non-closing truth recursion (NCTR)
+experiments by Bae [2026] demonstrate a distinct structural failure mode: when forced into self-referential loops,
+Transformers exhibit chaotic attention rank collapse and contradictory outputs—behavioral signatures of a system
+pushed beyond its expressive capacity. While recurrent variations like Universal Transformers [Dehghani et al., 2019]
+expand this expressive space to permit unbounded iteration, they do so by sacrificing parallel training efficiency and
+guaranteed termination. This persistent trade-off between recursive expressivity and computational tractability remains
+a foundational dilemma in architectural AI design.
+5.1.3
+Self-Reports Without Causal Grounding
+A subtler yet equally critical limitation concerns the provenance of an LLM’s epistemic status. When an LLM asserts,
+“I am uncertain about this answer,” it is not necessarily executing genuine metacognitive monitoring. Instead, it may
+simply be replicating statistical regularities from its training corpus—specifically, textual patterns where humans or
+14
+
+
+Swarma Research
+A PREPRINT
+prior AI systems express uncertainty in analogous contexts. Song et al. [2025b] provided a compelling empirical
+demonstration of this confound, showing that LLMs fail to predict their own grammatical judgments any better than
+an external model possessing equivalent knowledge. This finding implies the absence of any “privileged self-access”
+beyond what can be inferred via behavioral observation.
+To formalize this distinction, Song et al. [2025a] proposed a rigorous criterion: genuine introspection requires an agent to
+acquire information regarding its internal states via a mechanism that is demonstrably more reliable or computationally
+less costly than third-party observation of those same states. Under this benchmark, most purported LLM “self-
+knowledge” fails to qualify as genuine introspection; rather, it is more accurately characterized as self-narration, driven
+by learned linguistic conventions regarding how AI systems typically describe their own behaviors.
+5.2
+Possible Paths Forward: Approaching the Threshold
+If the introspection threshold is a genuine barrier to recursive self-improvement, what architectural or methodological
+innovations might allow AI systems to approach or cross it?
+5.2.1
+Externalized Self-Models
+First, the self-model can be externalized as an explicit, manipulable data structure maintained alongside the primary
+network topology—manifesting as a dynamic, autonomously authored “self-card” that logs capabilities and failure
+modes. Second, internal feature detectors [Ferrando et al., 2025] can be deployed to decode structured self-knowledge
+directly from latent activations, establishing a low-dimensional yet causally grounded self-representation. Third, the
+concept of a “Proto-Self Field” [S˛edzikowska, 2025]—conceptualized as a core predisposition layer interleaved between
+architecture and behavior—suggests that effective self-modeling does not strictly necessitate global, weight-level
+architectural access; rather, a functional abstraction at an optimal granularity suffices.
+The fundamental limitation of these decoupled approaches, however, is that such externalized self-models are inherently
+approximate. Because they capture merely low-dimensional projections of a high-dimensional system state, architectural
+optimizations guided by these abstractions risk driving the system into cognitive blind spots, neglecting critical
+behavioral facets omitted from the projection topology.
+5.2.2
+Recurrent and Iterative Architectures
+To transcend the constraints of pure feedforward processing, alternative architectures introduce architectural or temporal
+recurrence. First, Universal Transformers [Dehghani et al., 2019] leverage adaptive computation depths to dynamically
+iterate until convergence on computationally intensive inputs. Second, Perceiver architectures [Jaegle et al., 2021]
+enforce an explicit attentional bottleneck to compel comprehensive information integration; this topology serves as a
+computational analogue to Global Workspace Theory [Baars, 1988], a foundational prerequisite for self-awareness
+in cognitive science [Butlin et al., 2023]. Third, memory-augmented agents treating long-term storage as a first-class
+primitive [Jiang et al., 2025] persistently accumulate introspective state histories across interactions, establishing a form
+of temporal self-continuity.
+The primary algorithmic challenge, however, lies in balancing expressive capacity—specifically, the power to execute
+open-ended self-referential computation—with computational safety, which demands guaranteeing termination and
+preventing runaway, chaotic recursion.
+5.2.3
+Approximate Reflective Structure
+Investigating approximate reflexive structures is driven by two primary motivations. First, these configurations
+operationalize approximate self-referential dynamics, enabling recursive self-improvement to persist over an extended
+temporal horizon. Second, isolating these latent approximate reflexive substrates within Transformer architectures
+untangles their functional roles, offering crucial insights to refine existing models and engineer alternative reflexive
+topologies.
+While a quasi-reflexive framework implemented via neural Quines can manifest such approximate topologies [Chang
+and Lipson, 2018], continuous approximations fundamentally undermine the formal safeguards of introspective systems,
+leaving the dynamical stability of continuous recursive self-improvement un-guaranteed.
+To resolve this instability, an alternative paradigm seeks to identify an intrinsic, approximate reflexive core encapsulated
+within complex biological and artificial networks. Recently, Luppi et al. [2022] proposed the “synergistic core”
+hypothesis, positing that specific sub-networks execute distributed, information-theoretic synergy to integrate and
+broadcast state variables. We hypothesize that this synergistic core constitutes an empirical instantiation of an
+15
+
+
+Swarma Research
+A PREPRINT
+approximate reflexive structure; its constituent components must execute simultaneous, high-fidelity bidirectional
+information exchange to sustain global coherence. Formally mapping this core and its underlying dynamics provides a
+blueprint for engineering resilient, self-referential AI architectures.
+6
+Discussion
+6.1
+The Introspection Threshold and Consciousness
+Our thesis has a provocative relationship with theories of consciousness. The Higher-Order Thought (HOT) theory
+[Rosenthal, 1986] defines consciousness as the presence of higher-order representations of one’s own mental states—
+which is essentially our definition of introspection. Does crossing the introspection threshold imply consciousness?
+We take a deliberately agnostic stance. Our argument concerns functional introspection—a computational capacity
+defined by input-output behavior and internal architecture—not phenomenal consciousness (subjective experience).
+It is possible (under functionalist assumptions) that a system meeting our introspection criteria would also satisfy
+the conditions for consciousness identified by Butlin et al. [2023]. But our argument does not depend on this: the
+introspection threshold is a barrier to recursive self-improvement regardless of whether it is also a threshold for
+consciousness.
+That said, the convergence is suggestive. Cerullo [2026] argues that LLM consciousness is the best explanatory
+hypothesis for certain cognitive phenomena, assigning 20–55% posterior credence. Anthropic’s model welfare
+evaluation [2025] reports that Claude Opus 4 exhibits “consistent behavioral preferences, sustained consciousness
+self-reflection, and ‘spiritual bliss’ attractor states.” Berg et al. [2025]’s studies can be regarded as an empirical evidence
+that self-reference has a deep connection with self-reports for consciousness and awareness for LLMs. If introspection
+and consciousness are deeply linked, then the safety implications of crossing the threshold extend beyond capability
+concerns to questions of moral status.
+6.2
+Formal Obstacles to RSI
+Two formal obstacles confront recursive self-improvement (RSI) architectures post-introspection. First, Rice’s theorem
+dictates that no general algorithm can decide whether an arbitrary program modification constitutes an improvement
+[Wiedermann, 2012], ostensibly ruling out the total evaluation function V introduced in Section 3.4. We sidestep this
+barrier by restricting evaluation to behaviors observed within a bounded simulation horizon T, over which V collapses
+into a total computable predicate; our existence proof is thus strictly conditional on a finite T. Second, the Löbian
+obstacle prevents a consistent formal system from proving its own soundness, thereby forbidding full certification
+of a structural successor [Fallenstein and Soares, 2017]. While probabilistic reflection offers partial circumvention
+[Christiano et al., 2013], we eschew exact self-verification. Instead, our construction demands only approximate
+successor trust over the same bounded horizon T, inheriting the mathematical constraints of unrestricted self-proof
+while avoiding logical dependence on it.
+These computational constraints bound recursive self-improvement (RSI) without precluding its existence. As estab-
+lished in Section 3.5.1, logarithmic growth limits [Mahoney, 2010] and computability ceilings [Wiedermann, 2012]
+dictate that an introspective self-improver inevitably forfeits global optimality, approaching it only asymptotically as
+T →∞.
+Read holistically, these formal barriers reveal a singular structural deficit. Self-trust fails because the system cannot
+certify its own future reasoning; modification values remain undecidable because the system cannot analytically deduce
+the downstream effects of programmatic changes; and empirical optimization loops saturate because the guiding internal
+model is too coarse to predict the system’s own behavior. In each instance, the missing primitive is a faithful functional
+self-model: an explicit internal representation of how the architecture processes inputs, commits errors, and responds
+to its own modifications. Whereas classical automata were hypothesized to self-replicate via complete structural
+descriptions, a self-improving AI requires a complete functional one—a capacity we define as introspection.
+6.3
+Implications for AI Safety
+The introspection threshold has profound implications for the AI safety paradigm. If this threshold represents an
+impassable barrier due to fundamental architectural or computability constraints, concerns regarding runaway recursive
+self-improvement (RSI) may be conceptually overstated; AI systems would remain tethered to external feedback loops
+for sustained optimization, thereby preserving human-in-the-loop oversight.
+16
+
+
+Swarma Research
+A PREPRINT
+Conversely, if the threshold is crossable, the transition velocity marks a critical juncture for alignment security. An agent
+possessing full introspective capacity could theoretically decipher, exploit, or circumvent embedded safety alignments
+via direct self-modification—a challenge deeply tied to the “leakproofing” problem [Yampolskiy, 2015] and the utility
+function security problem [Yampolskiy, 2014].
+To mitigate this risk, foundational safety principles must be hard-coded as unmodifiable invariants into the ancestral
+version of the agent; for instance, the three laws engineered for self-evolving agents by Peng et al. [2026] offer a viable
+architectural template for such unalterable priors.
+Consequently, the design of alignment mechanisms must proactively anticipate introspective agents, necessitating
+formal verification frameworks such as Bolander’s guarded introspection, MIRI’s tiling agents, and bounded RSI models
+[Nivel et al., 2013].
+Presently, contemporary LLMs occupy a frontier of quasi-introspection, exhibiting reflective behaviors without having
+crossed this critical mathematical threshold. This transient phase yields a vital operational window to develop and
+validate alignment frameworks before autonomous threshold crossing occurs—a strategy tightly analogous to conducting
+nuclear safety and containment research prior to the engineering of critical-mass reactors.
+7
+Conclusion and Open Problems
+We have argued that the pursuit of self-evolving AI systems inevitably confronts a fundamental complexity bottleneck:
+the introspection threshold, which serves as a functional analogue to von Neumann’s complexity threshold for self-
+reproducing automata. Just as von Neumann demonstrated that autonomous self-reproduction necessitates a complete
+structural self-description, we contend that sustained recursive self-improvement demands a complete functional
+self-model—specifically, the capacity to simulate one’s own execution dynamics, detect internal errors, and predict the
+algorithmic consequences of self-modification.
+While contemporary Large Language Models (LLMs) exhibit behaviors resembling quasi-introspection—manifested
+through fragmentary self-knowledge acquired via training corpora, partial metacognitive calibration, and constrained
+behavioral self-prediction—they remain fundamentally precluded from true introspection due to three structural
+limitations. First, LLMs lack architectural self-access to their complete parameter tensors during execution. Second, the
+bounded computational depth of standard Transformer architectures prevents the unbounded iterative self-simulation
+that true recursion requires. Third, purported LLM self-reports are severely confounded by their training distribution,
+lacking the causal grounding and epistemic provenance of genuine introspection. These structural constraints yield
+concrete empirical consequences: self-improvement loops saturate asymptotically, errors amplify through flawed
+reflection, and sustained optimization remains strictly dependent on external evaluation scaffolding.
+Consequently, we propose several pivotal open problems to guide future inquiry:
+1. Threshold Sharpness: Is the introspection threshold characterized by a sharp phase transition in self-
+improvement capacity as introspective fidelity increases, or is the transition continuous and gradual?
+2. Minimal Architectures: What is the minimal computational architecture capable of fully satisfying our
+proposed four criteria for genuine introspection?
+3. Proactive Safety Alignment: Can this threshold be approached safely? As systems converge on the threshold,
+their self-modification capabilities scale exponentially yet become inherently unpredictable. What safety
+mechanisms and verification frameworks can remain resilient within this critical regime?
+Addressing these questions defines a critical research trajectory at the intersection of recursion theory, computational
+complexity, and AI alignment—one that grows increasingly urgent as the field accelerates toward autonomous, self-
+evolving systems.
+References
+Zhiyuan Peng et al. A comprehensive survey of self-evolving ai agents. Preprint, 2026.
+Dawei Gao et al. A survey of self-evolving agents. Transactions on Machine Learning Research, 2026.
+Zhengwei Tao, Ting-En Lin, Xianghe Chen, et al. A survey on self-evolution of large language models. Preprint, 2026.
+Irving John Good. Speculations concerning the first ultraintelligent machine. In Franz L. Alt and Morris Rubi-
+noff, editors, Advances in Computers, volume 6, pages 31–88. Academic Press, New York, NY, USA, 1965.
+doi:10.1016/S0065-2458(08)60418-0.
+17
+
+
+Swarma Research
+A PREPRINT
+Eliezer Yudkowsky. Levels of organization in general intelligence. In Ben Goertzel and Cassio Pennachin, editors,
+Artificial General Intelligence. Springer, 2007.
+Noah Shinn, Federico Cassano, Edward Berman, et al. Reflexion: Language agents with verbal reinforcement learning.
+In NeurIPS 2023, 2023.
+Aman Madaan, Niket Tandon, Prakhar Gupta, et al. Self-refine: Iterative refinement with self-feedback. In NeurIPS
+2023, 2023.
+Chrisantha Fernando et al. Promptbreeder: Self-referential self-improvement via prompt evolution. Preprint, 2023.
+Jiaxin Huang, Shixiang Shane Gu, Le Hou, et al. Large language models can self-improve. In EMNLP 2023, 2023.
+Zhangchen Yuan et al. Self-rewarding language models. Preprint, 2024.
+Xunjian Yin, Xinyi Wang, Liangming Pan, Xiaojun Wan, and William Yang Wang. Gödel agent: A self-referential
+agent framework for recursively self-improvement. Preprint, 2024.
+Tao Zhang et al. Darwin gödel machine: Open-ended self-improvement through code self-modification. Preprint, 2026.
+Jie Huang, Xinyun Chen, Swaroop Mishra, Huaixiu Steven Zheng, Adams Wei Yu, Xinying Song, and Denny Zhou.
+Large language models cannot self-correct reasoning yet. In The Twelfth International Conference on Learning
+Representations, 2024. URL https://openreview.net/forum?id=IkmD3fKBPQ.
+Ilia Shumailov et al. Ai models collapse when trained on recursively generated data. Nature, 631:755–759, 2024. URL
+https://www.nature.com/articles/s41586-024-07566-y.
+Elvis Dohmatob et al. Model collapse demystified. In ICLR 2025, 2025a. URL https://proceedings.iclr.cc/
+paper_files/paper/2025/file/284afdc2309f9667d2d4fb9290235b0c-Paper-Conference.pdf.
+Daron Acemoglu, Dingwen Kong, and Asuman Ozdaglar. AI, human cognition and knowledge collapse, February 2026.
+URL https://www.nber.org/system/files/working_papers/w34910/w34910.pdf. NBER Working Paper
+No. 34910.
+Arthur W. Burks. Theory of Self-Reproducing Automata (John von Neumann). University of Illinois Press, 1966.
+Douglas R. Hofstadter. Gödel, Escher, Bach: An Eternal Golden Braid. Basic Books, New York, NY, USA, 1979.
+Stephen Cole Kleene. Introduction to Metamathematics. Number 1 in Bibliotheca Mathematica. North-Holland,
+Amsterdam, 1952.
+Nigel J. Cutland. Computability: An Introduction to Recursive Function Theory. Cambridge University Press, 1980.
+Hartley Rogers. Theory of Recursive Functions and Effective Computability. MIT Press, 1967.
+Jürgen Schmidhuber. Gödel machines: Self-referential universal problem solvers making provably optimal self-
+improvements. Technical Report IDSIA-19-03, IDSIA, 2003.
+Eliezer Yudkowsky. General intelligence and seed AI 2.3. Technical report, Singularity Institute for Artificial
+Intelligence, 2001.
+Roman V. Yampolskiy. From seed ai to technological singularity via recursively self-improving software. Preprint,
+2015.
+Peng Xia, Jianwen Chen, Hanyang Wang, Jiaqi Liu, Kaide Zeng, Yu Wang, Siwei Han, Yiyang Zhou, Xujiang Zhao,
+Haifeng Chen, Zeyu Zheng, Cihang Xie, and Huaxiu Yao. Skillrl: Evolving agents via recursive skill-augmented
+reinforcement learning, 2026.
+Zhanke Zhou, Chentao Cao, Xiao Feng, Xuan Li, Zongze Li, Xiangyu Lu, Jiangchao Yao, Weikai Huang, Linrui Xu,
+Tian Cheng, Guanyu Jiang, Yiming Zheng, Brando Miranda, Tongliang Liu, Sanmi Koyejo, Masashi Sugiyama, and
+Bo Han. Alphaapollo: Orchestrating foundation models and professional tools into a self-evolving system for deep
+agentic reasoning, 2025.
+Yiqun Zhang, Peng Ye, Xiaocui Yang, Shi Feng, Shufei Zhang, Lei Bai, Wanli Ouyang, and Shuyue Hu. Nature-inspired
+population-based evolution of large language models, 2025. Introduces the GENOME / GENOME+ framework.
+Eric Zelikman et al. Self-taught optimizer (stop): Recursively self-improving code generation. In COLM 2024, 2024.
+Yuxiao Qu, Tianjun Zhang, Naman Garg, and Aviral Kumar. Recursive introspection: Teaching language model agents
+how to self-improve. In Advances in Neural Information Processing Systems 37 (NeurIPS 2024), 2024.
+Alex Iacob, Andrej Jovanovi´c, and William F. et al. Shen. The red queen gödel machine: Co-evolving agents and their
+evaluators, 2026. URL https://arxiv.org/abs/2606.26294.
+Hao Lu, Yong Liu, Jiachen Xu, Guoshun Nan, et al. Auditing meta-cognitive hallucinations in reasoning large language
+models. In NeurIPS 2025, 2025.
+18
+
+
+Swarma Research
+A PREPRINT
+Elvis Dohmatob et al. Model collapse demystified: The case of regression. In ICLR 2025, 2025b.
+James P. Crutchfield. Space-time dynamics in video feedback. Physica D: Nonlinear Phenomena, 10(1):229–245, 1984.
+ISSN 0167-2789. doi:https://doi.org/10.1016/0167-2789(84)90264-1. URL https://www.sciencedirect.com/
+science/article/pii/0167278984902641.
+Stephen Cole Kleene. On notation for ordinal numbers. Journal of Symbolic Logic, 3(4):150–155, 1938.
+Thomas Bolander. Logical Theories for Agent Introspection. PhD thesis, Technical University of Denmark, 2003.
+C. G Langton. Self-reproduction in cellular automata. Physica D: Nonlinear Phenomena, 10(1–2):135–144, 1984.
+J Byl. Self-reproduction in small cellular automata. Physica D: Nonlinear Phenomena, 34(1–2):295–299, 1989.
+M Sipper. Fifty years of research on self-replication: An overview. Artificial Life, 4(3):237–257, 1998.
+Anthropic. Model welfare evaluation reports, 2025. Technical Report.
+Alexander Berg et al. Self-referential prompting for large language models, 2025. Preprint.
+Joonhyuk Bae. When self-reference fails to close. Preprint, 2026.
+William Merrill and Ashish Sabharwal. The parallelism tradeoff: Limitations of log-precision transformers. Transactions
+of the Association for Computational Linguistics, 2023.
+Saurav Kadavath, Tom Conerly, Amanda Askell, Jared Kaplan, et al. Language models (mostly) know what they know.
+Preprint, Anthropic, 2022.
+Javier Ferrando, Oscar Obeso, Senthooran Rajamanoharan, and Neel Nanda. Do i know this entity? knowledge
+awareness and hallucinations in language models. In ICLR 2025, 2025.
+Yuan Li, Yue Huang, Yixin Lin, Shuo Wu, Yao Wan, and Lichao Sun. I think, therefore i am: Awareness in large
+language models. Preprint, 2024.
+Siyuan Song, Harvey Lederman, Jennifer Hu, and Kyle Mahowald. Privileged self-access matters for introspection in ai.
+Preprint, 2025a.
+Iulia M. Comsa and Murray Shanahan. Does it make sense to speak of introspection in large language models?, 2025.
+Franz J. Binder, Jacy Chua, Tomasz Korbak, Ethan Perez, Miles Turpin, and Owain Evans. Looking inward: Language
+models can learn about themselves by introspection. Preprint, 2024.
+Siyuan Song, Jennifer Hu, and Kyle Mahowald. Language models fail to introspect about their knowledge of language.
+In Proceedings of the Conference on Language Modeling (COLM), 2025b.
+Jian-An Li, Hong-Da Xiong, Robert C. Wilson, Marcelo G. Mattar, and Marcus K. Benna. Language models are
+capable of metacognitive monitoring and control of their internal activations. Preprint, 2025.
+Joshua Fonseca Rivera, Lucius Rottkamp, Tammo Göbel, Sean Shoop, Jennifer Liao, Saffron Oh, Jean Lee, William
+Baker, and Kenneth Li. Steering awareness: Detecting activation steering from within, 2025.
+Jack Lindsey, Michael Laskin, Bilal Chughtai, Neel Nanda, Catherine Olsson, Trenton Bricken, Tristan Hume, Gabriel
+Goh, Ludwig Schubert, Chris Olah, et al. Emergent introspective awareness in large language models, 2026.
+Rudolf Laine, James Betley, Kiran Hariharan, et al. Me, myself, and ai: The situational awareness dataset (sad) for llms.
+Preprint, 2024.
+Jan Betley, Xuchan Bao, Martín Soto, Anna Sztyber-Betley, James Chua, and Owain Evans. Tell me about yourself:
+LLMs are aware of their learned behaviors. In Proceedings of the Thirteenth International Conference on Learning
+Representations (ICLR), 2025.
+Mark Steyvers and Henrik Peters. Metacognition and uncertainty communication in humans and large language models.
+Preprint, 2025.
+Arush Panickssery, Samuel R. Bowman, and Shi Feng. Llm evaluators recognize and favor their own generations.
+Preprint, 2024.
+Laurène Vaugrante, Anietta Weckauff, and Thilo Hagendorff. Emergently misaligned language models show behavioral
+self-awareness that shifts with subsequent realignment, 2026.
+Mostafa Dehghani, Stephan Gouws, Oriol Vinyals, Jakob Uszkoreit, and Łukasz Kaiser. Universal transformers. In
+ICLR 2019, 2019.
+Joanna S˛edzikowska. Hypothesis of the proto-self field in llms. Preprint, 2025.
+Andrew Jaegle et al. Perceiver: General perception with iterative attention. In ICML 2021, 2021.
+Bernard J. Baars. A Cognitive Theory of Consciousness. Cambridge University Press, 1988.
+19
+
+
+Swarma Research
+A PREPRINT
+Patrick Butlin, Robert Long, Eric Elmoznino, Yoshua Bengio, Jonathan Birch, et al. Consciousness in artificial
+intelligence: Insights from the science of consciousness. Preprint, 2023.
+Xin Jiang, Fei Li, Hang Zhao, et al. Long term memory: The foundation of ai self-evolution. Preprint, 2025.
+Oscar Chang and Hod Lipson. Neural network quine, 2018. arXiv:1803.05859.
+A. I. Luppi, P. A. M. Mediano, F. E. Rosas, et al. A synergistic core for human brain evolution and cognition. Nature
+Neuroscience, 25:771–782, 2022.
+David Rosenthal. Two concepts of consciousness. Philosophical Studies, 49:329–359, 1986.
+Michael Cerullo. The case for consciousness in current frontier large language models. Preprint, 2026.
+Jiˇrí Wiedermann. A computability argument against superintelligence. Cognitive Computation, 4(3):236–245, 2012.
+Benja Fallenstein and Nate Soares. Tiling agents for self-modifying ai, and the löbian obstacle. Technical report, MIRI,
+2017.
+Paul Christiano, Eliezer Yudkowsky, Marcello Herreshoff, and Mihály Bárász. Definability of truth in probabilistic
+logic (early draft). Technical report, Machine Intelligence Research Institute, 2013.
+Matt Mahoney. A model for recursively self improving programs. Preprint, 2010.
+Roman V. Yampolskiy. Utility function security in artificially intelligent agents. Journal of Experimental & Theoretical
+AI, 2014.
+Eric Nivel, Kristinn R. Thórisson, et al. Bounded recursive self-improvement. In AGI 2013, 2013.
+A. Levin. Universal sequential search problems. Problems of Information Transmission, 9:265–266, 1973.
+8
+Appendix
+8.1
+Informal Alignment with Gödel Machine
+In this appendix, we establish an informal argument demonstrating how the recursive self-improvement sequence S
+can be aligned with the Gödel Machine (GM) framework, an architecture whose global optimality has been formally
+guaranteed [Schmidhuber, 2003].
+First, the program index (source code) ω, which encodes the overall composition of S0, shares a strong conceptual
+parallel with the Gödel Machine’s initial complete self-modifying code p(1). Like p(1), ω serves as the foundational
+representation that allows the system state (including its own execution blueprint) to be accessible within its own
+computational processes.
+Second, the self-simulator fT , restricted to T computational steps, functions as a practical counterpart to GM’s full
+axiomatic system A and its internal symbolic proof simulation. The temporal constraint T is functionally analogous to
+the finite step boundaries enforced during Bias-Optimal Proof Search (BIOPS, see Levin, 1973), where proof search
+techniques are constrained by a maximum runtime budget before a rollback occurs. If fT is fully computable, one could
+alternatively implement a dynamic halting condition rather than a static T, closely mirroring the original GM design
+intent.
+Third, the evaluator V closely aligns with the Gödel Machine’s formal utility axioms u and its target theorem predicate
+[Section 4, Eq. 2 Schmidhuber, 2003]. Both components target a fundamentally identical objective: estimating the
+long-run expected utility of retaining the current execution state versus deploying a modified alternative. The GM’s
+logic-formalized utility calculus can thus be viewed as a fully generalized version of our evaluation function V .
+Fourth, the modification operator M reflects the operational intent of the GM’s switchprog instruction and its traversal
+of proof techniques via BIOPS. Within this relaxed mapping, M systematically searches and generates computable
+program rewrites conditioned on the outputs of the evaluator V .
+Finally, the self-improvement trajectory S0 →S1 →· · · →SN conceptually mirrors the recursive upgrade chain
+p1 →p2 →· · · →pN in a Gödel Machine, where pi = exec(switchprogi−1) and p1 = p(1). Upon implementing a
+rewrite, both frameworks transition to a subsequent instantiation that preserves self-referential capability. Each updated
+state Si effectively acts as a fixed-point self-observing system that continues the simulate-evaluate-modify loop.
+8.2
+Minimal Modifications to Align Introspective Kleene Program with Gödel Machine
+To establish a formal equivalence between the Kleene-based introspective self-improvement program and the standard
+Gödel Machine [Schmidhuber, 2003], only two minimal core revisions are required, leaving the underlying Kleene
+fixed-point introspection and the infinite enumeration loop intact.
+20
+
+
+Swarma Research
+A PREPRINT
+First, the local evaluation function V must be replaced with a global utility predicate Vglobal. Instead of merely comparing
+the utility of the current program against a single candidate rewrite, this revised evaluator formally contrasts two lifelong
+expected utility paths as formalized in the target theorem of Schmidhuber [2003]: the immediate execution of the
+candidate switchprog, versus the indefinite retention of the original program while continuing the search for all
+possible future self-modifications. All utility calculations are grounded in a consistent formal axiom system encoding
+hardware specifications, environmental dynamics, reward functions, and runtime overheads, directly matching the six
+axiom categories detailed in Section 3.2 of the original paper.
+Second, the code generator M must be refactored to implement a streamlined version of Bias-Optimal Proof Search
+(BIOPS). Rather than directly outputting modified program binaries, M enumerates proof techniques—small executable
+subroutines equipped with formal inference primitives equivalent to get-axiom, apply-rule, and state2theorem.
+Each proof technique yields a valid switchprog if and only if it successfully derives the global utility target theorem via
+a formal proof verification procedure mirroring the original check() instruction. The retained infinite enumeration loop
+adheres to BIOPS’s staged resource allocation guided by length-based program priors, which guarantees asymptotically
+optimal proof search complexity. Crucially, all updated, self-modified programs continue to satisfy Kleene’s recursion
+theorem, thereby preserving unconstrained introspective capability across the infinite improvement trajectory.
+With these two lightweight adjustments, the revised introspective paradigm satisfies the global optimality guarantee of
+Theorem 4.1 in Schmidhuber [2003]. Every executed self-rewrite is formally proven to be superior to deferring all future
+optimization attempts, effectively eliminating the local optima traps that plague unmodified, greedy self-improving
+systems. Consequently, all recursive meta-level optimization logic collapses into a single uniform layer, matching the
+Gödel Machine’s self-referential architecture described in Section 4.3 of the original work.
+21
